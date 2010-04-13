@@ -1,0 +1,73 @@
+<!-- Copyright (C) The IETF Trust (2007) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+  <references title="Normative References">
+
+    <reference anchor='RFC2119'>
+      <front>
+	<title abbrev='RFC Key Words'>Key words for use in RFCs to Indicate Requirement Levels</title>
+	<author initials='S.' surname='Bradner' fullname='Scott Bradner'>
+	  <organization>Harvard University</organization>
+	  <address>
+	    <postal>
+	      <street>1350 Mass. Ave.</street>
+	      <street>Cambridge</street>
+	    <street>MA 02138</street></postal>
+	    <phone>- +1 617 495 3864</phone>
+	<email>sob@harvard.edu</email></address></author>
+	<date year='1997' month='March' />
+      </front>
+    </reference>
+
+
+    <reference anchor='RFC4506'>
+
+      <front>
+      <title>XDR: External Data Representation Standard</title>
+      <author initials='M.' surname='Eisler' fullname='Mike Eisler'>
+      <organization>NetApp</organization></author>
+      <date year='2006' month='May' />
+      <abstract>
+      <t>&lt;p>This document describes the External Data
+      Representation Standard (XDR) protocol as it is currently
+      deployed and accepted. This document obsoletes RFC
+      1832. [STANDARDS TRACK]&lt;/p></t></abstract></front>
+      <seriesInfo name='STD' value='67' />
+      <seriesInfo name='RFC' value='4506' />
+      <format type='TXT' octets='55477' target='ftp://ftp.isi.edu/in-notes/rfc4506.txt' />
+    </reference>
+
+<reference anchor='I-D.ietf-nfsv4-rfc3530bis'>
+<front>
+<title>NFS Version 4 Protocol</title>
+
+<author initials='T' surname='Haynes' fullname='Thomas Haynes'>
+    <organization />
+</author>
+
+<date month='March' day='30' year='2009' />
+
+<abstract>
+  <t>
+    The Network File System (NFS) version 4 is a distributed filesystem
+    protocol which owes heritage to NFS protocol version 2, RFC 1094, and
+    version 3, RFC 1813.  Unlike earlier versions, the NFS version 4
+    protocol supports traditional file access while integrating support
+    for file locking and the mount protocol.  In addition, support for
+    strong security (and its negotiation), compound operations, client
+    caching, and internationalization have been added.  Of course,
+    attention has been applied to making NFS version 4 operate well in an
+    Internet environment.
+
+    This document replaces RFC 3530 as the definition of the NFS version
+    4 protocol.
+  </t>
+</abstract>
+
+</front>
+
+<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-00' />
+<format type='TXT'
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-00.txt' />
+</reference>
+
+  </references>

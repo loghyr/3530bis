@@ -1,0 +1,89 @@
+#!/bin/bash
+
+PREVDRAFT=$1
+shift
+PREVDRAFTTXT=$1
+shift
+DRAFT=$1
+shift
+DRAFTTXT=$1
+shift
+DRAFTHTML=$1
+shift
+DOTX=$1
+shift
+PREVDRAFTDOTX=$1
+shift
+DRAFTDOTX=$1
+shift
+
+DOTXNAME=$(basename $DOTX)
+PREVDOTXNAME=${DOTXNAME}-`basename $PREVDRAFT`
+
+if [ ! -d $DRAFT ] ; then
+    mkdir $DRAFT
+fi
+
+cp $DRAFTHTML $DRAFT
+
+cp $DRAFTTXT $DRAFT
+cp $DOTX $DRAFT/$DOTXNAME
+cp dotx-id.d/$DRAFTDOTX $DRAFT/
+
+cp $PREVDRAFT/$PREVDRAFTTXT $DRAFT
+cp $PREVDRAFT/$DOTXNAME $DRAFT/$PREVDOTXNAME
+cp $PREVDRAFT/$PREVDRAFTDOTX $DRAFT/
+
+type wdiff 2>&1 > /dev/null
+if [ $? -eq 0 ] ; then
+	./rfcdiff --stdout $DRAFT/$PREVDRAFTTXT $DRAFT/$DRAFTTXT > $DRAFT/rfcdiff.htm
+	./rfcdiff --stdout $DRAFT/$PREVDOTXNAME $DRAFT/$DOTXNAME > $DRAFT/xdiff.htm
+	./rfcdiff --stdout $DRAFT/$PREVDRAFTDOTX $DRAFT/$DRAFTDOTX > $DRAFT/rfcxdiff.htm
+else
+	echo "Using rfcdiff.htm that is supplied."
+	echo "Using xdiff.htm that is supplied."
+	echo "Using rfxxdiff.htm that is supplied."
+fi
+
+
+DRAFTTXTLN=$(echo ${DRAFTTXT} | sed -e 's/\..*//')
+DRAFTTXTLN=${DRAFTTXTLN}-ln.txt
+cat -n $DRAFTTXT > $DRAFT/$DRAFTTXTLN
+
+cat <<EOF > $DRAFT/index.html
+<html lang="en"><head><title>NFSv4 Minor Version 1 $DRAFT</title>
+EOF
+
+cat <<EOF >> $DRAFT/index.html
+<table border=3 frame=box>
+<tr><th>Complete Documents for $DRAFT</th></tr>
+<tr><td><a href="$DRAFTTXT">$DRAFTTXT</a><td><tr>
+<tr><td><a href="$DRAFTTXTLN">$DRAFTTXTLN  <b><i>(with line numbers)</i></b></a><td><tr>
+<tr><td><a href="$PREVDRAFTTXT">Previous Version ($PREVDRAFTTXT)</a><td><tr>
+<tr><td><a href="rfcdiff.htm">RFC diff of $PREVDRAFTTXT and $DRAFT</a><td><tr>
+<tr><td><a href="$DRAFTHTML">$DRAFTHTML</a><td><tr>
+<tr><td><a href="$DOTXNAME">$DOTXNAME</a><td><tr>
+<tr><td><a href="xdiff.htm">RFC diff of $DOTXNAME and $DRAFT</a><td><tr>
+<tr><td><a href="$DRAFTDOTX">$DRAFTDOTX</a><td><tr>
+<tr><td><a href="$PREVDRAFTDOTX">$PREVDRAFTDOTX</a><td><tr>
+<tr><td><a href="rfcxdiff.htm">RFC diff of $PREVDRAFTDOTX and $DRAFT</a><td><tr>
+</table>
+
+<table border=3 frame=box>
+<tr><th>Document Source</th></tr>
+EOF
+
+
+while [ -n "$1" ]
+do
+  cp $1 $DRAFT/$1
+  cat <<EOF >> $DRAFT/index.html
+<tr><td><a href="$1">$1</a><td><tr>
+EOF
+  shift
+done
+
+cat <<EOF >> $DRAFT/index.html
+</table>
+</html>
+EOF

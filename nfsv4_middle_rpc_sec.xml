@@ -1,0 +1,469 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section anchor="sec:rpc_flavors" title="RPC and Security Flavor">
+   
+  <t>
+    The NFS version 4 protocol is a Remote Procedure Call (RPC)
+    application that uses RPC version 2 and the corresponding eXternal
+    Data Representation (XDR) as defined in <xref target="RFC1831" /> and <xref target="RFC1832" />.
+    The RPCSEC_GSS security flavor as defined in <xref target="RFC2203" /> MUST be used
+    as the mechanism to deliver stronger security for the NFS version
+    4 protocol.
+  </t>
+
+  <section title="Ports and Transports">
+
+    <t>
+      Historically, NFS version 2 and version 3 servers have resided on
+      port 2049.  The registered port 2049 <xref target="RFC3232" /> for the NFS protocol
+      should be the default configuration.  Using the registered port
+      for NFS services means the NFS client will not need to use the RPC
+      binding protocols as described in <xref target="RFC1833" />; this will allow NFS to
+      transit firewalls.
+    </t>
+
+    <t>
+      Where an NFS version 4 implementation supports operation over the IP
+      network protocol, the supported transports between NFS and IP MUST be
+      among the IETF-approved congestion control transport protocols,
+      which include TCP and SCTP.  To enhance the possibilities for
+      interoperability, an NFS version 4 implementation MUST support
+      operation over the TCP transport protocol, at least until such time
+      as a standards track RFC revises this requirement to use a different
+      IETF-approved congestion control transport protocol.
+    </t>
+
+    <t>
+      If TCP is used as the transport, the client and server SHOULD use
+      persistent connections.  This will prevent the weakening of TCP's
+      congestion control via short lived connections and will improve
+      performance for the WAN environment by eliminating the need for
+      SYN handshakes.
+    </t>
+
+    <t>
+      As noted in the Security Considerations section, the authentication
+      model for NFS version 4 has moved from machine-based to principal-
+      based.  However, this modification of the authentication model does not
+      imply a technical requirement to move the TCP connection management
+      model from whole machine-based to one based on a per user model.
+      In particular, NFS over TCP client implementations have traditionally
+      multiplexed traffic for multiple users over a common TCP connection
+      between an NFS client and server.  This has been true, regardless
+      whether the NFS client is using AUTH_SYS, AUTH_DH, RPCSEC_GSS or
+      any other flavor.  Similarly, NFS over TCP server implementations
+      have assumed such a model and thus scale the implementation of TCP
+      connection management in proportion to the number of expected client
+      machines.  It is intended that NFS version 4 will not modify this
+      connection management model.  NFS version 4 clients that violate
+      this assumption can expect scaling issues on the server and hence
+      reduced service.
+    </t>
+
+    <t>
+      Note that for various timers, the client and server should avoid
+      inadvertent synchronization of those timers.  For further discussion
+      of the general issue refer to <xref target="Floyd" />.
+    </t>
+
+    <section title="Client Retransmission Behavior">
+
+      <t>
+        When processing a request received over a reliable transport such as
+        TCP, the NFS version 4 server MUST NOT silently drop the request,
+        except if the transport connection has been broken.  Given such a
+        contract between NFS version 4 clients and servers, clients MUST NOT
+        retry a request unless one or both of the following are true:
+
+        <list style='symbols'>
+          <t>
+            The transport connection has been broken
+          </t>
+
+          <t>
+            The procedure being retried is the NULL procedure
+          </t>
+        </list>
+      </t>
+
+      <t>
+        Since reliable transports, such as TCP, do not always synchronously
+        inform a peer when the other peer has broken the connection (for
+        example, when an NFS server reboots), the NFS version 4 client may
+        want to actively "probe" the connection to see if has been broken.
+        Use of the NULL procedure is one recommended way to do so.  So, when
+        a client experiences a remote procedure call timeout (of some
+        arbitrary implementation specific amount), rather than retrying the
+        remote procedure call, it could instead issue a NULL procedure call
+        to the server.  If the server has died, the transport connection
+        break will eventually be indicated to the NFS version 4 client.
+        The client can then reconnect, and then retry the original request.
+        If the NULL procedure call gets a response, the connection has
+        not broken.  The client can decide to wait longer for the original
+        request's response, or it can break the transport connection and
+        reconnect before re-sending the original request.
+      </t>
+
+      <t>
+        For callbacks from the server to the client, the same rules apply,
+        but the server doing the callback becomes the client, and the client
+        receiving the callback becomes the server.
+      </t>
+    </section>
+  </section>
+
+  <section title="Security Flavors">
+
+    <t>
+      Traditional RPC implementations have included AUTH_NONE, AUTH_SYS,
+      AUTH_DH, and AUTH_KRB4 as security flavors.  With <xref target="RFC2203" /> an
+      additional security flavor of RPCSEC_GSS has been introduced which
+      uses the functionality of GSS-API <xref target="RFC2743" />.  This allows for the
+      use of various security mechanisms by the RPC layer without the
+      additional implementation overhead of adding RPC security flavors.
+      For NFS version 4, the RPCSEC_GSS security flavor MUST be used to
+      enable the mandatory security mechanism.  Other flavors, such as,
+      AUTH_NONE, AUTH_SYS, and AUTH_DH MAY be implemented as well.
+    </t>
+
+    <section title="Security mechanisms for NFS version 4">
+
+      <t>
+        The use of RPCSEC_GSS requires selection of: mechanism, quality
+        of protection, and service (authentication, integrity, privacy).
+        The remainder of this document will refer to these three parameters
+        of the RPCSEC_GSS security as the security triple.
+      </t>
+
+      <section title="Kerberos V5 as a security triple">
+
+        <t>
+          The Kerberos V5 GSS-API mechanism as described in <xref target="RFC1964" /> MUST be
+          implemented and provide the following security triples.
+        </t>
+
+        <t>
+          <figure>
+            <artwork>
+column descriptions:
+
+1 == number of pseudo flavor
+2 == name of pseudo flavor
+3 == mechanism's OID
+4 == mechanism's algorithm(s)
+5 == RPCSEC_GSS service
+
+1      2     3                    4             5
+--------------------------------------------------------------------
+390003 krb5  1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_none
+390004 krb5i 1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_integrity
+390005 krb5p 1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_privacy
+                                  for integrity,
+                                  and 56 bit DES
+                                  for privacy.
+            </artwork>
+          </figure>
+        </t>
+
+        <t>
+          Note that the pseudo flavor is presented here as a mapping aid to the
+          implementor.  Because this NFS protocol includes a method to negotiate
+          security and it understands the GSS-API mechanism, the pseudo flavor
+          is not needed.  The pseudo flavor is needed for NFS version 3 since
+          the security negotiation is done via the MOUNT protocol.
+        </t>
+
+        <t>
+          For a discussion of NFS' use of RPCSEC_GSS and Kerberos V5, please see
+          <xref target="RFC2623" />.
+        </t>
+
+        <t>
+          Users and implementors are warned that 56 bit DES is no longer
+          considered state of the art in terms of resistance to brute force
+          attacks.  Once a revision to <xref target="RFC1964" /> is available that adds support
+          for AES, implementors are urged to incorporate AES into their NFSv4
+          over Kerberos V5 protocol stacks, and users are similarly urged to
+          migrate to the use of AES.
+        </t>
+      </section>
+
+      <section anchor="ss:rpc:lst" title="LIPKEY as a security triple">
+
+        <t>
+          The LIPKEY GSS-API mechanism as described in <xref target="RFC2847" /> MAY be
+          implemented and provide the following security triples.  The definition
+          of the columns matches the previous subsection "Kerberos V5 as
+          security triple".
+        </t>
+
+        <t>
+          <figure>
+            <artwork>
+1      2        3                   4              5
+--------------------------------------------------------------------
+390006 lipkey   1.3.6.1.5.5.9       negotiated  rpc_gss_svc_none
+390007 lipkey-i 1.3.6.1.5.5.9       negotiated  rpc_gss_svc_integrity
+390008 lipkey-p 1.3.6.1.5.5.9       negotiated  rpc_gss_svc_privacy
+            </artwork>
+          </figure>
+        </t>
+
+        <t>
+          The mechanism algorithm is listed as "negotiated".  This is
+          because LIPKEY is layered on SPKM-3 and in SPKM-3 <xref target="RFC2847" /> the
+          confidentiality and integrity algorithms are negotiated.  Since SPKM-3
+          specifies HMAC-MD5 for integrity as MANDATORY, 128 bit cast5CBC for
+          confidentiality for privacy as MANDATORY, and further specifies that
+          HMAC-MD5 and cast5CBC MUST be listed first before weaker algorithms,
+          specifying "negotiated" in column 4 does not impair interoperability.
+          In the event an SPKM-3 peer does not support the mandatory algorithms,
+          the other peer is free to accept or reject the GSS-API context
+          creation.
+        </t>
+
+        <t>
+          Because SPKM-3 negotiates the algorithms, subsequent calls to LIPKEY's
+          GSS_Wrap() and GSS_GetMIC() by RPCSEC_GSS will use a quality of
+          protection value of 0 (zero).  See section 5.2 of <xref target="RFC2025" /> for
+          an explanation.
+        </t>
+
+        <t>
+          LIPKEY uses SPKM-3 to create a secure channel in which to pass a
+          user name and password from the client to the server.  Once the user
+          name and password have been accepted by the server, calls to the
+          LIPKEY context are redirected to the SPKM-3 context.  See <xref target="RFC2847" />
+          for more details.
+        </t>
+      </section>
+
+      <section title="SPKM-3 as a security triple">
+
+        <t>
+          The SPKM-3 GSS-API mechanism as described in <xref target="RFC2847" /> MAY be
+          implemented and provide the following security triples.  The definition
+          of the columns matches the previous subsection "Kerberos V5 as
+          security triple".
+        </t>
+
+        <t>
+          <figure>
+            <artwork>
+1      2        3                   4              5
+--------------------------------------------------------------------
+390009 spkm3    1.3.6.1.5.5.1.3     negotiated  rpc_gss_svc_none
+390010 spkm3i   1.3.6.1.5.5.1.3     negotiated  rpc_gss_svc_integrity
+390011 spkm3p   1.3.6.1.5.5.1.3     negotiated  rpc_gss_svc_privacy
+            </artwork>
+          </figure>
+        </t>
+
+        <t>
+          For a discussion as to why the mechanism algorithm is listed as
+          "negotiated", see <xref target="ss:rpc:lst" /> "LIPKEY as a security triple."
+        </t>
+
+        <t>
+          Because SPKM-3 negotiates the algorithms, subsequent calls to SPKM-
+          3's GSS_Wrap() and GSS_GetMIC() by RPCSEC_GSS will use a quality
+          of protection value of 0 (zero).  See section 5.2 of <xref target="RFC2025" /> for
+          an explanation.
+        </t>
+
+        <t>
+          Even though LIPKEY is layered over SPKM-3, SPKM-3 is specified
+          as a mandatory set of triples to handle the situations where the
+          initiator (the client) is anonymous or where the initiator has its
+          own certificate.  If the initiator is anonymous, there will not be
+          a user name and password to send to the target (the server).  If the
+          initiator has its own certificate, then using passwords is superfluous.
+        </t>
+      </section>
+    </section>
+  </section>
+
+  <section title="Security Negotiation">
+
+  <t>
+    With the NFS version 4 server potentially offering multiple security
+    mechanisms, the client needs a method to determine or negotiate
+    which mechanism is to be used for its communication with the server.
+    The NFS server may have multiple points within its filesystem name
+    space that are available for use by NFS clients.  In turn the NFS
+    server may be configured such that each of these entry points may
+    have different or multiple security mechanisms in use.
+  </t>
+
+  <t>
+    The security negotiation between client and server must be done
+    with a secure channel to eliminate the possibility of a third party
+    intercepting the negotiation sequence and forcing the client and
+    server to choose a lower level of security than required or desired.
+    See <xref target="Security Considerations" /> "Security Considerations" for further discussion.
+  </t>
+
+    <section title="SECINFO">
+
+      <t>
+        The new SECINFO operation will allow the client to determine, on a per
+        filehandle basis, what security triple is to be used for server access.
+        In general, the client will not have to use the SECINFO operation
+        except during initial communication with the server or when the client
+        crosses policy boundaries at the server.  It is possible that the
+        server's policies change during the client's interaction therefore
+        forcing the client to negotiate a new security triple.
+      </t>
+    </section>
+
+    <section title="Security Error">
+
+      <t>
+        Based on the assumption that each NFS version 4 client and server
+        must support a minimum set of security (i.e., LIPKEY, SPKM-3, and
+        Kerberos-V5 all under RPCSEC_GSS), the NFS client will start its
+        communication with the server with one of the minimal security triples.
+        During communication with the server, the client may receive an NFS
+        error of NFS4ERR_WRONGSEC.  This error allows the server to notify the
+        client that the security triple currently being used is not appropriate
+        for access to the server's filesystem resources.  The client is then
+        responsible for determining what security triples are available at the
+        server and choose one which is appropriate for the client.  See 
+        <xref target="OP_SECINFO" /> for the "SECINFO" operation for further discussion of how
+        the client will respond to the NFS4ERR_WRONGSEC error and use SECINFO.
+      </t>
+    </section>
+
+  <section title="Callback RPC Authentication">
+
+      <t>
+        Except as noted elsewhere in this section, the callback RPC (described
+        later) MUST mutually authenticate the NFS server to the principal
+        that acquired the clientid (also described later), using the security
+        flavor the original SETCLIENTID operation used.
+      </t>
+
+      <t>
+        For AUTH_NONE, there are no principals, so this is a non-issue.
+      </t>
+
+      <t>
+        AUTH_SYS has no notions of mutual authentication or a server principal,
+        so the callback from the server simply uses the AUTH_SYS credential
+        that the user used when he set up the delegation.
+      </t>
+ 
+      <t>
+        For AUTH_DH, one commonly used convention is that the server uses
+        the credential corresponding to this AUTH_DH principal:
+
+        <figure>
+          <artwork>
+unix.host@domain
+          </artwork>
+        </figure>
+
+        where host and domain are variables corresponding to the name of
+        server host and directory services domain in which it lives such as
+        a Network Information System domain or a DNS domain.
+      </t>
+
+      <t>
+        Because LIPKEY is layered over SPKM-3, it is permissible for the
+        server to use SPKM-3 and not LIPKEY for the callback even if the
+        client used LIPKEY for SETCLIENTID.
+      </t>
+
+      <t>
+        Regardless of what security mechanism under RPCSEC_GSS is
+        being used, the NFS server, MUST identify itself in GSS-API via a
+        GSS_C_NT_HOSTBASED_SERVICE name type.  GSS_C_NT_HOSTBASED_SERVICE names
+        are of the form:
+
+        <figure>
+          <artwork>
+service@hostname
+          </artwork>
+        </figure>
+      </t>
+
+      <t>
+        For NFS, the "service" element is
+
+        <figure>
+          <artwork>
+nfs
+          </artwork>
+        </figure>
+
+        Implementations of security mechanisms will convert nfs@hostname to
+        various different forms.  For Kerberos V5 and LIPKEY, the following
+        form is RECOMMENDED:
+
+        <figure>
+          <artwork>
+nfs/hostname
+          </artwork>
+        </figure>
+      </t>
+
+      <t>
+        For Kerberos V5, nfs/hostname would be a server principal in
+        the Kerberos Key Distribution Center database.  This is the same
+        principal the client acquired a GSS-API context for when it issued
+        the SETCLIENTID operation, therefore, the realm name for the
+        server principal must be the same for the callback as it was for
+        the SETCLIENTID.
+      </t>
+
+      <t>
+        For LIPKEY, this would be the username passed to the target (the NFS
+        version 4 client that receives the callback).
+      </t>
+
+      <t>
+        It should be noted that LIPKEY may not work for callbacks, since the
+        LIPKEY client uses a user id/password.  If the NFS client receiving
+        the callback can authenticate the NFS server's user name/password
+        pair, and if the user that the NFS server is authenticating to has
+        a public key certificate, then it works.
+      </t>
+
+      <t>
+        In situations where the NFS client uses LIPKEY and uses a per-host
+        principal for the SETCLIENTID operation, instead of using LIPKEY for
+        SETCLIENTID, it is RECOMMENDED that SPKM-3 with mutual authentication
+        be used.  This effectively means that the client will use a certificate
+        to authenticate and identify the initiator to the target on the
+        NFS server.  Using SPKM-3 and not LIPKEY has the following advantages:
+
+        <list style='symbols'>
+          <t>
+            When the server does a callback, it must authenticate to the
+            principal used in the SETCLIENTID.  Even if LIPKEY is used,
+            because LIPKEY is layered over SPKM-3, the NFS client will need
+            to have a certificate that corresponds to the principal used in
+            the SETCLIENTID operation.  From an administrative perspective,
+            having a user name, password, and certificate for both the client
+            and server is redundant.
+          </t>
+
+          <t>
+            LIPKEY was intended to minimize additional infrastructure
+            requirements beyond a certificate for the target, and the
+            expectation is that existing password infrastructure can be
+            leveraged for the initiator.  In some environments, a per-host
+            password does not exist yet.  If certificates are used for any
+            per-host principals, then additional password infrastructure is
+            not needed.
+          </t>
+
+          <t>
+            In cases when a host is both an NFS client and server, it can
+            share the same per-host certificate.
+          </t>
+        </list>
+      </t>
+    </section>
+  </section>
+</section>

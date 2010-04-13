@@ -1,0 +1,352 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section anchor="sec:filehandles" title="Filehandles">
+
+  <t>
+    The filehandle in the NFS protocol is a per server unique identifier
+    for a filesystem object.  The contents of the filehandle are
+    opaque to the client.  Therefore, the server is responsible for
+    translating the filehandle to an internal representation of the
+    filesystem object.
+  </t>
+
+  <section title="Obtaining the First Filehandle">
+
+    <t>
+      The operations of the NFS protocol are defined in terms of one or
+      more filehandles.  Therefore, the client needs a filehandle to
+      initiate communication with the server.  With the NFS version 2
+      protocol <xref target="RFC1094" /> and the NFS version 3 protocol <xref target="RFC1813" />, there
+      exists an ancillary protocol to obtain this first filehandle.
+      The MOUNT protocol, RPC program number 100005, provides the
+      mechanism of translating a string based filesystem path name to
+      a filehandle which can then be used by the NFS protocols.
+    </t>
+
+    <t>
+      The MOUNT protocol has deficiencies in the area of security
+      and use via firewalls.  This is one reason that the use of the
+      public filehandle was introduced in <xref target="RFC2054" /> and <xref target="RFC2055" />.
+      With the use of the public filehandle in combination with the
+      LOOKUP operation in the NFS version 2 and 3 protocols, it has
+      been demonstrated that the MOUNT protocol is unnecessary for
+      viable interaction between NFS client and server.
+    </t>
+
+    <t>
+      Therefore, the NFS version 4 protocol will not use an ancillary
+      protocol for translation from string based path names to a
+      filehandle.  Two special filehandles will be used as starting
+      points for the NFS client.
+    </t>
+
+    <section title="Root Filehandle">
+
+      <t>
+        The first of the special filehandles is the ROOT filehandle.
+        The ROOT filehandle is the "conceptual" root of the filesystem name
+        space at the NFS server.  The client uses or starts with the ROOT
+        filehandle by employing the PUTROOTFH operation.  The PUTROOTFH
+        operation instructs the server to set the "current" filehandle to
+        the ROOT of the server's file tree.  Once this PUTROOTFH operation
+        is used, the client can then traverse the entirety of the server's
+        file tree with the LOOKUP operation.  A complete discussion of
+        the server name space is in the section "NFS Server Name Space".
+      </t>
+
+    </section>
+
+    <section title="Public Filehandle">
+
+      <t>
+        The second special filehandle is the PUBLIC filehandle.  Unlike the
+        ROOT filehandle, the PUBLIC filehandle may be bound or represent an
+        arbitrary filesystem object at the server.  The server is responsible
+        for this binding.  It may be that the PUBLIC filehandle and the ROOT
+        filehandle refer to the same filesystem object.  However, it is up to
+        the administrative software at the server and the policies of the
+        server administrator to define the binding of the PUBLIC filehandle
+        and server filesystem object.  The client may not make any
+        assumptions about this binding.  The client uses the PUBLIC
+        filehandle via the PUTPUBFH operation.
+      </t>
+
+    </section>
+
+  </section>
+
+  <section title="Filehandle Types">
+
+    <t>
+      In the NFS version 2 and 3 protocols, there was one type of
+      filehandle with a single set of semantics.  This type of filehandle
+      is termed "persistent" in NFS Version 4.  The semantics of a
+      persistent filehandle remain the same as before.  A new type of
+      filehandle introduced in NFS Version 4 is the "volatile"
+      filehandle, which attempts to accommodate certain server
+      environments.
+    </t>
+
+    <t>
+      The volatile filehandle type was introduced to address server
+      functionality or implementation issues which make correct
+      implementation of a persistent filehandle infeasible.  Some server
+      environments do not provide a filesystem level invariant that
+      can be used to construct a persistent filehandle.  The underlying
+      server filesystem may not provide the invariant or the server's
+      filesystem programming interfaces may not provide access to the
+      needed invariant.  Volatile filehandles may ease the implementation
+      of server functionality such as hierarchical storage management
+      or filesystem reorganization or migration.  However, the volatile
+      filehandle increases the implementation burden for the client.
+    </t>
+
+    <t>
+      Since the client will need to handle persistent and volatile
+      filehandles differently, a file attribute is defined which may
+      be used by the client to determine the filehandle types being
+      returned by the server.
+    </t>
+
+    <section title="General Properties of a Filehandle">
+
+      <t>
+        The filehandle contains all the information the server needs to
+        distinguish an individual file.  To the client, the filehandle is
+        opaque.  The client stores filehandles for use in a later request and
+        can compare two filehandles from the same server for equality
+        by doing a byte-by-byte comparison.  However, the client MUST
+        NOT otherwise interpret the contents of filehandles.  If two
+        filehandles from the same server are equal, they MUST refer to
+        the same file.  Servers SHOULD try to maintain a one-to-one
+        correspondence between filehandles and files but this is not
+        required.  Clients MUST use filehandle comparisons only to improve
+        performance, not for correct behavior.  All clients need to be
+        prepared for situations in which it cannot be determined whether
+        two filehandles denote the same object and in such cases, avoid
+        making invalid assumptions which might cause incorrect behavior.
+        Further discussion of filehandle and attribute comparison in the
+        context of data caching is presented in the section "Data Caching
+        and File Identity".
+      </t>
+
+      <t>
+        As an example, in the case that two different path names when
+        traversed at the server terminate at the same filesystem object,
+        the server SHOULD return the same filehandle for each path.
+        This can occur if a hard link is used to create two file names
+        which refer to the same underlying file object and associated data.
+        For example, if paths /a/b/c and /a/d/c refer to the same file,
+        the server SHOULD return the same filehandle for both path names
+        traversals.
+      </t>
+
+    </section>
+
+    <section title="Persistent Filehandle">
+
+      <t>
+        A persistent filehandle is defined as having a fixed value for the
+        lifetime of the filesystem object to which it refers.  Once the
+        server creates the filehandle for a filesystem object, the server
+        MUST accept the same filehandle for the object for the lifetime of
+        the object.  If the server restarts or reboots the NFS server must
+        honor the same filehandle value as it did in the server's previous
+        instantiation.  Similarly, if the filesystem is migrated, the new
+        NFS server must honor the same filehandle as the old NFS server.
+      </t>
+
+      <t>
+        The persistent filehandle will be become stale or invalid when
+        the filesystem object is removed.  When the server is presented
+        with a persistent filehandle that refers to a deleted object,
+        it MUST return an error of NFS4ERR_STALE.  A filehandle may
+        become stale when the filesystem containing the object is no
+        longer available.  The file system may become unavailable if it
+        exists on removable media and the media is no longer available at
+        the server or the filesystem in whole has been destroyed or the
+        filesystem has simply been removed from the server's name space
+        (i.e., unmounted in a UNIX environment).
+      </t>
+
+    </section>
+
+    <section title="Volatile Filehandle">
+
+      <t>
+        A volatile filehandle does not share the same longevity
+        characteristics of a persistent filehandle.  The server may
+        determine that a volatile filehandle is no longer valid at
+        many different points in time.  If the server can definitively
+        determine that a volatile filehandle refers to an object that has
+        been removed, the server should return NFS4ERR_STALE to the client
+        (as is the case for persistent filehandles).  In all other cases
+        where the server determines that a volatile filehandle can no
+        longer be used, it should return an error of NFS4ERR_FHEXPIRED.
+      </t>
+
+      <t>
+        The mandatory attribute "fh_expire_type" is used by the client
+        to determine what type of filehandle the server is providing for
+        a particular filesystem.  This attribute is a bitmask with the
+        following values:
+
+        <list style='hanging'>
+          <t hangText="FH4_PERSISTENT">
+             The value of FH4_PERSISTENT is used to indicate a
+             persistent filehandle, which is valid until the object is
+             removed from the filesystem.  The server will not return
+             NFS4ERR_FHEXPIRED for this filehandle.  FH4_PERSISTENT is
+             defined as a value in which none of the bits specified
+             below are set.
+          </t>
+
+          <t hangText="FH4_VOLATILE_ANY">
+             The filehandle may expire at any time, except as
+             specifically excluded (i.e., FH4_NO_EXPIRE_WITH_OPEN).
+          </t>
+
+          <t hangText="FH4_NOEXPIRE_WITH_OPEN">
+             May only be set when FH4_VOLATILE_ANY is set.  If this bit
+             is set, then the meaning of FH4_VOLATILE_ANY is qualified
+             to exclude any expiration of the filehandle when it is
+             open.
+          </t>
+
+          <t hangText="FH4_VOL_MIGRATION">
+             The filehandle will expire as a result of migration.  If
+             FH4_VOL_ANY is set, FH4_VOL_MIGRATION is redundant.
+          </t>
+
+          <t hangText="FH4_VOL_RENAME">
+             The filehandle will expire during rename.  This includes a
+             rename by the requesting client or a rename by any other
+             client.  If FH4_VOL_ANY is set, FH4_VOL_RENAME is
+             redundant.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        Servers which provide volatile filehandles that may expire while
+        open (i.e., if FH4_VOL_MIGRATION or FH4_VOL_RENAME is set or if
+        FH4_VOLATILE_ANY is set and FH4_NOEXPIRE_WITH_OPEN not set),
+        should deny a RENAME or REMOVE that would affect an OPEN file
+        of any of the components leading to the OPEN file.  In addition,
+        the server should deny all RENAME or REMOVE requests during the
+        grace period upon server restart.
+      </t>
+
+      <t>
+        Note that the bits FH4_VOL_MIGRATION and FH4_VOL_RENAME allow the
+        client to determine that expiration has occurred whenever a specific
+        event occurs, without an explicit filehandle expiration error from
+        the server.  FH4_VOL_ANY does not provide this form of information.
+        In situations where the server will expire many, but not all
+        filehandles upon migration (e.g., all but those that are open),
+        FH4_VOLATILE_ANY (in this case with FH4_NOEXPIRE_WITH_OPEN)
+        is a better choice since the client may not assume that all
+        filehandles will expire when migration occurs, and it is likely
+        that additional expirations will occur (as a result of file CLOSE)
+        that are separated in time from the migration event itself.
+      </t>
+
+    </section>
+
+    <section title="One Method of Constructing a Volatile Filehandle">
+
+      <t>
+        A volatile filehandle, while opaque to the client could contain:
+
+        <figure>
+          <artwork>
+[volatile bit = 1 | server boot time | slot | generation number]
+          </artwork>
+        </figure>
+
+        <list style='symbols'>
+          <t>
+            slot is an index in the server volatile filehandle table
+          </t>
+
+          <t>
+            generation number is the generation number for the table
+            entry/slot
+          </t>
+        </list>
+      </t>
+
+      <t>
+        When the client presents a volatile filehandle, the server makes the
+        following checks, which assume that the check for the volatile bit
+        has passed.  If the server boot time is less than the current server
+        boot time, return NFS4ERR_FHEXPIRED.  If slot is out of range, return
+        NFS4ERR_BADHANDLE.  If the generation number does not match,
+        return NFS4ERR_FHEXPIRED.
+      </t>
+
+      <t>
+        When the server reboots, the table is gone (it is volatile).
+      </t>
+
+      <t>
+        If volatile bit is 0, then it is a persistent filehandle with a
+        different structure following it.
+      </t>
+
+    </section>
+  </section>
+
+  <section title="Client Recovery from Filehandle Expiration">
+
+    <t>
+      If possible, the client SHOULD recover from the receipt of an
+      NFS4ERR_FHEXPIRED error.  The client must take on additional
+      responsibility so that it may prepare itself to recover from the
+      expiration of a volatile filehandle.  If the server returns
+      persistent filehandles, the client does not need these additional
+      steps.
+    </t>
+
+    <t>
+      For volatile filehandles, most commonly the client will need to store
+      the component names leading up to and including the filesystem object
+      in question.  With these names, the client should be able to recover
+      by finding a filehandle in the name space that is still available
+      or by starting at the root of the server's filesystem name space.
+    </t>
+
+    <t>
+      If the expired filehandle refers to an object that has been
+      removed from the filesystem, obviously the client will not be
+      able to recover from the expired filehandle.
+    </t>
+
+    <t>
+      It is also possible that the expired filehandle refers to a file
+      that has been renamed.  If the file was renamed by another client,
+      again it is possible that the original client will not be able to
+      recover.  However, in the case that the client itself is renaming
+      the file and the file is open, it is possible that the client may
+      be able to recover.  The client can determine the new path name
+      based on the processing of the rename request.  The client can
+      then regenerate the new filehandle based on the new path name.
+      The client could also use the compound operation mechanism to
+      construct a set of operations like:
+
+      <figure>
+        <artwork>
+RENAME A B
+LOOKUP B
+GETFH
+        </artwork>
+      </figure>
+    </t>
+
+    <t>
+      Note that the COMPOUND procedure does not provide atomicity.
+      This example only reduces the overhead of recovering from an
+      expired filehandle.
+    </t>
+  </section>
+</section>

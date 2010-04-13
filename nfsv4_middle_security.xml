@@ -1,0 +1,80 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section anchor="Security Considerations" title="Security Considerations">
+
+  <t>
+    NFS has historically used a model where, from an authentication
+    perspective, the client was the entire machine, or at least the
+    source IP address of the machine.  The NFS server relied on the NFS
+    client to make the proper authentication of the end-user.  The NFS
+    server in turn shared its files only to specific clients, as
+    identified by the client's source IP address.  Given this model, the
+    AUTH_SYS RPC security flavor simply identified the end-user using the
+    client to the NFS server.  When processing NFS responses, the client
+    ensured that the responses came from the same IP address and port
+    number that the request was sent to.  While such a model is easy to
+    implement and simple to deploy and use, it is certainly not a safe
+    model.  Thus, NFSv4 mandates that implementations support a security
+    model that uses end to end authentication, where an end-user on a
+    client mutually authenticates (via cryptographic schemes that do not
+    expose passwords or keys in the clear on the network) to a
+    principal on an NFS server.  Consideration should also be given
+    to the integrity and privacy of NFS requests and responses.
+    The issues of end to end mutual authentication, integrity,
+    and privacy are discussed as part of the section on "RPC and
+    Security Flavor".
+  </t>
+
+  <t>
+    Note that while NFSv4 mandates an end to end mutual authentication
+    model, the "classic" model of machine authentication via IP address
+    checking and AUTH_SYS identification can still be supported with the
+    caveat that the AUTH_SYS flavor is neither MANDATORY nor
+    RECOMMENDED by this specification, and so interoperability via
+    AUTH_SYS is not assured.
+  </t>
+
+  <t>
+    For reasons of reduced administration overhead, better performance
+    and/or reduction of CPU utilization, users of NFS version 4
+    implementations may choose to not use security mechanisms that enable
+    integrity protection on each remote procedure call and response. The
+    use of mechanisms without integrity leaves the customer vulnerable to
+    an attacker in between the NFS client and server that modifies the
+    RPC request and/or the response. While implementations are free
+    to provide the option to use weaker security mechanisms, there
+    are two operations in particular that warrant the implementation
+    overriding user choices.
+  </t>
+
+  <t>
+    The first such operation is SECINFO.  It is recommended that the
+    client issue the SECINFO call such that it is protected with a
+    security flavor that has integrity protection, such as RPCSEC_GSS
+    with a security triple that uses either rpc_gss_svc_integrity or
+    rpc_gss_svc_privacy (rpc_gss_svc_privacy includes integrity
+    protection) service. Without integrity protection encapsulating
+    SECINFO and therefore its results, an attacker in the middle could
+    modify results such that the client might select a weaker algorithm
+    in the set allowed by server, making the client and/or server
+    vulnerable to further attacks.
+  </t>
+
+  <t>
+    The second operation that should definitely use integrity protection
+    is any GETATTR for the fs_locations attribute. The attack has two
+    steps.  First the attacker modifies the unprotected results of
+    some operation to return NFS4ERR_MOVED. Second, when the client
+    follows up with a GETATTR for the fs_locations attribute, the
+    attacker modifies the results to cause the client migrate its
+    traffic to a server controlled by the attacker.
+  </t>
+
+  <t>
+    Because the operations SETCLIENTID/SETCLIENTID_CONFIRM are
+    responsible for the release of client state, it is imperative
+    that the principal used for these operations is checked against
+    and match the previous use of these operations.  See
+     <xref target="ss:fl:client_id" /> "Client ID" for further discussion.
+  </t>
+</section>

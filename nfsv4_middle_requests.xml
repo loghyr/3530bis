@@ -1,0 +1,161 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section anchor="sec:requests" title="NFS version 4 Requests">
+
+  <t>
+    For the NFS version 4 RPC program, there are two traditional RPC
+    procedures: NULL and COMPOUND.  All other functionality is defined as
+    a set of operations and these operations are defined in normal
+    XDR/RPC syntax and semantics.  However, these operations are
+    encapsulated within the COMPOUND procedure.  This requires that the
+    client combine one or more of the NFS version 4 operations into a
+    single request.
+  </t>
+
+  <t>
+    The NFS4_CALLBACK program is used to provide server to client
+    signaling and is constructed in a similar fashion as the NFS version
+    4 program.  The procedures CB_NULL and CB_COMPOUND are defined in the
+    same way as NULL and COMPOUND are within the NFS program.  The
+    CB_COMPOUND request also encapsulates the remaining operations of the
+    NFS4_CALLBACK program.  There is no predefined RPC program number for
+    the NFS4_CALLBACK program.  It is up to the client to specify a
+    program number in the "transient" program range.  The program and
+    port number of the NFS4_CALLBACK program are provided by the client
+    as part of the SETCLIENTID/SETCLIENTID_CONFIRM sequence. The program
+    and port can be changed by another SETCLIENTID/SETCLIENTID_CONFIRM
+    sequence, and it is possible to use the sequence to change them
+    within a client incarnation without removing relevant leased client
+    state.
+  </t>
+
+  <section title="Compound Procedure">
+
+    <t>
+      The COMPOUND procedure provides the opportunity for better
+      performance within high latency networks.  The client can avoid
+      cumulative latency of multiple RPCs by combining multiple dependent
+      operations into a single COMPOUND procedure.  A compound operation
+      may provide for protocol simplification by allowing the client to
+      combine basic procedures into a single request that is customized for
+      the client's environment.
+    </t>
+
+    <t>
+      The CB_COMPOUND procedure precisely parallels the features of
+      COMPOUND as described above.
+    </t>
+
+    <t>
+      The basic structure of the COMPOUND procedure is:
+
+      <figure>
+        <artwork>
++-----+--------------+--------+-----------+-----------+-----------+--
+| tag | minorversion | numops | op + args | op + args | op + args |
++-----+--------------+--------+-----------+-----------+-----------+--
+        </artwork>
+      </figure>
+    </t>
+
+    <t>
+      and the reply's structure is:
+
+      <figure>
+        <artwork>
++------------+-----+--------+-----------------------+--
+|last status | tag | numres | status + op + results |
++------------+-----+--------+-----------------------+--
+        </artwork>
+      </figure>
+    </t>
+
+    <t>
+      The numops and numres fields, used in the depiction above, represent
+      the count for the counted array encoding use to signify the number of
+      arguments or results encoded in the request and response.  As per the
+      XDR encoding, these counts must match exactly the number of operation
+      arguments or results encoded.
+    </t>
+
+  </section>
+  <section title="Evaluation of a Compound Request">
+
+    <t>
+      The server will process the COMPOUND procedure by evaluating each of
+      the operations within the COMPOUND procedure in order.  Each
+      component operation consists of a 32 bit operation code, followed by
+      the argument of length determined by the type of operation. The
+      results of each operation are encoded in sequence into a reply
+      buffer.  The results of each operation are preceded by the opcode and
+      a status code (normally zero).  If an operation results in a non-zero
+      status code, the status will be encoded and evaluation of the
+      compound sequence will halt and the reply will be returned.  Note
+      that evaluation stops even in the event of "non error" conditions
+      such as NFS4ERR_SAME.
+    </t>
+
+    <t>
+      There are no atomicity requirements for the operations contained
+      within the COMPOUND procedure.  The operations being evaluated as
+      part of a COMPOUND request may be evaluated simultaneously with other
+      COMPOUND requests that the server receives.
+    </t>
+
+    <t>
+      It is the client's responsibility for recovering from any partially
+      completed COMPOUND procedure.  Partially completed COMPOUND
+      procedures may occur at any point due to errors such as
+      NFS4ERR_RESOURCE and NFS4ERR_DELAY.  This may occur even given an
+      otherwise valid operation string.  Further, a server reboot which
+      occurs in the middle of processing a COMPOUND procedure may leave the
+      client with the difficult task of determining how far COMPOUND
+      processing has proceeded.  Therefore, the client should avoid overly
+      complex COMPOUND procedures in the event of the failure of an
+      operation within the procedure.
+    </t>
+
+    <t>
+      Each operation assumes a "current" and "saved" filehandle that is
+      available as part of the execution context of the compound request.
+      Operations may set, change, or return the current filehandle.  The
+      "saved" filehandle is used for temporary storage of a filehandle
+      value and as operands for the RENAME and LINK operations.
+    </t>
+
+  </section>
+  <section title="Synchronous Modifying Operations">
+
+    <t>
+      NFS version 4 operations that modify the filesystem are synchronous.
+      When an operation is successfully completed at the server, the client
+      can depend that any data associated with the request is now on stable
+      storage (the one exception is in the case of the file data in a WRITE
+      operation with the UNSTABLE option specified).
+    </t>
+
+    <t>
+      This implies that any previous operations within the same compound
+      request are also reflected in stable storage.  This behavior enables
+      the client's ability to recover from a partially executed compound
+      request which may resulted from the failure of the server.  For
+      example, if a compound request contains operations A and B and the
+      server is unable to send a response to the client, depending on the
+      progress the server made in servicing the request the result of both
+      operations may be reflected in stable storage or just operation A may
+      be reflected.  The server must not have just the results of operation
+      B in stable storage.
+    </t>
+
+  </section>
+  <section title="Operation Values">
+
+    <t>
+      The operations encoded in the COMPOUND procedure are identified by
+      operation values.  To avoid overlap with the RPC procedure numbers,
+      operations 0 (zero) and 1 are not defined.  Operation 2 is not
+      defined but reserved for future use with minor versioning.
+    </t>
+
+  </section>
+</section>

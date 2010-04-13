@@ -1,0 +1,267 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section anchor="sec:data_types" title="Protocol Data Types">
+
+   <t>
+     The syntax and semantics to describe the data types of the NFS
+     version 4 protocol are defined in the XDR <xref target="RFC1832" /> and RPC
+     <xref target="RFC1831" /> documents.  The next sections build upon the XDR data
+     types to define types and structures specific to this protocol.
+   </t>
+
+  <section anchor="basic_types" title="Basic Data Types">
+    <texttable anchor='basic_data_types'>
+      <preamble>
+        These are the base NFSv4 data types.
+      </preamble>
+      <ttcol align='left'>Data Type</ttcol>
+      <ttcol align='left'>Definition</ttcol>
+        <?rfc include='autogen/basic_types.xml'?>
+      <postamble>End of Base Data Types</postamble>
+    </texttable>
+  </section>
+
+  <section anchor="" title="Structured Data Types">
+
+    <section toc="exclude" anchor="nfstime4" title="nfstime4">
+      <?rfc include='autogen/type_nfstime4.xml'?>
+
+      <t>
+        The nfstime4 structure gives the number of seconds and
+        nanoseconds since midnight or 0 hour January 1, 1970 Coordinated
+        Universal Time (UTC).  Values greater than zero for the seconds
+        field denote dates after the 0 hour January 1, 1970.  Values less
+        than zero for the seconds field denote dates before the 0 hour
+        January 1, 1970.  In both cases, the nseconds field is to be
+        added to the seconds field for the final time representation.
+        For example, if the time to be represented is one-half second
+        before 0 hour January 1, 1970, the seconds field would have a
+        value of negative one (-1) and the nseconds fields would have
+        a value of one-half second (500000000).  Values greater than
+        999,999,999 for nseconds are considered invalid.
+      </t>
+
+      <t>
+        This data type is used to pass time and date information.
+        A server converts to and from its local representation of
+        time when processing time values, preserving as much accuracy
+        as possible.  If the precision of timestamps stored for a
+        filesystem object is less than defined, loss of precision can
+        occur.  An adjunct time maintenance protocol is recommended to
+        reduce client and server time skew.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="time_how4" title="time_how4">
+      <?rfc include='autogen/type_time_how4.xml'?>
+    </section>
+
+    <section toc="exclude" anchor="settime4" title="settime4">
+      <?rfc include='autogen/type_settime4.xml'?>
+
+      <t>
+        The above definitions are used as the attribute definitions to
+        set time values.  If set_it is SET_TO_SERVER_TIME4, then the
+        server uses its local representation of time for the time value.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="specdata4" title="specdata4">
+      <?rfc include='autogen/type_specdata4.xml'?>
+      <t>
+        This data type represents additional information for the device
+        file types NF4CHR and NF4BLK.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="fsid4" title="fsid4">
+      <?rfc include='autogen/type_fsid4.xml'?>
+      <t>
+        This type is the filesystem identifier that is used as a
+        mandatory attribute.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="fs_location4" title="fs_location4">
+      <?rfc include='autogen/type_fs_location4.xml'?>
+    </section>
+
+    <section toc="exclude" anchor="fs_locations4" title="fs_locations4">
+      <?rfc include='autogen/type_fs_locations4.xml'?>
+      <t>
+        The fs_location4 and fs_locations4 data types are used for the
+        fs_locations recommended attribute which is used for migration
+        and replication support.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="fattr4" title="fattr4">
+      <?rfc include='autogen/type_fattr4.xml'?>
+
+      <t>
+        The fattr4 structure is used to represent file and directory
+        attributes.
+      </t>
+
+      <t>
+        The bitmap is a counted array of 32 bit integers used to
+        contain bit values.  The position of the integer in the array
+        that contains bit n can be computed from the expression (n /
+        32) and its bit within that integer is (n mod 32).
+      </t>
+
+      <t>
+        <figure>
+          <artwork>
+0            1
++-----------+-----------+-----------+--
+|  count    | 31  ..  0 | 63  .. 32 |
++-----------+-----------+-----------+--
+          </artwork>
+        </figure>
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="change_info4" title="change_info4">
+      <?rfc include='autogen/type_change_info4.xml'?>
+      <t>
+        This structure is used with the CREATE, LINK, REMOVE, RENAME
+        operations to let the client know the value of the change
+        attribute for the directory in which the target filesystem
+        object resides.
+      </t>
+    </section>
+
+
+    <section toc="exclude" anchor="clientaddr4" title="clientaddr4">
+      <?rfc include='autogen/type_clientaddr4.xml'?>
+      <t>
+        The clientaddr4 structure is used as part of the SETCLIENTID
+        operation to either specify the address of the client that is
+        using a clientid or as part of the callback registration.  The
+        r_netid and r_addr fields are specified in <xref target="RFC1833" />, but they
+        are underspecified in <xref target="RFC1833" /> as far as what they should look
+        like for specific protocols.
+      </t>
+
+      <t>
+        For TCP over IPv4 and for UDP over IPv4, the format of r_addr
+        is the US-ASCII string:
+      </t>
+
+      <t>
+        <figure>
+          <artwork>
+h1.h2.h3.h4.p1.p2
+          </artwork>
+        </figure>
+      </t>
+
+      <t>
+        The prefix, "h1.h2.h3.h4", is the standard textual form for
+        representing an IPv4 address, which is always four octets
+        long.  Assuming big-endian ordering, h1, h2, h3, and h4, are
+        respectively, the first through fourth octets each converted
+        to ASCII-decimal.  Assuming big-endian ordering, p1 and p2 are,
+        respectively, the first and second octets each converted to
+        ASCII-decimal.  For example, if a host, in big-endian order,
+        has an address of 0x0A010307 and there is a service listening
+        on, in big endian order, port 0x020F (decimal 527), then the
+        complete universal address is "10.1.3.7.2.15".
+      </t>
+
+      <t>
+        For TCP over IPv4 the value of r_netid is the string "tcp".
+        For UDP over IPv4 the value of r_netid is the string "udp".
+      </t>
+
+      <t>
+        For TCP over IPv6 and for UDP over IPv6, the format of r_addr
+        is the US-ASCII string:
+      </t>
+
+      <t>
+        <figure>
+          <artwork>
+x1:x2:x3:x4:x5:x6:x7:x8.p1.p2
+          </artwork>
+        </figure>
+      </t>
+
+      <t>
+        The suffix "p1.p2" is the service port, and is computed the
+        same way as with universal addresses for TCP and UDP over IPv4.
+        The prefix, "x1:x2:x3:x4:x5:x6:x7:x8", is the standard textual
+        form for representing an IPv6 address as defined in Section
+        2.2 of <xref target="RFC2373" />.  Additionally, the two alternative forms
+        specified in Section 2.2 of <xref target="RFC2373" /> are also acceptable.
+      </t>
+
+      <t>
+        For TCP over IPv6 the value of r_netid is the string "tcp6".
+        For UDP over IPv6 the value of r_netid is the string "udp6".
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="cb_client4" title="cb_client4">
+      <?rfc include='autogen/type_cb_client4.xml'?>
+      <t>
+        This structure is used by the client to inform the server of
+        its call back address; includes the program number and client
+        address.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="nfs_client_id4" title="nfs_client_id4">
+      <?rfc include='autogen/type_nfs_client_id4.xml'?>
+      <t>
+        This structure is part of the arguments to the SETCLIENTID
+        operation.  NFS4_OPAQUE_LIMIT is defined as 1024.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="open_owner4" title="open_owner4">
+      <?rfc include='autogen/type_open_owner4.xml'?>
+      <t>
+        This structure is used to identify the owner of open state.
+        NFS4_OPAQUE_LIMIT is defined as 1024.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="lock_owner4" title="lock_owner4">
+      <?rfc include='autogen/type_lock_owner4.xml'?>
+      <t>
+        This structure is used to identify the owner of file locking
+        state.  NFS4_OPAQUE_LIMIT is defined as 1024.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="open_to_lock_owner4" title="open_to_lock_owner4">
+      <?rfc include='autogen/type_open_to_lock_owner4.xml'?>
+      <t>
+        This structure is used for the first LOCK operation done for an
+        open_owner4.  It provides both the open_stateid and lock_owner
+        such that the transition is made from a valid open_stateid
+        sequence to that of the new lock_stateid sequence.  Using this
+        mechanism avoids the confirmation of the lock_owner/lock_seqid
+        pair since it is tied to established state in the form of the
+        open_stateid/open_seqid.
+      </t>
+    </section>
+
+    <section toc="exclude" anchor="stateid4" title="stateid4">
+      <?rfc include='autogen/type_stateid4.xml'?>
+      <t>
+        This structure is used for the various state sharing mechanisms
+        between the client and server.  For the client, this data
+        structure is read-only.  The starting value of the seqid
+        field is undefined.  The server is required to increment the
+        seqid field monotonically at each transition of the stateid.
+        This is important since the client will inspect the seqid in
+        OPEN stateids to determine the order of OPEN processing done
+        by the server.
+      </t>
+    </section>
+
+  </section>
+</section>

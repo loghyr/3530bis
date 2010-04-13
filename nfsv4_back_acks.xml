@@ -1,0 +1,24 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section title="Acknowledgments">
+</section>
+
+<section title="RFC Editor Notes">
+
+<t>
+Rob Thurlow clarified how a client should contact
+a new server if a migration has occured.
+</t>
+
+<t>
+[RFC Editor: please remove this section prior to publishing
+this document as an RFC]
+
+</t>
+
+<t>
+[RFC Editor: prior to publishing this document as an RFC, please replace all occurrences of RFCTBD10
+with RFCxxxx where xxxx is the RFC number of this document]
+</t>
+
+</section>

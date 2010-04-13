@@ -1,0 +1,58 @@
+<!-- Copyright (C) The IETF Trust (2007) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+
+<front>
+    <title abbrev="NFSv4">
+    NFS Version 4 Protocol
+    </title>
+
+    <author fullname="Thomas Haynes" 
+            initials="T." 
+            surname="Haynes">
+        <organization abbrev="Editor">Oracle</organization>
+        <address>
+            <postal>
+                <street>9110 E 66th St</street>
+                <city>Tulsa</city>
+                <region>OK</region>
+                <code>74133</code>
+                <country>USA</country>
+            </postal>
+            <phone>+1-918-307-1415</phone>
+            <email>tom.haynes@oracle.com</email>
+        </address>
+    </author>
+
+    <date year="YEARVAR" month="MONTHVAR" day="DAYVAR"/>
+
+    <area>Transport</area>
+    <workgroup>NFSv4</workgroup>
+
+    <abstract>
+      <t>
+      The Network File System (NFS) version 4 is a distributed filesystem
+      protocol which owes heritage to NFS protocol version 2, RFC 1094, and
+      version 3, RFC 1813.  Unlike earlier versions, the NFS version 4
+      protocol supports traditional file access while integrating support
+      for file locking and the mount protocol.  In addition, support for
+      strong security (and its negotiation), compound operations, client
+      caching, and internationalization have been added.  Of course,
+      attention has been applied to making NFS version 4 operate well in an
+      Internet environment.
+
+      This document replaces RFC 3530 as the definition of the NFS version
+      4 protocol.
+      </t>
+    </abstract>
+
+    <note title="Requirements Language">
+<t>The key words &quot;MUST&quot;, &quot;MUST NOT&quot;,
+&quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;,
+&quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;,
+&quot;MAY&quot;, and &quot;OPTIONAL&quot; in this document are to be
+interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
+</t>
+
+    </note>
+
+</front>

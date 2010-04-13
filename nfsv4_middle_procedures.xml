@@ -1,0 +1,5064 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section anchor="sec:operations" title="NFS version 4 Procedures">
+
+  <section anchor="OP_NULL" title="Procedure 0: NULL - No Operation">
+
+    <section toc="exclude" anchor="OP_NULL_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+&lt;null&gt;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_NULL_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_NULL_RESULT" title="RESULT">
+
+      <figure>
+        <artwork>
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_NULL_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        Standard NULL procedure.  Void argument, void response.
+        This procedure has no functionality associated with it.
+        Because of this it is sometimes used to measure the overhead
+        of processing a service request.  Therefore, the server
+        should ensure that no unnecessary work is done in servicing
+        this procedure.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_NULL_ERRORS" title="ERRORS">
+
+
+      <figure>
+        <artwork>
+None.
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_COMPOUND" title="Procedure 1: COMPOUND - Compound Operations">
+
+    <section toc="exclude" anchor="OP_COMPOUND_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+compoundargs -> compoundres
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMPOUND_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+union nfs_argop4 switch (nfs_opnum4 argop) {
+        case &lt;OPCODE&gt;: &lt;argument&gt;;
+        ...
+};
+        </artwork>
+      </figure>
+
+      <?rfc include='autogen/type_COMPOUND4args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMPOUND_RESULT" title="RESULT">
+
+      <figure>
+        <artwork>
+union nfs_resop4 switch (nfs_opnum4 resop) {
+        case &lt;OPCODE&gt;: &lt;argument&gt;;
+        ...
+};
+        </artwork>
+      </figure>
+
+      <?rfc include='autogen/type_COMPOUND4res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMPOUND_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The COMPOUND procedure is used to combine one or more of
+        the NFS operations into a single RPC request.  The main
+        NFS RPC program has two main procedures: NULL and COMPOUND.
+        All other operations use the COMPOUND procedure as a wrapper.
+      </t>
+
+      <t>
+        The COMPOUND procedure is used to combine individual operations
+        into a single RPC request.  The server interprets each of
+        the operations in turn.  If an operation is executed by the
+        server and the status of that operation is NFS4_OK, then
+        the next operation in the COMPOUND procedure is executed.
+        The server continues this process until there are no more
+        operations to be executed or one of the operations has a
+        status value other than NFS4_OK.
+      </t>
+
+      <t>
+        In the processing of the COMPOUND procedure, the server may
+        find that it does not have the available resources to execute
+        any or all of the operations within the COMPOUND sequence.
+        In this case, the error NFS4ERR_RESOURCE will be returned
+        for the particular operation within the COMPOUND procedure
+        where the resource exhaustion occurred.  This assumes that
+        all previous operations within the COMPOUND sequence have
+        been evaluated successfully.  The results for all of the
+        evaluated operations must be returned to the client.
+      </t>
+
+      <t>
+        The server will generally choose between two methods of
+        decoding the client's request.  The first would be the
+        traditional one-pass XDR decode, in which decoding of the
+        entire COMPOUND precedes execution of any operation within it.
+        If there is an XDR decoding error in this case, an RPC XDR
+        decode error would be returned.  The second method would be
+        to make an initial pass to decode the basic COMPOUND request
+        and then to XDR decode each of the individual operations, as
+        the server is ready to execute it.  In this case, the server
+        may encounter an XDR decode error during such an operation
+        decode, after previous operations within the COMPOUND have
+        been executed.  In this case, the server would return the
+        error NFS4ERR_BADXDR to signify the decode error.
+      </t>
+
+      <t>
+        The COMPOUND arguments contain a "minorversion" field.
+        The initial and default value for this field is 0 (zero).
+        This field will be used by future minor versions such that
+        the client can communicate to the server what minor version is
+        being requested.  If the server receives a COMPOUND procedure
+        with a minorversion field value that it does not support,
+        the server MUST return an error of NFS4ERR_MINOR_VERS_MISMATCH
+        and a zero length resultdata array.
+      </t>
+
+      <t>
+        Contained within the COMPOUND results is a "status" field.
+        If the results array length is non-zero, this status must
+        be equivalent to the status of the last operation that was
+        executed within the COMPOUND procedure.  Therefore, if an
+        operation incurred an error then the "status" value will be
+        the same error value as is being returned for the operation
+        that failed.
+      </t>
+
+      <t>
+        Note that operations, 0 (zero) and 1 (one) are not defined
+        for the COMPOUND procedure.  Operation 2 is not defined but
+        reserved for future definition and use with minor versioning.
+        If the server receives a operation array that contains
+        operation 2 and the minorversion field has a value of 0
+        (zero), an error of NFS4ERR_OP_ILLEGAL, as described in the
+        next paragraph, is returned to the client.  If an operation
+        array contains an operation 2 and the minorversion field is
+        non-zero and the server does not support the minor version,
+        the server returns an error of NFS4ERR_MINOR_VERS_MISMATCH.
+        Therefore, the NFS4ERR_MINOR_VERS_MISMATCH error takes
+        precedence over all other errors.
+      </t>
+
+      <t>
+        It is possible that the server receives a request that
+        contains an operation that is less than the first legal
+        operation (OP_ACCESS) or greater than the last legal operation
+        (OP_RELEASE_LOCKOWNER).
+      </t>
+
+      <t>
+        In this case, the server's response will encode the opcode
+        OP_ILLEGAL rather than the illegal opcode of the request. The
+        status field in the ILLEGAL return results will set to
+        NFS4ERR_OP_ILLEGAL.  The COMPOUND procedure's return results
+        will also be NFS4ERR_OP_ILLEGAL.
+      </t>
+
+      <t>
+        The definition of the "tag" in the request is left to the
+        implementor.  It may be used to summarize the content of
+        the compound request for the benefit of packet sniffers and
+        engineers debugging implementations.  However, the value of
+        "tag" in the response SHOULD be the same value as provided in
+        the request.  This applies to the tag field of the CB_COMPOUND
+        procedure as well.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMPOUND_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        Since an error of any type may occur after only a portion
+        of the operations have been evaluated, the client must be
+        prepared to recover from any failure.  If the source of
+        an NFS4ERR_RESOURCE error was a complex or lengthy set of
+        operations, it is likely that if the number of operations were
+        reduced the server would be able to evaluate them successfully.
+        Therefore, the client is responsible for dealing with this
+        type of complexity in recovery.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMPOUND_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+All errors defined in the protocol
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_ACCESS" title="Operation 3: ACCESS - Check Access Rights">
+
+    <section toc="exclude" anchor="OP_ACCESS_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), accessreq -> supported, accessrights
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_ACCESS_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/access_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_ACCESS_RESULT" title="RESULT">
+
+      <?rfc include='autogen/access_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_ACCESS_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        ACCESS determines the access rights that a user, as identified
+        by the credentials in the RPC request, has with respect to
+        the file system object specified by the current filehandle.
+        The client encodes the set of access rights that are to be
+        checked in the bit mask "access".  The server checks the
+        permissions encoded in the bit mask.  If a status of NFS4_OK
+        is returned, two bit masks are included in the response.
+        The first, "supported", represents the access rights for
+        which the server can verify reliably.  The second, "access",
+        represents the access rights available to the user for the
+        filehandle provided.  On success, the current filehandle
+        retains its value.
+      </t>
+
+      <t>
+        Note that the supported field will contain only as many values
+        as were originally sent in the arguments.  For example, if the
+        client sends an ACCESS operation with only the ACCESS4_READ
+        value set and the server supports this value, the server
+        will return only ACCESS4_READ even if it could have reliably
+        checked other values.
+      </t>
+
+      <t>
+        The results of this operation are necessarily advisory
+        in nature.  A return status of NFS4_OK and the appropriate
+        bit set in the bit mask does not imply that such access will
+        be allowed to the file system object in the future. This is
+        because access rights can be revoked by the server at any time.
+      </t>
+
+      <t>
+        The following access permissions may be requested:
+
+        <list style='hanging'>
+
+          <t hangText="ACCESS4_READ">
+            Read data from file or read a directory.
+          </t>
+
+          <t hangText="ACCESS4_LOOKUP">
+            Look up a name in a directory (no meaning for
+            non-directory objects).
+          </t>
+
+          <t hangText="ACCESS4_MODIFY">
+            Rewrite existing file data or modify existing directory
+            entries.
+          </t>
+
+          <t hangText="ACCESS4_EXTEND">
+            Write new data or add directory entries.
+          </t>
+
+          <t hangText="ACCESS4_DELETE">
+            Delete an existing directory entry.
+          </t>
+
+          <t hangText="ACCESS4_EXECUTE">
+            Execute file (no meaning for a directory).
+          </t>
+
+        </list>
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_ACCESS_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        In general, it is not sufficient for the client to attempt to
+        deduce access permissions by inspecting the uid, gid, and mode
+        fields in the file attributes or by attempting to interpret
+        the contents of the ACL attribute.  This is because the server
+        may perform uid or gid mapping or enforce additional access
+        control restrictions.  It is also possible that the server
+        may not be in the same ID space as the client.  In these cases
+        (and perhaps others), the client can not reliably perform an
+        access check with only current file attributes.
+      </t>
+
+      <t>
+        In the NFS version 2 protocol, the only reliable way to
+        determine whether an operation was allowed was to try it and
+        see if it succeeded or failed.  Using the ACCESS operation in
+        the NFS version 4 protocol, the client can ask the server to
+        indicate whether or not one or more classes of operations are
+        permitted.  The ACCESS operation is provided to allow clients
+        to check before doing a series of operations which will result
+        in an access failure.  The OPEN operation provides a point
+        where the server can verify access to the file object and
+        method to return that information to the client.  The ACCESS
+        operation is still useful for directory operations or for
+        use in the case the UNIX API "access" is used on the client.
+      </t>
+
+      <t>
+        The information returned by the server in response to an ACCESS
+        call is not permanent.  It was correct at the exact time
+        that the server performed the checks, but not necessarily
+        afterwards.  The server can revoke access permission at
+        any time.
+      </t>
+
+      <t>
+        The client should use the effective credentials of the user
+        to build the authentication information in the ACCESS request
+        used to determine access rights.  It is the effective user
+        and group credentials that are used in subsequent read and
+        write operations.
+      </t>
+
+      <t>
+        Many implementations do not directly support the ACCESS4_DELETE
+        permission.  Operating systems like UNIX will ignore
+        the ACCESS4_DELETE bit if set on an access request on a
+        non-directory object.  In these systems, delete permission on a
+        file is determined by the access permissions on the directory
+        in which the file resides, instead of being determined by the
+        permissions of the file itself.  Therefore, the mask returned
+        enumerating which access rights can be determined will have
+        the ACCESS4_DELETE value set to 0.  This indicates to the
+        client that the server was unable to check that particular
+        access right.  The ACCESS4_DELETE bit in the access mask
+        returned will then be ignored by the client.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_ACCESS_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADHANDLE
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_CLOSE" title="Operation 4: CLOSE - Close File">
+
+    <section toc="exclude" anchor="OP_CLOSE_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), seqid, open_stateid -> open_stateid
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_CLOSE_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/close_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_CLOSE_RESULT" title="RESULT">
+
+      <?rfc include='autogen/close_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_CLOSE_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The CLOSE operation releases share reservations for the regular
+        or named attribute file as specified by the current filehandle.
+        The share reservations and other state information released at
+        the server as a result of this CLOSE is only associated with
+        the supplied stateid.  The sequence id provides for the correct
+        ordering. State associated with other OPENs is not affected.
+      </t>
+
+      <t>
+        If record locks are held, the client SHOULD release all locks
+        before issuing a CLOSE.  The server MAY free all outstanding
+        locks on CLOSE but some servers may not support the CLOSE
+        of a file that still has record locks held.  The server MUST
+        return failure if any locks would exist after the CLOSE.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_CLOSE_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        Even though CLOSE returns a stateid, this stateid is not
+        useful to the client and should be treated as deprecated.
+        CLOSE "shuts down" the state associated with all OPENs for
+        the file by a single open_owner.  As noted above, CLOSE will
+        either release all file locking state or return an error.
+        Therefore, the stateid returned by CLOSE is not useful for
+        operations that follow.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_CLOSE_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_SEQID
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_EXPIRED
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_ISDIR
+NFS4ERR_LEASE_MOVED
+NFS4ERR_LOCKS_HELD
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_OLD_STATEID
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_STATEID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_COMMIT" title="Operation 5: COMMIT - Commit Cached Data">
+
+    <section toc="exclude" anchor="OP_COMMIT_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), offset, count -> verifier
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMMIT_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/commit_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMMIT_RESULT" title="RESULT">
+
+      <?rfc include='autogen/commit_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMMIT_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The COMMIT operation forces or flushes data to stable
+        storage for the file specified by the current filehandle.
+        The flushed data is that which was previously written with
+        a WRITE operation which had the stable field set to UNSTABLE4.
+      </t>
+
+      <t>
+        The offset specifies the position within the file where the
+        flush is to begin.  An offset value of 0 (zero) means to
+        flush data starting at the beginning of the file.  The count
+        specifies the number of bytes of data to flush.  If count is 0
+        (zero), a flush from offset to the end of the file is done.
+      </t>
+
+      <t>
+        The server returns a write verifier upon successful completion
+        of the COMMIT.  The write verifier is used by the client to
+        determine if the server has restarted or rebooted between
+        the initial WRITE(s) and the COMMIT.  The client does this
+        by comparing the write verifier returned from the initial
+        writes and the verifier returned by the COMMIT operation.
+        The server must vary the value of the write verifier at each
+        server event or instantiation that may lead to a loss of
+        uncommitted data.  Most commonly this occurs when the server
+        is rebooted; however, other events at the server may result
+        in uncommitted data loss as well.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMMIT_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        The COMMIT operation is similar in operation and semantics
+        to the POSIX fsync(2) system call that synchronizes a file's
+        state with the disk (file data and metadata is flushed to
+        disk or stable storage).  COMMIT performs the same operation
+        for a client, flushing any unsynchronized data and metadata
+        on the server to the server's disk or stable storage for
+        the specified file.  Like fsync(2), it may be that there
+        is some modified data or no modified data to synchronize.
+        The data may have been synchronized by the server's normal
+        periodic buffer synchronization activity.  COMMIT should
+        return NFS4_OK, unless there has been an unexpected error.
+      </t>
+
+      <t>
+        COMMIT differs from fsync(2) in that it is possible for the
+        client to flush a range of the file (most likely triggered
+        by a buffer-reclamation scheme on the client before file
+        has been completely written).
+      </t>
+
+      <t>
+        The server implementation of COMMIT is reasonably simple.
+        If the server receives a full file COMMIT request, that is
+        starting at offset 0 and count 0, it should do the equivalent
+        of fsync()'ing the file.  Otherwise, it should arrange to
+        have the cached data in the range specified by offset and
+        count to be flushed to stable storage.  In both cases, any
+        metadata associated with the file must be flushed to stable
+        storage before returning.  It is not an error for there to be
+        nothing to flush on the server.  This means that the data and
+        metadata that needed to be flushed have already been flushed
+        or lost during the last server failure.
+      </t>
+
+      <t>
+        The client implementation of COMMIT is a little more complex.
+        There are two reasons for wanting to commit a client buffer
+        to stable storage.  The first is that the client wants
+        to reuse a buffer.  In this case, the offset and count of
+        the buffer are sent to the server in the COMMIT request.
+        The server then flushes any cached data based on the offset
+        and count, and flushes any metadata associated with the file.
+        It then returns the status of the flush and the write verifier.
+        The other reason for the client to generate a COMMIT is for a
+        full file flush, such as may be done at close.  In this case,
+        the client would gather all of the buffers for this file that
+        contain uncommitted data, do the COMMIT operation with an
+        offset of 0 and count of 0, and then free all of those buffers.
+        Any other dirty buffers would be sent to the server in the
+        normal fashion.
+      </t>
+
+      <t>
+        After a buffer is written by the client with the stable
+        parameter set to UNSTABLE4, the buffer must be considered as
+        modified by the client until the buffer has either been flushed
+        via a COMMIT operation or written via a WRITE operation with
+        stable parameter set to FILE_SYNC4 or DATA_SYNC4. This is done
+        to prevent the buffer from being freed and reused before the
+        data can be flushed to stable storage on the server.
+      </t>
+
+      <t>
+        When a response is returned from either a WRITE or a COMMIT
+        operation and it contains a write verifier that is different
+        than previously returned by the server, the client will
+        need to retransmit all of the buffers containing uncommitted
+        cached data to the server.  How this is to be done is up to
+        the implementor.  If there is only one buffer of interest,
+        then it should probably be sent back over in a WRITE request
+        with the appropriate stable parameter.  If there is more
+        than one buffer, it might be worthwhile retransmitting all of
+        the buffers in WRITE requests with the stable parameter set
+        to UNSTABLE4 and then retransmitting the COMMIT operation
+        to flush all of the data on the server to stable storage.
+        The timing of these retransmissions is left to the implementor.
+      </t>
+
+      <t>
+        The above description applies to page-cache-based systems
+        as well as buffer-cache-based systems.  In those systems,
+        the virtual memory system will need to be modified instead
+        of the buffer cache.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_COMMIT_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADHANDLE
+NFS4ERR_BADXDR
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_ISDIR
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_RESOURCE
+NFS4ERR_ROFS
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_CREATE" title="Operation 6: CREATE - Create a Non-Regular File Object">
+
+    <section toc="exclude" anchor="OP_CREATE_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), name, type, attrs -> (cfh), change_info, attrs_set
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_CREATE_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/create_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_CREATE_RESULT" title="RESULT">
+
+      <?rfc include='autogen/create_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_CREATE_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The CREATE operation creates a non-regular file object in
+        a directory with a given name.  The OPEN operation MUST be
+        used to create a regular file.
+      </t>
+
+      <t>
+        The objname specifies the name for the new object.  The objtype
+        determines the type of object to be created: directory,
+        symlink, etc.
+      </t>
+
+      <t>
+        If an object of the same name already exists in the directory,
+        the server will return the error NFS4ERR_EXIST.
+      </t>
+
+      <t>
+        For the directory where the new file object was created, the
+        server returns change_info4 information in cinfo.  With the
+        atomic field of the change_info4 struct, the server will
+        indicate if the before and after change attributes were
+        obtained atomically with respect to the file object creation.
+      </t>
+
+      <t>
+        If the objname has a length of 0 (zero), or if objname does
+        not obey the UTF-8 definition, the error NFS4ERR_INVAL will
+        be returned.
+      </t>
+
+      <t>
+        The current filehandle is replaced by that of the new object.
+      </t>
+
+      <t>
+        The createattrs specifies the initial set of attributes for
+        the object.  The set of attributes may include any writable
+        attribute valid for the object type. When the operation is
+        successful, the server will return to the client an attribute
+        mask signifying which attributes were successfully set for
+        the object.
+      </t>
+
+      <t>
+        If createattrs includes neither the owner attribute nor an
+        ACL with an ACE for the owner, and if the server's filesystem
+        both supports and requires an owner attribute (or an owner
+        ACE) then the server MUST derive the owner (or the owner
+        ACE). This would typically be from the principal indicated in
+        the RPC credentials of the call, but the server's operating
+        environment or filesystem semantics may dictate other methods
+        of derivation. Similarly, if createattrs includes neither the
+        group attribute nor a group ACE, and if the server's filesystem
+        both supports and requires the notion of a group attribute
+        (or group ACE), the server MUST derive the group attribute
+        (or the corresponding owner ACE) for the file. This could be
+        from the RPC call's credentials, such as the group principal
+        if the credentials include it (such as with AUTH_SYS), from
+        the group identifier associated with the principal in the
+        credentials (for e.g., POSIX systems have a passwd database
+        that has the group identifier for every user identifier),
+        inherited from directory the object is created in, or whatever
+        else the server's operating environment or filesystem semantics
+        dictate. This applies to the OPEN operation too.
+      </t>
+
+      <t>
+        Conversely, it is possible the client will specify in
+        createattrs an owner attribute or group attribute or ACL
+        that the principal indicated the RPC call's credentials does
+        not have permissions to create files for. The error to be
+        returned in this instance is NFS4ERR_PERM. This applies to
+        the OPEN operation too.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_CREATE_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        If the client desires to set attribute values after the create,
+        a SETATTR operation can be added to the COMPOUND request so
+        that the appropriate attributes will be set.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_CREATE_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ATTRNOTSUPP
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADNAME
+NFS4ERR_BADOWNER
+NFS4ERR_BADTYPE
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_DQUOT
+NFS4ERR_EXIST
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NAMETOOLONG
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOSPC
+NFS4ERR_NOTDIR
+NFS4ERR_PERM
+NFS4ERR_RESOURCE
+NFS4ERR_ROFS
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_DELEGPURGE" title="Operation 7: DELEGPURGE - Purge Delegations Awaiting Recovery">
+
+    <section toc="exclude" anchor="OP_DELEGPURGE_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+clientid ->
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_DELEGPURGE_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/delegpurge_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_DELEGPURGE_RESULT" title="RESULT">
+
+      <?rfc include='autogen/delegpurge_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_DELEGPURGE_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        Purges all of the delegations awaiting recovery for a
+        given client.  This is useful for clients which do not
+        commit delegation information to stable storage to indicate
+        that conflicting requests need not be delayed by the server
+        awaiting recovery of delegation information.
+      </t>
+
+      <t>
+        This operation should be used by clients that record delegation
+        information on stable storage on the client.  In this case,
+        DELEGPURGE should be issued immediately after doing delegation
+        recovery on all delegations known to the client.  Doing so
+        will notify the server that no additional delegations for the
+        client will be recovered allowing it to free resources, and
+        avoid delaying other clients who make requests that conflict
+        with the unrecovered delegations.  The set of delegations known
+        to the server and the client may be different.  The reason for
+        this is that a client may fail after making a request which
+        resulted in delegation but before it received the results
+        and committed them to the client's stable storage.
+      </t>
+
+      <t>
+        The server MAY support DELEGPURGE, but if it does not, it
+        MUST NOT support CLAIM_DELEGATE_PREV.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_DELEGPURGE_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADXDR
+NFS4ERR_NOTSUPP
+NFS4ERR_LEASE_MOVED
+NFS4ERR_MOVED
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE_CLIENTID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_DELEGRETURN" title="Operation 8: DELEGRETURN - Return Delegation">
+
+    <section toc="exclude" anchor="OP_DELEGRETURN_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), stateid ->
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_DELEGRETURN_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/delegreturn_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_DELEGRETURN_RESULT" title="RESULT">
+
+      <?rfc include='autogen/delegreturn_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_DELEGRETURN_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        Returns the delegation represented by the current filehandle
+        and stateid.
+      </t>
+
+      <t>
+        Delegations may be returned when recalled or voluntarily
+        (i.e., before the server has recalled them).  In either case
+        the client must properly propagate state changed under the
+        context of the delegation to the server before returning
+        the delegation.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_DELEGRETURN_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_EXPIRED
+NFS4ERR_INVAL
+NFS4ERR_LEASE_MOVED
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOTSUPP
+NFS4ERR_OLD_STATEID
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_STATEID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_GETATTR" title="Operation 9: GETATTR - Get Attributes">
+
+    <section toc="exclude" anchor="OP_GETATTR_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), attrbits -> attrbits, attrvals
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_GETATTR_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/getattr_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_GETATTR_RESULT" title="RESULT">
+
+      <?rfc include='autogen/getattr_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_GETATTR_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The GETATTR operation will obtain attributes for the filesystem
+        object specified by the current filehandle.  The client
+        sets a bit in the bitmap argument for each attribute value
+        that it would like the server to return.  The server returns
+        an attribute bitmap that indicates the attribute values for
+        which it was able to return, followed by the attribute values
+        ordered lowest attribute number first.
+      </t>
+
+      <t>
+        The server must return a value for each attribute that
+        the client requests if the attribute is supported by the
+        server.  If the server does not support an attribute or
+        cannot approximate a useful value then it must not return
+        the attribute value and must not set the attribute bit in
+        the result bitmap.  The server must return an error if it
+        supports an attribute but cannot obtain its value.  In that
+        case no attribute values will be returned.
+      </t>
+
+      <t>
+        All servers must support the mandatory attributes as specified
+        in the section "File Attributes".
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_GETATTR_IMPLEMENTATION" title="IMPLEMENTATION">
+
+    </section>
+    <section toc="exclude" anchor="OP_GETATTR_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADHANDLE
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_GETFH" title="Operation 10: GETFH - Get Current Filehandle">
+
+    <section toc="exclude" anchor="OP_GETFH_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh) -> filehandle
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_GETFH_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+/* CURRENT_FH: */
+void;
+        </artwork>
+      </figure>
+
+
+    </section>
+    <section toc="exclude" anchor="OP_GETFH_RESULT" title="RESULT">
+
+      <?rfc include='autogen/getfh_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_GETFH_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        This operation returns the current filehandle value.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_GETFH_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        Operations that change the current filehandle like LOOKUP
+        or CREATE do not automatically return the new filehandle
+        as a result.  For instance, if a client needs to lookup a
+        directory entry and obtain its filehandle then the following
+        request is needed.
+      </t>
+
+      <figure>
+        <artwork>
+PUTFH  (directory filehandle)
+LOOKUP (entry name)
+GETFH
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_GETFH_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADHANDLE
+NFS4ERR_FHEXPIRED
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_LINK" title="Operation 11: LINK - Create Link to a File">
+
+    <section toc="exclude" anchor="OP_LINK_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(sfh), (cfh), newname -> (cfh), change_info
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_LINK_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/link_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LINK_RESULT" title="RESULT">
+
+      <?rfc include='autogen/link_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LINK_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The LINK operation creates an additional newname for the
+        file represented by the saved filehandle, as set by the
+        SAVEFH operation, in the directory represented by the current
+        filehandle.  The existing file and the target directory must
+        reside within the same filesystem on the server.  On success,
+        the current filehandle will continue to be the target
+        directory.  If an object exists in the target directory with
+        the same name as newname, the server must return NFS4ERR_EXIST.
+      </t>
+
+      <t>
+        For the target directory, the server returns change_info4
+        information in cinfo.  With the atomic field of the
+        change_info4 struct, the server will indicate if the before
+        and after change attributes were obtained atomically with
+        respect to the link creation.
+      </t>
+
+      <t>
+        If the newname has a length of 0 (zero), or if newname does
+        not obey the UTF-8 definition, the error NFS4ERR_INVAL will
+        be returned.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LINK_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        Changes to any property of the "hard" linked files are
+        reflected in all of the linked files.  When a link is made
+        to a file, the attributes for the file should have a value
+        for numlinks that is one greater than the value before the
+        LINK operation.
+      </t>
+
+      <t>
+        The statement "file and the target directory must reside
+        within the same filesystem on the server" means that the fsid
+        fields in the attributes for the objects are the same. If they
+        reside on different filesystems, the error, NFS4ERR_XDEV,
+        is returned.  On some servers, the filenames, "." and "..",
+        are illegal as newname.
+      </t>
+
+      <t>
+        In the case that newname is already linked to the file
+        represented by the saved filehandle, the server will return
+        NFS4ERR_EXIST.
+      </t>
+
+      <t>
+        Note that symbolic links are created with the CREATE operation.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LINK_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADNAME
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_DQUOT
+NFS4ERR_EXIST
+NFS4ERR_FHEXPIRED
+NFS4ERR_FILE_OPEN
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_ISDIR
+NFS4ERR_MLINK
+NFS4ERR_MOVED
+NFS4ERR_NAMETOOLONG
+NFS4ERR_NOENT
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOSPC
+NFS4ERR_NOTDIR
+NFS4ERR_NOTSUPP
+NFS4ERR_RESOURCE
+NFS4ERR_ROFS
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_WRONGSEC
+NFS4ERR_XDEV
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_LOCK" title="Operation 12: LOCK - Create Lock">
+
+    <section toc="exclude" anchor="OP_LOCK_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh) locktype, reclaim, offset, length, locker -> stateid
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCK_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/type_nfs_lock_type4.xml'?>
+      <?rfc include='autogen/lock_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCK_RESULT" title="RESULT">
+
+      <?rfc include='autogen/lock_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCK_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The LOCK operation requests a record lock for the byte range
+        specified by the offset and length parameters.  The lock type
+        is also specified to be one of the nfs_lock_type4s.  If this
+        is a reclaim request, the reclaim parameter will be TRUE;
+      </t>
+
+      <t>
+        Bytes in a file may be locked even if those bytes are not
+        currently allocated to the file.  To lock the file from a
+        specific offset through the end-of-file (no matter how long
+        the file actually is) use a length field with all bits set to
+        1 (one).  If the length is zero, or if a length which is not
+        all bits set to one is specified, and length when added to
+        the offset exceeds the maximum 64-bit unsigned integer value,
+        the error NFS4ERR_INVAL will result.
+      </t>
+
+      <t>
+        Some servers may only support locking for byte offsets that
+        fit within 32 bits.  If the client specifies a range that
+        includes a byte beyond the last byte offset of the 32-bit
+        range, but does not include the last byte offset of the
+        32-bit and all of the byte offsets beyond it, up to the end
+        of the valid 64-bit range, such a 32-bit server MUST return
+        the error NFS4ERR_BAD_RANGE.
+      </t>
+
+      <t>
+        In the case that the lock is denied, the owner, offset,
+        and length of a conflicting lock are returned.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCK_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        If the server is unable to determine the exact offset and
+        length of the conflicting lock, the same offset and length
+        that were provided in the arguments should be returned in
+        the denied results.  The File Locking section contains a full
+        description of this and the other file locking operations.
+      </t>
+
+      <t>
+        LOCK operations are subject to permission checks and to checks
+        against the access type of the associated file.  However, the
+        specific right and modes required for various type of locks,
+        reflect the semantics of the server-exported filesystem,
+        and are not specified by the protocol.  For example, Windows
+        2000 allows a write lock of a file open for READ, while a
+        POSIX-compliant system does not.
+      </t>
+
+      <t>
+        When the client makes a lock request that corresponds to a
+        range that the lockowner has locked already (with the same
+        or different lock type), or to a sub-region of such a range,
+        or to a region which includes multiple locks already granted
+        to that lockowner, in whole or in part, and the server does
+        not support such locking operations (i.e., does not support
+        POSIX locking semantics), the server will return the error
+        NFS4ERR_LOCK_RANGE.  In that case, the client may return an
+        error, or it may emulate the required operations, using only
+        LOCK for ranges that do not include any bytes already locked
+        by that lock_owner and LOCKU of locks held by that lock_owner
+        (specifying an exactly-matching range and type).  Similarly,
+        when the client makes a lock request that amounts to upgrading
+        (changing from a read lock to a write lock) or downgrading
+        (changing from write lock to a read lock) an existing record
+        lock, and the server does not support such a lock, the server
+        will return NFS4ERR_LOCK_NOTSUPP.  Such operations may not
+        perfectly reflect the required semantics in the face of
+        conflicting lock requests from other clients.
+      </t>
+
+      <t>
+        The locker argument specifies the lock_owner that is associated
+        with the LOCK request.  The locker4 structure is a switched
+        union that indicates whether the lock_owner is known to the
+        server or if the lock_owner is new to the server.  In the
+        case that the lock_owner is known to the server and has an
+        established lock_seqid, the argument is just the lock_owner
+        and lock_seqid.  In the case that the lock_owner is not known
+        to the server, the argument contains not only the lock_owner
+        and lock_seqid but also the open_stateid and open_seqid.
+        The new lock_owner case covers the very first lock done by the
+        lock_owner and offers a method to use the established state
+        of the open_stateid to transition to the use of the lock_owner.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCK_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_RANGE
+NFS4ERR_BAD_SEQID
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_DEADLOCK
+NFS4ERR_DELAY
+NFS4ERR_DENIED
+NFS4ERR_EXPIRED
+NFS4ERR_FHEXPIRED
+NFS4ERR_GRACE
+NFS4ERR_INVAL
+NFS4ERR_ISDIR
+NFS4ERR_LEASE_MOVED
+NFS4ERR_LOCK_NOTSUPP
+NFS4ERR_LOCK_RANGE
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NO_GRACE
+NFS4ERR_OLD_STATEID
+NFS4ERR_OPENMODE
+NFS4ERR_RECLAIM_BAD
+NFS4ERR_RECLAIM_CONFLICT
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_CLIENTID
+NFS4ERR_STALE_STATEID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_LOCKT" title="Operation 13: LOCKT - Test For Lock">
+
+    <section toc="exclude" anchor="OP_LOCKT_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh) locktype, offset, length owner -> {void, NFS4ERR_DENIED ->
+owner}
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKT_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/lockt_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKT_RESULT" title="RESULT">
+
+      <?rfc include='autogen/lockt_res.xml'?>
+<!-- Do I get LOCK4denied somewhere here? -->
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKT_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The LOCKT operation tests the lock as specified in the
+        arguments.  If a conflicting lock exists, the owner, offset,
+        length, and type of the conflicting lock are returned; if
+        no lock is held, nothing other than NFS4_OK is returned.
+        Lock types READ_LT and READW_LT are processed in the same
+        way in that a conflicting lock test is done without regard
+        to blocking or non-blocking.  The same is true for WRITE_LT
+        and WRITEW_LT.
+      </t>
+
+      <t>
+        The ranges are specified as for LOCK.  The NFS4ERR_INVAL
+        and NFS4ERR_BAD_RANGE errors are returned under the same
+        circumstances as for LOCK.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKT_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        If the server is unable to determine the exact offset and
+        length of the conflicting lock, the same offset and length
+        that were provided in the arguments should be returned in the
+        denied results.  The File Locking section contains further
+        discussion of the file locking mechanisms.
+      </t>
+
+      <t>
+        LOCKT uses a lock_owner4 rather a stateid4, as is used in LOCK
+        to identify the owner.  This is because the client does not
+        have to open the file to test for the existence of a lock,
+        so a stateid may not be available.
+      </t>
+
+      <t>
+        The test for conflicting locks should exclude locks for
+        the current lockowner.  Note that since such locks are
+        not examined the possible existence of overlapping ranges
+        may not affect the results of LOCKT.  If the server does
+        examine locks that match the lockowner for the purpose
+        of range checking, NFS4ERR_LOCK_RANGE may be returned..
+        In the event that it returns NFS4_OK, clients may do a LOCK
+        and receive NFS4ERR_LOCK_RANGE on the LOCK request because
+        of the flexibility provided to the server.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKT_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_RANGE
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_DENIED
+NFS4ERR_FHEXPIRED
+NFS4ERR_GRACE
+NFS4ERR_INVAL
+NFS4ERR_ISDIR
+NFS4ERR_LEASE_MOVED
+NFS4ERR_LOCK_RANGE
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_CLIENTID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_LOCKU" title="Operation 14: LOCKU - Unlock File">
+
+    <section toc="exclude" anchor="OP_LOCKU_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh) type, seqid, stateid, offset, length -> stateid
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKU_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/locku_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKU_RESULT" title="RESULT">
+
+      <?rfc include='autogen/locku_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKU_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The LOCKU operation unlocks the record lock specified by
+        the parameters. The client may set the locktype field to any
+        value that is legal for the nfs_lock_type4 enumerated type,
+        and the server MUST accept any legal value for locktype. Any
+        legal value for locktype has no effect on the success or
+        failure of the LOCKU operation.
+      </t>
+
+      <t>
+        The ranges are specified as for LOCK.  The NFS4ERR_INVAL
+        and NFS4ERR_BAD_RANGE errors are returned under the same
+        circumstances as for LOCK.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKU_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        If the area to be unlocked does not correspond exactly to a
+        lock actually held by the lockowner the server may return the
+        error NFS4ERR_LOCK_RANGE.  This includes the case in which
+        the area is not locked, where the area is a sub-range of
+        the area locked, where it overlaps the area locked without
+        matching exactly or the area specified includes multiple
+        locks held by the lockowner.  In all of these cases, allowed
+        by POSIX locking semantics, a client receiving this error,
+        should if it desires support for such operations, simulate
+        the operation using LOCKU on ranges corresponding to locks
+        it actually holds, possibly followed by LOCK requests for
+        the sub-ranges not being unlocked.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOCKU_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_RANGE
+NFS4ERR_BAD_SEQID
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_EXPIRED
+NFS4ERR_FHEXPIRED
+NFS4ERR_GRACE
+NFS4ERR_INVAL
+NFS4ERR_ISDIR
+NFS4ERR_LEASE_MOVED
+NFS4ERR_LOCK_RANGE
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_OLD_STATEID
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_STATEID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_LOOKUP" title="Operation 15: LOOKUP - Lookup Filename">
+
+    <section toc="exclude" anchor="OP_LOOKUP_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), component -> (cfh)
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOOKUP_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/lookup_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOOKUP_RESULT" title="RESULT">
+
+      <?rfc include='autogen/lookup_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOOKUP_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        This operation LOOKUPs or finds a filesystem object using
+        the directory specified by the current filehandle.  LOOKUP
+        evaluates the component and if the object exists the current
+        filehandle is replaced with the component's filehandle.
+      </t>
+
+      <t>
+        If the component cannot be evaluated either because it does
+        not exist or because the client does not have permission to
+        evaluate the component, then an error will be returned and
+        the current filehandle will be unchanged.
+      </t>
+
+      <t>
+        If the component is a zero length string or if any component
+        does not obey the UTF-8 definition, the error NFS4ERR_INVAL
+        will be returned.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOOKUP_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        If the client wants to achieve the effect of a multi-component
+        lookup, it may construct a COMPOUND request such as (and
+        obtain each filehandle):
+      </t>
+
+      <figure>
+        <artwork>
+PUTFH  (directory filehandle)
+LOOKUP "pub"
+GETFH
+LOOKUP "foo"
+GETFH
+LOOKUP "bar"
+GETFH
+        </artwork>
+      </figure>
+
+      <t>
+        NFS version 4 servers depart from the semantics of previous
+        NFS versions in allowing LOOKUP requests to cross mountpoints
+        on the server.  The client can detect a mountpoint crossing
+        by comparing the fsid attribute of the directory with the
+        fsid attribute of the directory looked up.  If the fsids are
+        different then the new directory is a server mountpoint.
+        UNIX clients that detect a mountpoint crossing will need
+        to mount the server's filesystem.  This needs to be done to
+        maintain the file object identity checking mechanisms common
+        to UNIX clients.
+      </t>
+
+      <t>
+        Servers that limit NFS access to "shares" or "exported"
+        filesystems should provide a pseudo-filesystem into which
+        the exported filesystems can be integrated, so that clients
+        can browse the server's name space.  The clients' view of
+        a pseudo filesystem will be limited to paths that lead to
+        exported filesystems.
+      </t>
+
+      <t>
+        Note: previous versions of the protocol assigned special
+        semantics to the names "." and "..".  NFS version 4 assigns
+        no special semantics to these names.  The LOOKUPP operator
+        must be used to lookup a parent directory.
+      </t>
+
+      <t>
+        Note that this operation does not follow symbolic links.
+        The client is responsible for all parsing of filenames
+        including filenames that are modified by symbolic links
+        encountered during the lookup process.
+      </t>
+
+      <t>
+        If the current filehandle supplied is not a directory but
+        a symbolic link, the error NFS4ERR_SYMLINK is returned as
+        the error.  For all other non-directory file types, the error
+        NFS4ERR_NOTDIR is returned.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOOKUP_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADNAME
+NFS4ERR_BADXDR
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NAMETOOLONG
+NFS4ERR_NOENT
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOTDIR
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_SYMLINK
+NFS4ERR_WRONGSEC
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_LOOKUPP" title="Operation 16: LOOKUPP - Lookup Parent Directory">
+
+    <section toc="exclude" anchor="OP_LOOKUPP_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh) -> (cfh)
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOOKUPP_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+/* CURRENT_FH: object */
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOOKUPP_RESULT" title="RESULT">
+
+      <?rfc include='autogen/lookupp_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOOKUPP_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The current filehandle is assumed to refer to a regular
+        directory or a named attribute directory.  LOOKUPP assigns
+        the filehandle for its parent directory to be the current
+        filehandle.  If there is no parent directory an NFS4ERR_NOENT
+        error must be returned.  Therefore, NFS4ERR_NOENT will be
+        returned by the server when the current filehandle is at the
+        root or top of the server's file tree.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_LOOKUPP_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        As for LOOKUP, LOOKUPP will also cross mountpoints.
+      </t>
+
+      <t>
+        If the current filehandle is not a directory or named attribute
+        directory, the error NFS4ERR_NOTDIR is returned.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADHANDLE
+NFS4ERR_FHEXPIRED
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NOENT
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOTDIR
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_NVERIFY" title="Operation 17: NVERIFY - Verify Difference in Attributes">
+
+    <section toc="exclude" anchor="OP_NVERIFY_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), fattr -> -
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_NVERIFY_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/nverify_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_NVERIFY_RESULT" title="RESULT">
+
+      <?rfc include='autogen/nverify_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_NVERIFY_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        This operation is used to prefix a sequence of operations
+        to be performed if one or more attributes have changed on
+        some filesystem object.  If all the attributes match then
+        the error NFS4ERR_SAME must be returned.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_NVERIFY_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        This operation is useful as a cache validation operator.
+        If the object to which the attributes belong has changed
+        then the following operations may obtain new data associated
+        with that object.  For instance, to check if a file has been
+        changed and obtain new data if it has:
+      </t>
+
+      <figure>
+        <artwork>
+PUTFH  (public)
+LOOKUP "foobar"
+NVERIFY attrbits attrs
+READ 0 32767
+        </artwork>
+      </figure>
+
+      <t>
+        In the case that a recommended attribute is specified in
+        the NVERIFY operation and the server does not support
+        that attribute for the filesystem object, the error
+        NFS4ERR_ATTRNOTSUPP is returned to the client.
+      </t>
+
+      <t>
+        When the attribute rdattr_error or any write-only attribute
+        (e.g., time_modify_set) is specified, the error NFS4ERR_INVAL
+        is returned to the client.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_NVERIFY_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ATTRNOTSUPP
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_RESOURCE
+NFS4ERR_SAME
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_OPEN" title="Operation 18: OPEN - Open a Regular File">
+
+    <section toc="exclude" anchor="OP_OPEN_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), seqid, share_access, share_deny, owner, openhow, claim ->
+(cfh), stateid, cinfo, rflags, open_confirm, attrset delegation
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/open_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_RESULT" title="RESULT">
+
+      <?rfc include='autogen/open_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_WARNING" title="WARNING TO CLIENT IMPLEMENTORS">
+
+      <t>
+        OPEN resembles LOOKUP in that it generates a filehandle for the
+        client to use.  Unlike LOOKUP though, OPEN creates server state
+        on the filehandle.  In normal circumstances, the client can
+        only release this state with a CLOSE operation.  CLOSE uses
+        the current filehandle to determine which file to close.
+        Therefore the client MUST follow every OPEN operation with
+        a GETFH operation in the same COMPOUND procedure.  This will
+        supply the client with the filehandle such that CLOSE can be
+        used appropriately.
+      </t>
+
+      <t>
+        Simply waiting for the lease on the file to expire is
+        insufficient because the server may maintain the state
+        indefinitely as long as another client does not attempt to
+        make a conflicting access to the same file.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The OPEN operation creates and/or opens a regular file in
+        a directory with the provided name.  If the file does not
+        exist at the server and creation is desired, specification of
+        the method of creation is provided by the openhow parameter.
+        The client has the choice of three creation methods: UNCHECKED,
+        GUARDED, or EXCLUSIVE.
+      </t>
+
+      <t>
+        If the current filehandle is a named attribute directory, OPEN
+        will then create or open a named attribute file.  Note that
+        exclusive create of a named attribute is not supported.
+        If the createmode is EXCLUSIVE4 and the current filehandle
+        is a named attribute directory, the server will return EINVAL.
+      </t>
+
+      <t>
+        UNCHECKED means that the file should be created if a file
+        of that name does not exist and encountering an existing
+        regular file of that name is not an error.  For this type of
+        create, createattrs specifies the initial set of attributes
+        for the file.  The set of attributes may include any writable
+        attribute valid for regular files.  When an UNCHECKED create
+        encounters an existing file, the attributes specified by
+        createattrs are not used, except that when an size of zero
+        is specified, the existing file is truncated.  If GUARDED is
+        specified, the server checks for the presence of a duplicate
+        object by name before performing the create.  If a duplicate
+        exists, an error of NFS4ERR_EXIST is returned as the status.
+        If the object does not exist, the request is performed as
+        described for UNCHECKED.  For each of these cases (UNCHECKED
+        and GUARDED) where the operation is successful, the server
+        will return to the client an attribute mask signifying which
+        attributes were successfully set for the object.
+      </t>
+
+      <t>
+        EXCLUSIVE specifies that the server is to follow exclusive
+        creation semantics, using the verifier to ensure exclusive
+        creation of the target.  The server should check for the
+        presence of a duplicate object by name.  If the object does not
+        exist, the server creates the object and stores the verifier
+        with the object.  If the object does exist and the stored
+        verifier matches the client provided verifier, the server
+        uses the existing object as the newly created object.  If the
+        stored verifier does not match, then an error of NFS4ERR_EXIST
+        is returned.  No attributes may be provided in this case,
+        since the server may use an attribute of the target object
+        to store the verifier.  If the server uses an attribute to
+        store the exclusive create verifier, it will signify which
+        attribute by setting the appropriate bit in the attribute
+        mask that is returned in the results.
+      </t>
+
+      <t>
+        For the target directory, the server returns change_info4
+        information in cinfo.  With the atomic field of the
+        change_info4 struct, the server will indicate if the before
+        and after change attributes were obtained atomically with
+        respect to the link creation.
+      </t>
+
+      <t>
+        Upon successful creation, the current filehandle is replaced
+        by that of the new object.
+      </t>
+
+      <t>
+        The OPEN operation provides for Windows share reservation
+        capability with the use of the share_access and share_deny
+        fields of the OPEN arguments.  The client specifies at OPEN
+        the required share_access and share_deny modes.  For clients
+        that do not directly support SHAREs (i.e., UNIX), the expected
+        deny value is DENY_NONE.  In the case that there is a existing
+        SHARE reservation that conflicts with the OPEN request, the
+        server returns the error NFS4ERR_SHARE_DENIED.  For a complete
+        SHARE request, the client must provide values for the owner and
+        seqid fields for the OPEN argument.  For additional discussion
+        of SHARE semantics see <xref target="ss:fl:share_res" />
+        "Share Reservations".
+      </t>
+
+      <t>
+        In the case that the client is recovering state from a
+        server failure, the claim field of the OPEN argument is
+        used to signify that the request is meant to reclaim state
+        previously held.
+      </t>
+
+      <t>
+        The "claim" field of the OPEN argument is used to specify the
+        file to be opened and the state information which the client
+        claims to possess.  There are four basic claim types which
+        cover the various situations for an OPEN.  They are as follows:
+
+        <list style='hanging'>
+
+          <t hangText="CLAIM_NULL">
+            For the client, this is a new OPEN request and there is
+            no previous state associate with the file for the client.
+          </t>
+
+          <t hangText="CLAIM_PREVIOUS">
+            The client is claiming basic OPEN state for a file that
+            was held previous to a server reboot.  Generally used
+            when a server is returning persistent filehandles; the
+            client may not have the file name to reclaim the OPEN.
+          </t>
+
+          <t hangText="CLAIM_DELEGATE_CUR">
+            The client is claiming a delegation for OPEN as granted by
+            the server.  Generally this is done as part of recalling
+            a delegation.
+          </t>
+
+          <t hangText="CLAIM_DELEGATE_PREV">
+            The client is claiming a delegation granted to a previous
+            client instance; used after the client reboots. The server
+            MAY support CLAIM_DELEGATE_PREV.  If it does support
+            CLAIM_DELEGATE_PREV, SETCLIENTID_CONFIRM MUST NOT remove
+            the client's delegation state, and the server MUST support
+            the DELEGPURGE operation.
+          </t>
+
+        </list>
+      </t>
+
+      <t>
+        For OPEN requests whose claim type is other than CLAIM_PREVIOUS
+        (i.e., requests other than those devoted to reclaiming opens
+        after a server reboot) that reach the server during its grace
+        or lease expiration period, the server returns an error of
+        NFS4ERR_GRACE.
+      </t>
+
+      <t>
+        For any OPEN request, the server may return an open delegation,
+        which allows further opens and closes to be handled locally
+        on the client as described in the section Open Delegation.
+        Note that delegation is up to the server to decide.
+        The client should never assume that delegation will or will
+        not be granted in a particular instance.  It should always be
+        prepared for either case.  A partial exception is the reclaim
+        (CLAIM_PREVIOUS) case, in which a delegation type is claimed.
+        In this case, delegation will always be granted, although
+        the server may specify an immediate recall in the delegation
+        structure.
+      </t>
+
+      <t>
+        The rflags returned by a successful OPEN allow the server
+        to return information governing how the open file is to
+        be handled.
+      </t>
+
+      <t>
+        OPEN4_RESULT_CONFIRM indicates that the client MUST execute
+        an OPEN_CONFIRM operation before using the open file.
+        OPEN4_RESULT_LOCKTYPE_POSIX indicates the server's file locking
+        behavior supports the complete set of Posix locking techniques.
+        From this the client can choose to manage file locking state
+        in a way to handle a mis-match of file locking management.
+      </t>
+
+      <t>
+        If the component is of zero length, NFS4ERR_INVAL will
+        be returned.  The component is also subject to the normal
+        UTF-8, character support, and name checks.  See 
+        <xref target="ss:i18n:utf8_err" /> "UTF-8 Related Errors"
+        for further discussion.
+      </t>
+
+      <t>
+        When an OPEN is done and the specified lockowner already
+        has the resulting filehandle open, the result is to "OR"
+        together the new share and deny status together with the
+        existing status.  In this case, only a single CLOSE need be
+        done, even though multiple OPENs were completed.  When such
+        an OPEN is done, checking of share reservations for the new
+        OPEN proceeds normally, with no exception for the existing
+        OPEN held by the same lockowner.
+      </t>
+
+      <t>
+        If the underlying filesystem at the server is only accessible
+        in a read-only mode and the OPEN request has specified
+        ACCESS_WRITE or ACCESS_BOTH, the server will return
+        NFS4ERR_ROFS to indicate a read-only filesystem.
+      </t>
+
+      <t>
+        As with the CREATE operation, the server MUST derive the owner,
+        owner ACE, group, or group ACE if any of the four attributes
+        are required and supported by the server's filesystem.  For an
+        OPEN with the EXCLUSIVE4 createmode, the server has no choice,
+        since such OPEN calls do not include the createattrs field.
+        Conversely, if createattrs is specified, and includes owner
+        or group (or corresponding ACEs) that the principal in the
+        RPC call's credentials does not have authorization to create
+        files for, then the server may return NFS4ERR_PERM.
+      </t>
+
+      <t>
+        In the case of a OPEN which specifies a size of zero (e.g.,
+        truncation) and the file has named attributes, the named
+        attributes are left as is.  They are not removed.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        The OPEN operation contains support for EXCLUSIVE create.
+        The mechanism is similar to the support in NFS version 3 <xref
+        target="RFC1813" />.  As in NFS version 3, this mechanism
+        provides reliable exclusive creation.  Exclusive create is
+        invoked when the how parameter is EXCLUSIVE.  In this case,
+        the client provides a verifier that can reasonably be expected
+        to be unique.  A combination of a client identifier, perhaps
+        the client network address, and a unique number generated
+        by the client, perhaps the RPC transaction identifier, may
+        be appropriate.
+      </t>
+
+      <t>
+        If the object does not exist, the server creates the object
+        and stores the verifier in stable storage. For filesystems
+        that do not provide a mechanism for the storage of arbitrary
+        file attributes, the server may use one or more elements of
+        the object meta-data to store the verifier. The verifier must
+        be stored in stable storage to prevent erroneous failure
+        on retransmission of the request. It is assumed that an
+        exclusive create is being performed because exclusive
+        semantics are critical to the application. Because of the
+        expected usage, exclusive CREATE does not rely solely on the
+        normally volatile duplicate request cache for storage of the
+        verifier. The duplicate request cache in volatile storage
+        does not survive a crash and may actually flush on a long
+        network partition, opening failure windows.  In the UNIX
+        local filesystem environment, the expected storage location
+        for the verifier on creation is the meta-data (time stamps)
+        of the object. For this reason, an exclusive object create
+        may not include initial attributes because the server would
+        have nowhere to store the verifier.
+      </t>
+
+      <t>
+        If the server can not support these exclusive create semantics,
+        possibly because of the requirement to commit the verifier
+        to stable storage, it should fail the OPEN request with the
+        error, NFS4ERR_NOTSUPP.
+      </t>
+
+      <t>
+        During an exclusive CREATE request, if the object already
+        exists, the server reconstructs the object's verifier and
+        compares it with the verifier in the request. If they match,
+        the server treats the request as a success. The request is
+        presumed to be a duplicate of an earlier, successful request
+        for which the reply was lost and that the server duplicate
+        request cache mechanism did not detect.  If the verifiers
+        do not match, the request is rejected with the status,
+        NFS4ERR_EXIST.
+      </t>
+
+      <t>
+        Once the client has performed a successful exclusive create,
+        it must issue a SETATTR to set the correct object attributes.
+        Until it does so, it should not rely upon any of the
+        object attributes, since the server implementation may
+        need to overload object meta-data to store the verifier.
+        The subsequent SETATTR must not occur in the same COMPOUND
+        request as the OPEN.  This separation will guarantee that the
+        exclusive create mechanism will continue to function properly
+        in the face of retransmission of the request.
+      </t>
+
+      <t>
+        Use of the GUARDED attribute does not provide exactly-once
+        semantics.  In particular, if a reply is lost and the
+        server does not detect the retransmission of the request,
+        the operation can fail with NFS4ERR_EXIST, even though the
+        create was performed successfully.  The client would use this
+        behavior in the case that the application has not requested
+        an exclusive create but has asked to have the file truncated
+        when the file is opened.  In the case of the client timing
+        out and retransmitting the create request, the client can use
+        GUARDED to prevent against a sequence like: create, write,
+        create (retransmitted) from occurring.
+      </t>
+
+      <t>
+        For SHARE reservations, the client must specify a value
+        for share_access that is one of READ, WRITE, or BOTH.
+        For share_deny, the client must specify one of NONE, READ,
+        WRITE, or BOTH.  If the client fails to do this, the server
+        must return NFS4ERR_INVAL.
+      </t>
+
+      <t>
+        Based on the share_access value (READ, WRITE, or BOTH)
+        the client should check that the requester has the proper
+        access rights to perform the specified operation.  This would
+        generally be the results of applying the ACL access rules
+        to the file for the current requester.  However, just as
+        with the ACCESS operation, the client should not attempt to
+        second-guess the server's decisions, as access rights may
+        change and may be subject to server administrative controls
+        outside the ACL framework.  If the requester is not authorized
+        to READ or WRITE (depending on the share_access value), the
+        server must return NFS4ERR_ACCESS.  Note that since the NFS
+        version 4 protocol does not impose any requirement that READs
+        and WRITEs issued for an open file have the same credentials
+        as the OPEN itself, the server still must do appropriate
+        access checking on the READs and WRITEs themselves.
+      </t>
+
+      <t>
+        If the component provided to OPEN is a symbolic link,
+        the error NFS4ERR_SYMLINK will be returned to the client.
+        If the current filehandle is not a directory, the error
+        NFS4ERR_NOTDIR will be returned.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_ATTRNOTSUPP
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADNAME
+NFS4ERR_BADOWNER
+NFS4ERR_BAD_SEQID
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_DQUOT
+NFS4ERR_EXIST
+NFS4ERR_EXPIRED
+NFS4ERR_FHEXPIRED
+NFS4ERR_GRACE
+NFS4ERR_IO
+NFS4ERR_INVAL
+NFS4ERR_ISDIR
+NFS4ERR_LEASE_MOVED
+NFS4ERR_MOVED
+NFS4ERR_NAMETOOLONG
+NFS4ERR_NOENT
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOSPC
+NFS4ERR_NOTDIR
+NFS4ERR_NOTSUPP
+NFS4ERR_NO_GRACE
+NFS4ERR_PERM
+NFS4ERR_RECLAIM_BAD
+NFS4ERR_RECLAIM_CONFLICT
+NFS4ERR_RESOURCE
+NFS4ERR_ROFS
+NFS4ERR_SERVERFAULT
+NFS4ERR_SHARE_DENIED
+NFS4ERR_STALE
+NFS4ERR_STALE_CLIENTID
+NFS4ERR_SYMLINK
+NFS4ERR_WRONGSEC
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_OPENATTR" title="Operation 19: OPENATTR - Open Named Attribute Directory">
+
+    <section toc="exclude" anchor="OP_OPENATTR_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh) createdir -> (cfh)
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPENATTR_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/openattr_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPENATTR_RESULT" title="RESULT">
+
+      <?rfc include='autogen/openattr_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPENATTR_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The OPENATTR operation is used to obtain the filehandle of
+        the named attribute directory associated with the current
+        filehandle.  The result of the OPENATTR will be a filehandle to
+        an object of type NF4ATTRDIR.  From this filehandle, READDIR
+        and LOOKUP operations can be used to obtain filehandles for
+        the various named attributes associated with the original
+        filesystem object.  Filehandles returned within the named
+        attribute directory will have a type of NF4NAMEDATTR.
+      </t>
+
+      <t>
+        The createdir argument allows the client to signify if a
+        named attribute directory should be created as a result of
+        the OPENATTR operation.  Some clients may use the OPENATTR
+        operation with a value of FALSE for createdir to determine if
+        any named attributes exist for the object.  If none exist, then
+        NFS4ERR_NOENT will be returned.  If createdir has a value of
+        TRUE and no named attribute directory exists, one is created.
+        The creation of a named attribute directory assumes that
+        the server has implemented named attribute support in this
+        fashion and is not required to do so by this definition.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPENATTR_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        If the server does not support named attributes for the current
+        filehandle, an error of NFS4ERR_NOTSUPP will be returned to
+        the client.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPENATTR_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADHANDLE
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_DQUOT
+NFS4ERR_FHEXPIRED
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NOENT
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOSPC
+NFS4ERR_NOTSUPP
+NFS4ERR_RESOURCE
+NFS4ERR_ROFS
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_OPEN_CONFIRM" title="Operation 20: OPEN_CONFIRM - Confirm Open">
+
+    <section toc="exclude" anchor="OP_OPEN_CONFIRM_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), seqid, stateid-> stateid
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_CONFIRM_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/open_confirm_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_CONFIRM_RESULT" title="RESULT">
+
+      <?rfc include='autogen/open_confirm_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_CONFIRM_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        This operation is used to confirm the sequence id usage
+        for the first time that a open_owner is used by a client.
+        The stateid returned from the OPEN operation is used as the
+        argument for this operation along with the next sequence id for
+        the open_owner.  The sequence id passed to the OPEN_CONFIRM
+        must be 1 (one) greater than the seqid passed to the OPEN
+        operation from which the open_confirm value was obtained.
+        If the server receives an unexpected sequence id with respect
+        to the original open, then the server assumes that the client
+        will not confirm the original OPEN and all state associated
+        with the original OPEN is released by the server.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_CONFIRM_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        A given client might generate many open_owner4 data structures
+        for a given clientid.  The client will periodically either
+        dispose of its open_owner4s or stop using them for indefinite
+        periods of time.  The latter situation is why the NFS version
+        4 protocol does not have an explicit operation to exit an
+        open_owner4: such an operation is of no use in that situation.
+        Instead, to avoid unbounded memory use, the server needs to
+        implement a strategy for disposing of open_owner4s that have
+        no current lock, open, or delegation state for any files and
+        have not been used recently.  The time period used to determine
+        when to dispose of open_owner4s is an implementation choice.
+        The time period should certainly be no less than the lease
+        time plus any grace period the server wishes to implement
+        beyond a lease time.  The OPEN_CONFIRM operation allows the
+        server to safely dispose of unused open_owner4 data structures.
+      </t>
+
+      <t>
+        In the case that a client issues an OPEN operation and the
+        server no longer has a record of the open_owner4, the server
+        needs to ensure that this is a new OPEN and not a replay
+        or retransmission.
+      </t>
+
+      <t>
+        Servers must not require confirmation on OPENs that grant
+        delegations or are doing reclaim operations.  See 
+        <xref target="ss:fl:open_conf" /> "Use
+        of Open Confirmation" for details.  The server can easily avoid
+        this by noting whether it has disposed of one open_owner4 for
+        the given clientid.  If the server does not support delegation,
+        it might simply maintain a single bit that notes whether any
+        open_owner4 (for any client) has been disposed of.
+      </t>
+
+      <t>
+        The server must hold unconfirmed OPEN state until one of
+        three events occur.  First, the client sends an OPEN_CONFIRM
+        request with the appropriate sequence id and stateid within
+        the lease period.  In this case, the OPEN state on the
+        server goes to confirmed, and the open_owner4 on the server
+        is fully established.
+      </t>
+
+      <t>
+        Second, the client sends another OPEN request with a sequence
+        id that is incorrect for the open_owner4 (out of sequence).
+        In this case, the server assumes the second OPEN request is
+        valid and the first one is a replay.  The server cancels
+        the OPEN state of the first OPEN request, establishes an
+        unconfirmed OPEN state for the second OPEN request, and
+        responds to the second OPEN request with an indication that
+        an OPEN_CONFIRM is needed.  The process then repeats itself.
+        While there is a potential for a denial of service attack on
+        the client, it is mitigated if the client and server require
+        the use of a security flavor based on Kerberos V5, LIPKEY,
+        or some other flavor that uses cryptography.
+      </t>
+
+      <t>
+        What if the server is in the unconfirmed OPEN state for a given
+        open_owner4, and it receives an operation on the open_owner4
+        that has a stateid but the operation is not OPEN, or it is
+        OPEN_CONFIRM but with the wrong stateid?  Then, even if the
+        seqid is correct, the server returns NFS4ERR_BAD_STATEID,
+        because the server assumes the operation is a replay: if the
+        server has no established OPEN state, then there is no way,
+        for example, a LOCK operation could be valid.
+      </t>
+
+      <t>
+        Third, neither of the two aforementioned events occur for the
+        open_owner4 within the lease period.  In this case, the OPEN
+        state is canceled and disposal of the open_owner4 can occur.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_CONFIRM_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_SEQID
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_EXPIRED
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_ISDIR
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_OLD_STATEID
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_STATEID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_OPEN_DOWNGRADE" title="Operation 21: OPEN_DOWNGRADE - Reduce Open File Access">
+
+    <section toc="exclude" anchor="OP_OPEN_DOWNGRADE_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), stateid, seqid, access, deny -> stateid
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_DOWNGRADE_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/open_downgrade_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_DOWNGRADE_RESULT" title="RESULT">
+
+      <?rfc include='autogen/open_downgrade_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_DOWNGRADE_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        This operation is used to adjust the share_access and
+        share_deny bits for a given open.  This is necessary when
+        a given openowner opens the same file multiple times with
+        different share_access and share_deny flags.  In this
+        situation, a close of one of the opens may change the
+        appropriate share_access and share_deny flags to remove bits
+        associated with opens no longer in effect.
+      </t>
+
+      <t>
+        The share_access and share_deny bits specified in this
+        operation replace the current ones for the specified open file.
+        The share_access and share_deny bits specified must be exactly
+        equal to the union of the share_access and share_deny bits
+        specified for some subset of the OPENs in effect for current
+        openowner on the current file.  If that constraint is not
+        respected, the error NFS4ERR_INVAL should be returned.
+        Since share_access and share_deny bits are subsets of those
+        already granted, it is not possible for this request to be
+        denied because of conflicting share reservations.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_OPEN_DOWNGRADE_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_SEQID
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_EXPIRED
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_OLD_STATEID
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_STATEID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_PUTFH" title="Operation 22: PUTFH - Set Current Filehandle">
+
+    <section toc="exclude" anchor="OP_PUTFH_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+filehandle -> (cfh)
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTFH_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/putfh_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTFH_RESULT" title="RESULT">
+
+      <?rfc include='autogen/putfh_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTFH_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        Replaces the current filehandle with the filehandle provided
+        as an argument.
+      </t>
+
+      <t>
+        If the security mechanism used by the requester does not meet
+        the requirements of the filehandle provided to this operation,
+        the server MUST return NFS4ERR_WRONGSEC.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTFH_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        Commonly used as the first operator in an NFS request to set
+        the context for following operations.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTFH_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADHANDLE
+NFS4ERR_BADXDR
+NFS4ERR_FHEXPIRED
+NFS4ERR_MOVED
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_WRONGSEC
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_PUTPUBFH" title="Operation 23: PUTPUBFH - Set Public Filehandle">
+
+    <section toc="exclude" anchor="OP_PUTPUBFH_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+- -> (cfh)
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTPUBFH_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTPUBFH_RESULT" title="RESULT">
+
+      <?rfc include='autogen/putpubfh_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTPUBFH_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        Replaces the current filehandle with the filehandle that
+        represents the public filehandle of the server's name space.
+        This filehandle may be different from the "root" filehandle
+        which may be associated with some other directory on the
+        server.
+      </t>
+
+      <t>
+        The public filehandle represents the concepts embodied in
+        <xref target="RFC2054" />, <xref target="RFC2055" />, <xref
+        target="RFC2224" />.  The intent for NFS version 4 is that
+        the public filehandle (represented by the PUTPUBFH operation)
+        be used as a method of providing WebNFS server compatibility
+        with NFS versions 2 and 3.
+      </t>
+
+      <t>
+        The public filehandle and the root filehandle (represented
+        by the PUTROOTFH operation) should be equivalent.  If the
+        public and root filehandles are not equivalent, then the
+        public filehandle MUST be a descendant of the root filehandle.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTPUBFH_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        Used as the first operator in an NFS request to set the
+        context for following operations.
+      </t>
+
+      <t>
+        With the NFS version 2 and 3 public filehandle, the client is
+        able to specify whether the path name provided in the LOOKUP
+        should be evaluated as either an absolute path relative
+        to the server's root or relative to the public filehandle.
+        <xref target="RFC2224" /> contains further discussion of the functionality.
+        With NFS version 4, that type of specification is not directly
+        available in the LOOKUP operation.  The reason for this is
+        because the component separators needed to specify absolute
+        vs. relative are not allowed in NFS version 4.  Therefore, the
+        client is responsible for constructing its request such that
+        the use of either PUTROOTFH or PUTPUBFH are used to signify
+        absolute or relative evaluation of an NFS URL respectively.
+      </t>
+
+      <t>
+        Note that there are warnings mentioned in <xref target="RFC2224" /> with
+        respect to the use of absolute evaluation and the restrictions
+        the server may place on that evaluation with respect to how
+        much of its namespace has been made available.  These same
+        warnings apply to NFS version 4.  It is likely, therefore
+        that because of server implementation details, an NFS version
+        3 absolute public filehandle lookup may behave differently
+        than an NFS version 4 absolute resolution.
+      </t>
+
+      <t>
+        There is a form of security negotiation as described
+        in <xref target="RFC2755" /> that uses the public filehandle a method of
+        employing SNEGO.  This method is not available with NFS version
+        4 as filehandles are not overloaded with special meaning and
+        therefore do not provide the same framework as NFS versions 2
+        and 3.  Clients should therefore use the security negotiation
+        mechanisms described in this RFC.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTPUBFH_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_WRONGSEC
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_PUTROOTFH" title="Operation 24: PUTROOTFH - Set Root Filehandle">
+
+    <section toc="exclude" anchor="OP_PUTROOTFH_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+- -> (cfh)
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTROOTFH_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTROOTFH_RESULT" title="RESULT">
+
+      <?rfc include='autogen/putrootfh_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTROOTFH_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        Replaces the current filehandle with the filehandle that
+        represents the root of the server's name space.  From this
+        filehandle a LOOKUP operation can locate any other filehandle
+        on the server. This filehandle may be different from the
+        "public" filehandle which may be associated with some other
+        directory on the server.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTROOTFH_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        Commonly used as the first operator in an NFS request to set
+        the context for following operations.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_PUTROOTFH_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_WRONGSEC
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_READ" title="Operation 25: READ - Read from File">
+
+    <section toc="exclude" anchor="OP_READ_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), stateid, offset, count -> eof, data
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_READ_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/read_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_READ_RESULT" title="RESULT">
+
+      <?rfc include='autogen/read_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_READ_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The READ operation reads data from the regular file identified
+        by the current filehandle.
+      </t>
+
+      <t>
+        The client provides an offset of where the READ is to start
+        and a count of how many bytes are to be read.  An offset
+        of 0 (zero) means to read data starting at the beginning of
+        the file.  If offset is greater than or equal to the size of
+        the file, the status, NFS4_OK, is returned with a data length
+        set to 0 (zero) and eof is set to TRUE.  The READ is subject
+        to access permissions checking.
+      </t>
+
+      <t>
+        If the client specifies a count value of 0 (zero), the READ
+        succeeds and returns 0 (zero) bytes of data again subject
+        to access permissions checking.  The server may choose to
+        return fewer bytes than specified by the client.  The client
+        needs to check for this condition and handle the condition
+        appropriately.
+      </t>
+
+      <t>
+        The stateid value for a READ request represents a value
+        returned from a previous record lock or share reservation
+        request.  The stateid is used by the server to verify that
+        the associated share reservation and any record locks are
+        still valid and to update lease timeouts for the client.
+      </t>
+
+      <t>
+        If the read ended at the end-of-file (formally, in a correctly
+        formed READ request, if offset + count is equal to the size of
+        the file), or the read request extends beyond the size of the
+        file (if offset + count is greater than the size of the file),
+        eof is returned as TRUE; otherwise it is FALSE.  A successful
+        READ of an empty file will always return eof as TRUE.
+      </t>
+
+      <t>
+        If the current filehandle is not a regular file, an error
+        will be returned to the client.  In the case the current
+        filehandle represents a directory, NFS4ERR_ISDIR is return;
+        otherwise, NFS4ERR_INVAL is returned.
+      </t>
+
+      <t>
+        For a READ with a stateid value of all bits 0, the server
+        MAY allow the READ to be serviced subject to mandatory file
+        locks or the current share deny modes for the file.  For a
+        READ with a stateid value of all bits 1, the server MAY allow
+        READ operations to bypass locking checks at the server.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_READ_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        It is possible for the server to return fewer than count bytes
+        of data.  If the server returns less than the count requested
+        and eof is set to FALSE, the client should issue another READ
+        to get the remaining data.  A server may return less data than
+        requested under several circumstances.  The file may have been
+        truncated by another client or perhaps on the server itself,
+        changing the file size from what the requesting client believes
+        to be the case.  This would reduce the actual amount of data
+        available to the client.  It is possible that the server may
+        back off the transfer size and reduce the read request return.
+        Server resource exhaustion may also occur necessitating a
+        smaller read return.
+      </t>
+
+      <t>
+        If mandatory file locking is on for the file, and if the region
+        corresponding to the data to be read from file is write locked
+        by an owner not associated the stateid, the server will return
+        the NFS4ERR_LOCKED error.  The client should try to get the
+        appropriate read record lock via the LOCK operation before
+        re-attempting the READ.  When the READ completes, the client
+        should release the record lock via LOCKU.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_READ_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_EXPIRED
+NFS4ERR_FHEXPIRED
+NFS4ERR_GRACE
+NFS4ERR_IO
+NFS4ERR_INVAL
+NFS4ERR_ISDIR
+NFS4ERR_LEASE_MOVED
+NFS4ERR_LOCKED
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NXIO
+NFS4ERR_OLD_STATEID
+NFS4ERR_OPENMODE
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_STATEID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_READDIR" title="Operation 26: READDIR - Read Directory">
+
+    <section toc="exclude" anchor="OP_READDIR_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), cookie, cookieverf, dircount, maxcount, attr_request ->
+cookieverf { cookie, name, attrs }
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_READDIR_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/readdir_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_READDIR_RESULT" title="RESULT">
+
+      <?rfc include='autogen/readdir_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_READDIR_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The READDIR operation retrieves a variable number of entries
+        from a filesystem directory and returns client requested
+        attributes for each entry along with information to allow
+        the client to request additional directory entries in a
+        subsequent READDIR.
+      </t>
+
+      <t>
+        The arguments contain a cookie value that represents where the
+        READDIR should start within the directory.  A value of 0 (zero)
+        for the cookie is used to start reading at the beginning of
+        the directory.  For subsequent READDIR requests, the client
+        specifies a cookie value that is provided by the server on
+        a previous READDIR request.
+      </t>
+
+      <t>
+        The cookieverf value should be set to 0 (zero) when the cookie
+        value is 0 (zero) (first directory read).  On subsequent
+        requests, it should be a cookieverf as returned by the server.
+        The cookieverf must match that returned by the READDIR in
+        which the cookie was acquired.  If the server determines
+        that the cookieverf is no longer valid for the directory,
+        the error NFS4ERR_NOT_SAME must be returned.
+      </t>
+
+      <t>
+        The dircount portion of the argument is a hint of the maximum
+        number of bytes of directory information that should be
+        returned.  This value represents the length of the names of
+        the directory entries and the cookie value for these entries.
+        This length represents the XDR encoding of the data (names and
+        cookies) and not the length in the native format of the server.
+      </t>
+
+      <t>
+        The maxcount value of the argument is the maximum number of
+        bytes for the result.  This maximum size represents all of
+        the data being returned within the READDIR4resok structure and
+        includes the XDR overhead.  The server may return less data.
+        If the server is unable to return a single directory entry
+        within the maxcount limit, the error NFS4ERR_TOOSMALL will
+        be returned to the client.
+      </t>
+
+      <t>
+        Finally, attr_request represents the list of attributes to
+        be returned for each directory entry supplied by the server.
+      </t>
+
+      <t>
+        On successful return, the server's response will provide a
+        list of directory entries.  Each of these entries contains the
+        name of the directory entry, a cookie value for that entry,
+        and the associated attributes as requested.  The "eof" flag has
+        a value of TRUE if there are no more entries in the directory.
+      </t>
+
+      <t>
+        The cookie value is only meaningful to the server and is
+        used as a "bookmark" for the directory entry.  As mentioned,
+        this cookie is used by the client for subsequent READDIR
+        operations so that it may continue reading a directory.
+        The cookie is similar in concept to a READ offset but should
+        not be interpreted as such by the client.  Ideally, the cookie
+        value should not change if the directory is modified since
+        the client may be caching these values.
+      </t>
+
+      <t>
+        In some cases, the server may encounter an error while
+        obtaining the attributes for a directory entry.  Instead of
+        returning an error for the entire READDIR operation, the
+        server can instead return the attribute 'fattr4_rdattr_error'.
+        With this, the server is able to communicate the failure to
+        the client and not fail the entire operation in the instance of
+        what might be a transient failure.  Obviously, the client must
+        request the fattr4_rdattr_error attribute for this method to
+        work properly.  If the client does not request the attribute,
+        the server has no choice but to return failure for the entire
+        READDIR operation.
+      </t>
+
+      <t>
+        For some filesystem environments, the directory entries "." and
+        ".."  have special meaning and in other environments, they
+        may not.  If the server supports these special entries within
+        a directory, they should not be returned to the client as part
+        of the READDIR response.  To enable some client environments,
+        the cookie values of 0, 1, and 2 are to be considered reserved.
+        Note that the UNIX client will use these values when combining
+        the server's response and local representations to enable a
+        fully formed UNIX directory presentation to the application.
+      </t>
+
+      <t>
+        For READDIR arguments, cookie values of 1 and 2 should not
+        be used and for READDIR results cookie values of 0, 1, and
+        2 should not be returned.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_READDIR_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        The server's filesystem directory representations can differ
+        greatly.  A client's programming interfaces may also be bound
+        to the local operating environment in a way that does not
+        translate well into the NFS protocol.  Therefore the use
+        of the dircount and maxcount fields are provided to allow
+        the client the ability to provide guidelines to the server.
+        If the client is aggressive about attribute collection during
+        a READDIR, the server has an idea of how to limit the encoded
+        response.  The dircount field provides a hint on the number of
+        entries based solely on the names of the directory entries.
+        Since it is a hint, it may be possible that a dircount value
+        is zero.  In this case, the server is free to ignore the
+        dircount value and return directory information based on the
+        specified maxcount value.
+      </t>
+
+      <t>
+        The cookieverf may be used by the server to help manage
+        cookie values that may become stale.  It should be a rare
+        occurrence that a server is unable to continue properly
+        reading a directory with the provided cookie/cookieverf pair.
+        The server should make every effort to avoid this condition
+        since the application at the client may not be able to properly
+        handle this type of failure.
+      </t>
+
+      <t>
+        The use of the cookieverf will also protect the client from
+        using READDIR cookie values that may be stale.  For example,
+        if the file system has been migrated, the server may or may
+        not be able to use the same cookie values to service READDIR
+        as the previous server used.  With the client providing the
+        cookieverf, the server is able to provide the appropriate
+        response to the client.  This prevents the case where the
+        server may accept a cookie value but the underlying directory
+        has changed and the response is invalid from the client's
+        context of its previous READDIR.
+      </t>
+
+      <t>
+        Since some servers will not be returning "." and ".." entries
+        as has been done with previous versions of the NFS protocol,
+        the client that requires these entries be present in READDIR
+        responses must fabricate them.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_READDIR_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_COOKIE
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOTDIR
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_TOOSMALL
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_READLINK" title="Operation 27: READLINK - Read Symbolic Link">
+
+    <section toc="exclude" anchor="OP_READLINK_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh) -> linktext
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_READLINK_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+/* CURRENT_FH: symlink */
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_READLINK_RESULT" title="RESULT">
+
+      <?rfc include='autogen/readlink_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_READLINK_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        READLINK reads the data associated with a symbolic link.
+        The data is a UTF-8 string that is opaque to the server.
+        That is, whether created by an NFS client or created locally
+        on the server, the data in a symbolic link is not interpreted
+        when created, but is simply stored.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_READLINK_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        A symbolic link is nominally a pointer to another file.
+        The data is not necessarily interpreted by the server, just
+        stored in the file.  It is possible for a client implementation
+        to store a path name that is not meaningful to the server
+        operating system in a symbolic link.  A READLINK operation
+        returns the data to the client for interpretation. If different
+        implementations want to share access to symbolic links,
+        then they must agree on the interpretation of the data in
+        the symbolic link.
+      </t>
+
+      <t>
+        The READLINK operation is only allowed on objects of type
+        NF4LNK.  The server should return the error, NFS4ERR_INVAL,
+        if the object is not of type, NF4LNK.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_READLINK_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADHANDLE
+NFS4ERR_DELAY
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_ISDIR
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOTSUPP
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_REMOVE" title="Operation 28: REMOVE - Remove Filesystem Object">
+
+    <section toc="exclude" anchor="OP_REMOVE_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), filename -> change_info
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_REMOVE_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/remove_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_REMOVE_RESULT" title="RESULT">
+
+      <?rfc include='autogen/remove_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_REMOVE_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The REMOVE operation removes (deletes) a directory entry
+        named by filename from the directory corresponding to the
+        current filehandle.  If the entry in the directory was the
+        last reference to the corresponding filesystem object, the
+        object may be destroyed.
+      </t>
+
+      <t>
+        For the directory where the filename was removed, the server
+        returns change_info4 information in cinfo.  With the atomic
+        field of the change_info4 struct, the server will indicate
+        if the before and after change attributes were obtained
+        atomically with respect to the removal.
+      </t>
+
+      <t>
+        If the target has a length of 0 (zero), or if target does
+        not obey the UTF-8 definition, the error NFS4ERR_INVAL will
+        be returned.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_REMOVE_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        NFS versions 2 and 3 required a different operator RMDIR for
+        directory removal and REMOVE for non-directory removal. This
+        allowed clients to skip checking the file type when being
+        passed a non-directory delete system call (e.g., unlink()
+        in POSIX) to remove a directory, as well as the converse
+        (e.g., a rmdir() on a non-directory) because they knew the
+        server would check the file type.  NFS version 4 REMOVE can
+        be used to delete any directory entry independent of its file
+        type. The implementor of an NFS version 4 client's entry
+        points from the unlink() and rmdir() system calls should
+        first check the file type against the types the system call
+        is allowed to remove before issuing a REMOVE. Alternatively,
+        the implementor can produce a COMPOUND call that includes
+        a LOOKUP/VERIFY sequence to verify the file type before a
+        REMOVE operation in the same COMPOUND call.
+      </t>
+
+      <t>
+        The concept of last reference is server specific.  However,
+        if the numlinks field in the previous attributes of the object
+        had the value 1, the client should not rely on referring to
+        the object via a filehandle.  Likewise, the client should
+        not rely on the resources (disk space, directory entry,
+        and so on) formerly associated with the object becoming
+        immediately available.  Thus, if a client needs to be able
+        to continue to access a file after using REMOVE to remove it,
+        the client should take steps to make sure that the file will
+        still be accessible.  The usual mechanism used is to RENAME
+        the file from its old name to a new hidden name.
+      </t>
+
+      <t>
+        If the server finds that the file is still open when the
+        REMOVE arrives:
+
+        <list style='symbols'>
+          <t>
+            The server SHOULD NOT delete the file's directory entry
+            if the file was opened with OPEN4_SHARE_DENY_WRITE or
+            OPEN4_SHARE_DENY_BOTH.
+          </t>
+
+          <t>
+            If the file was not opened with OPEN4_SHARE_DENY_WRITE or
+            OPEN4_SHARE_DENY_BOTH, the server SHOULD delete the file's
+            directory entry.  However, until last CLOSE of the file,
+            the server MAY continue to allow access to the file via
+            its filehandle.
+          </t>
+        </list>
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_REMOVE_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADNAME
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_FHEXPIRED
+NFS4ERR_FILE_OPEN
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NAMETOOLONG
+NFS4ERR_NOENT
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOTDIR
+NFS4ERR_NOTEMPTY
+NFS4ERR_RESOURCE
+NFS4ERR_ROFS
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_RENAME" title="Operation 29: RENAME - Rename Directory Entry">
+
+    <section toc="exclude" anchor="OP_RENAME_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(sfh), oldname, (cfh), newname -> source_change_info,
+target_change_info
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENAME_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/rename_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENAME_RESULT" title="RESULT">
+
+      <?rfc include='autogen/rename_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENAME_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The RENAME operation renames the object identified by
+        oldname in the source directory corresponding to the saved
+        filehandle, as set by the SAVEFH operation, to newname in
+        the target directory corresponding to the current filehandle.
+        The operation is required to be atomic to the client.  Source
+        and target directories must reside on the same filesystem on
+        the server.  On success, the current filehandle will continue
+        to be the target directory.
+      </t>
+
+      <t>
+        If the target directory already contains an entry with the
+        name, newname, the source object must be compatible with
+        the target: either both are non-directories or both are
+        directories and the target must be empty.  If compatible,
+        the existing target is removed before the rename occurs (See
+        <xref target="OP_REMOVE_IMPLEMENTATION" /> IMPLEMENTATION
+        of <xref target="OP_REMOVE" /> "Operation 28:
+        REMOVE - Remove Filesystem Object" for client and server
+        actions whenever a target is removed).  If they are not
+        compatible or if the target is a directory but not empty,
+        the server will return the error, NFS4ERR_EXIST.
+      </t>
+
+      <t>
+        If oldname and newname both refer to the same file (they might
+        be hard links of each other), then RENAME should perform no
+        action and return success.
+      </t>
+
+      <t>
+        For both directories involved in the RENAME, the server
+        returns change_info4 information.  With the atomic field
+        of the change_info4 struct, the server will indicate if the
+        before and after change attributes were obtained atomically
+        with respect to the rename.
+      </t>
+
+      <t>
+        If the oldname refers to a named attribute and the saved and
+        current filehandles refer to different filesystem objects,
+        the server will return NFS4ERR_XDEV just as if the saved
+        and current filehandles represented directories on different
+        filesystems.
+      </t>
+
+      <t>
+        If the oldname or newname has a length of 0 (zero), or if
+        oldname or newname does not obey the UTF-8 definition, the
+        error NFS4ERR_INVAL will be returned.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENAME_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        The RENAME operation must be atomic to the client.  The
+        statement "source and target directories must reside on the
+        same filesystem on the server" means that the fsid fields in
+        the attributes for the directories are the same. If they reside
+        on different filesystems, the error, NFS4ERR_XDEV, is returned.
+      </t>
+
+      <t>
+        Based on the value of the fh_expire_type attribute for the
+        object, the filehandle may or may not expire on a RENAME.
+        However, server implementors are strongly encouraged to
+        attempt to keep filehandles from expiring in this fashion.
+      </t>
+
+      <t>
+        On some servers, the file names "." and ".." are illegal
+        as either oldname or newname, and will result in the error
+        NFS4ERR_BADNAME.  In addition, on many servers the case of
+        oldname or newname being an alias for the source directory
+        will be checked for.  Such servers will return the error
+        NFS4ERR_INVAL in these cases.
+      </t>
+
+      <t>
+        If either of the source or target filehandles are not
+        directories, the server will return NFS4ERR_NOTDIR.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENAME_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADNAME
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_DQUOT
+NFS4ERR_EXIST
+NFS4ERR_FHEXPIRED
+NFS4ERR_FILE_OPEN
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_MOVED
+NFS4ERR_NAMETOOLONG
+NFS4ERR_NOENT
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOSPC
+NFS4ERR_NOTDIR
+NFS4ERR_NOTEMPTY
+NFS4ERR_RESOURCE
+NFS4ERR_ROFS
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_WRONGSEC
+NFS4ERR_XDEV
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_RENEW" title="Operation 30: RENEW - Renew a Lease">
+
+    <section toc="exclude" anchor="OP_RENEW_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+clientid -> ()
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENEW_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/renew_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENEW_RESULT" title="RESULT">
+
+      <?rfc include='autogen/renew_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENEW_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The RENEW operation is used by the client to renew leases
+        which it currently holds at a server.  In processing the
+        RENEW request, the server renews all leases associated with
+        the client.  The associated leases are determined by the
+        clientid provided via the SETCLIENTID operation.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENEW_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        When the client holds delegations, it needs to use RENEW to
+        detect when the server has determined that the callback path
+        is down.  When the server has made such a determination, only
+        the RENEW operation will renew the lease on delegations.
+        If the server determines the callback path is down, it
+        returns NFS4ERR_CB_PATH_DOWN.  Even though it returns
+        NFS4ERR_CB_PATH_DOWN, the server MUST renew the lease on
+        the record locks and share reservations that the client has
+        established on the server.  If for some reason the lock and
+        share reservation lease cannot be renewed, then the server
+        MUST return an error other than NFS4ERR_CB_PATH_DOWN, even
+        if the callback path is also down.
+      </t>
+
+      <t>
+        The client that issues RENEW MUST choose the principal,
+        RPC security flavor, and if applicable, GSS-API mechanism
+        and service via one of the following algorithms:
+
+        <list style='symbols'>
+          <t>
+            The client uses the same principal, RPC security flavor --
+            and if the flavor was RPCSEC_GSS -- the same mechanism and
+            service that was used when the client id was established
+            via SETCLIENTID_CONFIRM.
+          </t>
+
+          <t>
+            The client uses any principal, RPC security flavor mechanism
+            and service combination that currently has an OPEN file
+            on the server.  I.e.,  the same principal had a successful
+            OPEN operation, the file is still open by that principal,
+            and the flavor, mechanism, and service of RENEW match that
+            of the previous OPEN.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        The server MUST reject a RENEW that does not use one the
+        aforementioned algorithms, with the error NFS4ERR_ACCESS.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_RENEW_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BADXDR
+NFS4ERR_CB_PATH_DOWN
+NFS4ERR_EXPIRED
+NFS4ERR_LEASE_MOVED
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE_CLIENTID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_RESTOREFH" title="Operation 31: RESTOREFH - Restore Saved Filehandle">
+
+    <section toc="exclude" anchor="OP_RESTOREFH_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(sfh) -> (cfh)
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_RESTOREFH_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+/* SAVED_FH: */
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_RESTOREFH_RESULT" title="RESULT">
+
+      <?rfc include='autogen/restorefh_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_RESTOREFH_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        Set the current filehandle to the value in the saved
+        filehandle.  If there is no saved filehandle then return the
+        error NFS4ERR_RESTOREFH.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_RESTOREFH_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        Operations like OPEN and LOOKUP use the current filehandle to
+        represent a directory and replace it with a new filehandle.
+        Assuming the previous filehandle was saved with a SAVEFH
+        operator, the previous filehandle can be restored as
+        the current filehandle.  This is commonly used to obtain
+        post-operation attributes for the directory, e.g.,
+      </t>
+
+      <figure>
+        <artwork>
+PUTFH (directory filehandle)
+SAVEFH
+GETATTR attrbits     (pre-op dir attrs)
+CREATE optbits "foo" attrs
+GETATTR attrbits     (file attributes)
+RESTOREFH
+GETATTR attrbits     (post-op dir attrs)
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_RESTOREFH_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADHANDLE
+NFS4ERR_FHEXPIRED
+NFS4ERR_MOVED
+NFS4ERR_RESOURCE
+NFS4ERR_RESTOREFH
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_WRONGSEC
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_SAVEFH" title="Operation 32: SAVEFH - Save Current Filehandle">
+
+    <section toc="exclude" anchor="OP_SAVEFH_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh) -> (sfh)
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_SAVEFH_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+/* CURRENT_FH: */
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_SAVEFH_RESULT" title="RESULT">
+
+      <?rfc include='autogen/savefh_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_SAVEFH_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        Save the current filehandle.  If a previous filehandle was
+        saved then it is no longer accessible.  The saved filehandle
+        can be restored as the current filehandle with the RESTOREFH
+        operator.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_SAVEFH_IMPLEMENTATION" title="IMPLEMENTATION">
+
+    </section>
+    <section toc="exclude" anchor="OP_SAVEFH_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADHANDLE
+NFS4ERR_FHEXPIRED
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_SECINFO" title="Operation 33: SECINFO - Obtain Available Security">
+
+    <section toc="exclude" anchor="OP_SECINFO_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), name -> { secinfo }
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_SECINFO_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/secinfo_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_SECINFO_RESULT" title="RESULT">
+
+      <?rfc include='autogen/secinfo_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_SECINFO_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The SECINFO operation is used by the client to obtain a list
+        of valid RPC authentication flavors for a specific directory
+        filehandle, file name pair.  SECINFO should apply the same
+        access methodology used for LOOKUP when evaluating the name.
+        Therefore, if the requester does not have the appropriate
+        access to LOOKUP the name then SECINFO must behave the same
+        way and return NFS4ERR_ACCESS.
+      </t>
+
+      <t>
+        The result will contain an array which represents the security
+        mechanisms available, with an order corresponding to server's
+        preferences, the most preferred being first in the array. The
+        client is free to pick whatever security mechanism it both
+        desires and supports, or to pick in the server's preference
+        order the first one it supports.  The array entries are
+        represented by the secinfo4 structure.  The field 'flavor'
+        will contain a value of AUTH_NONE, AUTH_SYS (as defined in
+        <xref target="RFC1831" />), or RPCSEC_GSS (as defined in <xref target="RFC2203" />).
+      </t>
+
+      <t>
+        For the flavors AUTH_NONE and AUTH_SYS, no additional security
+        information is returned.  For a return value of RPCSEC_GSS,
+        a security triple is returned that contains the mechanism
+        object id (as defined in <xref target="RFC2743" />), the quality of protection
+        (as defined in <xref target="RFC2743" />) and the service type (as defined in
+        <xref target="RFC2203" />).  It is possible for SECINFO to return multiple
+        entries with flavor equal to RPCSEC_GSS with different security
+        triple values.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+      <t>
+        If the name has a length of 0 (zero), or if name does not obey
+        the UTF-8 definition, the error NFS4ERR_INVAL will be returned.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_SECINFO_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        The SECINFO operation is expected to be used by the NFS
+        client when the error value of NFS4ERR_WRONGSEC is returned
+        from another NFS operation.  This signifies to the client
+        that the server's security policy is different from what
+        the client is currently using.  At this point, the client is
+        expected to obtain a list of possible security flavors and
+        choose what best suits its policies.
+      </t>
+
+      <t>
+        As mentioned, the server's security policies will
+        determine when a client request receives NFS4ERR_WRONGSEC.
+        The operations which may receive this error are: LINK,
+        LOOKUP, OPEN, PUTFH, PUTPUBFH, PUTROOTFH, RESTOREFH,
+        RENAME, and indirectly READDIR.  LINK and RENAME will only
+        receive this error if the security used for the operation
+        is inappropriate for saved filehandle.  With the exception
+        of READDIR, these operations represent the point at which
+        the client can instantiate a filehandle into the "current
+        filehandle" at the server.  The filehandle is either provided
+        by the client (PUTFH, PUTPUBFH, PUTROOTFH) or generated as a
+        result of a name to filehandle translation (LOOKUP and OPEN).
+        RESTOREFH is different because the filehandle is a result of a
+        previous SAVEFH.  Even though the filehandle, for RESTOREFH,
+        might have previously passed the server's inspection for a
+        security match, the server will check it again on RESTOREFH
+        to ensure that the security policy has not changed.
+      </t>
+
+      <t>
+        If the client wants to resolve an error return of
+        NFS4ERR_WRONGSEC, the following will occur:
+
+        <list style='symbols'>
+          <t>
+            For LOOKUP and OPEN, the client will use SECINFO with the
+            same current filehandle and name as provided in the original
+            LOOKUP or OPEN to enumerate the available security triples.
+          </t>
+
+          <t>
+            For LINK, PUTFH, RENAME, and RESTOREFH, the client will
+            use SECINFO and provide the parent directory filehandle and
+            object name which corresponds to the filehandle originally
+            provided by the PUTFH RESTOREFH, or for LINK and RENAME,
+            the SAVEFH.
+          </t>
+
+          <t>
+            For PUTROOTFH and PUTPUBFH, the client will be unable
+            to use the SECINFO operation since SECINFO requires a
+            current filehandle and none exist for these two operations.
+            Therefore, the client must iterate through the security
+            triples available at the client and reattempt the PUTROOTFH
+            or PUTPUBFH operation. In the unfortunate event none
+            of the MANDATORY security triples are supported by the
+            client and server, the client SHOULD try using others that
+            support integrity. Failing that, the client can try using
+            AUTH_NONE, but because such forms lack integrity checks,
+            this puts the client at risk.  Nonetheless, the server
+            SHOULD allow the client to use whatever security form the
+            client requests and the server supports, since the risks
+            of doing so are on the client.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        The READDIR operation will not directly return the
+        NFS4ERR_WRONGSEC error.  However, if the READDIR request
+        included a request for attributes, it is possible that the
+        READDIR request's security triple does not match that of
+        a directory entry.  If this is the case and the client has
+        requested the rdattr_error attribute, the server will return
+        the NFS4ERR_WRONGSEC error in rdattr_error for the entry.
+      </t>
+
+      <t>
+        See <xref target="Security Considerations" />
+        "Security Considerations" for a discussion
+        on the recommendations for security flavor used by SECINFO.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_SECINFO_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADNAME
+NFS4ERR_BADXDR
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_MOVED
+NFS4ERR_NAMETOOLONG
+NFS4ERR_NOENT
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOTDIR
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_SETATTR" title="Operation 34: SETATTR - Set Attributes">
+
+    <section toc="exclude" anchor="OP_SETATTR_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), stateid, attrmask, attr_vals -> attrsset
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETATTR_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/setattr_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETATTR_RESULT" title="RESULT">
+
+      <?rfc include='autogen/setattr_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETATTR_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The SETATTR operation changes one or more of the attributes of
+        a filesystem object.  The new attributes are specified with a
+        bitmap and the attributes that follow the bitmap in bit order.
+      </t>
+
+      <t>
+        The stateid argument for SETATTR is used to provide file
+        locking context that is necessary for SETATTR requests that
+        set the size attribute.  Since setting the size attribute
+        modifies the file's data, it has the same locking requirements
+        as a corresponding WRITE.  Any SETATTR that sets the size
+        attribute is incompatible with a share reservation that
+        specifies DENY_WRITE.  The area between the old end-of-file
+        and the new end-of-file is considered to be modified just
+        as would have been the case had the area in question been
+        specified as the target of WRITE, for the purpose of checking
+        conflicts with record locks, for those cases in which a
+        server is implementing mandatory record locking behavior.
+        A valid stateid should always be specified.  When the file
+        size attribute is not set, the special stateid consisting of
+        all bits zero should be passed.
+      </t>
+
+      <t>
+        On either success or failure of the operation, the server
+        will return the attrsset bitmask to represent what (if any)
+        attributes were successfully set.  The attrsset in the response
+        is a subset of the bitmap4 that is part of the obj_attributes
+        in the argument.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETATTR_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        If the request specifies the owner attribute to be set, the
+        server should allow the operation to succeed if the current
+        owner of the object matches the value specified in the request.
+        Some servers may be implemented in a way as to prohibit
+        the setting of the owner attribute unless the requester has
+        privilege to do so.  If the server is lenient in this one
+        case of matching owner values, the client implementation may
+        be simplified in cases of creation of an object followed by
+        a SETATTR.
+      </t>
+
+      <t>
+        The file size attribute is used to request changes to the
+        size of a file. A value of 0 (zero) causes the file to
+        be truncated, a value less than the current size of the
+        file causes data from new size to the end of the file to
+        be discarded, and a size greater than the current size of
+        the file causes logically zeroed data bytes to be added to
+        the end of the file.  Servers are free to implement this
+        using holes or actual zero data bytes. Clients should not
+        make any assumptions regarding a server's implementation of
+        this feature, beyond that the bytes returned will be zeroed.
+        Servers must support extending the file size via SETATTR.
+      </t>
+
+      <t>
+        SETATTR is not guaranteed atomic.  A failed SETATTR may
+        partially change a file's attributes.
+      </t>
+
+      <t>
+        Changing the size of a file with SETATTR indirectly changes
+        the time_modify.  A client must account for this as size
+        changes can result in data deletion.
+      </t>
+
+      <t>
+        The attributes time_access_set and time_modify_set are
+        write-only attributes constructed as a switched union so the
+        client can direct the server in setting the time values.
+        If the switched union specifies SET_TO_CLIENT_TIME4, the
+        client has provided an nfstime4 to be used for the operation.
+        If the switch union does not specify SET_TO_CLIENT_TIME4, the
+        server is to use its current time for the SETATTR operation.
+      </t>
+
+      <t>
+        If server and client times differ, programs that compare
+        client time to file times can break. A time maintenance
+        protocol should be used to limit client/server time skew.
+      </t>
+
+      <t>
+        Use of a COMPOUND containing a VERIFY operation specifying
+        only the change attribute, immediately followed by a SETATTR,
+        provides a means whereby a client may specify a request that
+        emulates the functionality of the SETATTR guard mechanism of
+        NFS version 3.  Since the function of the guard mechanism
+        is to avoid changes to the file attributes based on stale
+        information, delays between checking of the guard condition
+        and the setting of the attributes have the potential to
+        compromise this function, as would the corresponding delay in
+        the NFS version 4 emulation.  Therefore, NFS version 4 servers
+        should take care to avoid such delays, to the degree possible,
+        when executing such a request.
+      </t>
+
+      <t>
+        If the server does not support an attribute as requested by
+        the client, the server should return NFS4ERR_ATTRNOTSUPP.
+      </t>
+
+      <t>
+        A mask of the attributes actually set is returned by SETATTR
+        in all cases.  That mask must not include attributes bits not
+        requested to be set by the client, and must be equal to the
+        mask of attributes requested to be set only if the SETATTR
+        completes without error.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETATTR_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_ATTRNOTSUPP
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADOWNER
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_DQUOT
+NFS4ERR_EXPIRED
+NFS4ERR_FBIG
+NFS4ERR_FHEXPIRED
+NFS4ERR_GRACE
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_ISDIR
+NFS4ERR_LOCKED
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOSPC
+NFS4ERR_OLD_STATEID
+NFS4ERR_OPENMODE
+NFS4ERR_PERM
+NFS4ERR_RESOURCE
+NFS4ERR_ROFS
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_STATEID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_SETCLIENTID" title="Operation 35: SETCLIENTID - Negotiate Clientid">
+
+    <section toc="exclude" anchor="OP_SETCLIENTID_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+client, callback, callback_ident -> clientid, setclientid_confirm
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/setclientid_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_RESULT" title="RESULT">
+
+      <?rfc include='autogen/setclientid_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The client uses the SETCLIENTID operation to notify the server
+        of its intention to use a particular client identifier,
+        callback, and callback_ident for subsequent requests that
+        entail creating lock, share reservation, and delegation
+        state on the server.  Upon successful completion the server
+        will return a shorthand clientid which, if confirmed via a
+        separate step, will be used in subsequent file locking and
+        file open requests. Confirmation of the clientid must be done
+        via the SETCLIENTID_CONFIRM operation to return the clientid
+        and setclientid_confirm values, as verifiers, to the server.
+        The reason why two verifiers are necessary is that it is
+        possible to use SETCLIENTID and SETCLIENTID_CONFIRM to modify
+        the callback and callback_ident information but not the
+        shorthand clientid.  In that event, the setclientid_confirm
+        value is effectively the only verifier.
+      </t>
+
+      <t>
+        The callback information provided in this operation will
+        be used if the client is provided an open delegation at a
+        future point.  Therefore, the client must correctly reflect
+        the program and port numbers for the callback program at the
+        time SETCLIENTID is used.
+      </t>
+
+      <t>
+        The callback_ident value is used by the server on the callback.
+        The client can leverage the callback_ident to eliminate the
+        need for more than one callback RPC program number, while
+        still being able to determine which server is initiating
+        the callback.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        To understand how to implement SETCLIENTID, make the following
+        notations. Let:
+
+        <list style='hanging'>
+          <t hangText="x">
+            be the value of the client.id subfield of the
+            SETCLIENTID4args structure.
+          </t>
+
+          <t hangText="v">
+            be the value of the client.verifier subfield of the
+            SETCLIENTID4args structure.
+          </t>
+
+          <t hangText="c">
+            be the value of the clientid field returned in the
+            SETCLIENTID4resok structure.
+          </t>
+
+          <t hangText="k">
+            represent the value combination of the fields callback and
+            callback_ident fields of the SETCLIENTID4args structure.
+          </t>
+
+          <t hangText="s">
+            be the setclientid_confirm value returned in the
+            SETCLIENTID4resok structure.
+          </t>
+
+          <t hangText="{ v, x, c, k, s }">
+            be a quintuple for a client record. A client
+            record is confirmed if there has been a SETCLIENTID_CONFIRM
+            operation to confirm it.  Otherwise it is unconfirmed. An
+            unconfirmed record is established by a SETCLIENTID call.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        Since SETCLIENTID is a non-idempotent operation, let us assume
+        that the server is implementing the duplicate request cache
+        (DRC).
+      </t>
+
+      <t>
+        When the server gets a SETCLIENTID { v, x, k } request,
+        it processes it in the following manner.
+
+        <list style='symbols'>
+          <t>
+            It first looks up the request in the DRC. If there is a
+            hit, it returns the result cached in the DRC.  The server
+            does NOT remove client state (locks, shares, delegations)
+            nor does it modify any recorded callback and callback_ident
+            information for client { x }.
+          <vspace blankLines='1' />
+            For any DRC miss, the server takes the client id string
+            x, and searches for client records for x that the server
+            may have recorded from previous SETCLIENTID calls. For
+            any confirmed record with the same id string x, if the
+            recorded principal does not match that of SETCLIENTID call,
+            then the server returns a NFS4ERR_CLID_INUSE error.
+          <vspace blankLines='1' />
+            For brevity of discussion, the remaining description of
+            the processing assumes that there was a DRC miss, and
+            that where the server has previously recorded a confirmed
+            record for client x, the aforementioned principal check
+            has successfully passed.
+          </t>
+
+          <t>
+            The server checks if it has recorded a confirmed record for
+            { v, x, c, l, s }, where l may or may not equal k. If so,
+            and since the id verifier v of the request matches that
+            which is confirmed and recorded, the server treats this
+            as a probable callback information update and records an
+            unconfirmed { v, x, c, k, t } and leaves the confirmed { v,
+            x, c, l, s } in place, such that t != s. It does not matter
+            if k equals l or not.  Any pre-existing unconfirmed { v,
+            x, c, *, * } is removed.
+          <vspace blankLines='1' />
+            The server returns { c, t }. It is indeed returning the
+            old clientid4 value c, because the client apparently only
+            wants to update callback value k to value l.  It's possible
+            this request is one from the Byzantine router that has
+            stale callback information, but this is not a problem.
+            The callback information update is only confirmed if
+            followed up by a SETCLIENTID_CONFIRM { c, t }.
+          <vspace blankLines='1' />
+            The server awaits confirmation of k via SETCLIENTID_CONFIRM
+            { c, t }.
+          <vspace blankLines='1' />
+            The server does NOT remove client (lock/share/delegation)
+            state for x.
+          </t>
+
+          <t>
+            The server has previously recorded a confirmed { u, x, c,
+            l, s } record such that v != u, l may or may not equal k,
+            and has not recorded any unconfirmed { *, x, *, *, * }
+            record for x.  The server records an unconfirmed { v, x,
+            d, k, t } (d != c, t != s).
+          <vspace blankLines='1' />
+            The server returns { d, t }.
+          <vspace blankLines='1' />
+            The server awaits confirmation of { d, k } via
+            SETCLIENTID_CONFIRM { d, t }.
+          <vspace blankLines='1' />
+            The server does NOT remove client (lock/share/delegation)
+            state for x.
+          </t>
+
+          <t>
+            The server has previously recorded a confirmed { u, x, c,
+            l, s } record such that v != u, l may or may not equal k,
+            and recorded an unconfirmed { w, x, d, m, t } record such
+            that c != d, t != s, m may or may not equal k, m may or may
+            not equal l, and k may or may not equal l. Whether w == v
+            or w != v makes no difference.  The server simply removes
+            the unconfirmed { w, x, d, m, t } record and replaces it
+            with an unconfirmed { v, x, e, k, r } record, such that e !=
+            d, e != c, r != t, r != s.
+          <vspace blankLines='1' />
+            The server returns { e, r }.
+          <vspace blankLines='1' />
+            The server awaits confirmation of { e, k } via
+            SETCLIENTID_CONFIRM { e, r }.
+          <vspace blankLines='1' />
+            The server does NOT remove client (lock/share/delegation)
+            state for x.
+          </t>
+
+          <t>
+            The server has no confirmed { *, x, *, *, * } for x. It
+            may or may not have recorded an unconfirmed { u, x, c,
+            l, s }, where l may or may not equal k, and u may or may
+            not equal v.  Any unconfirmed record { u, x, c, l, * },
+            regardless whether u == v or l == k, is replaced with an
+            unconfirmed record { v, x, d, k, t } where d != c, t != s.
+          <vspace blankLines='1' />
+            The server returns { d, t }.
+          <vspace blankLines='1' />
+            The server awaits confirmation of { d, k } via
+            SETCLIENTID_CONFIRM { d, t }.  The server does NOT remove
+            client (lock/share/delegation) state for x.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        The server generates the clientid and setclientid_confirm
+        values and must take care to ensure that these values are
+        extremely unlikely to ever be regenerated.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADXDR
+NFS4ERR_CLID_INUSE
+NFS4ERR_INVAL
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_SETCLIENTID_CONFIRM" title="Operation 36: SETCLIENTID_CONFIRM - Confirm Clientid">
+
+    <section toc="exclude" anchor="OP_SETCLIENTID_CONFIRM_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+clientid, verifier -> -
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_CONFIRM_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/setclientid_confirm_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_CONFIRM_RESULT" title="RESULT">
+
+      <?rfc include='autogen/setclientid_confirm_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_CONFIRM_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        This operation is used by the client to confirm the results
+        from a previous call to SETCLIENTID.  The client provides
+        the server supplied (from a SETCLIENTID response) clientid.
+        The server responds with a simple status of success or failure.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_CONFIRM_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        The client must use the SETCLIENTID_CONFIRM operation to
+        confirm the following two distinct cases:
+
+        <list style='symbols'>
+          <t>
+            The client's use of a new shorthand client identifier (as
+            returned from the server in the response to SETCLIENTID),
+            a new callback value (as specified in the arguments
+            to SETCLIENTID) and a new callback_ident (as specified
+            in the arguments to SETCLIENTID) value.  The client's
+            use of SETCLIENTID_CONFIRM in this case also confirms
+            the removal of any of the client's previous relevant
+            leased state. Relevant leased client state includes
+            record locks, share reservations, and where the server
+            does not support the CLAIM_DELEGATE_PREV claim type,
+            delegations.  If the server supports CLAIM_DELEGATE_PREV,
+            then SETCLIENTID_CONFIRM MUST NOT remove delegations for
+            this client; relevant leased client state would then just
+            include record locks and share reservations.
+          </t>
+
+          <t>
+            The client's re-use of an old, previously confirmed,
+            shorthand client identifier, a new callback value,
+            and a new callback_ident value.  The client's use of
+            SETCLIENTID_CONFIRM in this case MUST NOT result in
+            the removal of any previous leased state (locks, share
+            reservations, and delegations)
+          </t>
+        </list>
+      </t>
+
+      <t>
+        We use the same notation and definitions for v, x, c, k, s,
+        and unconfirmed and confirmed client records as introduced in
+        the description of the SETCLIENTID operation. The arguments
+        to SETCLIENTID_CONFIRM are indicated by the notation { c, s
+        }, where c is a value of type clientid4, and s is a value of
+        type verifier4 corresponding to the setclientid_confirm field.
+      </t>
+
+      <t>
+        As with SETCLIENTID, SETCLIENTID_CONFIRM is a non-idempotent
+        operation, and we assume that the server is implementing the
+        duplicate request cache (DRC).
+      </t>
+
+      <t>
+        When the server gets a SETCLIENTID_CONFIRM { c, s } request,
+        it processes it in the following manner.
+
+        <list style='symbols'>
+          <t>
+            It first looks up the request in the DRC. If there is a hit,
+            it returns the result cached in the DRC.  The server does
+            not remove any relevant leased client state nor does it
+            modify any recorded callback and callback_ident information
+            for client { x } as represented by the shorthand value c.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        For a DRC miss, the server checks for client records that match
+        the shorthand value c.  The processing cases are as follows:
+
+        <list style='symbols'>
+          <t>
+            The server has recorded an unconfirmed { v, x, c, k, s }
+            record and a confirmed { v, x, c, l, t } record, such
+            that s != t.  If the principals of the records do not
+            match that of the SETCLIENTID_CONFIRM, the server returns
+            NFS4ERR_CLID_INUSE, and no relevant leased client state
+            is removed and no recorded callback and callback_ident
+            information for client { x } is changed.  Otherwise, the
+            confirmed { v, x, c, l, t } record is removed and the
+            unconfirmed { v, x, c, k, s } is marked as confirmed,
+            thereby modifying recorded and confirmed callback and
+            callback_ident information for client { x }.
+          <vspace blankLines='1' />
+            The server does not remove any relevant leased client state.
+          <vspace blankLines='1' />
+            The server returns NFS4_OK.
+          </t>
+
+          <t>
+            The server has not recorded an unconfirmed { v, x, c, *, *
+            } and has recorded a confirmed { v, x, c, *, s }. If the
+            principals of the record and of SETCLIENTID_CONFIRM do
+            not match, the server returns NFS4ERR_CLID_INUSE without
+            removing any relevant leased client state and without
+            changing recorded callback and callback_ident values for
+            client { x }.
+          <vspace blankLines='1' />
+            If the principals match, then what has likely
+            happened is that the client never got the response
+            from the SETCLIENTID_CONFIRM, and the DRC entry has been
+            purged. Whatever the scenario, since the principals match,
+            as well as { c, s } matching a confirmed record, the server
+            leaves client x's relevant leased client state intact,
+            leaves its callback and callback_ident values unmodified,
+            and returns NFS4_OK.
+          </t>
+
+          <t>
+            The server has not recorded a confirmed { *, *, c, *, *
+            }, and has recorded an unconfirmed { *, x, c, k, s }.
+            Even if this is a retry from client, nonetheless the
+            client's first SETCLIENTID_CONFIRM attempt was not received
+            by the server.  Retry or not, the server doesn't know, but
+            it processes it as if were a first try.  If the principal
+            of the unconfirmed { *, x, c, k, s } record mismatches
+            that of the SETCLIENTID_CONFIRM request the server returns
+            NFS4ERR_CLID_INUSE without removing any relevant leased
+            client state.
+          <vspace blankLines='1' />
+            Otherwise, the server records a confirmed { *, x, c, k,
+            s }. If there is also a confirmed { *, x, d, *, t },
+            the server MUST remove the client x's relevant leased
+            client state, and overwrite the callback state with k. The
+            confirmed record { *, x, d, *, t } is removed.
+          <vspace blankLines='1' />
+            Server returns NFS4_OK.
+          </t>
+
+          <t>
+            The server has no record of a confirmed or unconfirmed { *,
+            *, c, *, s }.  The server returns NFS4ERR_STALE_CLIENTID.
+            The server does not remove any relevant leased client state,
+            nor does it modify any recorded callback and callback_ident
+            information for any client.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        The server needs to cache unconfirmed { v, x, c, k, s } client
+        records and await for some time their confirmation.  As should
+        be clear from the record processing discussions for SETCLIENTID
+        and SETCLIENTID_CONFIRM, there are cases where the server
+        does not deterministically remove unconfirmed client records.
+        To avoid running out of resources, the server is not required
+        to hold unconfirmed records indefinitely.  One strategy the
+        server might use is to set a limit on how many unconfirmed
+        client records it will maintain, and then when the limit
+        would be exceeded, remove the oldest record. Another strategy
+        might be to remove an unconfirmed record when some amount of
+        time has elapsed. The choice of the amount of time is fairly
+        arbitrary but it is surely no higher than the server's lease
+        time period. Consider that leases need to be renewed before
+        the lease time expires via an operation from the client.
+        If the client cannot issue a SETCLIENTID_CONFIRM after a
+        SETCLIENTID before a period of time equal to that of a lease
+        expires, then the client is unlikely to be able maintain
+        state on the server during steady state operation.
+      </t>
+
+      <t>
+        If the client does send a SETCLIENTID_CONFIRM for an
+        unconfirmed record that the server has already deleted, the
+        client will get NFS4ERR_STALE_CLIENTID back.  If so, the client
+        should then start over, and send SETCLIENTID to reestablish
+        an unconfirmed client record and get back an unconfirmed
+        clientid and setclientid_confirm verifier.  The client should
+        then send the SETCLIENTID_CONFIRM to confirm the clientid.
+      </t>
+
+      <t>
+        SETCLIENTID_CONFIRM does not establish or renew a lease.
+        However, if SETCLIENTID_CONFIRM removes relevant leased client
+        state, and that state does not include existing delegations,
+        the server MUST allow the client a period of time no less
+        than the value of lease_time attribute, to reclaim, (via
+        the CLAIM_DELEGATE_PREV claim type of the OPEN operation)
+        its delegations before removing unreclaimed delegations.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_SETCLIENTID_CONFIRM_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADXDR
+NFS4ERR_CLID_INUSE
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE_CLIENTID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_VERIFY" title="Operation 37: VERIFY - Verify Same Attributes">
+
+    <section toc="exclude" anchor="OP_VERIFY_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), fattr -> -
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_VERIFY_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/verify_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_VERIFY_RESULT" title="RESULT">
+
+      <?rfc include='autogen/verify_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_VERIFY_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The VERIFY operation is used to verify that attributes have a
+        value assumed by the client before proceeding with following
+        operations in the compound request.  If any of the attributes
+        do not match then the error NFS4ERR_NOT_SAME must be returned.
+        The current filehandle retains its value after successful
+        completion of the operation.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_VERIFY_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        One possible use of the VERIFY operation is the following
+        compound sequence.  With this the client is attempting to
+        verify that the file being removed will match what the client
+        expects to be removed.  This sequence can help prevent the
+        unintended deletion of a file.
+      </t>
+
+      <figure>
+        <artwork>
+PUTFH (directory filehandle)
+LOOKUP (file name)
+VERIFY (filehandle == fh)
+PUTFH (directory filehandle)
+REMOVE (file name)
+        </artwork>
+      </figure>
+
+      <t>
+        This sequence does not prevent a second client from removing
+        and creating a new file in the middle of this sequence but
+        it does help avoid the unintended result.
+      </t>
+
+      <t>
+        In the case that a recommended attribute is specified in the
+        VERIFY operation and the server does not support that attribute
+        for the filesystem object, the error NFS4ERR_ATTRNOTSUPP is
+        returned to the client.
+      </t>
+
+      <t>
+        When the attribute rdattr_error or any write-only attribute
+        (e.g., time_modify_set) is specified, the error NFS4ERR_INVAL
+        is returned to the client.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_VERIFY_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ATTRNOTSUPP
+NFS4ERR_BADCHAR
+NFS4ERR_BADHANDLE
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_FHEXPIRED
+NFS4ERR_INVAL
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOT_SAME
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_WRITE" title="Operation 38: WRITE - Write to File">
+
+    <section toc="exclude" anchor="OP_WRITE_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+(cfh), stateid, offset, stable, data -> count, committed, writeverf
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_WRITE_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/write_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_WRITE_RESULT" title="RESULT">
+
+      <?rfc include='autogen/write_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_WRITE_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The WRITE operation is used to write data to a regular file.
+        The target file is specified by the current filehandle.
+        The offset specifies the offset where the data should be
+        written.  An offset of 0 (zero) specifies that the write should
+        start at the beginning of the file.  The count, as encoded
+        as part of the opaque data parameter, represents the number
+        of bytes of data that are to be written.  If the count is 0
+        (zero), the WRITE will succeed and return a count of 0 (zero)
+        subject to permissions checking.  The server may choose to
+        write fewer bytes than requested by the client.
+      </t>
+
+      <t>
+        Part of the write request is a specification of how the write
+        is to be performed.  The client specifies with the stable
+        parameter the method of how the data is to be processed
+        by the server.  If stable is FILE_SYNC4, the server must
+        commit the data written plus all filesystem metadata to stable
+        storage before returning results.  This corresponds to the NFS
+        version 2 protocol semantics.  Any other behavior constitutes a
+        protocol violation.  If stable is DATA_SYNC4, then the server
+        must commit all of the data to stable storage and enough of
+        the metadata to retrieve the data before returning.  The server
+        implementor is free to implement DATA_SYNC4 in the same fashion
+        as FILE_SYNC4, but with a possible performance drop.  If stable
+        is UNSTABLE4, the server is free to commit any part of the
+        data and the metadata to stable storage, including all or none,
+        before returning a reply to the client. There is no guarantee
+        whether or when any uncommitted data will subsequently be
+        committed to stable storage. The only guarantees made by the
+        server are that it will not destroy any data without changing
+        the value of verf and that it will not commit the data and
+        metadata at a level less than that requested by the client.
+      </t>
+
+      <t>
+        The stateid value for a WRITE request represents a value
+        returned from a previous record lock or share reservation
+        request.  The stateid is used by the server to verify that
+        the associated share reservation and any record locks are
+        still valid and to update lease timeouts for the client.
+      </t>
+
+      <t>
+        Upon successful completion, the following results are returned.
+        The count result is the number of bytes of data written to
+        the file. The server may write fewer bytes than requested. If
+        so, the actual number of bytes written starting at location,
+        offset, is returned.
+      </t>
+
+      <t>
+        The server also returns an indication of the level of
+        commitment of the data and metadata via committed. If the
+        server committed all data and metadata to stable storage,
+        committed should be set to FILE_SYNC4. If the level of
+        commitment was at least as strong as DATA_SYNC4, then
+        committed should be set to DATA_SYNC4.  Otherwise, committed
+        must be returned as UNSTABLE4. If stable was FILE4_SYNC, then
+        committed must also be FILE_SYNC4: anything else constitutes a
+        protocol violation. If stable was DATA_SYNC4, then committed
+        may be FILE_SYNC4 or DATA_SYNC4: anything else constitutes a
+        protocol violation. If stable was UNSTABLE4, then committed
+        may be either FILE_SYNC4, DATA_SYNC4, or UNSTABLE4.
+      </t>
+
+      <t>
+        The final portion of the result is the write verifier.
+        The write verifier is a cookie that the client can use to
+        determine whether the server has changed instance (boot) state
+        between a call to WRITE and a subsequent call to either WRITE
+        or COMMIT.  This cookie must be consistent during a single
+        instance of the NFS version 4 protocol service and must be
+        unique between instances of the NFS version 4 protocol server,
+        where uncommitted data may be lost.
+      </t>
+
+      <t>
+        If a client writes data to the server with the stable argument
+        set to UNSTABLE4 and the reply yields a committed response
+        of DATA_SYNC4 or UNSTABLE4, the client will follow up some
+        time in the future with a COMMIT operation to synchronize
+        outstanding asynchronous data and metadata with the server's
+        stable storage, barring client error. It is possible that due
+        to client crash or other error that a subsequent COMMIT will
+        not be received by the server.
+      </t>
+
+      <t>
+        For a WRITE with a stateid value of all bits 0, the server
+        MAY allow the WRITE to be serviced subject to mandatory file
+        locks or the current share deny modes for the file.  For a
+        WRITE with a stateid value of all bits 1, the server MUST
+        NOT allow the WRITE operation to bypass locking checks at
+        the server and are treated exactly the same as if a stateid
+        of all bits 0 were used.
+      </t>
+
+      <t>
+        On success, the current filehandle retains its value.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_WRITE_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        It is possible for the server to write fewer bytes of data than
+        requested by the client.  In this case, the server should not
+        return an error unless no data was written at all.  If the
+        server writes less than the number of bytes specified, the
+        client should issue another WRITE to write the remaining data.
+      </t>
+
+      <t>
+        It is assumed that the act of writing data to a file will
+        cause the time_modified of the file to be updated.  However,
+        the time_modified of the file should not be changed unless
+        the contents of the file are changed.  Thus, a WRITE request
+        with count set to 0 should not cause the time_modified of
+        the file to be updated.
+      </t>
+
+      <t>
+        The definition of stable storage has been historically a
+        point of contention.  The following expected properties of
+        stable storage may help in resolving design issues in the
+        implementation. Stable storage is persistent storage that
+        survives:
+
+        <list style='numbers'>
+          <t>
+            Repeated power failures.
+          </t>
+
+          <t>
+            Hardware failures (of any board, power supply, etc.).
+          </t>
+
+          <t>
+            Repeated software crashes, including reboot cycle.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        This definition does not address failure of the stable storage
+        module itself.
+      </t>
+
+      <t>
+        The verifier is defined to allow a client to detect different
+        instances of an NFS version 4 protocol server over which
+        cached, uncommitted data may be lost. In the most likely case,
+        the verifier allows the client to detect server reboots.  This
+        information is required so that the client can safely determine
+        whether the server could have lost cached data.  If the server
+        fails unexpectedly and the client has uncommitted data from
+        previous WRITE requests (done with the stable argument set
+        to UNSTABLE4 and in which the result committed was returned
+        as UNSTABLE4 as well) it may not have flushed cached data to
+        stable storage. The burden of recovery is on the client and
+        the client will need to retransmit the data to the server.
+      </t>
+
+      <t>
+        A suggested verifier would be to use the time that the
+        server was booted or the time the server was last started
+        (if restarting the server without a reboot results in lost
+        buffers).
+      </t>
+
+      <t>
+        The committed field in the results allows the client to do
+        more effective caching.  If the server is committing all
+        WRITE requests to stable storage, then it should return with
+        committed set to FILE_SYNC4, regardless of the value of the
+        stable field in the arguments. A server that uses an NVRAM
+        accelerator may choose to implement this policy.  The client
+        can use this to increase the effectiveness of the cache by
+        discarding cached data that has already been committed on
+        the server.
+      </t>
+
+      <t>
+        Some implementations may return NFS4ERR_NOSPC instead of
+        NFS4ERR_DQUOT when a user's quota is exceeded.  In the case
+        that the current filehandle is a directory, the server
+        will return NFS4ERR_ISDIR.  If the current filehandle is
+        not a regular file or a directory, the server will return
+        NFS4ERR_INVAL.
+      </t>
+
+      <t>
+        If mandatory file locking is on for the file, and corresponding
+        record of the data to be written file is read or write locked
+        by an owner that is not associated with the stateid, the server
+        will return NFS4ERR_LOCKED. If so, the client must check if
+        the owner corresponding to the stateid used with the WRITE
+        operation has a conflicting read lock that overlaps with
+        the region that was to be written. If the stateid's owner
+        has no conflicting read lock, then the client should try to
+        get the appropriate write record lock via the LOCK operation
+        before re-attempting the WRITE. When the WRITE completes,
+        the client should release the record lock via LOCKU.
+      </t>
+
+      <t>
+        If the stateid's owner had a conflicting read lock, then
+        the client has no choice but to return an error to the
+        application that attempted the WRITE. The reason is that
+        since the stateid's owner had a read lock, the server either
+        attempted to temporarily effectively upgrade this read lock
+        to a write lock, or the server has no upgrade capability. If
+        the server attempted to upgrade the read lock and failed,
+        it is pointless for the client to re-attempt the upgrade via
+        the LOCK operation, because there might be another client
+        also trying to upgrade.  If two clients are blocked trying
+        upgrade the same lock, the clients deadlock.  If the server
+        has no upgrade capability, then it is pointless to try a LOCK
+        operation to upgrade.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_WRITE_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ACCESS
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_DELAY
+NFS4ERR_DQUOT
+NFS4ERR_EXPIRED
+NFS4ERR_FBIG
+NFS4ERR_FHEXPIRED
+NFS4ERR_GRACE
+NFS4ERR_INVAL
+NFS4ERR_IO
+NFS4ERR_ISDIR
+NFS4ERR_LEASE_MOVED
+NFS4ERR_LOCKED
+NFS4ERR_MOVED
+NFS4ERR_NOFILEHANDLE
+NFS4ERR_NOSPC
+NFS4ERR_NXIO
+NFS4ERR_OLD_STATEID
+NFS4ERR_OPENMODE
+NFS4ERR_RESOURCE
+NFS4ERR_ROFS
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE
+NFS4ERR_STALE_STATEID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_RELEASE_LOCKOWNER" title="Operation 39: RELEASE_LOCKOWNER - Release Lockowner State">
+
+    <section toc="exclude" anchor="OP_RELEASE_LOCKOWNER_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+lockowner -> ()
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_RELEASE_LOCKOWNER_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/release_lockowner_args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_RELEASE_LOCKOWNER_RESULT" title="RESULT">
+
+      <?rfc include='autogen/release_lockowner_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_RELEASE_LOCKOWNER_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        This operation is used to notify the server that the lock_owner
+        is no longer in use by the client.  This allows the server
+        to release cached state related to the specified lock_owner.
+        If file locks, associated with the lock_owner, are held at
+        the server, the error NFS4ERR_LOCKS_HELD will be returned
+        and no further action will be taken.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_RELEASE_LOCKOWNER_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        The client may choose to use this operation to ease the
+        amount of server state that is held.  Depending on behavior of
+        applications at the client, it may be important for the client
+        to use this operation since the server has certain obligations
+        with respect to holding a reference to a lock_owner as long
+        as the associated file is open.  Therefore, if the client
+        knows for certain that the lock_owner will no longer be used
+        under the context of the associated open_owner4, it should
+        use RELEASE_LOCKOWNER.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_RELEASE_LOCKOWNER_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_ADMIN_REVOKED
+NFS4ERR_BADXDR
+NFS4ERR_EXPIRED
+NFS4ERR_LEASE_MOVED
+NFS4ERR_LOCKS_HELD
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+NFS4ERR_STALE_CLIENTID
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_ILLEGAL" title="Operation 10044: ILLEGAL - Illegal operation">
+
+    <section toc="exclude" anchor="OP_ILLEGAL_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+&lt;null&gt; -> ()
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_ILLEGAL_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_ILLEGAL_RESULT" title="RESULT">
+
+      <?rfc include='autogen/illegal_res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_ILLEGAL_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        This operation is a placeholder for encoding a result to
+        handle the case of the client sending an operation code within
+        COMPOUND that is not supported. See the
+        <xref target="OP_COMPOUND_DESCRIPTION" /> COMPOUND procedure
+        description for more details.
+      </t>
+
+      <t>
+        The status field of ILLEGAL4res MUST be set to
+        NFS4ERR_OP_ILLEGAL.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_ILLEGAL_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        A client will probably not send an operation with code
+        OP_ILLEGAL but if it does, the response will be ILLEGAL4res
+        just as it would be with any other invalid operation code. Note
+        that if the server gets an illegal operation code that is
+        not OP_ILLEGAL, and if the server checks for legal operation
+        codes during the XDR decode phase, then the ILLEGAL4res would
+        not be returned.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_ILLEGAL_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_OP_ILLEGAL
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+</section>

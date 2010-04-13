@@ -1,0 +1,175 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section anchor="sec:mars" title="Filesystem Migration and Replication">
+
+  <t>
+    With the use of the recommended attribute "fs_locations", the NFS
+    version 4 server has a method of providing filesystem migration or
+    replication services.  For the purposes of migration and replication,
+    a filesystem will be defined as all files that share a given fsid
+    (both major and minor values are the same).
+  </t>
+
+  <t>
+    The fs_locations attribute provides a list of filesystem locations.
+    These locations are specified by providing the server name (either
+    DNS domain or IP address) and the path name representing the root
+    of the filesystem.  Depending on the type of service being provided,
+    the list will provide a new location or a set of alternate locations
+    for the filesystem.  The client will use this information to redirect
+    its requests to the new server.
+  </t>
+
+  <section title="Replication">
+
+    <t>
+      It is expected that filesystem replication will be used in the case of
+      read-only data.  Typically, the filesystem will be replicated on two
+      or more servers.  The fs_locations attribute will provide the list of
+      these locations to the client.  On first access of the filesystem,
+      the client should obtain the value of the fs_locations attribute.
+      If, in the future, the client finds the server unresponsive, the
+      client may attempt to use another server specified by fs_locations.
+    </t>
+
+    <t>
+      If applicable, the client must take the appropriate steps to recover
+      valid filehandles from the new server.  This is described in more
+      detail in the following sections.
+    </t>
+
+  </section>
+  <section title="Migration">
+
+    <t>
+      Filesystem migration is used to move a filesystem from one server
+      to another.  Migration is typically used for a filesystem that is
+      writable and has a single copy.  The expected use of migration is
+      for load balancing or general resource reallocation.  The protocol
+      does not specify how the filesystem will be moved between servers.
+      This server-to-server transfer mechanism is left to the server
+      implementor.  However, the method used to communicate the migration
+      event between client and server is specified here.
+    </t>
+
+    <t>
+      Once the servers participating in the migration have completed
+      the move of the filesystem, the error NFS4ERR_MOVED will be
+      returned for subsequent requests received by the original server.
+      The NFS4ERR_MOVED error is returned for all operations except PUTFH
+      and GETATTR.  Upon receiving the NFS4ERR_MOVED error, the client will
+      obtain the value of the fs_locations attribute.  The client will then
+      use the contents of the attribute to redirect its requests to the
+      specified server.  To facilitate the use of GETATTR, operations such
+      as PUTFH must also be accepted by the server for the migrated file
+      system's filehandles.  Note that if the server returns NFS4ERR_MOVED,
+      the server MUST support the fs_locations attribute.
+    </t>
+
+    <t>
+      If the client requests more attributes than just fs_locations, the
+      server may return fs_locations only.  This is to be expected since
+      the server has migrated the filesystem and may not have a method of
+      obtaining additional attribute data.
+    </t>
+
+    <t>
+      The server implementor needs to be careful in developing a migration
+      solution.  The server must consider all of the state information
+      clients may have outstanding at the server.  This includes but is not
+      limited to locking/share state, delegation state, and asynchronous
+      file writes which are represented by WRITE and COMMIT verifiers.
+      The server should strive to minimize the impact on its clients during
+      and after the migration process.
+    </t>
+
+  </section>
+  <section title="Interpretation of the fs_locations Attribute">
+
+    <t>
+      The fs_location attribute is structured in the following way:
+    </t>
+
+    <?rfc include='autogen/type_fs_location4.xml'?>
+
+    <?rfc include='autogen/type_fs_locations4.xml'?>
+
+    <t>
+      The fs_location struct is used to represent the location of a
+      filesystem by providing a server name and the path to the root of
+      the filesystem.  For a multi-homed server or a set of servers that
+      use the same rootpath, an array of server names may be provided.
+      An entry in the server array is an UTF8 string and represents one of
+      a traditional DNS host name, IPv4 address, or IPv6 address.  It is not
+      a requirement that all servers that share the same rootpath be listed
+      in one fs_location struct.  The array of server names is provided
+      for convenience.  Servers that share the same rootpath may also be
+      listed in separate fs_location entries in the fs_locations attribute.
+    </t>
+
+    <t>
+      The fs_locations struct and attribute then contains an array of
+      locations.  Since the name space of each server may be constructed
+      differently, the "fs_root" field is provided.  The path represented
+      by fs_root represents the location of the filesystem in the server's
+      name space.  Therefore, the fs_root path is only associated with
+      the server from which the fs_locations attribute was obtained.
+      The fs_root path is meant to aid the client in locating the filesystem
+      at the various servers listed.
+    </t>
+
+    <t>
+      As an example, there is a replicated filesystem located at two
+      servers (servA and servB).  At servA the filesystem is located at
+      path "/a/b/c".  At servB the filesystem is located at path "/x/y/z".
+      In this example the client accesses the filesystem first at servA
+      with a multi-component lookup path of "/a/b/c/d".  Since the client
+      used a multi-component lookup to obtain the filehandle at "/a/b/c/d",
+      it is unaware that the filesystem's root is located in servA's name
+      space at "/a/b/c".  When the client switches to servB, it will need
+      to determine that the directory it first referenced at servA is now
+      represented by the path "/x/y/z/d" on servB.  To facilitate this,
+      the fs_locations attribute provided by servA would have a fs_root
+      value of "/a/b/c" and two entries in fs_location.  One entry in
+      fs_location will be for itself (servA) and the other will be for
+      servB with a path of "/x/y/z".  With this information, the client
+      is able to substitute "/x/y/z" for the "/a/b/c" at the beginning of
+      its access path and construct "/x/y/z/d" to use for the new server.
+    </t>
+
+    <t>
+      See <xref target="Security Considerations" />
+      "Security Considerations" for a discussion on the
+      recommendations for the security flavor to be used by any GETATTR
+      operation that requests the "fs_locations" attribute.
+    </t>
+
+  </section>
+  <section title="Filehandle Recovery for Migration or Replication">
+
+    <t>
+      Filehandles for filesystems that are replicated or migrated generally
+      have the same semantics as for filesystems that are not replicated
+      or migrated.  For example, if a filesystem has persistent filehandles
+      and it is migrated to another server, the filehandle values for the
+      filesystem will be valid at the new server.
+    </t>
+
+    <t>
+      For volatile filehandles, the servers involved likely do not have
+      a mechanism to transfer filehandle format and content between
+      themselves.  Therefore, a server may have difficulty in determining
+      if a volatile filehandle from an old server should return an error
+      of NFS4ERR_FHEXPIRED.  Therefore, the client is informed, with the
+      use of the fh_expire_type attribute, whether volatile filehandles
+      will expire at the migration or replication event.  If the bit
+      FH4_VOL_MIGRATION is set in the fh_expire_type attribute, the client
+      must treat the volatile filehandle as if the server had returned
+      the NFS4ERR_FHEXPIRED error.  At the migration or replication event
+      in the presence of the FH4_VOL_MIGRATION bit, the client will not
+      present the original or old volatile filehandle to the new server.
+      The client will start its communication with the new server by
+      recovering its filehandles using the saved file names.
+    </t>
+  </section>
+</section>

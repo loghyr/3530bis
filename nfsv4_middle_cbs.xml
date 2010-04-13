@@ -1,0 +1,358 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section anchor="sec:callback" title="NFS version 4 Callback Procedures">
+
+  <t>
+    The procedures used for callbacks are defined in the following
+    sections.  In the interest of clarity, the terms "client" and
+    "server" refer to NFS clients and servers, despite the fact that
+    for an individual callback RPC, the sense of these terms would
+    be precisely the opposite.
+  </t>
+
+  <section anchor="OP_CB_NULL" title="Procedure 0: CB_NULL - No Operation">
+
+    <section toc="exclude" anchor="OP_CB_NULL_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+&lt;null&gt;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_CB_NULL_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_CB_NULL_RESULT" title="RESULT">
+
+      <figure>
+        <artwork>
+void;
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_CB_NULL_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        Standard NULL procedure.  Void argument, void response.
+        Even though there is no direct functionality associated with
+        this procedure, the server will use CB_NULL to confirm the
+        existence of a path for RPCs from server to client.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_CB_NULL_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+None.
+        </artwork>
+      </figure>
+
+    </section>
+  </section>
+  <section anchor="OP_CB_COMPOUND" title="Procedure 1: CB_COMPOUND - Compound Operations">
+
+    <section toc="exclude" anchor="OP_CB_COMPOUND_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+compoundargs -> compoundres
+        </artwork>
+      </figure>
+
+    </section>
+    <section toc="exclude" anchor="OP_CB_COMPOUND_ARGUMENT" title="ARGUMENT">
+
+      <?rfc include='autogen/type_nfs_cb_opnum4.xml'?>
+      <?rfc include='autogen/type_nfs_cb_argop4.xml'?>
+      <?rfc include='autogen/type_CB_COMPOUND4args.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_CB_COMPOUND_RESULT" title="RESULT">
+
+      <?rfc include='autogen/type_nfs_cb_resop4.xml'?>
+      <?rfc include='autogen/type_CB_COMPOUND4res.xml'?>
+
+    </section>
+    <section toc="exclude" anchor="OP_CB_COMPOUND_DESCRIPTION" title="DESCRIPTION">
+
+      <t>
+        The CB_COMPOUND procedure is used to combine one or more of
+        the callback procedures into a single RPC request.  The main
+        callback RPC program has two main procedures: CB_NULL
+        and CB_COMPOUND.  All other operations use the CB_COMPOUND
+        procedure as a wrapper.
+      </t>
+
+      <t>
+        In the processing of the CB_COMPOUND procedure, the client may
+        find that it does not have the available resources to execute
+        any or all of the operations within the CB_COMPOUND sequence.
+        In this case, the error NFS4ERR_RESOURCE will be returned for
+        the particular operation within the CB_COMPOUND procedure
+        where the resource exhaustion occurred.  This assumes that
+        all previous operations within the CB_COMPOUND sequence have
+        been evaluated successfully.
+      </t>
+
+      <t>
+        Contained within the CB_COMPOUND results is a 'status' field.
+        This status must be equivalent to the status of the last
+        operation that was executed within the CB_COMPOUND procedure.
+        Therefore, if an operation incurred an error then the 'status'
+        value will be the same error value as is being returned for
+        the operation that failed.
+      </t>
+
+      <t>
+        For the definition of the "tag" field, see <xref target="OP_COMPOUND" />
+        "Procedure 1: COMPOUND - Compound Operations".
+      </t>
+
+      <t>
+        The value of callback_ident is supplied by the client
+        during SETCLIENTID.  The server must use the client supplied
+        callback_ident during the CB_COMPOUND to allow the client to
+        properly identify the server.
+      </t>
+
+      <t>
+        Illegal operation codes are handled in the same way as they
+        are handled for the COMPOUND procedure.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_CB_COMPOUND_IMPLEMENTATION" title="IMPLEMENTATION">
+
+      <t>
+        The CB_COMPOUND procedure is used to combine individual
+        operations into a single RPC request.  The client interprets
+        each of the operations in turn.  If an operation is executed by
+        the client and the status of that operation is NFS4_OK, then
+        the next operation in the CB_COMPOUND procedure is executed.
+        The client continues this process until there are no more
+        operations to be executed or one of the operations has a
+        status value other than NFS4_OK.
+      </t>
+
+    </section>
+    <section toc="exclude" anchor="OP_CB_COMPOUND_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_OP_ILLEGAL
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+        </artwork>
+      </figure>
+
+    </section>
+    <section anchor="OP_CB_GETATTR" title="Operation 3: CB_GETATTR - Get Attributes">
+
+      <section toc="exclude" anchor="OP_CB_GETATTR_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+fh, attr_request -> attrmask, attr_vals
+        </artwork>
+      </figure>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_GETATTR_ARGUMENT" title="ARGUMENT">
+
+        <?rfc include='autogen/cb_getattr_args.xml'?>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_GETATTR_RESULT" title="RESULT">
+
+        <?rfc include='autogen/cb_getattr_res.xml'?>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_GETATTR_DESCRIPTION" title="DESCRIPTION">
+
+        <t>
+          The CB_GETATTR operation is used by the server to obtain the
+          current modified state of a file that has been write delegated.
+          The attributes size and change are the only ones guaranteed
+          to be serviced by the client.  See <xref target="ss:cc:handle_cb_getattr" />
+          "Handling of CB_GETATTR" for a full description of how the client and
+          server are to interact with the use of CB_GETATTR.
+        </t>
+
+        <t>
+          If the filehandle specified is not one for which the client
+          holds a write open delegation, an NFS4ERR_BADHANDLE error
+          is returned.
+        </t>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_GETATTR_IMPLEMENTATION" title="IMPLEMENTATION">
+
+        <t>
+          The client returns attrmask bits and the associated attribute
+          values only for the change attribute, and attributes that it
+          may change (time_modify, and size).
+        </t>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_GETATTR_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADHANDLE
+NFS4ERR_BADXDR
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+        </artwork>
+      </figure>
+
+      </section>
+    </section>
+    <section anchor="OP_CB_RECALL" title="Operation 4: CB_RECALL - Recall an Open Delegation">
+
+      <section toc="exclude" anchor="OP_CB_RECALL_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+stateid, truncate, fh -> ()
+        </artwork>
+      </figure>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_RECALL_ARGUMENT" title="ARGUMENT">
+
+        <?rfc include='autogen/cb_recall_args.xml'?>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_RECALL_RESULT" title="RESULT">
+
+        <?rfc include='autogen/cb_recall_res.xml'?>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_RECALL_DESCRIPTION" title="DESCRIPTION">
+
+        <t>
+          The CB_RECALL operation is used to begin the process of
+          recalling an open delegation and returning it to the server.
+        </t>
+
+        <t>
+          The truncate flag is used to optimize recall for a file
+          which is about to be truncated to zero.  When it is set,
+          the client is freed of obligation to propagate modified data
+          for the file to the server, since this data is irrelevant.
+        </t>
+
+        <t>
+          If the handle specified is not one for which the client holds
+          an open delegation, an NFS4ERR_BADHANDLE error is returned.
+        </t>
+  
+        <t>
+          If the stateid specified is not one corresponding to an
+          open delegation for the file specified by the filehandle,
+          an NFS4ERR_BAD_STATEID is returned.
+        </t>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_RECALL_IMPLEMENTATION" title="IMPLEMENTATION">
+
+        <t>
+          The client should reply to the callback immediately.  Replying
+          does not complete the recall except when an error was returned.
+          The recall is not complete until the delegation is returned
+          using a DELEGRETURN.
+        </t>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_RECALL_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_BADHANDLE
+NFS4ERR_BAD_STATEID
+NFS4ERR_BADXDR
+NFS4ERR_RESOURCE
+NFS4ERR_SERVERFAULT
+        </artwork>
+      </figure>
+
+      </section>
+    </section>
+    <section anchor="OP_CB_ILLEGAL" title="Operation 10044: CB_ILLEGAL - Illegal Callback Operation">
+
+      <section toc="exclude" anchor="OP_CB_ILLEGAL_SYNOPSIS" title="SYNOPSIS">
+
+      <figure>
+        <artwork>
+&lt;null&gt; -> ()
+        </artwork>
+      </figure>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_ILLEGAL_ARGUMENT" title="ARGUMENT">
+
+      <figure>
+        <artwork>
+void;
+        </artwork>
+      </figure>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_ILLEGAL_RESULT" title="RESULT">
+
+        <?rfc include='autogen/cb_illegal_res.xml'?>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_ILLEGAL_DESCRIPTION" title="DESCRIPTION">
+
+        <t>
+          This operation is a placeholder for encoding a result to
+          handle the case of the client sending an operation code within
+          COMPOUND that is not supported. See  <xref target="OP_COMPOUND_DESCRIPTION" /> COMPOUND procedure
+          description for more details.
+        </t>
+
+        <t>
+          The status field of CB_ILLEGAL4res MUST be set to
+          NFS4ERR_OP_ILLEGAL.
+        </t>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_ILLEGAL_IMPLEMENTATION" title="IMPLEMENTATION">
+
+        <t>
+          A server will probably not send an operation with
+          code OP_CB_ILLEGAL but if it does, the response will be
+          CB_ILLEGAL4res just as it would be with any other invalid
+          operation code. Note that if the client gets an illegal
+          operation code that is not OP_ILLEGAL, and if the client
+          checks for legal operation codes during the XDR decode phase,
+          then the CB_ILLEGAL4res would not be returned.
+        </t>
+
+      </section>
+      <section toc="exclude" anchor="OP_CB_ILLEGAL_ERRORS" title="ERRORS">
+
+      <figure>
+        <artwork>
+NFS4ERR_OP_ILLEGAL
+        </artwork>
+      </figure>
+
+      </section>
+    </section>
+  </section>
+</section>

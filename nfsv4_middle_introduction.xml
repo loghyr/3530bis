@@ -1,0 +1,579 @@
+<!-- Copyright (C) The IETF Trust (2007-2008) -->
+<!-- Copyright (C) The Internet Society (2006) -->
+<section anchor="sec:intro" title="Introduction" >
+  <section anchor="changes_since3530" title="Changes since RFC 3530">
+    <t>
+      This document obsoletes RFC 3530 <xref target="RFC3530" />
+      as the authoritative document
+      describing NFSv4, without introducing any over-the-wire protocol
+      changes.  The main changes from RFC 3530 are:
+
+      <list style='symbols'>
+        <t>
+          The RPC definition has been moved to a companion document
+          <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />
+        </t>
+        <t>
+          Updates for the latest IETF intellectual property statements
+        </t>
+	<t>
+	  LIPKEY SPKM/3 has been moved from being mandatory to optional
+	</t>
+	<t>
+	  Some clarification on a client re-establishing callback
+	  information to the new server if state has been migrated
+	</t>
+      </list>
+    </t>
+  </section>
+
+  <section anchor="changes_since3010" title="Changes since RFC 3010">
+
+    <t>
+      This definition of the NFS version 4 protocol replaces or
+      obsoletes the definition present in <xref target="RFC3010" />.
+      While portions of the two documents have remained the same,
+      there have been substantive changes in others.  The changes made
+      between <xref target="RFC3010" /> and this document represent
+      implementation experience and further review of the protocol.
+      While some modifications were made for ease of implementation
+      or clarification, most updates represent errors or situations
+      where the <xref target="RFC3010" /> definition were untenable.
+    </t>
+
+    <t>
+      The following list is not all inclusive of all changes but
+      presents some of the most notable changes or additions made:
+
+      <list style='symbols'>
+        <t>
+          The state model has added an open_owner4 identifier.  This
+          was done to accommodate Posix based clients and the model
+          they use for file locking.  For Posix clients, an open_owner4
+          would correspond to a file descriptor potentially shared
+          amongst a set of processes and the lock_owner4 identifier
+          would correspond to a process that is locking a file.
+        </t>
+
+        <t>
+          Clarifications and error conditions were added for the
+          handling of the owner and group attributes.  Since these
+          attributes are string based (as opposed to the numeric
+          uid/gid of previous versions of NFS), translations may not
+          be available and hence the changes made.
+        </t>
+
+        <t>
+          Clarifications for the ACL and mode attributes to address
+          evaluation and partial support.
+        </t>
+
+        <t>
+          For identifiers that are defined as XDR opaque, limits were
+          set on their size.
+        </t>
+
+        <t>
+          Added the mounted_on_filed attribute to allow Posix clients
+          to correctly construct local mounts.
+        </t>
+
+        <t>
+          Modified the SETCLIENTID/SETCLIENTID_CONFIRM operations to
+          deal correctly with confirmation details along with adding
+          the ability to specify new client callback information.
+          Also added clarification of the callback information itself.
+        </t>
+
+        <t>
+          Added a new operation LOCKOWNER_RELEASE to enable notifying
+          the server that a lock_owner4 will no longer be used by
+          the client.
+        </t>
+
+        <t>
+          RENEW operation changes to identify the client correctly
+          and allow for additional error returns.
+        </t>
+
+        <t>
+          Verify error return possibilities for all operations.
+        </t>
+
+        <t>
+          Remove use of the pathname4 data type from LOOKUP and OPEN
+          in favor of having the client construct a sequence of LOOKUP
+          operations to achieive the same effect.
+        </t>
+
+        <t>
+          Clarification of the internationalization issues and adoption
+          of the new stringprep profile framework.
+        </t> 
+      </list>
+    </t>
+  </section>
+
+  <section anchor="v4_goals" title="NFS Version 4 Goals">
+
+    <t>
+      The NFS version 4 protocol is a further revision of the NFS
+      protocol defined already by versions 2 <xref target="RFC1094" />
+      and 3 <xref target="RFC1813" />.  It retains the essential
+      characteristics of previous versions: design for easy recovery,
+      independent of transport protocols, operating systems and
+      filesystems, simplicity, and good performance.  The NFS version
+      4 revision has the following goals:
+
+      <list style='symbols'>
+        <t>
+          Improved access and good performance on the Internet.
+        <vspace blankLines='1' />
+          The protocol is designed to transit firewalls easily,
+          perform well where latency is high and bandwidth is low,
+          and scale to very large numbers of clients per server.
+        </t>
+
+        <t>
+          Strong security with negotiation built into the protocol.
+        <vspace blankLines='1' />
+          The protocol builds on the work of the ONCRPC working group
+          in supporting the RPCSEC_GSS protocol.  Additionally, the NFS
+          version 4 protocol provides a mechanism to allow clients and
+          servers the ability to negotiate security and require clients
+          and servers to support a minimal set of security schemes.
+        </t>
+
+        <t>
+          Good cross-platform interoperability.
+        <vspace blankLines='1' />
+          The protocol features a filesystem model that provides a
+          useful, common set of features that does not unduly favor
+          one filesystem or operating system over another.
+        </t>
+
+        <t>
+          Designed for protocol extensions.
+        <vspace blankLines='1' />
+          The protocol is designed to accept standard extensions that
+          do not compromise backward compatibility.
+        </t>
+      </list>
+    </t>
+  </section>
+
+  <section anchor="document_incons" title="Inconsistencies of this Document with the companion document <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />">
+
+    <t>
+      <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, NFS Version 4
+      Protocol, contains the definitions in XDR description language of
+      the constructs used by the protocol.  Inside this document, several
+      of the constructs are reproduced for purposes of explanation.  The
+      reader is warned of the possibility of errors in the reproduced
+      constructs outside of <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />.
+      For any part of the document that is inconsistent with
+      <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />,
+      <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" /> is to be
+      considered authoritative.
+    </t>
+  </section>
+
+  <section anchor="feature_overview" title="Overview of NFS version 4 Features">
+
+    <t>
+      To provide a reasonable context for the reader, the major
+      features of NFS version 4 protocol will be reviewed in brief.
+      This will be done to provide an appropriate context for both
+      the reader who is familiar with the previous versions of the
+      NFS protocol and the reader that is new to the NFS protocols.
+      For the reader new to the NFS protocols, there is still a
+      fundamental knowledge that is expected.  The reader should
+      be familiar with the XDR and RPC protocols as described in
+      <xref target="RFC1831" /> and <xref target="RFC1832" />.
+      A basic knowledge of filesystems and distributed filesystems
+      is expected as well.
+    </t>
+
+    <section anchor="intro_rpc" title="RPC and Security">
+
+      <t>
+        As with previous versions of NFS, the External Data
+        Representation (XDR) and Remote Procedure Call (RPC)
+        mechanisms used for the NFS version 4 protocol are those
+        defined in <xref target="RFC1831" /> and
+        <xref target="RFC1832" />.  To meet end to end
+        security requirements, the RPCSEC_GSS framework
+        <xref target="RFC2203" />
+        will be used to extend the basic RPC security.  With the
+        use of RPCSEC_GSS, various mechanisms can be provided to
+        offer authentication, integrity, and privacy to the NFS
+        version 4 protocol.  Kerberos V5 will be used as described
+        in <xref target="RFC1964" /> to provide one security
+        framework.  The LIPKEY GSS-API mechanism described in
+        <xref target="RFC2847" /> will be used to
+        provide for the use of user password and server public key
+        by the NFS version 4 protocol.  With the use of RPCSEC_GSS,
+        other mechanisms may also be specified and used for NFS
+        version 4 security.
+      </t>
+
+      <t>
+        To enable in-band security negotiation, the NFS version 4
+        protocol has added a new operation which provides the client
+        a method of querying the server about its policies regarding
+        which security mechanisms must be used for access to the
+        server's filesystem resources.  With this, the client can
+        securely match the security mechanism that meets the policies
+        specified at both the client and server.
+      </t>
+    </section>
+
+    <section anchor="intro_procs" title="Procedure and Operation Structure">
+
+      <t>
+        A significant departure from the previous versions of the
+        NFS protocol is the introduction of the COMPOUND procedure.
+        For the NFS version 4 protocol, there are two RPC procedures,
+        NULL and COMPOUND.  The COMPOUND procedure is defined in
+        terms of operations and these operations correspond more
+        closely to the traditional NFS procedures.
+      </t>
+
+      <t>
+        With the use of the COMPOUND procedure, the client is able
+        to build simple or complex requests.  These COMPOUND requests
+        allow for a reduction in the number of RPCs needed for logical
+        filesystem operations.  For example, without previous contact
+        with a server a client will be able to read data from a file
+        in one request by combining LOOKUP, OPEN, and READ operations
+        in a single COMPOUND RPC.  With previous versions of the NFS
+        protocol, this type of single request was not possible.
+      </t>
+
+      <t>
+        The model used for COMPOUND is very simple.  There is no
+        logical OR or ANDing of operations.  The operations combined
+        within a COMPOUND request are evaluated in order by the server.
+        Once an operation returns a failing result, the evaluation
+        ends and the results of all evaluated operations are returned
+        to the client.
+      </t>
+
+      <t>
+        The NFS version 4 protocol continues to have the client refer
+        to a file or directory at the server by a "filehandle".  The
+        COMPOUND procedure has a method of passing a filehandle from
+        one operation to another within the sequence of operations.
+        There is a concept of a "current filehandle" and "saved
+        filehandle".  Most operations use the "current filehandle"
+        as the filesystem object to operate upon.  The "saved
+        filehandle" is used as temporary filehandle storage within
+        a COMPOUND procedure as well as an additional operand for
+        certain operations.
+      </t>
+    </section>
+
+    <section anchor="intro_fs_model" title="Filesystem Model">
+
+      <t>
+        The general filesystem model used for the NFS version
+        4 protocol is the same as previous versions.  The server
+        filesystem is hierarchical with the regular files contained
+        within being treated as opaque byte streams.  In a slight
+        departure, file and directory names are encoded with UTF-8
+        to deal with the basics of internationalization.
+      </t>
+
+      <t>
+        The NFS version 4 protocol does not require a separate
+        protocol to provide for the initial mapping between path name
+        and filehandle.  Instead of using the older MOUNT protocol
+        for this mapping, the server provides a ROOT filehandle
+        that represents the logical root or top of the filesystem
+        tree provided by the server.  The server provides multiple
+        filesystems by gluing them together with pseudo filesystems.
+        These pseudo filesystems provide for potential gaps in the
+        path names between real filesystems.
+      </t>
+
+      <section anchor="intro_fh_types" title="Filehandle Types">
+
+        <t>
+          In previous versions of the NFS protocol, the filehandle
+          provided by the server was guaranteed to be valid or
+          persistent for the lifetime of the filesystem object
+          to which it referred.  For some server implementations,
+          this persistence requirement has been difficult to meet.
+          For the NFS version 4 protocol, this requirement has been
+          relaxed by introducing another type of filehandle, volatile.
+          With persistent and volatile filehandle types, the server
+          implementation can match the abilities of the filesystem at
+          the server along with the operating environment.  The client
+          will have knowledge of the type of filehandle being provided
+          by the server and can be prepared to deal with the semantics
+          of each.
+        </t>
+      </section>
+
+      <section anchor="intro_attrs" title="Attribute Types">
+
+        <t>
+          The NFS version 4 protocol introduces three classes
+          of filesystem or file attributes.  Like the additional
+          filehandle type, the classification of file attributes
+          has been done to ease server implementations along with
+          extending the overall functionality of the NFS protocol.
+          This attribute model is structured to be extensible such
+          that new attributes can be introduced in minor revisions
+          of the protocol without requiring significant rework.
+        </t>
+
+        <t>
+          The three classifications are: mandatory, recommended and
+          named attributes.  This is a significant departure from
+          the previous attribute model used in the NFS protocol.
+          Previously, the attributes for the filesystem and file
+          objects were a fixed set of mainly UNIX attributes.  If the
+          server or client did not support a particular attribute,
+          it would have to simulate the attribute the best it could.
+        </t>
+
+        <t>
+          Mandatory attributes are the minimal set of file or
+          filesystem attributes that must be provided by the
+          server and must be properly represented by the server.
+          Recommended attributes represent different filesystem types
+          and operating environments.  The recommended attributes
+          will allow for better interoperability and the inclusion of
+          more operating environments.  The mandatory and recommended
+          attribute sets are traditional file or filesystem attributes.
+          The third type of attribute is the named attribute.  A named
+          attribute is an opaque byte stream that is associated
+          with a directory or file and referred to by a string name.
+          Named attributes are meant to be used by client applications
+          as a method to associate application specific data with a
+          regular file or directory.
+        </t>
+
+        <t>
+          One significant addition to the recommended set of file
+          attributes is the Access Control List (ACL) attribute.
+          This attribute provides for directory and file access
+          control beyond the model used in previous versions of the
+          NFS protocol.  The ACL definition allows for specification
+          of user and group level access control.
+        </t>
+      </section>
+
+      <section anchor="intro_ram" title="Filesystem Replication and Migration">
+
+        <t>
+          With the use of a special file attribute, the ability
+          to migrate or replicate server filesystems is enabled
+          within the protocol.  The filesystem locations attribute
+          provides a method for the client to probe the server about
+          the location of a filesystem.  In the event of a migration
+          of a filesystem, the client will receive an error when
+          operating on the filesystem and it can then query as to
+          the new file system location.  Similar steps are used for
+          replication, the client is able to query the server for the
+          multiple available locations of a particular filesystem.
+          From this information, the client can use its own policies
+          to access the appropriate filesystem location.
+        </t>
+      </section>
+    </section>
+
+    <section anchor="into_open_op" title="OPEN and CLOSE">
+
+      <t>
+        The NFS version 4 protocol introduces OPEN and CLOSE
+        operations.  The OPEN operation provides a single point where
+        file lookup, creation, and share semantics can be combined.
+        The CLOSE operation also provides for the release of state
+        accumulated by OPEN.
+      </t>
+    </section>
+
+    <section anchor="into_locking" title="File locking">
+
+      <t>
+        With the NFS version 4 protocol, the support for byte range
+        file locking is part of the NFS protocol.  The file locking
+        support is structured so that an RPC callback mechanism is
+        not required.  This is a departure from the previous versions
+        of the NFS file locking protocol, Network Lock Manager (NLM).
+        The state associated with file locks is maintained at the
+        server under a lease-based model.  The server defines a single
+        lease period for all state held by a NFS client.  If the
+        client does not renew its lease within the defined period,
+        all state associated with the client's lease may be released
+        by the server.  The client may renew its lease with use of
+        the RENEW operation or implicitly by use of other operations
+        (primarily READ).
+      </t>
+    </section>
+
+    <section anchor="intro_delegs" title="Client Caching and Delegation">
+
+      <t>
+        The file, attribute, and directory caching for the NFS version
+        4 protocol is similar to previous versions.  Attributes and
+        directory information are cached for a duration determined by
+        the client.  At the end of a predefined timeout, the client
+        will query the server to see if the related filesystem object
+        has been updated.
+      </t>
+
+      <t>
+        For file data, the client checks its cache validity when the
+        file is opened.  A query is sent to the server to determine
+        if the file has been changed.  Based on this information,
+        the client determines if the data cache for the file should
+        kept or released.  Also, when the file is closed, any modified
+        data is written to the server.
+      </t>
+
+      <t>
+        If an application wants to serialize access to file data, file
+        locking of the file data ranges in question should be used.
+      </t>
+
+      <t>
+        The major addition to NFS version 4 in the area of caching is
+        the ability of the server to delegate certain responsibilities
+        to the client.  When the server grants a delegation for a
+        file to a client, the client is guaranteed certain semantics
+        with respect to the sharing of that file with other clients.
+        At OPEN, the server may provide the client either a read or
+        write delegation for the file.  If the client is granted
+        a read delegation, it is assured that no other client has
+        the ability to write to the file for the duration of the
+        delegation.  If the client is granted a write delegation,
+        the client is assured that no other client has read or write
+        access to the file.
+      </t>
+
+      <t>
+        Delegations can be recalled by the server.  If another
+        client requests access to the file in such a way that the
+        access conflicts with the granted delegation, the server is
+        able to notify the initial client and recall the delegation.
+        This requires that a callback path exist between the server and
+        client.  If this callback path does not exist, then delegations
+        can not be granted.  The essence of a delegation is that it
+        allows the client to locally service operations such as OPEN,
+        CLOSE, LOCK, LOCKU, READ, WRITE without immediate interaction
+        with the server.
+      </t>
+    </section>
+  </section>
+
+  <section anchor="intro_gen_defs" title="General Definitions">
+
+    <t>
+      The following definitions are provided for the purpose of providing
+      an appropriate context for the reader.
+
+      <list style='hanging'>
+        <t hangText="Client" anchor="client_def">
+          The "client" is the entity that accesses the NFS server's
+          resources.  The client may be an application which contains
+          the logic to access the NFS server directly.  The client
+          may also be the traditional operating system client remote
+          filesystem services for a set of applications.
+        <vspace blankLines='1' />
+          In the case of file locking the client is the entity
+          that maintains a set of locks on behalf of one or more
+          applications.  This client is responsible for crash or
+          failure recovery for those locks it manages.
+        <vspace blankLines='1' />
+
+          Note that multiple clients may share the same transport
+          and multiple clients may exist on the same network node.
+        </t>
+
+        <t hangText="Clientid">
+          A 64-bit quantity used as a unique, short-hand reference to
+          a client supplied Verifier and ID.  The server is responsible
+          for supplying the Clientid.
+        </t>
+
+        <t hangText="Lease">
+          An interval of time defined by the server for which the
+          client is irrevocably granted a lock.  At the end of a
+          lease period the lock may be revoked if the lease has not
+          been extended.  The lock must be revoked if a conflicting
+          lock has been granted after the lease interval.
+        <vspace blankLines='1' />
+          All leases granted by a server have the same fixed interval.
+          Note that the fixed interval was chosen to alleviate the
+          expense a server would have in maintaining state about
+          variable length leases across server failures.
+        </t>
+
+        <t hangText="Lock">
+          The term "lock" is used to refer to both record (byte-range)
+          locks as well as share reservations unless specifically
+          stated otherwise.
+        </t>
+
+        <t hangText="Server">
+          The "Server" is the entity responsible for coordinating
+          client access to a set of filesystems.
+        </t>
+
+        <t hangText="Stable Storage">
+          NFS version 4 servers must be able to recover without data
+          loss from multiple power failures (including cascading
+          power failures, that is, several power failures in quick
+          succession), operating system failures, and hardware failure
+          of components other than the storage medium itself (for
+          example, disk, nonvolatile RAM).
+        <vspace blankLines='1' />
+          Some examples of stable storage that are allowable for an
+          NFS server include:
+
+          <list style='numbers'>
+            <t>
+              Media commit of data, that is, the modified data
+              has been successfully written to the disk media,
+              for example, the disk platter.
+            </t>
+
+            <t>
+              An immediate reply disk drive with battery-backed
+              on-drive intermediate storage or uninterruptible
+              power system (UPS).
+            </t>
+
+            <t>
+              Server commit of data with battery-backed intermediate
+              storage and recovery software.
+            </t>
+
+            <t>
+              Cache commit with uninterruptible power system (UPS)
+              and recovery software.
+            </t>
+          </list>
+        </t>
+
+        <t hangText="Stateid">
+          A 128-bit quantity returned by a server that uniquely
+          defines the open and locking state provided by the server
+          for a specific open or lock owner for a specific file.
+        <vspace blankLines='1' />
+          Stateids composed of all bits 0 or all bits 1 have special
+          meaning and are reserved values.
+        </t>
+
+        <t hangText="Verifier">
+          A 64-bit quantity generated by the client that the server
+          can use to determine if the client has restarted and lost
+          all previous lock state.
+        </t>
+      </list>
+    </t>
+  </section>
+</section>
