@@ -1,0 +1,600 @@
+1) Fix ACL chapter to reflect correct ops to access bit matching. Look
+at fixes in 4.1.
+
+Action: Pull ACL changes back from 4.1 to 4.0
+Owner: Tom
+State: Accepted
+Target: IETF 78
+
+2) Explain what associated means in this context:
+
+> In sec. 14.2.2 DESCRIPTION
+>
+>  The share reservations and other state information released
+>  at the server as a result of this CLOSE is only associated
+> with the supplied stateid.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+3) There are places where "lock_owner" is used in sec. 8.n.n and I
+found it confusing. Maybe a statement near the beginning of that
+section, noting that "lock_owner" is used to refer to both open_owner4
+and lock_owner4s? Same goes for "lock" referring to an open share as
+well as a byte range lock.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+4) What are "courtesy locks"? Dave Noveck to clarify what he wants here
+to the WG.
+
+Dave:
+> 4) I think "courtesy locks" is Trond's term.  He is referring to the
+> following text in section 8.6.3:
+>
+> As a courtesy to the client or as an optimization, the server may
+> continue to hold locks on behalf of a client for which recent
+> communication has extended beyond the lease period.  If the server
+> receives a lock or I/O request that conflicts with one of these
+> courtesy locks, the server must free the courtesy lock and grant the
+> new request.
+>
+> I've found that people are very unclear about a number of points
+> which regard to how such locks should work if you implement them.
+> I promised to try to prove that by coming up with a qustionaire
+> and seeing that everybody disagreed about the questions.  I have
+> started on that but put it aside for a bit.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+5) How do we handle Referrals in v4.0.
+
+Action: Take the 4.1 text and pull it back to 4.0
+Owner: Tom
+State: Accepted
+Target: IETF 78
+
+6) There is the issue of NFS4ERR_DELAY vs NFS4ERR_RESOURCE that keeps
+popping up now and again. IIRC, the AIX server wanted to delay clients
+in either SETCLIENTID or SETCLIENTID_CONFIRM while they cleaned out
+stale locking information, and since NFS4ERR_DELAY wasn't available,
+they tried NFS4ERR_RESOURCE. So.... Clarify when the server should be
+using NFS4ERR_RESOURCE vs NFS4ERR_DELAY, and what the client is supposed
+to do in either case.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+7) We need SECINFO workarounds on LOOKUPP and PUTROOTFH.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+8) Clarify the sections on sequence ids. Currently, the text is
+inconsistent about whether or not you need to initialize them to zero.
+It would also be nice to have a section that clarifies the life cycle of
+a sequence id. IOW: when do the client and server have to cache the
+sequence id info, and when are they allowed to forget about it.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+9) We should clarify the passage on NFS4ERR_LOCKS_HELD. Since lock owners
+and open owners are different things, we need to clarify which locks may
+trigger an NFS4ERR_LOCKS_HELD error on a CLOSE for a given open_stateid.
+In the same vein, which locks does section 9.8 allow the server to free
+when the client does a CLOSE? This all harks back to the mailing list
+discussions about lock_stateids being
+<per-file,per-open_owner,per-lock_owner> vs. just being
+<per-file,per-lock_owner>
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+10) Recommendations/workarounds for dealing with the OPEN and CB_RECALL
+race.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+11) Clarify the use of the delegation vs lock vs open stateid in SETATTR.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+12) Clarify the various scenarios that should result in a delegation recall
+(mainly SETATTR by self).
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+13) Perhaps clarify how clients should be managing delegations? There appear
+to be server implementations that expect clients to limit the number of
+delegations they are holding.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+14) There's the unimplemented-by-everybody mandatory UTF-8 formatting of
+filenames...
+
+Action: Discuss on alias and drive to consensus
+Owner: Dave
+State: Working
+Target: IETF 78
+
+15) SPKM3/LIPKEY is not implemented by anyone. Remove its
+mandatory-to-implement status?
+
+Action: Discussed and agreed to remove
+Owner: Tom
+State: Finished
+Target: IETF 77
+
+16)
+
+Another minor locking item: the blocking-lock canceling recommendation
+in 9.6 should work for 4.0 clients and servers too:
+
+	If a server receives a blocking lock request, denies it, and
+	then later receives a nonblocking request for the same lock,
+	which is also denied, then it should remove the lock in question
+	from its list of pending blocking locks.  Clients should use
+	such a nonblocking request to indicate to the server that this
+	is the last time they intend to poll for the lock, as may happen
+	when the process requesting the lock is interrupted.  This is a
+	courtesy to the server, to prevent it from unnecessarily waiting
+	a lease period before granting other lock requests.  However,
+	clients are not required to perform this courtesy, and servers
+	must not depend on them doing so.  Also, clients must be
+	prepared for the possibility that this final locking request
+	will be accepted.
+
+
+17) Description of Third Edge Condition
+
+The third edge condition needs to be described.  Basically,
+this is the situation in which a client thinks he has
+locks because he rebooted in the middle of reclaim without
+reclaiming those locks.  If the client comes back and
+those locks were taken by another client and then
+released before that final reboot, the client could
+reclaim the locks unaware that it had lost them in
+the interim and could not be guaranteed to continuous
+holding of the locks.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+18) Issues With NFS4ERR_EXPIRED
+
+The major part of this issue refers to the following mail attached to the
+issue which represented here.
+
+  The difference is that if your client gets an NFS4ERR_EXPIRED, then it
+  immediately knows that it has to call SETCLIENTID instead of having to
+  probe using a RENEW call.
+
+Exactly.  But in the case in which a client has his lease expire, does
+not lose (all) his locks, only loses one due to a conflict, and then
+renews his lease, you most certainly don't want him to do SETCLIENTID.
+
+Doing SETCLIENTID would mean that he would throw away all of the locks
+that he had at the time, rather than just the one in which there was
+a conflict.
+
+Also, if, as has been suggested, a client re-gets locks after this he
+is exposed to a conflicting lock between the SETCLIENTID and the reget.
+Further, for the lock he actually lost, we know that there was a conflict
+and the chances are quite high that he will get the lock back despite the
+fact that he shouldn't.  In the case in which the server reboots, the
+spec goes to great lengths to assure that reclaims do not give a client
+back a lock when there was a conflict, but if a client tries to reget
+locks in this situation, he has no such protection.
+
+So in the case in which expiration causes only a single lock to be lost
+returning EXPIRED is bad precisely because it will cause a SETCLIENTID.
+
+  NFS4ERR_BAD_STATEID is described in section 8.1.3 as indicating "a logic
+  error on the part of the client or server". I can't see that to be the
+  case here.
+
+Actually it says "will occur" when there has been such error.  It
+doesn't say "will only occur".  It also says "This should not happen"
+but it unclear what exactly "this" refers to.
+
+But let's look at another part of section 8.1.3, which says:
+
+ o  The stateid was generated by the current server instance but the
+ stateid does not designate a locking state for any active
+ lockowner-file pair.  The error NFS4ERR_BAD_STATEID should be
+ returned.
+
+But section 8.6.3 says:
+
+ As a courtesy to the client or as an optimization, the server may
+ continue to hold locks on behalf of a client for which recent
+ communication has extended beyond the lease period.  If the server
+ receives a lock or I/O request that conflicts with one of these
+ courtesy locks, the server must free the courtesy lock and grant the
+ new request.
+
+My interpretation is that the result of freeing that locking state is that
+the associated stateid cease to "designate a locking state of any active
+lockowner-file pair", making BAD_STATEID a reasonable choice.
+
+But if you don't think this is right, what do you suggest?  EXPIRED is
+wrong because the spec talks about EXPIRED in the case in which all
+lock state is freed on lock expiration, and also because the consequence,
+the client doing a SETCLIENTID (although the spec doesn't talk about
+this or about regetting locks, but only about report errors to applications)
+would be bad.  So if BAD_STATEID is also wrong, what is right?
+
+Note about the v4.1 spec.  The first paragraph of section 8.6.3 has a
+number of issues/confusion we should address:
+
+* It says that the stateid's become "invalid or stale" and then
+proceeds to talk about returning EXPIRED.  There is a disconnect
+between stateid state and errors.
+
+* EXPIRED is not described with the the *_STATEID errors but logically
+it should be.
+
+* It doesn't discuss what a client should do about EXPIRED except
+for the stuff about returning error.  In light of our discussion,
+I think there needs to be more.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+19) Clarify Use of CB_GETATTR and "Implied" Clientid
+
+Spencer Shepler wrote:
+
+In a thread of discussion about OPEN and CB_GETATTR passing each
+other in the night, I pointed to a similar thread and Rick Macklem
+followed up with this.  This needs to be captured in the I-D.
+
+  I will refer to the previous thread on this topic. Specifically
+  this message from Dave Noveck:
+  [http://www.nfsv4.org/nfsv4-wg-archive-feb-03-feb-05/0143.html]:
+
+Dave makes a good argument for not doing CBGetattr when the Write
+Delegation  does not allow the file to grow (which is what my server
+is doing at this  point). However, I would have assumed such a Write
+Delegation would  still allow the client to truncate the file
+locally, if it wished to do so. I suspect that current ones do a
+Setattr with Size or Open/Create right away, but couldn't a client
+delay doing this until Delegreturn?
+
+If clients always do Truncation to the server without delay, then
+I'd agree that the CBGetattr is not required for the Write Delegations
+that don't allow files to grow. (I'd also like to see Write Delegations
+that allow files to grow work properly, since I think they could
+be a big performance win, if clients use them properly.)
+
+If course, as Dave also notes, since this isn't in the RFC, it's
+hard to argue that an nfsv4.0 server shouldn't do CBGetattrs for
+this case, just that the server doesn't have to.
+
+tmt wrote:
+
+I think the "implied clientid" is mentioned in this message:
+[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg02787.html]
+
+I will point out that when a session is in place, all operations
+within a single COMPOUND explicitly belong to the sessionid, and
+therefore clientid, referenced in the initial SEQUENCE or CB_SEQUENCE
+operation.
+
+Further, it is my opinion that we should disallow mixing operations
+belonging to distinct clientid's in any COMPOUND, for all NFSv4
+versions. The ramifications are just too onerous otherwise.
+[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg02781.html]
+
+dnoveck wrote:
+
+This doesn't apply to sessions.  May be an issue for 3530bis.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+20) Explanatory Text on Stateid Contradicts Self and Rest of Protocol
+
+See the thread beginning
+[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg03159.html]
+and particularly the message:
+[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg03193.html]
+for details.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+21) Contradiction in 2nd Para of GETATTR Description
+
+The 2nd paragraph of the description for GETATTR contradicts itself.  It says
+you must return a value if you support an attribute and then talks about what
+you must do when you can't.  It isn't clear from the text what is or isn't
+allowed for such cases as GETATTRing the ACL attribute when there is no ACL.
+
+This needs to be clarified.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+22) Explain When Server Needs to Return NFS4ERR_DELAY
+
+The case of revoking a delegation that is not promptly returned
+(even when the lease is renewed) should be addressed explicitly.
+
+This is resolved-no-change since it is dealt with in draft-05 but
+I'm creating the issue for v4.0 (and it is marked 3530bis).
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+23) Need to Explain Revocation of Delegations Not Promptly Returned
+
+The case of revoking a delegation that is not promptly returned
+(even when the lease is renewed) should be addressed explicitly.
+
+This is resolved-no-change since it is dealt with in draft-05 but
+I'm creating the issue for v4.0 (and it is marked 3530bis).
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+24) Description of locker4 Wrong
+
+The description of locker4 in the section on the LOCK op is not
+correct.  I've fixed this as part of updating the op descriptions
+to reflect changes for v4.1 (mostly sessions), but have created a
+separate issue since this would also apply to rfc3530bis.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+25) Problems in the Description of OPEN
+
+There are a number of problems with the description of OPEN that
+revolve around that share reservations are described as a separate
+feature.  The text in RFC3530 that we inherited talks about specifying
+owner and seqid if you have a share reservation, with the implication
+that you have a choice in the matter.
+
+I have fixed this as part of updating the locking ops to reflect
+v4.1 changes but we need this separate issue since the basic problems
+with open would apply to rfc3530bis.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+26) Confusion about Unique_handles and Fileid Attribute
+
+Section 9.3.4 (as of draft-08) contains the following statement:
+
+ If GETATTR directed to the two filehandles does not return the
+ fileid attribute for both of the handles, then it cannot be
+ determined whether the two objects are the same. Therefore,
+ operations which depend on that knowledge (e.g. client side data
+ caching) cannot be done reliably.
+
+As written, this has led some to conclude that we might have two
+handles such that one but not the other returns the fileid attribute,
+and that therefore the unique_handles (or rather non-unique-handles)
+is a total and irretrievable mess.
+
+Without deciding the issue about unique handles, it should be made
+clear that this specific issue does not bear on its wellfoundedness.
+Given that the two handles in this case must be from the same fsid
+(different fsid's having already been excluded, they must both
+support or not support fileid uniformly and this should be made
+clear.  It still may that non-unique handles are indeed a mess, but
+not because of this specific issue.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+27) Setattr for a Write Delegated File Should be Done with the
+Delegation Stateid
+
+If a client holding a write delegation does a setattr for that file
+for something other than set size and chooses to use a special
+stateid to do the setattr, the delegation can be recalled by the
+server. This is because there is no way for the server to know that
+the setattr is coming from the client which is holding the delegation,
+unless it looks at the clientid to figure this out. It would be
+better if the client sends any such setattrs with the delegation
+stateid so that the server can avoid recalling the delegation for
+such requests.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+28) Reclaiming Local Opens with CLAIM_DELEGATE_CUR Instead of CLAIM_PREVIOUS
+
+Described in
+
+If a client holds some local open/lock state while holding a
+delegation for that file and the server reboots, the client can
+reclaim this state by sending open requests with the claim_type set
+to CLAIM_PREVIOUS. However there is no way to differentiate between
+the reclaim for a regular open and that of a DELEGATE_CUR open. The
+server can figure out that the open being reclaimed is a DELEGATE_CUR
+open by comparing the clientid for that open with the client holding
+the delegation in order to avoid recalling the delegation but it
+would be better if the client either does not reclaim this open
+(since it already has the delegation) or reclaim this by setting
+the claim_type to CLAIM_DELEGATE_CUR so that the server can allow
+this open to succeed just like a normal CLAIM_DELEGATE_CUR open.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+29) Clientid Question
+
+Sunil Bhargo writes:
+
+ The string should be different for each server network address
+ that the client accesses, rather than common to all server network
+ addresses.  The reason is that it may not be possible for the
+ client to tell if the same server is listening on multiple network
+ addresses.  If the client issues SETCLIENTID with the same id
+ string to each network address of such a server, the server will
+ think it is the same client, and each successive SETCLIENTID will
+ cause the server to begin the process of removing the client's
+ previous leased state.
+
+if the client keeps the client string, verifier(for same instance
+of the client) the same for different or same servers, then is their
+a specific reason as to why the client must know the server is
+different or not because ? Why i am asking this is because the
+server might revoke the delegations(in case of same file access)
+if it perceives the client as different entities.
+
+Dave Noveck writes:
+
+Good point.  Although the conclusion is right, the explanation is
+a little off.  It's headed in the right direction and then just
+veers off in the wrong direction at the last minute.
+
+As you note, if the addresses correspond to the same server and the
+same client string and verifier is used then the subsequent
+SETCLIENTID's are close to no-op's.  The problem is that the clent
+has no way of knowing whether this is the case which occurred or
+he is talking to multiple different servers.  Although it is most
+often the case that two different clientid's come from different
+severs, it need not happen, and you may get two servers that just
+happen to have the same clientid.
+
+Given that fact, the client has to treat each server address as if
+it is a different server.  If it didn't, it it could get itself all
+messed up in that for  a given lock, it would not know what lease
+it belonged to.  And given that it has to consider that each
+SETCLIENTID to one of the sever addresses creates a separate clientid
+and lease, things would get very confused if you allowed the server
+to believe he as talking to one client.  So therefore, by making
+the client string server-specific, we ensure that since we think
+(or at least behave as if )there were two client-server connections,
+we make sure that the servers think the same thing.
+
+V4.1 addresses this issue by having the server give us a server_owner
+identification so that we can definitively know whether we are
+talking to a single or multiple servers and so the same client
+string is sent to each server and the client has sufficient information
+to determine which clientid's and sessions correspond to which
+servers.
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+30) Description of NFS4ERR_BAD_STATED
+
+The description of NFS4ERR_BAD_STATEID in RFC3530 is not very clear
+and implies that in cases where a stateid of the wrong type is
+presented, it does not apply (so may NFS4ERR_INVAL should be used?).
+
+Action:
+Owner:
+State: Accepted
+Target:
+
+31) delegation stateid in READ and WRITE
+
+Mike asked on list:
+
+  In RFC5661, NFSv4.1 clients are permitted to use delegation stateids in
+  READ and WRITE.
+
+  Neither RFC3530 nor the bis I-D explicitly permits this.
+
+  Is it permitted?
+
+  Regardless of the answer, it should be explicit in the bis I-D.
+
+I believe the consensus was that existing implementations allowed
+this and no one complained about permitting it.
+
+Action: Add appropriate text
+Owner:
+State: Accepted
+Target:
+
+32)
+
+Rob had some referral changes:
+
+Change #1: Section 8.14.1, amend as follows:
+
+5068,5069c5068,5070
+<    the client presents state information from the original server, the
+<    client must be prepared to receive either NFS4ERR_STALE_CLIENTID or
+---
+>    the client presents state information from the original server
+(e.g.
+>    in a RENEW op or a READ op of zero length), the client must be
+>    prepared to receive either NFS4ERR_STALE_CLIENTID or
+
+Change #2: Section 8.14.1, append the following:
+
+A client SHOULD re-establish new callback information
+with the new server as soon as possible, according to
+sequences described in sections 14.2.33 and 14.2.34.
+This ensures that server operations are not blocked by
+the inability to recall delegations.
+
+Action: Accept diffs
+Owner: Tom
+State: Finished
+Target: IETF 77
+
