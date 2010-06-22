@@ -162,7 +162,7 @@
     </t>
   </section>
 
-  <section anchor="document_incons" title="Inconsistencies of this Document with the companion document <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />">
+  <section anchor="document_incons" title="Inconsistencies of this Document with the companion document NFS Version 4 Protocol">
 
     <t>
       <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, NFS Version 4
