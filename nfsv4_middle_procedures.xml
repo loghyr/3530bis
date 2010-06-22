@@ -1261,7 +1261,8 @@ NFS4ERR_XDEV
         If the server is unable to determine the exact offset and
         length of the conflicting lock, the same offset and length
         that were provided in the arguments should be returned in
-        the denied results.  The File Locking section contains a full
+        the denied results.  The <xref target="sec:lock_share" />
+	"File Locking and Share Reservations" section contains a full
         description of this and the other file locking operations.
       </t>
 
@@ -1405,8 +1406,9 @@ owner}
         If the server is unable to determine the exact offset and
         length of the conflicting lock, the same offset and length
         that were provided in the arguments should be returned in the
-        denied results.  The File Locking section contains further
-        discussion of the file locking mechanisms.
+        denied results.  <xref target="sec:lock_share" /> "File Locking
+	and Share Reservations"
+	contains further discussion of the file locking mechanisms.
       </t>
 
       <t>
@@ -2030,7 +2032,8 @@ NFS4ERR_STALE
       <t>
         For any OPEN request, the server may return an open delegation,
         which allows further opens and closes to be handled locally
-        on the client as described in the section Open Delegation.
+        on the client as described in <xref target="ss:cc:open_dele" />
+        "Open Delegation".
         Note that delegation is up to the server to decide.
         The client should never assume that delegation will or will
         not be granted in a particular instance.  It should always be

@@ -384,7 +384,7 @@
       </section>
     </section>
 
-    <section anchor="into_open_op" title="OPEN and CLOSE">
+    <section anchor="intro_open_op" title="OPEN and CLOSE">
 
       <t>
         The NFS version 4 protocol introduces OPEN and CLOSE
@@ -395,7 +395,7 @@
       </t>
     </section>
 
-    <section anchor="into_locking" title="File locking">
+    <section anchor="intro_locking" title="File Locking">
 
       <t>
         With the NFS version 4 protocol, the support for byte range

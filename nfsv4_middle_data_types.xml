@@ -21,7 +21,7 @@
     </texttable>
   </section>
 
-  <section anchor="" title="Structured Data Types">
+  <section anchor="sec:sdts" title="Structured Data Types">
 
     <section toc="exclude" anchor="nfstime4" title="nfstime4">
       <?rfc include='autogen/type_nfstime4.xml'?>

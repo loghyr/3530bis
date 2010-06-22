@@ -928,13 +928,16 @@ READ       0,4096      ; read stream of bytes
       any point the client wants to check access without issuing an
       operation that modifies or reads data or metadata, the client
       can use the OPEN and ACCESS operations to do so.  There are
-      various access control entry types, as defined in the Section
+      various access control entry types, as defined in the
+      <xref target="sec:ace_type" />
       "ACE type".  The server is able to communicate which ACE types
       are supported by returning the appropriate value within the
       aclsupport attribute.  Each ACE covers one or more operations
-      on a file or directory as described in the Section "ACE Access
+      on a file or directory as described in the
+      <xref target="sec:ace_access" /> "ACE Access
       Mask".  It may also contain one or more flags that modify the
-      semantics of the ACE as defined in the Section "ACE flag".
+      semantics of the ACE as defined in the <xref target="sec:ace_flag" />
+      "ACE Flag".
     </t>
 
     <t>
@@ -998,7 +1001,7 @@ READ       0,4096      ; read stream of bytes
       really is.
     </t>
 
-    <section title="ACE type">
+    <section anchor="sec:ace_type" title="ACE type">
 
       <texttable anchor="ace_type_tbl">
         <ttcol align='left' >Type</ttcol>
@@ -1067,7 +1070,7 @@ READ       0,4096      ; read stream of bytes
       </t>
 
     </section>
-    <section title="ACE Access Mask">
+    <section anchor="sec:ace_access" title="ACE Access Mask">
 
       <t>
         The access_mask field contains values based on the following:
@@ -1195,7 +1198,7 @@ READ       0,4096      ; read stream of bytes
       </t>
 
     </section>
-    <section title="ACE flag">
+    <section anchor="sec:ace_flag" title="ACE Flag">
 
       <t>
         The "flag" field contains values based on the following

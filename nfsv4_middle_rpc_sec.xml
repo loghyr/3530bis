@@ -42,7 +42,8 @@
     </t>
 
     <t>
-      As noted in the Security Considerations section, the authentication
+      As noted in the <xref target="Security Considerations" />
+      "Security Considerations", the authentication
       model for NFS version 4 has moved from machine-based to principal-
       based.  However, this modification of the authentication model does not
       imply a technical requirement to move the TCP connection management
@@ -135,7 +136,7 @@
         of the RPCSEC_GSS security as the security triple.
       </t>
 
-      <section title="Kerberos V5 as a security triple">
+      <section anchor="krb5:sectrip" title="Kerberos V5 as a security triple">
 
         <t>
           The Kerberos V5 GSS-API mechanism as described in <xref target="RFC1964" /> MUST be
@@ -193,8 +194,8 @@ column descriptions:
         <t>
           The LIPKEY GSS-API mechanism as described in <xref target="RFC2847" /> MAY be
           implemented and provide the following security triples.  The definition
-          of the columns matches the previous subsection "Kerberos V5 as
-          security triple".
+          of the columns matches those in <xref target="krb5:sectrip" />
+          "Kerberos V5 as security triple".
         </t>
 
         <t>
@@ -243,8 +244,8 @@ column descriptions:
         <t>
           The SPKM-3 GSS-API mechanism as described in <xref target="RFC2847" /> MAY be
           implemented and provide the following security triples.  The definition
-          of the columns matches the previous subsection "Kerberos V5 as
-          security triple".
+          of the columns matches those in <xref target="krb5:sectrip" />
+         "Kerberos V5 as security triple".
         </t>
 
         <t>

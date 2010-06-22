@@ -208,8 +208,8 @@
         has been relocated or migrated to another server.  The client
         may obtain the new filesystem location by obtaining the
         "fs_locations" attribute for the current filehandle.
-        For further discussion, refer to the section "Filesystem
-        Migration or Relocation".
+        For further discussion, refer to <xref target="sec:mars:filerec" />
+	"Filesystem Migration or Relocation".
       </t>
 
       <t hangText="NFS4ERR_NAMETOOLONG">

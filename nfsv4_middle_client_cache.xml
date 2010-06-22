@@ -510,7 +510,7 @@
       </t>
 
     </section>
-    <section title="Data Caching and File Identity">
+    <section anchor="ss:cc:dcfi" title="Data Caching and File Identity">
 
       <t>
         When clients cache data, the file data needs to be organized

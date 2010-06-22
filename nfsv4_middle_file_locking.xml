@@ -750,7 +750,8 @@
       locking ranges that happen to be adjacent into a single request
       since the server may not support sub-range requests and for reasons
       related to the recovery of file locking state in the event of
-      server failure.  As discussed in the section "Server Failure and
+      server failure.  As discussed in the <xref target="ss:fl:sfr" />
+      "Server Failure and
       Recovery" below, the server may employ certain optimizations
       during recovery that work effectively only when the client's
       behavior during lock recovery is similar to the client's locking
@@ -1206,7 +1207,8 @@
           <t>
             a boolean that indicates if the client's lease expired or
             if there was administrative intervention (see the section,
-            Server Revocation of Locks) to revoke a record lock, share
+            <xref target="ss:fl:srl" /> "Server Revocation of Locks")
+            to revoke a record lock, share
             reservation, or delegation
           </t>
 
@@ -1380,7 +1382,8 @@
       the client must mark all locks held for the associated lease
       as "unvalidated".  This means the client has been unable
       to re-establish or confirm the appropriate lock state with the
-      server.  As described in the previous section on crash recovery,
+      server.  As described in <xref target="ss:fl:crash_recov" />
+      "Crash Recovery",
       there are scenarios in which the server may grant conflicting
       locks after the lease period has expired for a client.  When it
       is possible that the lease period has expired, the client must
@@ -1641,7 +1644,7 @@ else if ((request.access & file_state.deny)) ||
       stateids, and clientids) is as described below.  The handling
       differs between migration and replication.  For related discussion
       of file server state and recover of such see the sections under
-      "File Locking and Share Reservations".
+      <xref target="ss:fl:crash_recov" /> "File Locking and Share Reservations".
     </t>
 
     <t>

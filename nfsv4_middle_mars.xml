@@ -145,7 +145,7 @@
     </t>
 
   </section>
-  <section title="Filehandle Recovery for Migration or Replication">
+  <section anchor="sec:mars:filerec" title="Filehandle Recovery for Migration or Replication">
 
     <t>
       Filehandles for filesystems that are replicated or migrated generally

@@ -3,8 +3,8 @@
 
 NFSv4                                                          T. Haynes
 Internet-Draft                                                    Editor
-Intended status: Standards Track                          March 05, 2010
-Expires: September 6, 2010
+Intended status: Standards Track                           June 22, 2010
+Expires: December 24, 2010
 
 
                          NFS Version 4 Protocol
@@ -52,12 +52,12 @@ Status of this Memo
 
 
 
-Haynes                  Expires September 6, 2010               [Page 1]
+Haynes                  Expires December 24, 2010               [Page 1]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
-   This Internet-Draft will expire on September 6, 2010.
+   This Internet-Draft will expire on December 24, 2010.
 
 Copyright Notice
 
@@ -108,9 +108,9 @@ Copyright Notice
 
 
 
-Haynes                  Expires September 6, 2010               [Page 2]
+Haynes                  Expires December 24, 2010               [Page 2]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
 Table of Contents
@@ -164,9 +164,9 @@ Table of Contents
 
 
 
-Haynes                  Expires September 6, 2010               [Page 3]
+Haynes                  Expires December 24, 2010               [Page 3]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
 1.  XDR Description of NFSv4.1
@@ -195,8 +195,8 @@ Internet-Draft                    NFSv4                       March 2010
 
     /// /*
     ///  * This file was machine generated for
-    ///  *  draft-ietf-nfsv4-rfc3530bis-03
-    ///  * Last updated Friday, March  5, 2010 03:56:29 PM CST
+    ///  *  draft-ietf-nfsv4-rfc3530bis-04
+    ///  * Last updated Tue Jun 22 13:08:07 CDT 2010
     ///  */
     /// /*
     ///  *  Copyright (C) The IETF Trust (2007-2008)
@@ -220,9 +220,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010               [Page 4]
+Haynes                  Expires December 24, 2010               [Page 4]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///  * typedef hyper                int64_t;
@@ -276,9 +276,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010               [Page 5]
+Haynes                  Expires December 24, 2010               [Page 5]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///  NFS4ERR_ROFS           = 30,   /* read-only filesystem    */
@@ -332,9 +332,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010               [Page 6]
+Haynes                  Expires December 24, 2010               [Page 6]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///  NFS4ERR_OP_ILLEGAL     = 10044,/* undefined operation     */
@@ -388,9 +388,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010               [Page 7]
+Haynes                  Expires December 24, 2010               [Page 7]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///  case SET_TO_CLIENT_TIME4:
@@ -444,9 +444,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010               [Page 8]
+Haynes                  Expires December 24, 2010               [Page 8]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///
@@ -500,9 +500,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010               [Page 9]
+Haynes                  Expires December 24, 2010               [Page 9]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// const ACE4_READ_NAMED_ATTRS     = 0x00000008;
@@ -556,9 +556,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 10]
+Haynes                  Expires December 24, 2010              [Page 10]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///  */
@@ -612,9 +612,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 11]
+Haynes                  Expires December 24, 2010              [Page 11]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// typedef uint32_t        fattr4_fh_expire_type;
@@ -668,9 +668,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 12]
+Haynes                  Expires December 24, 2010              [Page 12]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// typedef settime4        fattr4_time_access_set;
@@ -724,9 +724,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 13]
+Haynes                  Expires December 24, 2010              [Page 13]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// const FATTR4_MIMETYPE           = 32;
@@ -780,9 +780,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 14]
+Haynes                  Expires December 24, 2010              [Page 14]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// };
@@ -836,9 +836,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 15]
+Haynes                  Expires December 24, 2010              [Page 15]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///
@@ -892,9 +892,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 16]
+Haynes                  Expires December 24, 2010              [Page 16]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// union COMMIT4res switch (nfsstat4 status) {
@@ -948,9 +948,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 17]
+Haynes                  Expires December 24, 2010              [Page 17]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// struct DELEGRETURN4args {
@@ -1004,9 +1004,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 18]
+Haynes                  Expires December 24, 2010              [Page 18]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///          LINK4resok resok4;
@@ -1060,9 +1060,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 19]
+Haynes                  Expires December 24, 2010              [Page 19]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///
@@ -1116,9 +1116,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 20]
+Haynes                  Expires December 24, 2010              [Page 20]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///         /* CURRENT_FH: directory */
@@ -1172,9 +1172,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 21]
+Haynes                  Expires December 24, 2010              [Page 21]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// enum opentype4 {
@@ -1228,9 +1228,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 22]
+Haynes                  Expires December 24, 2010              [Page 22]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///         component4      file;
@@ -1284,9 +1284,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 23]
+Haynes                  Expires December 24, 2010              [Page 23]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///         openflag4       openhow;
@@ -1340,9 +1340,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 24]
+Haynes                  Expires December 24, 2010              [Page 24]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///
@@ -1396,9 +1396,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 25]
+Haynes                  Expires December 24, 2010              [Page 25]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// };
@@ -1452,9 +1452,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 26]
+Haynes                  Expires December 24, 2010              [Page 26]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///         bool            eof;
@@ -1508,9 +1508,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 27]
+Haynes                  Expires December 24, 2010              [Page 27]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// };
@@ -1564,9 +1564,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 28]
+Haynes                  Expires December 24, 2010              [Page 28]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// struct RENEW4res {
@@ -1620,9 +1620,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 29]
+Haynes                  Expires December 24, 2010              [Page 29]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///          void;
@@ -1676,9 +1676,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 30]
+Haynes                  Expires December 24, 2010              [Page 30]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// struct VERIFY4res {
@@ -1732,9 +1732,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 31]
+Haynes                  Expires December 24, 2010              [Page 31]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///  OP_ACCESS              = 3,
@@ -1788,9 +1788,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 32]
+Haynes                  Expires December 24, 2010              [Page 32]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///  case OP_GETFH:         void;
@@ -1844,9 +1844,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 33]
+Haynes                  Expires December 24, 2010              [Page 33]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///  case OP_LOCKT:         LOCKT4res oplockt;
@@ -1900,9 +1900,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 34]
+Haynes                  Expires December 24, 2010              [Page 34]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///
@@ -1956,9 +1956,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 35]
+Haynes                  Expires December 24, 2010              [Page 35]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     ///         nfsstat4        status;
@@ -2012,9 +2012,9 @@ Internet-Draft                    NFSv4                       March 2010
 
 
 
-Haynes                  Expires September 6, 2010              [Page 36]
+Haynes                  Expires December 24, 2010              [Page 36]
 
-Internet-Draft                    NFSv4                       March 2010
+Internet-Draft                    NFSv4                        June 2010
 
 
     /// program NFS4_CALLBACK {
@@ -2052,7 +2052,7 @@ Internet-Draft                    NFSv4                       March 2010
 Author's Address
 
    Thomas Haynes
-   Sun Microsystems, Inc.
+   Oracle Corporation
    9110 E 66th St
    Tulsa, OK  74133
    USA
@@ -2068,5 +2068,5 @@ Author's Address
 
 
 
-Haynes                  Expires September 6, 2010              [Page 37]
+Haynes                  Expires December 24, 2010              [Page 37]
 
