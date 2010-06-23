@@ -42,8 +42,8 @@
     </t>
 
     <t>
-      As noted in the <xref target="Security Considerations" />
-      "Security Considerations", the authentication
+      As noted in <xref target="Security Considerations" />,
+      the authentication
       model for NFS version 4 has moved from machine-based to principal-
       based.  However, this modification of the authentication model does not
       imply a technical requirement to move the TCP connection management
@@ -194,8 +194,7 @@ column descriptions:
         <t>
           The LIPKEY GSS-API mechanism as described in <xref target="RFC2847" /> MAY be
           implemented and provide the following security triples.  The definition
-          of the columns matches those in <xref target="krb5:sectrip" />
-          "Kerberos V5 as security triple".
+          of the columns matches those in <xref target="krb5:sectrip" />.
         </t>
 
         <t>
@@ -244,8 +243,7 @@ column descriptions:
         <t>
           The SPKM-3 GSS-API mechanism as described in <xref target="RFC2847" /> MAY be
           implemented and provide the following security triples.  The definition
-          of the columns matches those in <xref target="krb5:sectrip" />
-         "Kerberos V5 as security triple".
+          of the columns matches those in <xref target="krb5:sectrip" />.
         </t>
 
         <t>
@@ -262,7 +260,7 @@ column descriptions:
 
         <t>
           For a discussion as to why the mechanism algorithm is listed as
-          "negotiated", see <xref target="ss:rpc:lst" /> "LIPKEY as a security triple."
+          "negotiated", see <xref target="ss:rpc:lst" />.
         </t>
 
         <t>
@@ -301,7 +299,7 @@ column descriptions:
     with a secure channel to eliminate the possibility of a third party
     intercepting the negotiation sequence and forcing the client and
     server to choose a lower level of security than required or desired.
-    See <xref target="Security Considerations" /> "Security Considerations" for further discussion.
+    See <xref target="Security Considerations" /> for further discussion.
   </t>
 
     <section title="SECINFO">
@@ -330,7 +328,7 @@ column descriptions:
         for access to the server's filesystem resources.  The client is then
         responsible for determining what security triples are available at the
         server and choose one which is appropriate for the client.  See 
-        <xref target="OP_SECINFO" /> for the "SECINFO" operation for further discussion of how
+        <xref target="OP_SECINFO" /> for further discussion of how
         the client will respond to the NFS4ERR_WRONGSEC error and use SECINFO.
       </t>
     </section>

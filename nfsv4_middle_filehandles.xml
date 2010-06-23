@@ -51,8 +51,7 @@
         the ROOT of the server's file tree.  Once this PUTROOTFH operation
         is used, the client can then traverse the entirety of the server's
         file tree with the LOOKUP operation.  A complete discussion of
-        the server name space is in <xref target="sec:name_space" />
-        "NFS Server Name Space".
+        the server name space is in <xref target="sec:name_space" />.
       </t>
 
     </section>
@@ -127,8 +126,7 @@
         two filehandles denote the same object and in such cases, avoid
         making invalid assumptions which might cause incorrect behavior.
         Further discussion of filehandle and attribute comparison in the
-        context of data caching is presented in <xref target="ss:cc:dcfi" />
-        "Data Caching and File Identity".
+        context of data caching is presented in <xref target="ss:cc:dcfi" />.
       </t>
 
       <t>

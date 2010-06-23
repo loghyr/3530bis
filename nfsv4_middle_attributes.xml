@@ -26,7 +26,7 @@
     attributes may be added to the NFS protocol between major revisions
     by publishing a standards-track RFC which allocates a new attribute
     number value and defines the encoding for the attribute.  See 
-    <xref target="sec:minor" /> "Minor Versioning" for further discussion.
+    <xref target="sec:minor" /> for further discussion.
   </t>
 
   <t>
@@ -235,7 +235,7 @@ READ       0,4096      ; read stream of bytes
       <c>
         Server uses this to specify filehandle expiration behavior
         to the client.  See <xref target="sec:filehandles" />
-        "Filehandles" for additional description.
+        for additional description.
       </c>
 
       <c>change</c>
@@ -561,7 +561,7 @@ READ       0,4096      ; read stream of bytes
       <c>uint64</c>
       <c>READ</c>
       <c>
-        For definition see <xref target="ss:at:qa" /> "Quota Attributes" below.
+        For definition see <xref target="ss:at:qa" /> below.
       </c>
 
       <c>quota_avail_soft</c>
@@ -569,7 +569,7 @@ READ       0,4096      ; read stream of bytes
       <c>uint64</c>
       <c>READ</c>
       <c>
-        For definition see <xref target="ss:at:qa" /> "Quota Attributes" below.
+        For definition see <xref target="ss:at:qa" /> below.
       </c>
 
       <c>quota_used</c>
@@ -577,7 +577,7 @@ READ       0,4096      ; read stream of bytes
       <c>uint64</c>
       <c>READ</c>
       <c>
-        For definition see <xref target="ss:at:qa" /> "Quota Attributes" below.
+        For definition see <xref target="ss:at:qa" /> below.
       </c>
 
       <c>rawdev</c>
@@ -865,8 +865,7 @@ READ       0,4096      ; read stream of bytes
       allows an NFS server to implement unambiguous and efficient
       table driven mappings for case insensitive comparisons,
       and non-case-preserving storage.  For general character
-      handling and internationalization issues, see <xref target="sec:intro" />
-      "Internationalization".
+      handling and internationalization issues, see <xref target="sec:intro" />.
     </t>
 
   </section>
@@ -928,16 +927,15 @@ READ       0,4096      ; read stream of bytes
       any point the client wants to check access without issuing an
       operation that modifies or reads data or metadata, the client
       can use the OPEN and ACCESS operations to do so.  There are
-      various access control entry types, as defined in the
-      <xref target="sec:ace_type" />
-      "ACE type".  The server is able to communicate which ACE types
+      various access control entry types, as defined in
+      <xref target="sec:ace_type" />. The server is able to
+      communicate which ACE types
       are supported by returning the appropriate value within the
       aclsupport attribute.  Each ACE covers one or more operations
-      on a file or directory as described in the
-      <xref target="sec:ace_access" /> "ACE Access
-      Mask".  It may also contain one or more flags that modify the
-      semantics of the ACE as defined in the <xref target="sec:ace_flag" />
-      "ACE Flag".
+      on a file or directory as described in 
+      <xref target="sec:ace_access" />.  It may also contain one
+      or more flags that modify the semantics of the ACE as
+      defined in <xref target="sec:ace_flag" />.
     </t>
 
     <t>

@@ -62,8 +62,8 @@
       A similar situation arises in connection with file locking.  Sending
       file lock and unlock requests to the server as well as the read and
       write requests necessary to make data caching consistent with the
-      locking semantics (see <xref target="ss:cc:dcfl" /> "Data Caching
-      and File Locking") can severely limit performance.  When locking
+      locking semantics (see <xref target="ss:cc:dcfl" />)
+      can severely limit performance.  When locking
       is used to provide protection against infrequent conflicts, a large
       penalty is incurred.  This penalty may discourage the use of file
       locking by applications.
@@ -93,8 +93,8 @@
 
     <t>
       The appropriate requirements for the server are discussed in later
-      sections in which specific forms of caching are covered.  (see 
-      <xref target="ss:cc:open_dele" /> "Open Delegation").
+      sections in which specific forms of caching are covered (see 
+      <xref target="ss:cc:open_dele" />).
     </t>
 
   </section>
@@ -172,7 +172,7 @@
 
     <t>
       An example of this is when responsibility to mediate opens on a given
-      file is delegated to a client (see <xref target="ss:cc:open_dele" /> "Open Delegation").
+      file is delegated to a client (see <xref target="ss:cc:open_dele" />).
       The server will not know what opens are in effect on the client.
       Without this knowledge the server will be unable to determine if
       the access and deny state for the file allows any particular open
@@ -233,8 +233,7 @@
         stable storage so that the delegations can be reclaimed.  For open
         delegations, such delegations are reclaimed using OPEN with a claim
         type of CLAIM_DELEGATE_PREV.  (See <xref target="ss:cc:cache_revoke" />
-        "Data Caching and Revocation" and <xref target="OP_OPEN" />
-        "Operation 18: OPEN" for discussion of open
+        and <xref target="OP_OPEN" /> for discussion of open
         delegation and the details of OPEN respectively).
       </t>
 
@@ -303,12 +302,11 @@
         Note that in the case of a revoked write open delegation, there
         are issues because data may have been modified by the client
         whose delegation is revoked and separately by other clients.
-        See <xref target="ss:cc:rrwod" /> "Revocation Recovery
-        for Write Open Delegation" for a discussion of such issues.
+        See <xref target="ss:cc:rrwod" /> for a discussion of such issues.
         Note also that when delegations are revoked, information about
         the revoked delegation will be written by the server to stable
-        storage (as described in <xref target="ss:fl:crash_recov" />
-        "Crash Recovery").  This is done to deal with the case in
+        storage (as described in <xref target="ss:fl:crash_recov" />).
+        This is done to deal with the case in
         which a server reboots after revoking a delegation but before
         the client holding the revoked delegation is notified about
         the revocation.
@@ -347,7 +345,7 @@
 
       <t>
         Furthermore, in the absence of open delegation (see <xref
-        target="ss:cc:open_dele" /> "Open Delegation") two additional
+        target="ss:cc:open_dele" />) two additional
         rules apply.  Note that these rules are obeyed in practice
         by many NFS version 2 and version 3 clients.
 
@@ -671,8 +669,7 @@
 
         <t>
           space limitation information to control flushing of data on close
-          (write open delegation only, see <xref target="ss:cc:oddc" />
-          "Open Delegation and Data Caching")
+          (write open delegation only, see <xref target="ss:cc:oddc" />)
         </t>
 
         <t>
@@ -703,7 +700,7 @@
       <list style='symbols'>
         <t>
           The access and deny bits for the request and the file as described
-          in <xref target="ss:fl:share_res" /> "Share Reservations".
+          in <xref target="ss:fl:share_res" />.
         </t>
 
         <t>
@@ -1097,7 +1094,7 @@ return to client (that sent GETATTR) the attributes
             requests are done with the claim type of CLAIM_DELEGATE_CUR.  This
             will allow the presentation of the delegation stateid so that the
             client can establish the appropriate rights to perform the OPEN.
-            (see <xref target="OP_OPEN" />"Operation 18: OPEN" for details.)
+            (see <xref target="OP_OPEN" /> for details.)
           </t>
 
           <t>
@@ -1239,8 +1236,7 @@ return to client (that sent GETATTR) the attributes
         the file, the user of the application should be notified.
         Unfortunately, it may not be possible to notify the user
         since active applications may not be present at the client.
-        See <xref target="ss:cc:rrwod" /> "Revocation Recovery for
-        Write Open Delegation" for additional details.
+        See <xref target="ss:cc:rrwod" /> for additional details.
       </t>
 
     </section>

@@ -138,8 +138,7 @@
     </t>
 
     <t>
-      See <xref target="Security Considerations" />
-      "Security Considerations" for a discussion on the
+      See <xref target="Security Considerations" /> for a discussion on the
       recommendations for the security flavor to be used by any GETATTR
       operation that requests the "fs_locations" attribute.
     </t>

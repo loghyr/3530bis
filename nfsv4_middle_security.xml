@@ -21,8 +21,7 @@
     principal on an NFS server.  Consideration should also be given
     to the integrity and privacy of NFS requests and responses.
     The issues of end to end mutual authentication, integrity,
-    and privacy are discussed as part of <xref target="sec:rpc_flavors" />
-    "RPC and Security Flavor".
+    and privacy are discussed as part of <xref target="sec:rpc_flavors" />.
   </t>
 
   <t>
@@ -75,6 +74,6 @@
     responsible for the release of client state, it is imperative
     that the principal used for these operations is checked against
     and match the previous use of these operations.  See
-     <xref target="ss:fl:client_id" /> "Client ID" for further discussion.
+     <xref target="ss:fl:client_id" /> for further discussion.
   </t>
 </section>

@@ -1261,8 +1261,8 @@ NFS4ERR_XDEV
         If the server is unable to determine the exact offset and
         length of the conflicting lock, the same offset and length
         that were provided in the arguments should be returned in
-        the denied results.  The <xref target="sec:lock_share" />
-	"File Locking and Share Reservations" section contains a full
+        the denied results.  <xref target="sec:lock_share" />
+	contains a full
         description of this and the other file locking operations.
       </t>
 
@@ -1406,8 +1406,7 @@ owner}
         If the server is unable to determine the exact offset and
         length of the conflicting lock, the same offset and length
         that were provided in the arguments should be returned in the
-        denied results.  <xref target="sec:lock_share" /> "File Locking
-	and Share Reservations"
+        denied results.  <xref target="sec:lock_share" />
 	contains further discussion of the file locking mechanisms.
       </t>
 
@@ -1972,8 +1971,7 @@ NFS4ERR_STALE
         server returns the error NFS4ERR_SHARE_DENIED.  For a complete
         SHARE request, the client must provide values for the owner and
         seqid fields for the OPEN argument.  For additional discussion
-        of SHARE semantics see <xref target="ss:fl:share_res" />
-        "Share Reservations".
+        of SHARE semantics see <xref target="ss:fl:share_res" />.
       </t>
 
       <t>
@@ -2032,8 +2030,7 @@ NFS4ERR_STALE
       <t>
         For any OPEN request, the server may return an open delegation,
         which allows further opens and closes to be handled locally
-        on the client as described in <xref target="ss:cc:open_dele" />
-        "Open Delegation".
+        on the client as described in <xref target="ss:cc:open_dele" />.
         Note that delegation is up to the server to decide.
         The client should never assume that delegation will or will
         not be granted in a particular instance.  It should always be
@@ -2063,7 +2060,7 @@ NFS4ERR_STALE
         If the component is of zero length, NFS4ERR_INVAL will
         be returned.  The component is also subject to the normal
         UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:utf8_err" /> "UTF-8 Related Errors"
+        <xref target="ss:i18n:utf8_err" />
         for further discussion.
       </t>
 
@@ -2421,8 +2418,8 @@ NFS4ERR_STALE
       <t>
         Servers must not require confirmation on OPENs that grant
         delegations or are doing reclaim operations.  See 
-        <xref target="ss:fl:open_conf" /> "Use
-        of Open Confirmation" for details.  The server can easily avoid
+        <xref target="ss:fl:open_conf" />
+        for details.  The server can easily avoid
         this by noting whether it has disposed of one open_owner4 for
         the given clientid.  If the server does not support delegation,
         it might simply maintain a single bit that notes whether any
@@ -3405,9 +3402,7 @@ target_change_info
         the target: either both are non-directories or both are
         directories and the target must be empty.  If compatible,
         the existing target is removed before the rename occurs (See
-        <xref target="OP_REMOVE_IMPLEMENTATION" /> IMPLEMENTATION
-        of <xref target="OP_REMOVE" /> "Operation 28:
-        REMOVE - Remove Filesystem Object" for client and server
+        <xref target="OP_REMOVE" /> for client and server
         actions whenever a target is removed).  If they are not
         compatible or if the target is a directory but not empty,
         the server will return the error, NFS4ERR_EXIST.
@@ -3887,8 +3882,7 @@ NFS4ERR_STALE
       </t>
 
       <t>
-        See <xref target="Security Considerations" />
-        "Security Considerations" for a discussion
+        See <xref target="Security Considerations" /> for a discussion
         on the recommendations for security flavor used by SECINFO.
       </t>
 
@@ -5030,9 +5024,8 @@ void;
       <t>
         This operation is a placeholder for encoding a result to
         handle the case of the client sending an operation code within
-        COMPOUND that is not supported. See the
-        <xref target="OP_COMPOUND_DESCRIPTION" /> COMPOUND procedure
-        description for more details.
+        COMPOUND that is not supported. See
+        <xref target="OP_COMPOUND_DESCRIPTION" /> for more details.
       </t>
 
       <t>

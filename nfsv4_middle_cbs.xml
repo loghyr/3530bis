@@ -114,8 +114,7 @@ compoundargs -> compoundres
       </t>
 
       <t>
-        For the definition of the "tag" field, see <xref target="OP_COMPOUND" />
-        "Procedure 1: COMPOUND - Compound Operations".
+        For the definition of the "tag" field, see <xref target="OP_COMPOUND" />.
       </t>
 
       <t>
@@ -187,7 +186,7 @@ fh, attr_request -> attrmask, attr_vals
           current modified state of a file that has been write delegated.
           The attributes size and change are the only ones guaranteed
           to be serviced by the client.  See <xref target="ss:cc:handle_cb_getattr" />
-          "Handling of CB_GETATTR" for a full description of how the client and
+          for a full description of how the client and
           server are to interact with the use of CB_GETATTR.
         </t>
 
@@ -321,8 +320,7 @@ void;
         <t>
           This operation is a placeholder for encoding a result to
           handle the case of the client sending an operation code within
-          COMPOUND that is not supported. See  <xref target="OP_COMPOUND_DESCRIPTION" /> COMPOUND procedure
-          description for more details.
+          COMPOUND that is not supported. See <xref target="OP_COMPOUND_DESCRIPTION" /> for more details.
         </t>
 
         <t>

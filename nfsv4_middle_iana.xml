@@ -24,7 +24,7 @@
   <section title="ONC RPC Network Identifiers (netids)">
 
     <t>
-      <xref target="sec:sdts" /> "Structured Data Types" discussed the r_netid field and
+      <xref target="sec:sdts" /> discussed the r_netid field and
       the corresponding r_addr field of a clientaddr4 structure.
       The NFS version 4 protocol depends on the syntax and semantics
       of these fields to effectively communicate callback information
