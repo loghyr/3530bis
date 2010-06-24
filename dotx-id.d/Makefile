@@ -1,4 +1,4 @@
-# Copyright (C) The IETF Trust (2007)
+# Copyright (C) The IETF Trust (2009-2010)
 # Manage the .xml for the NFSv4 document.
 #
 YEAR=`date +%Y`

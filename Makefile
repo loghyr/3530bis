@@ -1,4 +1,4 @@
-# Copyright (C) The IETF Trust (2007-2008)
+# Copyright (C) The IETF Trust (2009-2010)
 #
 # Manage the .xml for the NFSv4 3530bis document.
 #
@@ -287,7 +287,8 @@ IDXMLSRC_BASE = \
 	nfsv4_middle_data_types.xml \
 	nfsv4_middle_rpc_sec.xml \
 	nfsv4_middle_filehandles.xml \
-	nfsv4_middle_attributes.xml \
+	nfsv4_middle_fileattributes.xml \
+	nfsv4_middle_fileattributes_acls.xml \
         nfsv4_middle_mars.xml \
 	nfsv4_middle_server_name.xml \
         nfsv4_middle_file_locking.xml \

@@ -3,8 +3,8 @@
 
 NFSv4                                                          T. Haynes
 Internet-Draft                                                    Editor
-Intended status: Standards Track                           June 22, 2010
-Expires: December 24, 2010
+Intended status: Standards Track                           June 24, 2010
+Expires: December 26, 2010
 
 
                          NFS Version 4 Protocol
@@ -52,12 +52,12 @@ Status of this Memo
 
 
 
-Haynes                  Expires December 24, 2010               [Page 1]
+Haynes                  Expires December 26, 2010               [Page 1]
 
 Internet-Draft                    NFSv4                        June 2010
 
 
-   This Internet-Draft will expire on December 24, 2010.
+   This Internet-Draft will expire on December 26, 2010.
 
 Copyright Notice
 
@@ -108,7 +108,7 @@ Copyright Notice
 
 
 
-Haynes                  Expires December 24, 2010               [Page 2]
+Haynes                  Expires December 26, 2010               [Page 2]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -164,7 +164,7 @@ Table of Contents
 
 
 
-Haynes                  Expires December 24, 2010               [Page 3]
+Haynes                  Expires December 26, 2010               [Page 3]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -196,13 +196,13 @@ Internet-Draft                    NFSv4                        June 2010
     /// /*
     ///  * This file was machine generated for
     ///  *  draft-ietf-nfsv4-rfc3530bis-04
-    ///  * Last updated Tue Jun 22 13:08:07 CDT 2010
+    ///  * Last updated Thu Jun 24 15:03:39 CDT 2010
     ///  */
     /// /*
-    ///  *  Copyright (C) The IETF Trust (2007-2008)
+    ///  *  Copyright (C) The IETF Trust (2009-2010)
     ///  *  All Rights Reserved.
     ///  *
-    ///  *  Copyright (C) The Internet Society (1998-2006).
+    ///  *  Copyright (C) The Internet Society (1998-2010).
     ///  *  All Rights Reserved.
     ///  */
     ///
@@ -220,7 +220,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010               [Page 4]
+Haynes                  Expires December 26, 2010               [Page 4]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -276,7 +276,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010               [Page 5]
+Haynes                  Expires December 26, 2010               [Page 5]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -332,7 +332,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010               [Page 6]
+Haynes                  Expires December 26, 2010               [Page 6]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -388,7 +388,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010               [Page 7]
+Haynes                  Expires December 26, 2010               [Page 7]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -444,7 +444,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010               [Page 8]
+Haynes                  Expires December 26, 2010               [Page 8]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -500,7 +500,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010               [Page 9]
+Haynes                  Expires December 26, 2010               [Page 9]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -556,7 +556,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 10]
+Haynes                  Expires December 26, 2010              [Page 10]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -612,7 +612,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 11]
+Haynes                  Expires December 26, 2010              [Page 11]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -668,7 +668,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 12]
+Haynes                  Expires December 26, 2010              [Page 12]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -724,7 +724,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 13]
+Haynes                  Expires December 26, 2010              [Page 13]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -780,7 +780,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 14]
+Haynes                  Expires December 26, 2010              [Page 14]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -836,7 +836,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 15]
+Haynes                  Expires December 26, 2010              [Page 15]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -892,7 +892,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 16]
+Haynes                  Expires December 26, 2010              [Page 16]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -948,7 +948,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 17]
+Haynes                  Expires December 26, 2010              [Page 17]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1004,7 +1004,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 18]
+Haynes                  Expires December 26, 2010              [Page 18]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1060,7 +1060,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 19]
+Haynes                  Expires December 26, 2010              [Page 19]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1116,7 +1116,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 20]
+Haynes                  Expires December 26, 2010              [Page 20]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1172,7 +1172,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 21]
+Haynes                  Expires December 26, 2010              [Page 21]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1228,7 +1228,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 22]
+Haynes                  Expires December 26, 2010              [Page 22]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1284,7 +1284,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 23]
+Haynes                  Expires December 26, 2010              [Page 23]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1340,7 +1340,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 24]
+Haynes                  Expires December 26, 2010              [Page 24]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1396,7 +1396,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 25]
+Haynes                  Expires December 26, 2010              [Page 25]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1452,7 +1452,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 26]
+Haynes                  Expires December 26, 2010              [Page 26]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1508,7 +1508,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 27]
+Haynes                  Expires December 26, 2010              [Page 27]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1564,7 +1564,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 28]
+Haynes                  Expires December 26, 2010              [Page 28]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1620,7 +1620,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 29]
+Haynes                  Expires December 26, 2010              [Page 29]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1676,7 +1676,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 30]
+Haynes                  Expires December 26, 2010              [Page 30]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1732,7 +1732,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 31]
+Haynes                  Expires December 26, 2010              [Page 31]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1788,7 +1788,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 32]
+Haynes                  Expires December 26, 2010              [Page 32]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1844,7 +1844,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 33]
+Haynes                  Expires December 26, 2010              [Page 33]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1900,7 +1900,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 34]
+Haynes                  Expires December 26, 2010              [Page 34]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -1956,7 +1956,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 35]
+Haynes                  Expires December 26, 2010              [Page 35]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -2012,7 +2012,7 @@ Internet-Draft                    NFSv4                        June 2010
 
 
 
-Haynes                  Expires December 24, 2010              [Page 36]
+Haynes                  Expires December 26, 2010              [Page 36]
 
 Internet-Draft                    NFSv4                        June 2010
 
@@ -2068,5 +2068,5 @@ Author's Address
 
 
 
-Haynes                  Expires December 24, 2010              [Page 37]
+Haynes                  Expires December 26, 2010              [Page 37]
 

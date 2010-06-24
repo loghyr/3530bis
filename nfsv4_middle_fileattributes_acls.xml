@@ -1,0 +1,1335 @@
+<!-- Copyright (C) The IETF Trust (2009-2010) -->
+<!-- Copyright (C) The Internet Society (2010) -->
+<section title="Access Control Attributes" anchor="acl">
+    <t>
+        Access Control Lists (ACLs) are file attributes that specify
+        fine grained access control. This chapter covers the
+        &quot;acl&quot;, &quot;aclsupport&quot;, &quot;mode&quot;,
+        file attributes, and their
+        interactions.  Note that file attributes may apply to any file
+        system object.
+    </t>
+    
+    <section title="Goals">
+      <t>
+        ACLs and modes represent two well established models for
+        specifying permissions. This chapter specifies requirements
+        that attempt to meet the following goals:
+
+        <list style="symbols">
+          <t>
+            If a server supports the mode attribute, it should provide
+            reasonable semantics to clients that only set and retrieve
+            the mode attribute.
+          </t>
+          <t>
+            If a server supports ACL attributes, it should provide
+            reasonable semantics to clients that only set and retrieve
+            those attributes.
+          </t>
+          <t>
+            On servers that support the mode attribute, if ACL
+            attributes have never been set on an object, via
+            inheritance or explicitly, the behavior should be
+            traditional UNIX-like behavior.
+          </t>
+          <t>
+            On servers that support the mode attribute, if the ACL
+            attributes have been previously set on an object, either
+            explicitly or via inheritance:
+            <list>
+              <t>
+                Setting only the mode attribute should effectively
+                control the traditional UNIX-like permissions of read,
+                write, and execute on owner, owner_group, and other.
+              </t>
+              <t>
+                Setting only the mode attribute should provide
+                reasonable security. For example, setting a mode of
+                000 should be enough to ensure that future opens for
+                read or write by any principal fail, regardless of a
+                previously existing or inherited ACL.
+              </t>
+            </list>
+          </t>
+          <t>
+            When a mode attribute is set on an object, the ACL
+            attributes may need to be modified so as to not conflict
+            with the new mode. In such cases, it is desirable that the
+            ACL keep as much information as possible. This includes
+            information about inheritance, AUDIT and ALARM ACEs, and
+            permissions granted and denied that do not conflict with
+            the new mode.
+          </t>
+        </list>
+      </t>
+    </section>
+    
+    <section title="File Attributes Discussion">
+      <section anchor="attrdef_acl"
+	       title="Attribute 12: acl">
+        <t>
+          The NFSv4.0 ACL attribute contains an array of access
+          control entries (ACEs) that are associated with the file
+          system object.  Although the client can read and
+          write the acl attribute, the server is responsible for using
+          the ACL to perform access control. The client can use the
+          OPEN or ACCESS operations to check access without modifying
+          or reading data or metadata.
+        </t>
+
+        <t>
+          The NFS ACE structure is defined as follows:
+        </t>
+        <?rfc include='autogen/type_acetype4.xml'?>
+        <?rfc include='autogen/type_aceflag4.xml'?>
+        <?rfc include='autogen/type_acemask4.xml'?>
+        <?rfc include='autogen/type_nfsace4.xml'?>
+
+        <t>
+          To determine if a request succeeds, the server processes
+          each nfsace4 entry in order.  Only ACEs which have a "who"
+          that matches the requester are considered.  Each ACE is
+          processed until all of the bits of the requester's access
+          have been ALLOWED.  Once a bit (see below) has been ALLOWED
+          by an ACCESS_ALLOWED_ACE, it is no longer considered in the
+          processing of later ACEs.  If an ACCESS_DENIED_ACE is
+          encountered where the requester's access still has unALLOWED
+          bits in common with the "access_mask" of the ACE, the
+          request is denied.  When the ACL is fully processed, if
+          there are bits in the requester's mask that have not been
+          ALLOWED or DENIED, access is denied.
+        </t>
+        <t>
+          Unlike the ALLOW and DENY ACE types, the ALARM and AUDIT ACE
+          types do not affect a requester's access, and instead are
+          for triggering events as a result of a requester's access
+          attempt.  Therefore, AUDIT and ALARM ACEs are processed only
+          after processing ALLOW and DENY ACEs.
+        </t>
+        <t>
+          The NFSv4.0 ACL model is quite rich. Some server
+          platforms may provide access control functionality that goes
+          beyond the UNIX-style mode attribute, but which is not as
+          rich as the NFS ACL model.  So that users can take advantage
+          of this more limited functionality, the server may support
+          the acl attributes by mapping between its ACL model and the
+          NFSv4.0 ACL model.  Servers must ensure that the ACL
+          they actually store or enforce is at least as strict as the
+          NFSv4 ACL that was set.  It is tempting to accomplish this
+          by rejecting any ACL that falls outside the small set that
+          can be represented accurately.  However, such an approach
+          can render ACLs unusable without special client-side
+          knowledge of the server's mapping, which defeats the purpose
+          of having a common NFSv4 ACL protocol.  Therefore servers
+          should accept every ACL that they can without compromising
+          security.  To help accomplish this, servers may make a
+          special exception, in the case of unsupported permission
+          bits, to the rule that bits not ALLOWED or DENIED by an ACL
+          must be denied.  For example, a UNIX-style server might
+          choose to silently allow read attribute permissions even
+          though an ACL does not explicitly allow those permissions.
+          (An ACL that explicitly denies permission to read attributes
+          should still be rejected.)
+        </t>
+        <t>
+          The situation is complicated by the fact that a server may
+          have multiple modules that enforce ACLs. For example, the
+          enforcement for NFSv4.0 access may be different from,
+          but not weaker than, the enforcement for local access, and
+          both may be different from the enforcement for access
+          through other protocols such as SMB. So it may be useful for
+          a server to accept an ACL even if not all of its modules are
+          able to support it.
+        </t>
+        <t>
+          The guiding principle with regard to NFSv4 access is
+          that the server must not accept ACLs that appear to
+          make access to the file more restrictive than it really is.
+        </t>
+
+        <section title="ACE Type">
+          <t>
+            The constants used for the type field (acetype4) are as
+            follows:
+          </t>
+
+        <?rfc include='autogen/const_acetype4.xml'?>
+          <t>
+            All four but types are permitted in the acl attribute.
+          </t>
+          <texttable>
+            <ttcol>Value</ttcol>
+            <ttcol>Abbreviation</ttcol>
+            <ttcol>Description</ttcol>
+            <c>ACE4_ACCESS_ALLOWED_ACE_TYPE</c>
+            <c>ALLOW</c>
+            <c>
+              Explicitly grants the access defined in acemask4 to
+              the file or directory.
+            </c>
+            <c>ACE4_ACCESS_DENIED_ACE_TYPE</c>
+            <c>DENY</c>
+            <c>
+              Explicitly denies the access defined in acemask4 to
+              the file or directory.
+            </c>
+            <c>ACE4_SYSTEM_AUDIT_ACE_TYPE</c>
+            <c>AUDIT</c>
+            <c>
+              LOG (in a system dependent way) any access attempt to
+              a file or directory which uses any of the access
+              methods specified in acemask4.
+            </c>
+            <c>ACE4_SYSTEM_ALARM_ACE_TYPE</c>
+            <c>ALARM</c>
+            <c>
+              Generate a system ALARM (system dependent) when any
+              access attempt is made to a file or directory for the
+              access methods specified in acemask4.
+            </c>
+            <postamble>
+              The &quot;Abbreviation&quot; column denotes how the
+              types will be referred to throughout the rest of this
+              chapter.
+            </postamble>
+          </texttable>
+        </section>
+	<section anchor="attrdef_aclsupport"
+	     title="Attribute 13: aclsupport">
+          <t>
+            A server need not support all of the above ACE types.
+	    This attribute indicates which ACE types are supported for
+	    the current file system.  The bitmask constants used to
+	    represent the above definitions within the aclsupport
+	    attribute are as follows:
+          </t>
+
+        <?rfc include='autogen/const_aclsupport4.xml'?>
+          <t>
+            Servers which support either the ALLOW or DENY ACE type
+            SHOULD support both ALLOW and DENY ACE types.
+          </t>
+          <t>
+            Clients should not attempt to set an ACE unless the server
+            claims support for that ACE type. If the server receives a
+            request to set an ACE that it cannot store, it MUST reject
+            the request with NFS4ERR_ATTRNOTSUPP. If the server
+            receives a request to set an ACE that it can store but
+            cannot enforce, the server SHOULD reject the request with
+            NFS4ERR_ATTRNOTSUPP.
+          </t>
+          <t>
+            Support for any of the ACL attributes is
+            optional (albeit, RECOMMENDED).
+          </t>
+        </section>
+        <section anchor="acemask" title="ACE Access Mask">
+          <t>
+            The bitmask constants used for the access mask field
+            are as follows:
+          </t>
+
+        <?rfc include='autogen/const_acemask4.xml'?>
+          <t>
+
+	   Note that some masks have coincident values, for
+	   example, ACE4_READ_DATA and ACE4_LIST_DIRECTORY.
+	   The mask entries ACE4_LIST_DIRECTORY,
+	   ACE4_ADD_FILE, and ACE4_ADD_SUBDIRECTORY are
+	   intended to be used with directory objects,
+	   while ACE4_READ_DATA, ACE4_WRITE_DATA, and
+	   ACE4_APPEND_DATA are intended to be used with
+	   non-directory objects.
+
+          </t>
+          <section title="Discussion of Mask Attributes">
+	    <t>
+	      <list style="hanging">
+		<t hangText="ACE4_READ_DATA">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="READ" />
+			<t hangText="OPEN" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to read the data of the file.
+		      <vspace blankLines='1' />
+		      Servers SHOULD allow a user the ability to read the data
+		      of the file when only the ACE4_EXECUTE access mask bit is
+		      allowed.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_LIST_DIRECTORY">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="READDIR" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to list the contents of a directory.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_WRITE_DATA">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="WRITE" />
+			<t hangText="OPEN" />
+			<t hangText="SETATTR of size" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to modify a file's data.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_ADD_FILE">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="CREATE" />
+			<t hangText="LINK" />
+			<t hangText="OPEN" />
+			<t hangText="RENAME" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to add a new file in a directory.
+		      The CREATE operation is affected when nfs_ftype4
+		      is NF4LNK, NF4BLK, NF4CHR, NF4SOCK, or
+		      NF4FIFO. (NF4DIR is not listed because it is
+		      covered by ACE4_ADD_SUBDIRECTORY.) OPEN is
+		      affected when used to create a regular file.
+		      LINK and RENAME are always affected.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_APPEND_DATA">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="WRITE" />
+			<t hangText="OPEN" />
+			<t hangText="SETATTR of size" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      The ability to modify a file's data, but only
+		      starting at EOF.  This allows for the notion of
+		      append-only files, by allowing ACE4_APPEND_DATA
+		      and denying ACE4_WRITE_DATA to the same user or
+		      group.  If a file has an ACL such as the one
+		      described above and a WRITE request is made for
+		      somewhere other than EOF, the server SHOULD
+		      return NFS4ERR_ACCESS.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_ADD_SUBDIRECTORY">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="CREATE" />
+			<t hangText="RENAME" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to create a subdirectory in a
+		      directory.  The CREATE operation is affected
+		      when nfs_ftype4 is NF4DIR.  The RENAME operation
+		      is always affected.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_READ_NAMED_ATTRS">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="OPENATTR" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to read the named attributes of a
+		      file or to lookup the named attributes
+		      directory.  OPENATTR is affected when it is not
+		      used to create a named attribute directory.
+		      This is when 1.) createdir is TRUE, but a named
+		      attribute directory already exists, or 2.)
+		      createdir is FALSE.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_WRITE_NAMED_ATTRS">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="OPENATTR" />
+			<t hangText="" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to write the named attributes of a
+		      file or to create a named attribute directory.
+		      OPENATTR is affected when it is used to create a
+		      named attribute directory.  This is when
+		      createdir is TRUE and no named attribute
+		      directory exists.  The ability to check whether
+		      or not a named attribute directory exists
+		      depends on the ability to look it up, therefore,
+		      users also need the ACE4_READ_NAMED_ATTRS
+		      permission in order to create a named attribute
+		      directory.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_EXECUTE">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="READ" />
+			<t hangText="OPEN" />
+			<t hangText="REMOVE" />
+			<t hangText="RENAME" />
+			<t hangText="LINK" />
+			<t hangText="CREATE" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to execute a file.
+		      <vspace blankLines='1' />
+		      Servers SHOULD allow a
+		      user the ability to read the data of the file
+		      when only the ACE4_EXECUTE access mask bit is
+		      allowed.  This is because there is no way to
+		      execute a file without reading the contents.
+		      Though a server may treat ACE4_EXECUTE and
+		      ACE4_READ_DATA bits identically when deciding to
+		      permit a READ operation, it SHOULD still allow
+		      the two bits to be set independently in ACLs,
+		      and MUST distinguish between them when replying
+		      to ACCESS operations.  In particular, servers
+		      SHOULD NOT silently turn on one of the two bits
+		      when the other is set, as that would make it
+		      impossible for the client to correctly enforce
+		      the distinction between read and execute
+		      permissions.  
+		      <vspace blankLines='1' />
+		      As an example, following a SETATTR of the following ACL:
+		      <vspace blankLines='1' />
+                      nfsuser:ACE4_EXECUTE:ALLOW
+		      <vspace blankLines='1' />
+		      A subsequent GETATTR of ACL for that file SHOULD return:
+		      <vspace blankLines='1' />
+                      nfsuser:ACE4_EXECUTE:ALLOW
+		      <vspace blankLines='1' />
+		      Rather than:
+		      <vspace blankLines='1' />
+                      nfsuser:ACE4_EXECUTE/ACE4_READ_DATA:ALLOW
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_EXECUTE">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="LOOKUP" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to traverse/search a directory.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_DELETE_CHILD">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="REMOVE" />
+			<t hangText="RENAME" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to delete a file or directory within
+		      a directory. 
+
+		      See <xref
+		      target="delete-delete_child"/>
+		      for information on ACE4_DELETE and
+		      ACE4_DELETE_CHILD interact.
+
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_READ_ATTRIBUTES">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="GETATTR of file system object attributes" />
+			<t hangText="VERIFY" />
+			<t hangText="NVERIFY" />
+			<t hangText="READDIR" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      The ability to read basic attributes (non-ACLs)
+		      of a file.  On a UNIX system, basic attributes
+		      can be thought of as the stat level attributes.
+		      Allowing this access mask bit would mean the
+		      entity can execute "ls -l" and stat.  If a
+		      READDIR operation requests attributes, this mask
+		      must be allowed for the READDIR to succeed.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_WRITE_ATTRIBUTES">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="SETATTR of time_access_set, time_backup," />
+			<t hangText="time_create, time_modify_set, mimetype, hidden, system" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to change the times associated with a
+		      file or directory to an arbitrary value.  Also
+		      permission to change the mimetype, hidden and
+		      system attributes.  A user having
+		      ACE4_WRITE_DATA or ACE4_WRITE_ATTRIBUTES will be
+		      allowed to set the times associated with a file
+		      to the current server time.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_DELETE">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="REMOVE" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+
+		      Permission to delete the
+		      file or directory. 
+
+		      See <xref
+		      target="delete-delete_child"/>
+		      for information on ACE4_DELETE and
+		      ACE4_DELETE_CHILD interact.
+
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_READ_ACL">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="GETATTR of acl" />
+			<t hangText="NVERIFY" />
+			<t hangText="VERIFY" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to read the ACL.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_WRITE_ACL">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="SETATTR of acl and mode" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to write the acl and mode attributes.
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_WRITE_OWNER">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="SETATTR of owner and owner_group" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to write the owner and owner_group
+		      attributes.  On UNIX systems, this is the
+		      ability to execute chown() and chgrp().
+		    </t>
+		  </list>
+		</t>
+
+		<t hangText="ACE4_SYNCHRONIZE">
+		  <list style="hanging">
+		    <t hangText="Operation(s) affected:">
+		      <list style="hanging">
+			<t hangText="NONE" />
+		      </list>
+		    </t>
+		    <t hangText="Discussion:">
+		      <vspace blankLines='1' />
+		      Permission to access file locally at the server with
+		      synchronized reads and writes.
+		    </t>
+		  </list>
+		</t>
+
+	      </list>
+	    </t>
+
+            <t>
+              Server implementations need not provide the granularity
+              of control that is implied by this list of masks. For
+              example, POSIX-based systems might not distinguish
+              ACE4_APPEND_DATA (the ability to append to a file) from
+              ACE4_WRITE_DATA (the ability to modify existing
+              contents); both masks would be tied to a single "write"
+              permission. When such a server returns attributes to the
+              client, it would show both ACE4_APPEND_DATA and
+              ACE4_WRITE_DATA if and only if the write permission is
+              enabled.
+            </t>
+
+            <t>
+              If a server receives a SETATTR request that it cannot
+              accurately implement, it should err in the direction of
+              more restricted access, except in the previously
+              discussed cases of execute and read. For example,
+              suppose a server cannot distinguish overwriting data
+              from appending new data, as described in the previous
+              paragraph.  If a client submits an ALLOW ACE where
+              ACE4_APPEND_DATA is set but ACE4_WRITE_DATA is not (or
+              vice versa), the server should either turn off
+              ACE4_APPEND_DATA or reject the request with
+              NFS4ERR_ATTRNOTSUPP.
+            </t>
+          </section>
+
+          <section anchor="delete-delete_child" title="ACE4_DELETE vs. ACE4_DELETE_CHILD">
+            <t>
+              Two access mask bits govern the ability to delete a
+              directory entry: ACE4_DELETE on the object
+              itself (the "target"), and ACE4_DELETE_CHILD on
+              the containing directory (the "parent").
+            </t>
+
+            <t>
+              Many systems also take the "sticky bit" (MODE4_SVTX)
+              on a directory to allow unlink only to a user that
+              owns either the target or the parent; on some
+              such systems the decision also depends on
+              whether the target is writable.
+            </t>
+
+            <t>
+              Servers SHOULD allow unlink if either ACE4_DELETE
+              is permitted on the target, or ACE4_DELETE_CHILD is
+              permitted on the parent.  (Note that this is
+              true even if the parent or target explicitly
+              denies one of these permissions.)
+            </t>
+
+            <t>
+              If the ACLs in question neither explicitly ALLOW
+              nor DENY either of the above, and if MODE4_SVTX is
+              not set on the parent, then the server SHOULD allow
+              the removal if and only if ACE4_ADD_FILE is permitted.
+              In the case where MODE4_SVTX is set, the server
+              may also require the remover to own either the parent
+              or the target, or may require the target to be
+              writable.
+            </t>
+
+            <t>
+              This allows servers to support something close to
+              traditional UNIX-like semantics, with ACE4_ADD_FILE
+              taking the place of the write bit.
+            </t>
+
+          </section>
+        </section>
+        <section anchor="aceflag" title="ACE flag">
+          <t>
+            The bitmask constants used for the flag field are as
+            follows:
+        <?rfc include='autogen/const_aceflag4.xml'?>
+
+            A server need not support any of these flags. If the
+            server supports flags that are similar to, but not
+            exactly the same as, these flags, the implementation
+            may define a mapping between the protocol-defined
+            flags and the implementation-defined flags.
+          </t>
+
+          <t>
+            For example, suppose a client tries to set an ACE with
+            ACE4_FILE_INHERIT_ACE set but not
+            ACE4_DIRECTORY_INHERIT_ACE. If the server does not
+            support any form of ACL inheritance, the server should
+            reject the request with NFS4ERR_ATTRNOTSUPP. If the
+            server supports a single "inherit ACE" flag that
+            applies to both files and directories, the server may
+            reject the request (i.e., requiring the client to set
+            both the file and directory inheritance flags). The
+            server may also accept the request and silently turn
+            on the ACE4_DIRECTORY_INHERIT_ACE flag.
+          </t>
+          <section title="Discussion of Flag Bits">
+            <t>
+              <list style="hanging">
+                <t hangText="ACE4_FILE_INHERIT_ACE">
+                  <vspace />
+                  Any non-directory file in any
+                  sub-directory will get this ACE
+                  inherited.
+                </t>
+
+                <t hangText="ACE4_DIRECTORY_INHERIT_ACE">
+                  <vspace />
+                  Can be placed on a directory and indicates
+                  that this ACE should be added to each new
+                  directory created.
+                  <vspace />
+                  If this flag is set in an ACE in an ACL
+                  attribute to be set on a non-directory
+                  file system object, the operation
+                  attempting to set the ACL SHOULD fail
+                  with NFS4ERR_ATTRNOTSUPP.
+                </t>
+
+                <t hangText="ACE4_INHERIT_ONLY_ACE">
+                  <vspace />
+                  Can be placed on a directory but does not
+                  apply to the directory; ALLOW and DENY ACEs
+                  with this bit set do not affect access to
+                  the directory, and AUDIT and ALARM ACEs
+                  with this bit set do not trigger log or
+                  alarm events.  Such ACEs only take effect
+                  once they are applied (with this bit
+                  cleared) to newly created files and
+                  directories as specified by the above two
+                  flags.
+                  <vspace />
+                  If this flag is present on an ACE, but
+                  neither ACE4_DIRECTORY_INHERIT_ACE nor
+                  ACE4_FILE_INHERIT_ACE is present, then
+                  an operation attempting to set such an
+                  attribute SHOULD fail with
+                  NFS4ERR_ATTRNOTSUPP.
+                </t>
+
+                <t hangText="ACE4_NO_PROPAGATE_INHERIT_ACE">
+                  <vspace />
+                  Can be placed on a directory.  This flag
+                  tells the server that inheritance of this
+                  ACE should stop at newly created child
+                  directories.
+                </t>
+
+                <t hangText="ACE4_SUCCESSFUL_ACCESS_ACE_FLAG">
+                  <vspace />
+                </t>
+                <t hangText="ACE4_FAILED_ACCESS_ACE_FLAG">
+                  <vspace />
+                  The ACE4_SUCCESSFUL_ACCESS_ACE_FLAG
+                  (SUCCESS) and ACE4_FAILED_ACCESS_ACE_FLAG
+                  (FAILED) flag bits may be set only on
+                  ACE4_SYSTEM_AUDIT_ACE_TYPE (AUDIT) and
+                  ACE4_SYSTEM_ALARM_ACE_TYPE (ALARM) ACE
+                  types. If during the processing of the
+                  file's ACL, the server encounters an AUDIT
+                  or ALARM ACE that matches the principal
+                  attempting the OPEN, the server notes that
+                  fact, and the presence, if any, of the
+                  SUCCESS and FAILED flags encountered in
+                  the AUDIT or ALARM ACE. Once the server
+                  completes the ACL processing, it then
+                  notes if the operation succeeded or
+                  failed. If the operation succeeded, and if
+                  the SUCCESS flag was set for a matching
+                  AUDIT or ALARM ACE, then the appropriate
+                  AUDIT or ALARM event occurs. If the
+                  operation failed, and if the FAILED flag
+                  was set for the matching AUDIT or ALARM 
+                  ACE, then the appropriate AUDIT or ALARM
+                  event occurs.  Either or both of the
+                  SUCCESS or FAILED can be set, but if
+                  neither is set, the AUDIT or ALARM ACE is
+                  not useful.
+                </t>
+
+                <t hangText="">
+                  The previously described processing
+                  applies to ACCESS operations even when
+                  they return NFS4_OK.  For the purposes of
+                  AUDIT and ALARM, we consider an ACCESS
+                  operation to be a "failure" if it fails
+                  to return a bit that was requested and
+                  supported.
+                </t>
+
+                <t hangText="ACE4_IDENTIFIER_GROUP">
+                  <vspace />
+                  Indicates that the "who" refers to a GROUP
+                  as defined under UNIX or a GROUP ACCOUNT
+                  as defined under Windows. Clients and
+                  servers MUST ignore the
+                  ACE4_IDENTIFIER_GROUP flag on ACEs with a
+                  who value equal to one of the special
+                  identifiers outlined in
+                  <xref target="acewho" />.
+                </t>
+              </list>
+            </t>
+          </section>
+        </section>
+        <section title="ACE Who" anchor="acewho">
+          <t>
+            The &quot;who&quot; field of an ACE is an identifier that
+            specifies the principal or principals to whom the ACE
+            applies. It may refer to a user or a group, with the flag
+            bit ACE4_IDENTIFIER_GROUP specifying which.
+          </t>
+          <t>
+            There are several special identifiers which need to be
+            understood universally, rather than in the context of a
+            particular DNS domain. Some of these identifiers cannot be
+            understood when an NFS client accesses the server, but
+            have meaning when a local process accesses the file. The
+            ability to display and modify these permissions is
+            permitted over NFS, even if none of the access methods on
+            the server understands the identifiers.
+          </t>
+          <texttable anchor="specialwho">
+            <ttcol>Who</ttcol>
+            <ttcol>Description</ttcol>
+            <c>OWNER</c>
+            <c>
+              The owner of the file
+            </c>
+            <c>GROUP</c>
+            <c>
+              The group associated with the file.
+            </c>
+            <c>EVERYONE</c>
+            <c>
+              The world, including the owner and owning group.
+            </c>
+            <c>INTERACTIVE</c>
+            <c>
+              Accessed from an interactive terminal.
+            </c>
+            <c>NETWORK</c>
+            <c>
+              Accessed via the network.
+            </c>
+            <c>DIALUP</c>
+            <c>
+              Accessed as a dialup user to the server.
+            </c>
+            <c>BATCH</c>
+            <c>
+              Accessed from a batch job.
+            </c>
+            <c>ANONYMOUS</c>
+            <c>
+              Accessed without any authentication.
+            </c>
+            <c>AUTHENTICATED</c>
+            <c>
+              Any authenticated user (opposite of
+              ANONYMOUS)
+            </c>
+            <c>SERVICE</c>
+            <c>
+              Access from a system service.
+            </c>
+          </texttable>
+          <t>
+            To avoid conflict, these special identifiers are
+            distinguished by an appended "@" and should appear in the
+            form "xxxx@" (with no domain name after the "@"). For
+            example: ANONYMOUS@.
+          </t>
+          <t>
+            The ACE4_IDENTIFIER_GROUP flag MUST be ignored on
+            entries with these special identifiers.  When encoding
+            entries with these special identifiers, the
+            ACE4_IDENTIFIER_GROUP flag SHOULD be set to zero.
+          </t>
+
+          <section title="Discussion of EVERYONE@">
+            <t>
+              It is important to note that "EVERYONE@" is not
+              equivalent to the UNIX "other" entity. This is
+              because, by definition, UNIX "other" does not include
+              the owner or owning group of a file. "EVERYONE@" means
+              literally everyone, including the owner or owning
+              group.
+            </t>
+          </section>
+        </section>
+      </section>
+
+      <section anchor="attrdef_mode"
+	       title="Attribute 33: mode">
+        <t>
+          The NFSv4.0 mode attribute is based on the UNIX mode
+          bits. The following bits are defined:
+        </t>
+
+        <?rfc include='autogen/const_mode4.xml'?>
+
+        <t>
+          Bits MODE4_RUSR, MODE4_WUSR, and MODE4_XUSR apply to the
+          principal identified in the owner attribute. Bits MODE4_RGRP,
+          MODE4_WGRP, and MODE4_XGRP apply to principals identified in
+          the owner_group attribute but who are not identified in the
+          owner attribute. Bits MODE4_ROTH, MODE4_WOTH, MODE4_XOTH apply
+          to any principal that does not match that in the owner
+          attribute, and does not have a group matching that of the
+          owner_group attribute.
+        </t>
+        <t>
+          Bits within the mode other than those specified above
+          are not defined by this protocol. A server
+          MUST NOT return bits other than those defined above in a
+          GETATTR or READDIR operation, and it MUST return NFS4ERR_INVAL
+          if bits other than those defined above are set in a SETATTR,
+          CREATE, OPEN, VERIFY or NVERIFY operation.
+        </t>
+      </section>
+
+    </section>
+    
+    <section title="Common Methods">
+      <t>
+        The requirements in this section will be referred to in future
+        sections, especially <xref target="aclreqs" />.
+      </t>
+      <section title="Interpreting an ACL" anchor="useacl">
+        <section title="Server Considerations" anchor="serverinterp">
+          <t> 
+	    The server uses the algorithm described in
+	    <xref target="attrdef_acl"/> to determine whether an ACL
+	    allows access to an object.  However, the ACL may not be
+	    the sole determiner of access.  For example:
+            <list style="symbols">
+              <t>
+                In the case of a file system exported as read-only,
+                the server may deny write permissions even though
+                an object's ACL grants it.
+              </t>
+
+              <t>
+                Server implementations MAY grant ACE4_WRITE_ACL
+                and ACE4_READ_ACL permissions to prevent
+                a situation from arising in which there is no valid
+                way to ever modify the ACL.
+              </t>
+
+              <t>
+                All servers will allow a user the ability to read
+                the data of the file when only the execute
+                permission is granted (i.e. If the ACL denies the
+                user the ACE4_READ_DATA access and allows the user
+                ACE4_EXECUTE, the server will allow the user to
+                read the data of the file).
+              </t>
+
+              <t>
+                Many servers have the notion of owner-override in
+                which the owner of the object is allowed to
+                override accesses that are denied by the ACL.
+                This may be helpful, for example, to allow users
+                continued access to open files on which the
+                permissions have changed.
+              </t>
+
+              <t>
+                Many servers have the notion of a
+                &quot;superuser&quot; that has privileges beyond
+                an ordinary user.  The superuser may be able
+                to read or write data or metadata in ways that would
+                not be permitted by the ACL.
+              </t>
+            </list>
+          </t>
+        </section>
+
+        <section title="Client Considerations" anchor="clientinterp">
+          <t>
+            Clients SHOULD NOT do their own access checks based on
+            their interpretation the ACL, but rather use the OPEN and
+            ACCESS operations to do access checks. This allows the
+            client to act on the results of having the server
+            determine whether or not access should be granted based on
+            its interpretation of the ACL.
+          </t>
+
+          <t>
+            Clients must be aware of situations in which an object's
+            ACL will define a certain access even though the server
+            will not enforce it. In general, but especially in these
+            situations, the client needs to do its part in the
+            enforcement of access as defined by the ACL. To do this,
+            the client MAY send the appropriate ACCESS operation
+            prior to servicing the request of the user or application
+            in order to determine whether the user or application
+            should be granted the access requested. For examples in
+            which the ACL may define accesses that the server doesn't
+            enforce see <xref target="serverinterp"/>.
+          </t>
+        </section>
+      </section>
+
+      <section title="Computing a Mode Attribute from an ACL"
+               anchor="computemode">
+        <t>
+          The following method can be used to calculate the MODE4_R*,
+          MODE4_W* and MODE4_X* bits of a mode attribute, based upon
+          an ACL.
+        </t>
+
+        <t>
+          First, for each of the special identifiers OWNER@, GROUP@, and
+          EVERYONE@, evaluate the ACL in order, considering only ALLOW
+          and DENY ACEs for the identifier EVERYONE@ and for the
+          identifier under consideration.  The result of the evaluation
+          will be an NFSv4 ACL mask showing exactly which bits are
+          permitted to that identifier.
+        </t>
+
+        <t>
+          Then translate the calculated mask for OWNER@, GROUP@, and
+          EVERYONE@ into mode bits for, respectively, the user, group,
+          and other, as follows:
+
+          <list style="numbers">
+            <t>
+              Set the read bit (MODE4_RUSR, MODE4_RGRP, or
+              MODE4_ROTH) if and only if ACE4_READ_DATA is set in
+              the corresponding mask.
+            </t>
+
+            <t>
+              Set the write bit (MODE4_WUSR, MODE4_WGRP, or
+              MODE4_WOTH) if and only if ACE4_WRITE_DATA and
+              ACE4_APPEND_DATA are both set in the corresponding
+              mask.
+            </t>
+
+            <t>
+              Set the execute bit (MODE4_XUSR, MODE4_XGRP, or
+              MODE4_XOTH), if and only if ACE4_EXECUTE is set in the
+              corresponding mask.
+            </t>
+          </list>
+        </t>
+        <section title="Discussion">
+          <t>
+            Some server implementations also add bits permitted to
+            named users and groups to the group bits (MODE4_RGRP,
+            MODE4_WGRP, and MODE4_XGRP).
+          </t>
+          <t>
+            Implementations are discouraged from doing this, because
+            it has been found to cause confusion for users who see
+            members of a file's group denied access that the mode
+            bits appear to allow.  (The presence of DENY ACEs may also
+            lead to such behavior, but DENY ACEs are expected to be
+            more rarely used.)
+          </t>
+          <t>
+            The same user confusion seen when fetching the mode also
+            results if setting the mode does not effectively control
+            permissions for the owner, group, and other users; this
+            motivates some of the requirements that follow.
+          </t>
+        </section>
+      </section>
+    </section>
+    
+    <section title="Requirements" anchor="aclreqs">
+      <t>
+        The server that supports both mode and ACL must take care to
+        synchronize the MODE4_*USR, MODE4_*GRP, and MODE4_*OTH bits with
+        the ACEs which have respective who fields of "OWNER@", "GROUP@",
+        and "EVERYONE@" so that the client can see semantically equivalent
+        access permissions exist whether the client asks for owner,
+        owner_group and mode attributes, or for just the ACL.
+      </t>
+      <t>
+        In this section, much is made of the methods in <xref
+   target="computemode" />. Many requirements refer to this section.
+        But note that the methods have behaviors specified with
+        &quot;SHOULD&quot;. This is intentional, to avoid invalidating
+        existing implementations that compute the mode according to the
+        withdrawn POSIX ACL draft (1003.1e draft 17), rather than by
+        actual permissions on owner, group, and other.
+      </t>
+      <section title="Setting the mode and/or ACL Attributes"
+               anchor="setattr">
+        <section title="Setting mode and not ACL" anchor="setmode">
+          <t>
+            When any of the nine low-order mode bits
+            are subject to change, either because the mode
+            attribute was set or because the mode_set_masked
+            attribute was set and the mask included one or more
+            bits from the nine low-order mode bits,
+            and no ACL attribute is explicitly
+            set, the acl attribute must be modified
+            in accordance with the updated value of those bits.
+            This must happen even if the value of the low-order bits
+            is the same after the mode is set as before.
+          </t>
+          <t>
+            Note that any AUDIT or ALARM ACEs
+            are unaffected by changes to the mode.
+          </t>
+          <t>
+            In cases in which the permissions bits are subject to
+            change, the acl attribute
+            MUST be modified such that the mode computed via the
+            method in
+            <xref target="computemode" />
+            yields the low-order nine bits (MODE4_R*, MODE4_W*,
+            MODE4_X*) of the mode attribute as modified by the
+            attribute change.  The ACL attributes
+            SHOULD also be modified such that:
+            <list style="numbers">
+              <t>
+                If MODE4_RGRP is not set, entities explicitly
+                listed in the ACL other than OWNER@ and EVERYONE@
+                SHOULD NOT be granted ACE4_READ_DATA.
+              </t>
+              <t>
+                If MODE4_WGRP is not set, entities explicitly
+                listed in the ACL other than OWNER@ and
+                EVERYONE@ SHOULD NOT be granted
+                ACE4_WRITE_DATA or ACE4_APPEND_DATA.
+              </t>
+              <t>
+                If MODE4_XGRP is not set, entities explicitly
+                listed in the ACL other than OWNER@ and EVERYONE@
+                SHOULD NOT be granted ACE4_EXECUTE.
+              </t>
+            </list>
+            Access mask bits other those listed above, appearing
+            in ALLOW ACEs, MAY also be disabled.
+          </t>
+          <t>
+            Note that ACEs with the flag ACE4_INHERIT_ONLY_ACE set do
+            not affect the permissions of the ACL itself, nor do ACEs
+            of the type AUDIT and ALARM. As such, it is desirable to
+            leave these ACEs unmodified when modifying the ACL
+            attributes.
+          </t>
+          <t>
+            Also note that the requirement may be met by
+            discarding the acl in favor of an ACL
+            that represents the mode and only the mode. This is
+            permitted, but it is preferable for a server to
+            preserve as much of the ACL as possible without
+            violating the above requirements. Discarding the
+            ACL makes it effectively impossible for a file
+            created with a mode attribute to inherit an ACL
+            (see <xref target="aclcreate" />).
+          </t>
+        </section>
+        <section title="Setting ACL and not mode"
+                 anchor="settingacl">
+          <t>
+            When setting the acl and not setting the
+            mode or mode_set_masked attributes, the permission
+            bits of the mode need to be derived from the ACL.
+            In this case, the ACL attribute SHOULD be set as
+            given. The nine low-order bits of the mode
+            attribute (MODE4_R*, MODE4_W*, MODE4_X*) MUST be
+            modified to match the result of the method 
+	    <xref target="computemode" />. The three high-order bits
+            of the mode (MODE4_SUID, MODE4_SGID, MODE4_SVTX)
+            SHOULD remain unchanged.
+          </t>
+        </section>
+        <section title="Setting both ACL and mode" anchor="setboth">
+          <t>
+            When setting both the mode (includes use of either the
+            mode attribute or the mode_set_masked attribute) 
+            and the acl attribute in the
+            same operation, the attributes MUST be applied in this
+            order: mode (or mode_set_masked), then ACL.  The 
+            mode-related attribute is set as given,
+            then the ACL attribute is set as given, possibly changing
+            the final mode, as described above in
+            <xref target="settingacl" />.
+          </t>
+        </section>
+      </section>
+      <section title="Retrieving the mode and/or ACL Attributes">
+        <t>
+          This section applies only to servers that support both the
+          mode and ACL attributes.
+        </t>
+        <t>
+          Some server implementations may have a concept of
+          &quot;objects without ACLs&quot;, meaning that all permissions
+          are granted and denied according to the mode attribute, and
+          that no ACL attribute is stored for that object. If an ACL
+          attribute is requested of such a server, the server SHOULD
+          return an ACL that does not conflict with the mode; that is to
+          say, the ACL returned SHOULD represent the nine low-order bits
+          of the mode attribute (MODE4_R*, MODE4_W*, MODE4_X*) as
+          described in <xref target="computemode" />.
+        </t>
+        <t>
+          For other server implementations, the ACL attribute is always
+          present for every object. Such servers SHOULD store at least
+          the three high-order bits of the mode attribute (MODE4_SUID,
+          MODE4_SGID, MODE4_SVTX). The server SHOULD return a mode
+          attribute if one is requested, and the low-order nine bits of
+          the mode (MODE4_R*, MODE4_W*, MODE4_X*) MUST match the result
+          of applying the method in
+          <xref target="computemode" /> to the ACL attribute.
+        </t>
+      </section>
+      <section title="Creating New Objects" anchor="aclcreate">
+        <t>
+          If a server supports any ACL attributes, it may use the ACL
+          attributes on the parent directory to compute an initial ACL
+          attribute for a newly created object. This will be referred to
+          as the inherited ACL within this section. The act of adding
+          one or more ACEs to the inherited ACL that are based upon ACEs
+          in the parent directory's ACL will be referred to as
+          inheriting an ACE within this section.
+        </t>
+        <t>
+          Implementors should standardize on what the behavior of CREATE
+          and OPEN must be depending on the presence or absence of the
+          mode and ACL attributes.
+          <list style="numbers">
+            <t>If just the mode is given in the call:
+              <vspace blankLines="1" /> In this case, inheritance
+              SHOULD take place, but the mode MUST be applied to the
+              inherited ACL as described in <xref target="setmode" />,
+              thereby modifying the ACL.
+		      <vspace blankLines='1' />
+            </t>
+            <t>If just the ACL is given in the call:
+              <vspace blankLines="1" />
+              In this case, inheritance SHOULD NOT take place, and
+              the ACL as defined in the CREATE or OPEN will be set
+              without modification, and the mode modified as in
+              <xref target="settingacl" />
+		      <vspace blankLines='1' />
+            </t>
+            <t>If both mode and ACL are given in the call:
+              <vspace blankLines="1" /> In this case, inheritance
+              SHOULD NOT take place, and both attributes will be set
+              as described in <xref target="setboth" />.
+		      <vspace blankLines='1' />
+            </t>
+            <t>
+              If neither mode nor ACL are given in the call:
+              <vspace blankLines="1" />
+              In the case where an object is being created without
+              any initial attributes at all, e.g. an OPEN operation
+              with an opentype4 of OPEN4_CREATE and a createmode4 of
+              EXCLUSIVE4, inheritance SHOULD NOT take place.
+              Instead, the server SHOULD set permissions to deny all
+              access to the newly created object. It is expected
+              that the appropriate client will set the desired
+              attributes in a subsequent SETATTR operation, and the
+              server SHOULD allow that operation to succeed,
+              regardless of what permissions the object is created
+              with. For example, an empty ACL denies all
+              permissions, but the server should allow the owner's
+              SETATTR to succeed even though WRITE_ACL is implicitly
+              denied.
+              <vspace blankLines="1" />
+              In other cases, inheritance SHOULD take place, and no
+              modifications to the ACL will happen. The mode
+              attribute, if supported, MUST be as computed in 
+	      <xref target="computemode" />, with the MODE4_SUID,
+              MODE4_SGID and MODE4_SVTX bits clear.
+              If no inheritable ACEs exist on the parent directory,
+              the rules for creating acl attributes
+              are implementation defined.
+		      <vspace blankLines='1' />
+            </t>
+          </list>
+        </t>
+        <section title="The Inherited ACL" anchor="inheritreq">
+          <t>
+            If the object being created is not a directory, the
+            inherited ACL SHOULD NOT inherit ACEs from the parent
+            directory ACL unless the ACE4_FILE_INHERIT_FLAG is set.
+          </t>
+          <t>
+            If the object being created is a directory, the inherited
+            ACL should inherit all inheritable ACEs from the parent
+            directory, those that have ACE4_FILE_INHERIT_ACE or
+            ACE4_DIRECTORY_INHERIT_ACE flag set.  If the inheritable
+            ACE has ACE4_FILE_INHERIT_ACE set, but
+            ACE4_DIRECTORY_INHERIT_ACE is clear, the inherited ACE on
+            the newly created directory MUST have the
+            ACE4_INHERIT_ONLY_ACE flag set to prevent the directory
+            from being affected by ACEs meant for non-directories.
+          </t>
+          <t>
+            When a new directory is created, the server MAY split
+            any inherited ACE which is both inheritable and effective
+            (in other words, which has neither ACE4_INHERIT_ONLY_ACE
+            nor ACE4_NO_PROPAGATE_INHERIT_ACE set), into two ACEs,
+            one with no inheritance flags, and one with
+            ACE4_INHERIT_ONLY_ACE set.  This makes it simpler to
+            modify the effective permissions on the directory
+            without modifying the ACE which is to be inherited to the
+            new directory's children.
+          </t>
+        </section>
+        
+      </section>
+    </section>
+</section>
