@@ -262,6 +262,7 @@ dotx.d/open_args_gen.x: dotx.d/open_args.x dotx.d/const_access_deny.x
 AUTOGEN =	\
 		nfsv4_front_autogen.xml \
 		nfsv4_rfc_start_autogen.xml \
+		nfsv4_middle_errortoop_autogen.xml \
 		autogen/basic_types.xml \
 		$(SPITGEN) \
 		$(SPITGENXML) \

@@ -1,374 +1,1915 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
+<!-- Copyright (C) The IETF Trust (2008-2010) -->
 <!-- Copyright (C) The Internet Society (2010) -->
-<section anchor="sec:error_defs" title="Error Definitions">
 
+<section title="Error Values">
   <t>
-    NFS error numbers are assigned to failed operations within
-    a compound request.  A compound request contains a number of
-    NFS operations that have their results encoded in sequence in
-    a compound reply.  The results of successful operations will
-    consist of an NFS4_OK status followed by the encoded results of
-    the operation.  If an NFS operation fails, an error status will be
-    entered in the reply and the compound request will be terminated.
+    NFS error numbers are assigned to failed operations within a 
+    Compound (COMPOUND or CB_COMPOUND) request.  A Compound request 
+    contains a number of NFS operations that have their results 
+    encoded in sequence in a Compound reply.  The results of successful 
+    operations will consist of an NFS4_OK status followed by the 
+    encoded results of the operation.  If an NFS operation fails, an 
+    error status will be entered in the reply and the Compound
+    request will be terminated.
   </t>
+  <section title="Error Definitions">
+    <texttable anchor='error_definitions'>
+      <preamble>
+	Protocol Error Definitions
+      </preamble>
+      <ttcol align='left'>Error</ttcol>
+      <ttcol align='left'>Number</ttcol>
+      <ttcol align='left'>Description</ttcol>
 
-  <t>
-    A description of each defined error follows:
+      <c>NFS4_OK</c>
+      <c>0</c>
+      <c><xref target="err_OK" /></c>
 
-    <list style='hanging'>
-      <t hangText="NFS4_OK">
-        Indicates the operation completed successfully.
+      <c>NFS4ERR_ACCESS</c>
+      <c>13</c>
+      <c><xref target="err_ACCESS" /></c>
+
+      <c>NFS4ERR_ATTRNOTSUPP</c>
+      <c>10032</c>
+      <c><xref target="err_ATTRNOTSUPP" /></c>
+
+      <c>NFS4ERR_ADMIN_REVOKED</c>
+      <c>10047</c>
+      <c><xref target="err_ADMIN_REVOKED" /></c>
+
+      <c>NFS4ERR_BADCHAR</c>
+      <c>10040</c>
+      <c><xref target="err_BADCHAR" /></c>
+
+      <c>NFS4ERR_BADHANDLE</c>
+      <c>10001</c>
+      <c><xref target="err_BADHANDLE" /></c>
+
+      <c>NFS4ERR_BADNAME</c>
+      <c>10041</c>
+      <c><xref target="err_BADNAME" /></c>
+
+      <c>NFS4ERR_BADOWNER</c>
+      <c>10039</c>
+      <c><xref target="err_BADOWNER" /></c>
+
+      <c>NFS4ERR_BADTYPE</c>
+      <c>10007</c>
+      <c><xref target="err_BADTYPE" /></c>
+
+      <c>NFS4ERR_BADXDR</c>
+      <c>10036</c>
+      <c><xref target="err_BADXDR" /></c>
+
+      <c>NFS4ERR_BAD_COOKIE</c>
+      <c>10003</c>
+      <c><xref target="err_BAD_COOKIE" /></c>
+
+      <c>NFS4ERR_BAD_RANGE</c>
+      <c>10042</c>
+      <c><xref target="err_BAD_RANGE" /></c>
+
+      <c>NFS4ERR_BAD_SEQID</c>
+      <c>10026</c>
+      <c><xref target="err_BAD_SEQID" /></c>
+
+      <c>NFS4ERR_BAD_STATEID</c>
+      <c>10025</c>
+      <c><xref target="err_BAD_STATEID" /></c>
+
+      <c>NFS4ERR_CLID_INUSE</c>
+      <c>10017</c>
+      <c><xref target="err_CLID_INUSE" /></c>
+
+      <c>NFS4ERR_DEADLOCK</c>
+      <c>10045</c>
+      <c><xref target="err_DEADLOCK" /></c>
+
+      <c>NFS4ERR_DELAY</c>
+      <c>10008</c>
+      <c><xref target="err_DELAY" /></c>
+
+      <c>NFS4ERR_DENIED</c>
+      <c>10010</c>
+      <c><xref target="err_DENIED" /></c>
+
+      <c>NFS4ERR_DQUOT</c>
+      <c>69</c>
+      <c><xref target="err_DQUOT" /></c>
+
+      <c>NFS4ERR_EXIST</c>
+      <c>17</c>
+      <c><xref target="err_EXIST" /></c>
+
+      <c>NFS4ERR_EXPIRED</c>
+      <c>10011</c>
+      <c><xref target="err_EXPIRED" /></c>
+
+      <c>NFS4ERR_FBIG</c>
+      <c>27</c>
+      <c><xref target="err_FBIG" /></c>
+
+      <c>NFS4ERR_FHEXPIRED</c>
+      <c>10014</c>
+      <c><xref target="err_FHEXPIRED" /></c>
+
+      <c>NFS4ERR_FILE_OPEN</c>
+      <c>10046</c>
+      <c><xref target="err_FILE_OPEN" /></c>
+
+      <c>NFS4ERR_GRACE</c>
+      <c>10013</c>
+      <c><xref target="err_GRACE" /></c>
+
+      <c>NFS4ERR_INVAL</c>
+      <c>22</c>
+      <c><xref target="err_INVAL" /></c>
+
+      <c>NFS4ERR_IO</c>
+      <c>5</c>
+      <c><xref target="err_IO" /></c>
+
+      <c>NFS4ERR_ISDIR</c>
+      <c>21</c>
+      <c><xref target="err_ISDIR" /></c>
+
+      <c>NFS4ERR_LEASE_MOVED</c>
+      <c>10031</c>
+      <c><xref target="err_LEASE_MOVED" /></c>
+
+      <c>NFS4ERR_LOCKED</c>
+      <c>10012</c>
+      <c><xref target="err_LOCKED" /></c>
+
+      <c>NFS4ERR_LOCKS_HELD</c>
+      <c>10037</c>
+      <c><xref target="err_LOCKS_HELD" /></c>
+
+      <c>NFS4ERR_LOCK_NOTSUPP</c>
+      <c>10043</c>
+      <c><xref target="err_LOCK_NOTSUPP" /></c>
+
+      <c>NFS4ERR_LOCK_RANGE</c>
+      <c>10028</c>
+      <c><xref target="err_LOCK_RANGE" /></c>
+
+      <c>NFS4ERR_MINOR_VERS_MISMATCH</c>
+      <c>10021</c>
+      <c><xref target="err_MINOR_VERS_MISMATCH" /></c>
+
+      <c>NFS4ERR_MLINK</c>
+      <c>31</c>
+      <c><xref target="err_MLINK" /></c>
+
+      <c>NFS4ERR_MOVED</c>
+      <c>10019</c>
+      <c><xref target="err_MOVED" /></c>
+
+      <c>NFS4ERR_NAMETOOLONG</c>
+      <c>63</c>
+      <c><xref target="err_NAMETOOLONG" /></c>
+
+      <c>NFS4ERR_NOENT</c>
+      <c>2</c>
+      <c><xref target="err_NOENT" /></c>
+
+      <c>NFS4ERR_NOFILEHANDLE</c>
+      <c>10020</c>
+      <c><xref target="err_NOFILEHANDLE" /></c>
+
+      <c>NFS4ERR_NOSPC</c>
+      <c>28</c>
+      <c><xref target="err_NOSPC" /></c>
+
+      <c>NFS4ERR_NOTDIR</c>
+      <c>20</c>
+      <c><xref target="err_NOTDIR" /></c>
+
+      <c>NFS4ERR_NOTEMPTY</c>
+      <c>66</c>
+      <c><xref target="err_NOTEMPTY" /></c>
+
+      <c>NFS4ERR_NOTSUPP</c>
+      <c>10004</c>
+      <c><xref target="err_NOTSUPP" /></c>
+
+      <c>NFS4ERR_NOT_SAME</c>
+      <c>10027</c>
+      <c><xref target="err_NOT_SAME" /></c>
+
+      <c>NFS4ERR_NO_GRACE</c>
+      <c>10033</c>
+      <c><xref target="err_NO_GRACE" /></c>
+
+      <c>NFS4ERR_NXIO</c>
+      <c>6</c>
+      <c><xref target="err_NXIO" /></c>
+
+      <c>NFS4ERR_OLD_STATEID</c>
+      <c>10024</c>
+      <c><xref target="err_OLD_STATEID" /></c>
+
+      <c>NFS4ERR_OPENMODE</c>
+      <c>10038</c>
+      <c><xref target="err_OPENMODE" /></c>
+
+      <c>NFS4ERR_OP_ILLEGAL</c>
+      <c>10044</c>
+      <c><xref target="err_OP_ILLEGAL" /></c>
+
+      <c>NFS4ERR_PERM</c>
+      <c>1</c>
+      <c><xref target="err_PERM" /></c>
+
+      <c>NFS4ERR_RECLAIM_BAD</c>
+      <c>10034</c>
+      <c><xref target="err_RECLAIM_BAD" /></c>
+
+      <c>NFS4ERR_RECLAIM_CONFLICT</c>
+      <c>10035</c>
+      <c><xref target="err_RECLAIM_CONFLICT" /></c>
+
+      <c>NFS4ERR_RESOURCE</c>
+      <c>10018</c>
+      <c><xref target="err_RESOURCE" /></c>
+
+      <c>NFS4ERR_RESTOREFH</c>
+      <c>10030</c>
+      <c><xref target="err_RESTOREFH" /></c>
+
+      <c>NFS4ERR_ROFS</c>
+      <c>30</c>
+      <c><xref target="err_ROFS" /></c>
+
+      <c>NFS4ERR_SAME</c>
+      <c>10009</c>
+      <c><xref target="err_SAME" /></c>
+
+      <c>NFS4ERR_SERVERFAULT</c>
+      <c>10006</c>
+      <c><xref target="err_SERVERFAULT" /></c>
+
+      <c>NFS4ERR_STALE</c>
+      <c>70</c>
+      <c><xref target="err_STALE" /></c>
+
+      <c>NFS4ERR_STALE_CLIENTID</c>
+      <c>10022</c>
+      <c><xref target="err_STALE_CLIENTID" /></c>
+
+      <c>NFS4ERR_STALE_STATEID</c>
+      <c>10023</c>
+      <c><xref target="err_STALE_STATEID" /></c>
+
+      <c>NFS4ERR_SYMLINK</c>
+      <c>10029</c>
+      <c><xref target="err_SYMLINK" /></c>
+
+      <c>NFS4ERR_TOOSMALL</c>
+      <c>10005</c>
+      <c><xref target="err_TOOSMALL" /></c>
+
+      <c>NFS4ERR_WRONGSEC</c>
+      <c>10016</c>
+      <c><xref target="err_WRONGSEC" /></c>
+
+      <c>NFS4ERR_XDEV</c>
+      <c>18</c>
+      <c><xref target="err_XDEV" /></c>
+
+    </texttable>
+
+  <section title="General Errors" anchor="errors_gen">
+    <t>
+      This section deals with errors that are applicable to a broad
+      set of different purposes.
+    </t>
+    <section title="NFS4ERR_BADXDR (Error Code 10036)" 
+       	     anchor="err_BADXDR">
+      <t>
+        The arguments for this operation do not match those specified in
+        the XDR definition.  This includes situations in which the
+        request ends before all the arguments have been seen.  Note
+        that this error applies when fixed enumerations (these include
+        booleans) have a value within the input stream which is not
+        valid for the enum.  A replier may pre-parse all operations for
+        a Compound procedure before doing any operation execution 
+        and return RPC-level XDR errors in that case.  
       </t>
-
-      <t hangText="NFS4ERR_ACCESS">
-        Permission denied. The caller does not have the correct
-        permission to perform the requested operation. Contrast
-        this with NFS4ERR_PERM, which restricts itself to owner or
-        privileged user permission failures.
+    </section>
+    <section title="NFS4ERR_BAD_COOKIE (Error Code 10003)" 
+             anchor="err_BAD_COOKIE">
+      <t>
+        Used for operations that provide a set of information indexed by
+        some quantity provided by the client or cookie sent by the
+        server for an earlier invocation.  Where the value cannot 
+        be used for its intended purpose, this error results. 
       </t>
-
-      <t hangText="NFS4ERR_ATTRNOTSUPP">
-        An attribute specified is not supported by the server.
-        Does not apply to the GETATTR operation.
+    </section>
+    <section title="NFS4ERR_DELAY (Error Code 10008)" 
+             anchor="err_DELAY">
+      <t>
+        For any of a number of reasons, the replier could not 
+        process this operation in what was deemed a reasonable
+        time. The client should wait and then try the request
+        with a new RPC transaction ID.
       </t>
+      <t>
+        Some example of situations that might lead to this situation:
+          <list style="symbols">
+            <t>
+              A server that supports hierarchical storage receives a 
+              request to process a file that had been migrated. 
+            </t>
+            <t>
+             An operation requires a delegation recall to proceed
+             and waiting for this delegation recall makes processing
+             this request in a timely fashion impossible.
+           </t>
+         </list>
+       </t>
+       <t>
+        In such cases, the error NFS4ERR_DELAY allows
+        these preparatory operations to proceed without
+        holding up client resources such as a session slot.
+        After delaying for period of time, the client can
+        then re-send the operation in question.
 
-      <t hangText="NFS4ERR_ADMIN_REVOKED">
-        Due to administrator intervention, the lockowner's record
-        locks, share reservations, and delegations have been revoked
-        by the server.
       </t>
-
-      <t hangText="NFS4ERR_BADCHAR">
-        A UTF-8 string contains a character which is not supported
-        by the server in the context in which it being used.
+    </section>
+    <section title="NFS4ERR_INVAL (Error Code 22)" 
+             anchor="err_INVAL">
+      <t>
+        The arguments for this operation are not valid for some reason, even
+        though they do match those specified in the XDR definition for
+        the request.
       </t>
-
-      <t hangText="NFS4ERR_BAD_COOKIE">
-        READDIR cookie is stale.
+    </section>
+    <section title="NFS4ERR_NOTSUPP (Error Code 10004)" 
+             anchor="err_NOTSUPP">
+      <t>
+        Operation not supported, either because the operation is
+        an OPTIONAL one and is not supported by this server or
+        because the operation MUST NOT be implemented in 
+        the current minor version.
       </t>
-
-      <t hangText="NFS4ERR_BADHANDLE">
-        Illegal NFS filehandle. The filehandle failed internal
-        consistency checks.
+    </section>
+    <section title="NFS4ERR_SERVERFAULT (Error Code 10006)" 
+             anchor="err_SERVERFAULT">
+      <t>
+        An error occurred on the server which does not map to any of
+        the specific legal NFSv4.1 protocol error values.  The client
+        should translate this into an appropriate error.  UNIX clients
+        may choose to translate this to EIO.
+     </t>
+    </section>
+    <section title="NFS4ERR_TOOSMALL (Error Code 10005)" 
+             anchor="err_TOOSMALL"> 
+      <t>
+        Used where an operation returns a variable amount of data,
+        with a limit specified by the client.  Where the data 
+        returned cannot be fit within the limit specified by the
+        client, this error results.
       </t>
+    </section>
+  </section>
 
-      <t hangText="NFS4ERR_BADNAME">
-        A name string in a request consists of valid UTF-8 characters
-        supported by the server but the name is not supported by the
-        server as a valid name for current operation.
+  <section title="Filehandle Errors" anchor="errors_fh">
+    <t>
+      These errors deal with the situation in which the current
+      or saved filehandle, or the filehandle passed to PUTFH
+      intended to become the current filehandle, is invalid
+      in some way.  This includes situations in which the
+      filehandle is a valid filehandle in general but is not 
+      of the appropriate object type for the current operation.
+    </t>
+    <t>
+      Where the error description indicates a problem with the
+      current or saved filehandle, it is to be understood that 
+      filehandles are only checked for the condition if they
+      are implicit arguments of the operation in question.
+    </t>
+    <section title="NFS4ERR_BADHANDLE (Error Code 10001)" 
+             anchor="err_BADHANDLE">
+      <t>
+        Illegal NFS filehandle for the current server.  The current
+        file handle failed internal consistency checks.  Once accepted
+        as valid (by PUTFH), no subsequent status change can cause the
+        filehandle to generate this error.
       </t>
-
-      <t hangText="NFS4ERR_BADOWNER">
-        An owner, owner_group, or ACL attribute value can not be
-        translated to local representation.
+    </section> 
+    <section title="NFS4ERR_FHEXPIRED (Error Code 10014)" 
+             anchor="err_FHEXPIRED">
+      <t>
+        A current or saved filehandle which is an argument to the
+        current operation is volatile and has expired at the server.
       </t>
-
-      <t hangText="NFS4ERR_BADTYPE">
-        An attempt was made to create an object of a type not supported
-        by the server.
+    </section>
+   <section title="NFS4ERR_ISDIR (Error Code 21)" 
+             anchor="err_ISDIR">
+      <t>
+        The current or saved filehandle designates a directory 
+        when the current operation does not allow a directory to 
+        be accepted as the target of this operation.
       </t>
-
-      <t hangText="NFS4ERR_BAD_RANGE">
-        The range for a LOCK, LOCKT, or LOCKU operation is not
-        appropriate to the allowable range of offsets for the server.
+    </section>
+    <section title="NFS4ERR_MOVED (Error Code 10019)" 
+             anchor="err_MOVED">
+      <t>
+        The file system which contains the current filehandle object
+        is not present at the server.  It may have been relocated, 
+        migrated to another server or may have never been present.
+        The client may obtain the new file system location by obtaining 
+        the "fs_locations" or attribute for the 
+        current filehandle.  For further discussion, refer to 
+        <xref target="sec:mars" /> 
       </t>
-
-      <t hangText="NFS4ERR_BAD_SEQID">
-        The sequence number in a locking request is neither the next
-        expected number or the last number processed.
+    </section>
+    <section title="NFS4ERR_NOFILEHANDLE (Error Code 10020)" 
+             anchor="err_NOFILEHANDLE">
+      <t>
+        The logical current or saved filehandle value is required by 
+        the current operation and is not set.
+        This may be a result of a malformed COMPOUND
+        operation (i.e. no PUTFH or PUTROOTFH before an operation that
+        requires the current filehandle be set).
       </t>
+    </section>
+    <section title="NFS4ERR_NOTDIR (Error Code 20)" 
+             anchor="err_NOTDIR">
+      <t>
+        The current (or saved) filehandle designates an object which
+        is not a directory for an operation in which a directory is
+        required.
+      </t>
+    </section>
+    <section title="NFS4ERR_STALE (Error Code 70)" 
+             anchor="err_STALE">
+      <t>
+        The current or saved filehandle value designating an argument
+        to the current operation is invalid
+        The file referred to by that filehandle no longer
+        exists or access to it has been revoked.
+      </t>
+    </section>
+    <section title="NFS4ERR_SYMLINK (Error Code 10029)" 
+             anchor="err_SYMLINK">
+      <t>
+        The current filehandle designates a symbolic link when the 
+        current operation does not allow a symbolic link as the 
+        target.
+      </t>
+    </section>
+  </section>
 
-      <t hangText="NFS4ERR_BAD_STATEID">
+  <section title="Compound Structure Errors" anchor="errors_comp">
+    <t>
+      This section deals with errors that relate to overall structure
+      of a Compound request (by which we mean to include both
+      COMPOUND and CB_COMPOUND), rather than to particular operations. 
+    </t>
+    <t>
+      There are a number of basic constraints on the operations that
+      may appear in a Compound request.
+    </t>
+    <section title="NFS_OK (Error code 0)"
+             anchor="err_OK">
+      <t>
+        Indicates the operation completed successfully, in that all
+        of the constituent operations completed without error.
+      </t>
+    </section>
+    <section title="NFS4ERR_MINOR_VERS_MISMATCH (Error code 10021)"
+             anchor="err_MINOR_VERS_MISMATCH">
+      <t>
+        The minor version specified is not one that the current listener
+        supports.  This value is returned in the overall status for the
+        Compound but is not associated with a specific operation since
+        the results must specify a result count of zero.
+      </t>
+    </section>
+    <section title="NFS4ERR_OP_ILLEGAL (Error Code 10044)" 
+             anchor="err_OP_ILLEGAL">
+      <t>
+        The operation code is not a valid one for the current
+        Compound procedure.  The opcode
+        in the result stream matched with this error is the
+        ILLEGAL value, although the value that appears in the
+        request stream may be different.  Where an illegal 
+        value appears and the replier pre-parses all operations for
+        a Compound procedure before doing any operation execution, 
+        an RPC-level XDR error may be returned in this case.  
+      </t>
+    </section>
+    <section title="NFS4ERR_RESOURCE (Error Code 10018)" 
+             anchor="err_RESOURCE">
+      <t>
+        For the processing of the Compound procedure, the server may
+        exhaust available resources and can not continue processing
+        operations within the Compound procedure.  This error will
+        be returned from the server in those instances of resource
+        exhaustion related to the processing of the Compound procedure.
+      </t>
+    </section>
+  </section>
+
+  <section title="File System Errors" anchor="errors_fs">
+    <t>
+      These errors describe situations which occurred in the underlying
+      file system implementation rather than in the protocol or any
+      NFSv4.x feature.
+    </t>
+    <section title="NFS4ERR_BADTYPE (Error Code 10007)" 
+             anchor="err_BADTYPE">
+      <t>
+        An attempt was made to create an object with an inappropriate
+        type specified to CREATE.  This may be because the type 
+        is undefined, because it is a type not supported by the 
+        server, or because it is a type for which create is not
+        intended such as a regular file or named attribute, for 
+        which OPEN is used to do the file creation.
+      </t>
+    </section>
+    <section title="NFS4ERR_DQUOT (Error Code 19)" 
+             anchor="err_DQUOT">
+      <t>
+        Resource (quota) hard limit exceeded. The user's resource
+        limit on the server has been exceeded.
+      </t>
+    </section>
+    <section title="NFS4ERR_EXIST (Error Code 17)" 
+             anchor="err_EXIST">
+      <t>
+        A file of the specified target name (when creating, renaming
+        or linking) already exists.
+      </t>
+    </section>
+    <section title="NFS4ERR_FBIG (Error Code 27)" 
+             anchor="err_FBIG">
+      <t>
+        File too large. The operation would have caused a file to
+        grow beyond the server's limit.
+      </t>
+    </section>
+    <section title="NFS4ERR_FILE_OPEN (Error Code 10046)" 
+             anchor="err_FILE_OPEN">
+      <t>
+        The operation is not allowed because a
+        file involved in the operation is currently open.
+        Servers may, but are not required to disallow linking-to,
+        removing, or renaming open files.
+      </t>
+    </section>
+    <section title="NFS4ERR_IO (Error Code 5)" 
+             anchor="err_IO">
+      <t>
+        Indicates that an I/O error occurred for which the file system
+        was unable to provide recovery.
+      </t>
+    </section>
+    <section title="NFS4ERR_MLINK (Error Code 31)" 
+             anchor="err_MLINK">
+      <t>
+        The request would have caused the server's limit for the
+        number of hard links a file may have to be exceeded.
+      </t>
+    </section>
+    <section title="NFS4ERR_NOENT (Error Code 2)" 
+             anchor="err_NOENT">
+      <t>
+         Indicates no such file or directory. The file or directory name
+         specified does not exist.
+      </t>
+    </section>
+    <section title="NFS4ERR_NOSPC (Error Code 28)" 
+             anchor="err_NOSPC">
+      <t>
+        Indicates no space left on device. The operation would have 
+        caused the server's file system to exceed its limit.
+      </t>
+    </section>
+    <section title="NFS4ERR_NOTEMPTY (Error Code 66)" 
+             anchor="err_NOTEMPTY">
+      <t>
+         An attempt was made to remove a directory that was not
+         empty.
+      </t>
+    </section>
+    <section title="NFS4ERR_NXIO (Error Code 5)" 
+             anchor="err_NXIO">
+      <t>
+        I/O error. No such device or address.
+      </t>
+    </section>
+    <section title="NFS4ERR_RESTOREFH (Error Code 10030)" 
+             anchor="err_RESTOREFH">
+      <t>
+        The RESTOREFH operation does not have a saved filehandle
+        (identified by SAVEFH) to operate upon.
+      </t>
+    </section>
+    <section title="NFS4ERR_ROFS (Error Code 30)" 
+             anchor="err_ROFS">
+      <t>
+         Indicates a read-only file system. A modifying operation was 
+         attempted on a read-only file system.
+      </t>
+    </section>
+    <section title="NFS4ERR_XDEV (Error Code 18)" 
+             anchor="err_XDEV">
+      <t>
+        Indicates an attempt to do an operation, such as linking, that
+        inappropriately crosses a boundary.  This may be due to such 
+        boundaries as:
+        <list style="symbols">
+          <t>
+            That between file systems (where the fsids are different).
+          </t>
+          <t>
+            That between different named attribute directories or
+            between a named attribute directory and an ordinary 
+            directory.
+          </t>
+          <t>
+            That between regions of a file system that the file system
+            implementation treats as separate (for example for space
+            accounting purposes), and where cross-connection between
+            the regions are not allowed.
+          </t>
+        </list>
+      </t>
+    </section>
+  </section>
+
+  <section title="State Management Errors" anchor="errors_state_mgt">
+    <t>
+      These errors indicate problems with the stateid (or one of
+      the stateids) passed to a given operation.  This includes
+      situations in which the stateid is invalid as well as 
+      situations in which the stateid is valid but designates 
+      revoked locking state.  Depending on the operation, the 
+      stateid when valid may designate opens, byte-range locks,
+      file or directory delegations, layouts, or device maps.
+    </t>
+    <section title="NFS4ERR_ADMIN_REVOKED (Error Code 10047)" 
+             anchor="err_ADMIN_REVOKED">
+      <t>
+        A stateid designates locking state of any type that has
+        been revoked due to administrative interaction, possibly
+        while the lease is valid.
+      </t>
+    </section>
+    <section title="NFS4ERR_BAD_STATEID (Error Code 10026)" 
+             anchor="err_BAD_STATEID">
+      <t>
         A stateid generated by the current server instance, but
         which does not designate any locking state (either current
         or superseded) for a current lockowner-file pair, was used.
       </t>
-
-      <t hangText="NFS4ERR_BADXDR">
-        The server encountered an XDR decoding error while processing
-        an operation.
+    </section>
+    <section title="NFS4ERR_EXPIRED (Error Code 10011)" 
+             anchor="err_EXPIRED">
+      <t>
+        A stateid designates locking state of any type that has
+        been revoked due to expiration of the client's lease,
+        either immediately upon lease expiration, or following 
+        a later request for a conflicting lock.
       </t>
-
-      <t hangText="NFS4ERR_CLID_INUSE">
-        The SETCLIENTID operation has found that a client id is
-        already in use by another client.
+    </section>
+    <section title="NFS4ERR_LEASE_MOVED (Error Code 10031)" 
+             anchor="err_LEASE_MOVED">
+      <t>
+        A lease being renewed is associated with a file system 
+        that has been migrated to a new server.
       </t>
-
-      <t hangText="NFS4ERR_DEADLOCK">
-        The server has been able to determine a file locking deadlock
-        condition for a blocking lock request.
+    </section>
+    <section title="NFS4ERR_OLD_STATEID (Error Code 10024)" 
+             anchor="err_OLD_STATEID">
+      <t>
+        A stateid with a non-zero seqid value does match 
+        the current seqid for the state designated by the
+        user.
       </t>
-
-      <t hangText="NFS4ERR_DELAY">
-        The server initiated the request, but was not able to complete
-        it in a timely fashion. The client should wait and then try
-        the request with a new RPC transaction ID.  For example,
-        this error should be returned from a server that supports
-        hierarchical storage and receives a request to process a file
-        that has been migrated. In this case, the server should start
-        the immigration process and respond to client with this error.
-        This error may also occur when a necessary delegation recall
-        makes processing a request in a timely fashion impossible.
+    </section>
+    <section title="NFS4ERR_STALE_STATEID (Error Code 10023)" 
+             anchor="err_STALE_STATEID">
+      <t>
+        A stateid generated by an earlier server instance was
+        used.
       </t>
+    </section>
+  </section>
 
-      <t hangText="NFS4ERR_DENIED">
+  <section title="Security Errors" anchor="errors_sec">
+    <t>
+      These are the various permission-related errors in NFSv4.1.
+    </t>
+    <section title="NFS4ERR_ACCESS (Error Code 13)" 
+             anchor="err_ACCESS">
+      <t>
+        Indicates permission denied. The caller does
+        not have the correct permission to perform
+        the requested operation. Contrast this with
+        NFS4ERR_PERM (<xref target="err_PERM" />), which
+        restricts itself to owner or privileged user
+        permission failures.
+
+      </t>
+    </section>
+    <section title="NFS4ERR_PERM (Error Code 1)" 
+             anchor="err_PERM">
+      <t>
+        Indicates requester is not the owner. The operation was not 
+        allowed because the caller is neither a privileged user 
+        (root) nor the owner of the target of the operation.
+      </t>
+    </section>
+    <section title="NFS4ERR_WRONGSEC (Error Code 10016)" 
+             anchor="err_WRONGSEC">
+      <t>
+        Indicates that the security mechanism being used by the client 
+        for the operation does not match the server's security policy.  
+        The client should change the security mechanism being used and 
+        re-send the operation.  SECINFO can be used
+        to determine the appropriate mechanism.
+      </t>
+    </section>
+  </section>
+
+  <section title="Name Errors" anchor="errors_name">
+    <t>
+      Names in NFSv4 are UTF-8 strings.  When the strings are not
+      valid UTF-8 or are of length zero, the error NFS4ERR_INVAL
+      results.  Besides this, there are a number of other errors 
+      to indicate specific problems with names.
+    </t>
+    <section title="NFS4ERR_BADCHAR (Error Code 10040)" 
+             anchor="err_BADCHAR">
+      <t>
+        A UTF-8 string contains a character which is not supported 
+        by the server in the context in which it being used.
+      </t>
+    </section>
+    <section title="NFS4ERR_BADNAME (Error Code 10041)" 
+             anchor="err_BADNAME">
+      <t>
+         A name string in a request consisted of valid UTF-8
+         characters supported by the server but the name is not 
+         supported by the server as a valid name for current operation.
+         An example might be creating a file or directory named ".."
+         on a server whose file system uses that name for links to
+         parent directories.
+      </t>
+    </section>
+    <section title="NFS4ERR_NAMETOOLONG (Error Code 63)" 
+             anchor="err_NAMETOOLONG">
+      <t>
+         Returned when the filename in an operation exceeds the
+         server's implementation limit.  
+      </t>
+    </section>
+  </section>
+
+  <section title="Locking Errors" anchor="errors_locking">
+    <t>
+      This section deal with errors related to locking, both as to
+      share reservations and byte-range locking.  It does not deal
+      with errors specific to the process of reclaiming locks.  Those
+      are dealt with in the next section.
+    </t>
+    <section title="NFS4ERR_BAD_RANGE (Error Code 10042)" 
+             anchor="err_BAD_RANGE">
+      <t>
+        The range for a LOCK, LOCKT, or LOCKU operation is not
+        appropriate to the allowable range of offsets for the
+        server.  E.g., this error results when a server
+        which only supports 32-bit ranges receives a range that
+        cannot be handled by that server.  (See 
+        <xref target="OP_LOCK_DESCRIPTION" />).
+
+      </t>
+    </section>
+    <section title="NFS4ERR_BAD_SEQID (Error Code 10026)" 
+             anchor="err_BAD_SEQID">
+      <t>
+        The sequence number (seqid) in a locking request is neither the 
+        next expected number or the last number processed.
+      </t>
+    </section>
+    <section title="NFS4ERR_DEADLOCK (Error Code 10045)" 
+             anchor="err_DEADLOCK">
+      <t>
+        The server has been able to determine a file locking
+        deadlock condition for a blocking lock request.
+      </t>
+    </section>
+    <section title="NFS4ERR_DENIED (Error Code 10010)" 
+             anchor="err_DENIED">
+      <t>
         An attempt to lock a file is denied.  Since this may be a
-        temporary condition, the client is encouraged to retry the
-        lock request until the lock is accepted.
+        temporary condition, the client is encouraged to re-send the lock
+        request until the lock is accepted.  See 
+        <xref target="sec:blocklock" /> for a discussion of the re-send.
       </t>
-
-      <t hangText="NFS4ERR_DQUOT">
-        Resource (quota) hard limit exceeded. The user's resource
-        limit on the server has been exceeded.
+    </section>
+    <section title="NFS4ERR_LOCKED (Error Code 10012)" 
+             anchor="err_LOCKED">
+      <t>
+        A read or write operation was attempted on a file where there
+        was a conflict between the I/O and an existing lock:
+        <list style="symbols"> 
+          <t>
+            There is a share reservation inconsistent with the I/O
+            being done.
+          </t>
+          <t>
+            The range to be read or written intersects an existing
+            mandatory byte range lock.
+          </t>
+        </list>
       </t>
-
-      <t hangText="NFS4ERR_EXIST">
-        File exists. The file specified already exists.
+    </section>
+    <section title="NFS4ERR_LOCKS_HELD (Error Code 10037)" 
+             anchor="err_LOCKS_HELD">
+      <t>
+        An operation was prevented by the unexpected presence of locks.
       </t>
-
-      <t hangText="NFS4ERR_EXPIRED">
-        A lease has expired that is being used in the current
-        operation.
+    </section>
+    <section title="NFS4ERR_LOCK_NOTSUPP (Error Code 10043)" 
+             anchor="err_LOCK_NOTSUPP">
+      <t>
+        A locking request was attempted which would require the upgrade 
+        or downgrade of a lock range already held by the owner when the
+        server does not support atomic upgrade or downgrade of locks.
       </t>
-
-      <t hangText="NFS4ERR_FBIG">
-        File too large. The operation would have caused a file to
-        grow beyond the server's limit.
+    </section>
+    <section title="NFS4ERR_LOCK_RANGE (Error Code 10028)" 
+             anchor="err_LOCK_RANGE">
+      <t>
+        A lock request is operating on a range that overlaps in part a
+        currently held lock for the current lock owner and does not
+        precisely match a single such lock where the server 
+        does not support this type of request, and thus does not 
+        implement POSIX locking semantics. See
+        <xref target="OP_LOCK_IMPLEMENTATION" />,
+        <xref target="OP_LOCKT_IMPLEMENTATION" />, and
+        <xref target="OP_LOCKU_IMPLEMENTATION" /> for a discussion of
+        how this applies to LOCK, LOCKT, and LOCKU respectively.
       </t>
-
-      <t hangText="NFS4ERR_FHEXPIRED">
-        The filehandle provided is volatile and has expired at
-        the server.
+    </section>
+    <section title="NFS4ERR_OPENMODE (Error Code 10038)" 
+             anchor="err_OPENMODE">
+      <t>
+        The client attempted a READ, WRITE, LOCK or other operation
+        not sanctioned by the stateid passed (e.g. writing to a file
+        opened only for read).
       </t>
+    </section>
+  </section>
 
-      <t hangText="NFS4ERR_FILE_OPEN">
-        The operation can not be successfully processed because a
-        file involved in the operation is currently open.
-      </t>
-
-      <t hangText="NFS4ERR_GRACE">
+  <section title="Reclaim Errors" anchor="errors_reclaim">
+    <t>
+      These errors relate to the process of reclaiming locks after a
+      server restart.
+    </t>
+    <section title="NFS4ERR_GRACE (Error Code 10013)" 
+             anchor="err_GRACE">
+      <t>
         The server is in its recovery or grace period which should
-        match the lease period of the server.
+        at least match the lease period of the server.  A locking
+        request other than a reclaim could not be granted during 
+        that period.
       </t>
-
-      <t hangText="NFS4ERR_INVAL">
-        Invalid argument or unsupported argument for an operation. Two
-        examples are attempting a READLINK on an object other than
-        a symbolic link or specifying a value for an enum field that
-        is not defined in the protocol (e.g., nfs_ftype4).
-      </t>
-
-      <t hangText="NFS4ERR_IO">
-        I/O error. A hard error (for example, a disk error) occurred
-        while processing the requested operation.
-      </t>
-
-      <t hangText="NFS4ERR_ISDIR">
-        Is a directory. The caller specified a directory in a
-        non-directory operation.
-      </t>
-
-      <t hangText="NFS4ERR_LEASE_MOVED">
-        A lease being renewed is associated with a filesystem that
-        has been migrated to a new server.
-      </t>
-
-      <t hangText="NFS4ERR_LOCKE">
-        A read or write operation was attempted on a locked file.
-      </t>
-
-      <t hangText="NFS4ERR_LOCK_NOTSUPP">
-
-        Server does not support atomic upgrade or downgrade of locks.
-      </t>
-
-      <t hangText="NFS4ERR_LOCK_RANGE">
-        A lock request is operating on a sub-range of a current lock
-        for the lock owner and the server does not support this type
-        of request.
-      </t>
-
-      <t hangText="NFS4ERR_LOCKS_HELD">
-        A CLOSE was attempted and file locks would exist after
-        the CLOSE.
-      </t>
-
-      <t hangText="NFS4ERR_MINOR_VERS_MISMATCH">
-        The server has received a request that specifies an unsupported
-        minor version.  The server must return a COMPOUND4res with
-        a zero length operations result array.
-      </t>
-
-      <t hangText="NFS4ERR_MLINK">
-        Too many hard links.
-      </t>
-
-      <t hangText="NFS4ERR_MOVED">
-        The filesystem which contains the current filehandle object
-        has been relocated or migrated to another server.  The client
-        may obtain the new filesystem location by obtaining the
-        "fs_locations" attribute for the current filehandle.
-        For further discussion, refer to <xref target="sec:mars:filerec" />.
-      </t>
-
-      <t hangText="NFS4ERR_NAMETOOLONG">
-        The filename in an operation was too long.
-      </t>
-
-      <t hangText="NFS4ERR_NOENT">
-        No such file or directory. The file or directory name specified
-        does not exist.
-      </t>
-
-      <t hangText="NFS4ERR_NOFILEHANDLE">
-        The logical current filehandle value (or, in the case of
-        RESTOREFH, the saved filehandle value) has not been set
-        properly.  This may be a result of a malformed COMPOUND
-        operation (i.e., no PUTFH or PUTROOTFH before an operation
-        that requires the current filehandle be set).
-      </t>
-
-      <t hangText="NFS4ERR_NO_GRACE">
-        A reclaim of client state has fallen outside of the grace
-        period of the server.  As a result, the server can not
+    </section>
+    <section title="NFS4ERR_NO_GRACE (Error Code 10033)" 
+             anchor="err_NO_GRACE">
+      <t>
+        A reclaim of client state was attempted in circumstances in 
+        which the server cannot guarantee that conflicting state has 
+        not been provided to another client.  As a result, the server can not
         guarantee that conflicting state has not been provided to
         another client.
       </t>
-
-      <t hangText="NFS4ERR_NOSPC">
-        No space left on device. The operation would have caused the
-        server's filesystem to exceed its limit.
+    </section>
+    <section title="NFS4ERR_RECLAIM_BAD (Error Code 10034)" 
+             anchor="err_RECLAIM_BAD">
+      <t>
+        A reclaim attempted by the client does not match the
+        server's state consistency checks and has been rejected 
+        therefore as invalid.
       </t>
-
-      <t hangText="NFS4ERR_NOTDIR">
-        Not a directory. The caller specified a non-directory in a
-        directory operation.
+    </section>
+    <section title="NFS4ERR_RECLAIM_CONFLICT (Error Code 10035)" 
+             anchor="err_RECLAIM_CONFLICT">
+      <t>
+        The reclaim attempted by the client has encountered a conflict
+        and cannot be satisfied.  Potentially indicates a misbehaving
+        client, although not necessarily the one receiving the error.
+        The misbehavior might be on the part of the client that 
+        established the lock with which this client conflicted. 
       </t>
+    </section>
+  </section>
 
-      <t hangText="NFS4ERR_NOTEMPTY">
-        An attempt was made to remove a directory that was not empty.
+  <section title="Client Management Errors" anchor="errors_client_mgt">
+    <t>
+      This sections deals with errors associated with requests used
+      to create and manage client IDs.
+    </t>
+    <section title="NFS4ERR_CLID_INUSE (Error Code 10017)" 
+             anchor="err_CLID_INUSE">
+      <t>
+        The SETCLIENTID operation has found that a client id is
+        already in use by another client.
       </t>
-
-      <t hangText="NFS4ERR_NOTSUPP">
-        Operation is not supported.
-      </t>
-
-      <t hangText="NFS4ERR_NOT_SAME">
-        This error is returned by the VERIFY operation to signify
-        that the attributes compared were not the same as provided
-        in the client's request.
-      </t>
-
-      <t hangText="NFS4ERR_NXIO">
-        I/O error. No such device or address.
-      </t>
-
-      <t hangText="NFS4ERR_OLD_STATEID">
-        A stateid which designates the locking state for a
-        lockowner-file at an earlier time was used.
-      </t>
-
-      <t hangText="NFS4ERR_OPENMODE">
-        The client attempted a READ, WRITE, LOCK or SETATTR operation
-        not sanctioned by the stateid passed (e.g., writing to a file
-        opened only for read).
-      </t>
-
-      <t hangText="NFS4ERR_OP_ILLEGAL">
-        An illegal operation value has been specified in the argop
-        field of a COMPOUND or CB_COMPOUND procedure.
-      </t>
-
-      <t hangText="NFS4ERR_PERM">
-        Not owner. The operation was not allowed because the caller
-        is either not a privileged user (root) or not the owner of
-        the target of the operation.
-      </t>
-
-      <t hangText="NFS4ERR_RECLAIM_BAD">
-        The reclaim provided by the client does not match any of the
-        server's state consistency checks and is bad.
-      </t>
-
-      <t hangText="NFS4ERR_RECLAIM_CONFLICT">
-        The reclaim provided by the client has encountered a conflict
-        and can not be provided.  Potentially indicates a misbehaving
-        client.
-      </t>
-
-      <t hangText="NFS4ERR_RESOURCE">
-        For the processing of the COMPOUND procedure, the server may
-        exhaust available resources and can not continue processing
-        operations within the COMPOUND procedure.  This error will
-        be returned from the server in those instances of resource
-        exhaustion related to the processing of the COMPOUND procedure.
-      </t>
-
-      <t hangText="NFS4ERR_RESTOREFH">
-        The RESTOREFH operation does not have a saved filehandle
-        (identified by SAVEFH) to operate upon.
-      </t>
-
-      <t hangText="NFS4ERR_ROFS">
-        Read-only filesystem. A modifying operation was attempted on
-        a read-only filesystem.
-      </t>
-
-      <t hangText="NFS4ERR_SAME">
-        This error is returned by the NVERIFY operation to signify
-        that the attributes compared were the same as provided in
-        the client's request.
-      </t>
-
-      <t hangText="NFS4ERR_SERVERFAULT">
-        An error occurred on the server which does not map to any of
-        the legal NFS version 4 protocol error values.  The client
-        should translate this into an appropriate error.  UNIX clients
-        may choose to translate this to EIO.
-      </t>
-
-      <t hangText="NFS4ERR_SHARE_DENIED">
-        An attempt to OPEN a file with a share reservation has failed
-        because of a share conflict.
-      </t>
-
-      <t hangText="NFS4ERR_STALE">
-        Invalid filehandle. The filehandle given in the arguments was
-        invalid. The file referred to by that filehandle no longer
-        exists or access to it has been revoked.
-      </t>
-
-      <t hangText="NFS4ERR_STALE_CLIENTID">
+    </section>
+    <section title="NFS4ERR_STALE_CLIENTID (Error Code 10022)" 
+             anchor="err_STALE_CLIENTID">
+      <t>
         A clientid not recognized by the server was used in a locking
         or SETCLIENTID_CONFIRM request.
       </t>
+    </section>
+  </section>
 
-      <t hangText="NFS4ERR_STALE_STATEID">
-        A stateid generated by an earlier server instance was used.
+  <section title="Attribute Handling Errors" anchor="errors_attr">
+    <t>
+      This section deals with errors specific to attribute handling
+      within NFSv4.
+    </t>
+    <section title="NFS4ERR_ATTRNOTSUPP (Error Code 10032)" 
+             anchor="err_ATTRNOTSUPP">
+      <t>
+        An attribute specified is not supported by the server.  This 
+        error MUST NOT be returned by the GETATTR operation.
       </t>
-
-      <t hangText="NFS4ERR_SYMLINK">
-        The current filehandle provided for a LOOKUP is not a directory
-        but a symbolic link.  Also used if the final component of
-        the OPEN path is a symbolic link.
+    </section>
+    <section title="NFS4ERR_BADOWNER (Error Code 10039)" 
+             anchor="err_BADOWNER">
+      <t>
+        Returned when an owner or owner_group attribute value or the who 
+        field of an ace within an ACL attribute value cannot be
+        translated to a local representation.
       </t>
-
-      <t hangText="NFS4ERR_TOOSMALL">
-        The encoded response to a READDIR request exceeds the size
-        limit set by the initial request.
+    </section>
+    <section title="NFS4ERR_NOT_SAME (Error Code 10027)" 
+             anchor="err_NOT_SAME">
+      <t>
+        This error is returned by the VERIFY operation to signify
+        that the attributes compared were not the same as those provided 
+        in the client's request.
       </t>
-
-      <t hangText="NFS4ERR_WRONGSEC">
-        The security mechanism being used by the client for the
-        operation does not match the server's security policy.
-        The client should change the security mechanism being used
-        and retry the operation.
+    </section>
+    <section title="NFS4ERR_SAME (Error Code 10009)" 
+             anchor="err_SAME">
+      <t>
+        This error is returned by the NVERIFY operation to signify
+        that the attributes compared were the same as those provided 
+        in the client's request.
       </t>
+    </section>
+  </section>
 
-      <t hangText="NFS4ERR_XDEV">
-        Attempt to do an operation between different fsids.
-      </t>
+</section>
 
-    </list>
+<!-- When adding new errors above, add them to the next section under -->
+<!-- the appropriate operation; the next table for errors to -->
+<!-- operations is automatically generated.  -->
+
+<section title="Operations and their valid errors">
+  <t>
+    This section contains a table which gives the valid error returns
+    for each protocol operation.  The error code NFS4_OK (indicating 
+    no error) is not listed but should be understood to be returnable
+    by all operations except ILLEGAL.
   </t>
+  <texttable anchor='op_error_returns'>
+    <preamble> Valid error returns for each protocol
+    operation </preamble>
+
+    <ttcol align='left'>Operation</ttcol>
+    <ttcol align='left'>Errors</ttcol>
+<!-- DO NOT MOVE THIS OR THE NEXT LINE - IT MUST BE AT THE START OF TABLE -->
+<!-- STARTOFTHEERRORTABLE -->
+
+    <c>ACCESS</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>CLOSE</c>
+    <c>
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BAD_SEQID,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_ISDIR,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_LOCKS_HELD,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_STATEID
+    </c>
+
+    <c />
+    <c />
+
+    <c>COMMIT</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_ISDIR,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_SYMLINK
+    </c>
+
+    <c />
+    <c />
+
+    <c>CREATE</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ATTRNOTSUPP,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADNAME,
+      NFS4ERR_BADOWNER,
+      NFS4ERR_BADTYPE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_DQUOT,
+      NFS4ERR_EXIST,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NAMETOOLONG,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOSPC,
+      NFS4ERR_NOTDIR,
+      NFS4ERR_PERM,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>DELEGPURGE</c>
+    <c>
+      NFS4ERR_BADXDR,
+      NFS4ERR_NOTSUPP,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE_CLIENTID
+    </c>
+
+    <c />
+    <c />
+
+    <c>DELEGRETURN</c>
+    <c>
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_BADXDR,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOTSUPP,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_STATEID
+    </c>
+
+    <c />
+    <c />
+
+    <c>GETATTR</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>GETFH</c>
+    <c>
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>ILLEGAL</c>
+    <c>
+      NFS4ERR_BADXDR,
+      NFS4ERR_OP_ILLEGAL
+    </c>
+
+    <c />
+    <c />
+
+    <c>LINK</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADNAME,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_DQUOT,
+      NFS4ERR_EXIST,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_FILE_OPEN,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_ISDIR,
+      NFS4ERR_MLINK,
+      NFS4ERR_MOVED,
+      NFS4ERR_NAMETOOLONG,
+      NFS4ERR_NOENT,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOSPC,
+      NFS4ERR_NOTDIR,
+      NFS4ERR_NOTSUPP,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_WRONGSEC,
+      NFS4ERR_XDEV
+    </c>
+
+    <c />
+    <c />
+
+    <c>LOCK</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BAD_RANGE,
+      NFS4ERR_BAD_SEQID,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DEADLOCK,
+      NFS4ERR_DELAY,
+      NFS4ERR_DENIED,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_ISDIR,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_LOCK_NOTSUPP,
+      NFS4ERR_LOCK_RANGE,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NO_GRACE,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_OPENMODE,
+      NFS4ERR_RECLAIM_BAD,
+      NFS4ERR_RECLAIM_CONFLICT,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_CLIENTID,
+      NFS4ERR_STALE_STATEID
+    </c>
+
+    <c />
+    <c />
+
+    <c>LOCKT</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BAD_RANGE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_DENIED,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_ISDIR,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_LOCK_RANGE,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_CLIENTID
+    </c>
+
+    <c />
+    <c />
+
+    <c>LOCKU</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BAD_RANGE,
+      NFS4ERR_BAD_SEQID,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_BADXDR,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_ISDIR,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_LOCK_RANGE,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_STATEID
+    </c>
+
+    <c />
+    <c />
+
+    <c>LOOKUP</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADNAME,
+      NFS4ERR_BADXDR,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NAMETOOLONG,
+      NFS4ERR_NOENT,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOTDIR,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_SYMLINK,
+      NFS4ERR_WRONGSEC
+    </c>
+
+    <c />
+    <c />
+
+    <c>LOOKUPP</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOENT,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOTDIR,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_SYMLINK,
+      NFS4ERR_WRONGSEC
+    </c>
+
+    <c />
+    <c />
+
+    <c>NVERIFY</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ATTRNOTSUPP,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_SAME,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>OPEN</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_ATTRNOTSUPP,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADNAME,
+      NFS4ERR_BADOWNER,
+      NFS4ERR_BADXDR,
+      NFS4ERR_BAD_SEQID,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_DELAY,
+      NFS4ERR_DQUOT,
+      NFS4ERR_EXIST,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_FBIG,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_ISDIR,
+      NFS4ERR_MOVED,
+      NFS4ERR_NAMETOOLONG,
+      NFS4ERR_NOENT,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOSPC,
+      NFS4ERR_NOTDIR,
+      NFS4ERR_NOTSUP,
+      NFS4ERR_NO_GRACE,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_PERM,
+      NFS4ERR_RECLAIM_BAD,
+      NFS4ERR_RECLAIM_CONFLICT,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_SHARE_DENIED,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_CLIENTID,
+      NFS4ERR_SYMLINK,
+      NFS4ERR_WRONGSEC
+    </c>
+
+    <c />
+    <c />
+
+    <c>OPENATTR</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_DQUOT,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOENT,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOSPC,
+      NFS4ERR_NOTSUPP,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>OPEN_CONFIRM</c>
+    <c>
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BAD_SEQID,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_BADXDR,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_ISDIR,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_STATEID
+    </c>
+
+    <c />
+    <c />
+
+    <c>OPEN_DOWNGRADE</c>
+    <c>
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_BAD_SEQID,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_DELAY,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_STATEID
+    </c>
+
+    <c />
+    <c />
+
+    <c>PUTFH</c>
+    <c>
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_MOVED,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_WRONGSEC
+    </c>
+
+    <c />
+    <c />
+
+    <c>PUTPUBFH</c>
+    <c>
+      NFS4ERR_DELAY,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_WRONGSEC
+    </c>
+
+    <c />
+    <c />
+
+    <c>PUTROOTFH</c>
+    <c>
+      NFS4ERR_DELAY,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_WRONGSEC
+    </c>
+
+    <c />
+    <c />
+
+    <c>READ</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_DELAY,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_ISDIR,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_LOCKED,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_OPENMODE,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_STATEID,
+      NFS4ERR_SYMLINK
+   </c>
+
+    <c />
+    <c />
+
+    <c>READDIR</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_BAD_COOKIE,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOTDIR,
+      NFS4ERR_NOT_SAME,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_TOOSMALL
+    </c>
+
+    <c />
+    <c />
+
+    <c>READLINK</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_ISDIR,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOTSUP,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>RELEASE_LOCKOWNER</c>
+    <c>
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BADXDR,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_LOCKS_HELD,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE_CLIENTID
+    </c>
+
+    <c />
+    <c />
+
+    <c>REMOVE</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADNAME,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_FILE_OPEN,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NAMETOOLONG,
+      NFS4ERR_NOENT,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOTDIR,
+      NFS4ERR_NOTEMPTY,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>RENAME</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADNAME,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_DQUOT,
+      NFS4ERR_EXIST,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_FILE_OPEN,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NAMETOOLONG,
+      NFS4ERR_NOENT,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOSPC,
+      NFS4ERR_NOTDIR,
+      NFS4ERR_NOTEMPTY,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_WRONGSEC,
+      NFS4ERR_XDEV
+    </c>
+
+    <c />
+    <c />
+
+    <c>RENEW</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BADXDR,
+      NFS4ERR_CB_PATH_DOWN,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE_CLIENTID
+    </c>
+
+    <c />
+    <c />
+
+    <c>RESTOREFH</c>
+    <c>
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_MOVED,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_RESTOREFH,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_WRONGSEC
+    </c>
+
+    <c />
+    <c />
+
+    <c>SAVEFH</c>
+    <c>
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>SECINFO</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADNAME,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_INVAL,
+      NFS4ERR_MOVED,
+      NFS4ERR_NAMETOOLONG,
+      NFS4ERR_NOENT,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOTDIR,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>SETATTR</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_ATTRNOTSUPP,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADOWNER,
+      NFS4ERR_BADXDR,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_DELAY,
+      NFS4ERR_DQUOT,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_FBIG,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_ISDIR,
+      NFS4ERR_LOCKED,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOSPC,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_OPENMODE,
+      NFS4ERR_PERM,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_STATEID
+    </c>
+
+    <c />
+    <c />
+
+    <c>SETCLIENTID</c>
+    <c>
+      NFS4ERR_BADXDR,
+      NFS4ERR_CLID_INUSE,
+      NFS4ERR_INVAL,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT
+    </c>
+
+    <c />
+    <c />
+
+    <c>SETCLIENTID_CONFIRM</c>
+    <c>
+      NFS4ERR_BADXDR,
+      NFS4ERR_CLID_INUSE,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE_CLIENTID
+    </c>
+
+    <c />
+    <c />
+
+    <c>VERIFY</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ATTRNOTSUPP,
+      NFS4ERR_BADCHAR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOT_SAME,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE
+    </c>
+
+    <c />
+    <c />
+
+    <c>WRITE</c>
+    <c>
+      NFS4ERR_ACCESS,
+      NFS4ERR_ADMIN_REVOKED,
+      NFS4ERR_BADXDR,
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_DELAY,
+      NFS4ERR_DQUOT,
+      NFS4ERR_EXPIRED,
+      NFS4ERR_FBIG,
+      NFS4ERR_FHEXPIRED,
+      NFS4ERR_GRACE,
+      NFS4ERR_INVAL,
+      NFS4ERR_IO,
+      NFS4ERR_ISDIR,
+      NFS4ERR_LEASE_MOVED,
+      NFS4ERR_LOCKED,
+      NFS4ERR_MOVED,
+      NFS4ERR_NOFILEHANDLE,
+      NFS4ERR_NOSPC,
+      NFS4ERR_NXIO,
+      NFS4ERR_OLD_STATEID,
+      NFS4ERR_OPENMODE,
+      NFS4ERR_RESOURCE,
+      NFS4ERR_ROFS,
+      NFS4ERR_SERVERFAULT,
+      NFS4ERR_STALE,
+      NFS4ERR_STALE_STATEID,
+      NFS4ERR_SYMLINK
+    </c>
+
+    <c />
+    <c />
+
+<!-- ENDOFTHEERRORTABLE -->
+<!-- DO NOT MOVE THIS OR THE ONE ABOVE LINE - IT MUST BE AT THE START OF TABLE -->
+    
+  </texttable>    
+</section>
+
+<!-- When adding new errors above, add them to the next section under -->
+<!-- the appropriate operation; the next table for errors to -->
+<!-- operations is automatically generated.  -->
+
+<section title="Callback operations and their valid errors">
+  <t>
+    This section contains a table which gives the valid error returns
+    for each callback operation.  The error code NFS4_OK (indicating 
+    no error) is not listed but should be understood to be returnable
+    by all callback operations with the exception of CB_ILLEGAL. 
+  </t>
+  <texttable anchor='cb_op_error_returns'>
+    <preamble> Valid error returns for each protocol
+    callback operation </preamble>
+
+    <ttcol align='left'>Callback Operation</ttcol>
+    <ttcol align='left'>Errors</ttcol>
+<!-- DO NOT MOVE THIS OR THE NEXT LINE - IT MUST BE AT THE START OF TABLE -->
+<!-- STARTOFTHEERRORTABLE -->
+
+    <c>CB_GETATTR</c>
+    <c>
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_DELAY,
+      NFS4ERR_INVAL,
+      NFS4ERR_SERVERFAULT
+    </c>
+
+    <c />
+    <c />
+
+    <c>CB_ILLEGAL</c>
+    <c>
+      NFS4ERR_BADXDR,
+      NFS4ERR_OP_ILLEGAL
+    </c>
+
+    <c />
+    <c />
+
+    <c>CB_RECALL</c>
+    <c>
+      NFS4ERR_BADHANDLE,
+      NFS4ERR_BADXDR,
+      NFS4ERR_BAD_STATEID,
+      NFS4ERR_DELAY,
+      NFS4ERR_SERVERFAULT
+    </c>
+
+    <c />
+    <c />
+
+<!-- ENDOFTHEERRORTABLE -->
+<!-- DO NOT MOVE THIS OR THE ONE ABOVE LINE - IT MUST BE AT THE START OF TABLE -->
+  </texttable>
+</section>
+
+<!-- INCLUDE THE AUTO GENERATED ERROR TO OP TABLE -->
+<?rfc include='nfsv4_middle_errortoop_autogen.xml'?>
+
 </section>

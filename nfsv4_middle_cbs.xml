@@ -49,15 +49,6 @@ void;
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_CB_NULL_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-None.
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_CB_COMPOUND" title="Procedure 1: CB_COMPOUND - Compound Operations">
 
@@ -144,20 +135,6 @@ compoundargs -> compoundres
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_CB_COMPOUND_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_OP_ILLEGAL
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-        </artwork>
-      </figure>
-
-    </section>
     <section anchor="OP_CB_GETATTR" title="Operation 3: CB_GETATTR - Get Attributes">
 
       <section toc="exclude" anchor="OP_CB_GETATTR_SYNOPSIS" title="SYNOPSIS">
@@ -204,18 +181,6 @@ fh, attr_request -> attrmask, attr_vals
           values only for the change attribute, and attributes that it
           may change (time_modify, and size).
         </t>
-
-      </section>
-      <section toc="exclude" anchor="OP_CB_GETATTR_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADHANDLE
-NFS4ERR_BADXDR
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-        </artwork>
-      </figure>
 
       </section>
     </section>
@@ -276,19 +241,6 @@ stateid, truncate, fh -> ()
         </t>
 
       </section>
-      <section toc="exclude" anchor="OP_CB_RECALL_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-        </artwork>
-      </figure>
-
-      </section>
     </section>
     <section anchor="OP_CB_ILLEGAL" title="Operation 10044: CB_ILLEGAL - Illegal Callback Operation">
 
@@ -340,15 +292,6 @@ void;
           checks for legal operation codes during the XDR decode phase,
           then the CB_ILLEGAL4res would not be returned.
         </t>
-
-      </section>
-      <section toc="exclude" anchor="OP_CB_ILLEGAL_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_OP_ILLEGAL
-        </artwork>
-      </figure>
 
       </section>
     </section>

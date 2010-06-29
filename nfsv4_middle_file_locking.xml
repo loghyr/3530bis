@@ -785,7 +785,7 @@
     </t>
 
   </section>
-  <section title="Blocking Locks">
+  <section anchor="sec:blocklock" title="Blocking Locks">
 
     <t>
       Some clients require the support of blocking locks.  The NFS

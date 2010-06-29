@@ -43,16 +43,6 @@ void;
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_NULL_ERRORS" title="ERRORS">
-
-
-      <figure>
-        <artwork>
-None.
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_COMPOUND" title="Procedure 1: COMPOUND - Compound Operations">
 
@@ -217,15 +207,6 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_COMPOUND_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-All errors defined in the protocol
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_ACCESS" title="Operation 3: ACCESS - Check Access Rights">
 
@@ -382,26 +363,6 @@ All errors defined in the protocol
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_ACCESS_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADHANDLE
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_CLOSE" title="Operation 4: CLOSE - Close File">
 
@@ -459,33 +420,6 @@ NFS4ERR_STALE
         Therefore, the stateid returned by CLOSE is not useful for
         operations that follow.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_CLOSE_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_SEQID
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_EXPIRED
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_ISDIR
-NFS4ERR_LEASE_MOVED
-NFS4ERR_LOCKS_HELD
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_OLD_STATEID
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_STATEID
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -635,27 +569,6 @@ NFS4ERR_STALE_STATEID
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_COMMIT_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADHANDLE
-NFS4ERR_BADXDR
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_ISDIR
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_RESOURCE
-NFS4ERR_ROFS
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_CREATE" title="Operation 6: CREATE - Create a Non-Regular File Object">
 
@@ -766,38 +679,6 @@ NFS4ERR_STALE
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_CREATE_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ATTRNOTSUPP
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADNAME
-NFS4ERR_BADOWNER
-NFS4ERR_BADTYPE
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_DQUOT
-NFS4ERR_EXIST
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NAMETOOLONG
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOSPC
-NFS4ERR_NOTDIR
-NFS4ERR_PERM
-NFS4ERR_RESOURCE
-NFS4ERR_ROFS
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_DELEGPURGE" title="Operation 7: DELEGPURGE - Purge Delegations Awaiting Recovery">
 
@@ -851,21 +732,6 @@ clientid ->
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_DELEGPURGE_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADXDR
-NFS4ERR_NOTSUPP
-NFS4ERR_LEASE_MOVED
-NFS4ERR_MOVED
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE_CLIENTID
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_DELEGRETURN" title="Operation 8: DELEGRETURN - Return Delegation">
 
@@ -902,28 +768,6 @@ NFS4ERR_STALE_CLIENTID
         context of the delegation to the server before returning
         the delegation.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_DELEGRETURN_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_EXPIRED
-NFS4ERR_INVAL
-NFS4ERR_LEASE_MOVED
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOTSUPP
-NFS4ERR_OLD_STATEID
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_STATEID
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -984,26 +828,6 @@ NFS4ERR_STALE_STATEID
     <section toc="exclude" anchor="OP_GETATTR_IMPLEMENTATION" title="IMPLEMENTATION">
 
     </section>
-    <section toc="exclude" anchor="OP_GETATTR_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADHANDLE
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_GETFH" title="Operation 10: GETFH - Get Current Filehandle">
 
@@ -1058,21 +882,6 @@ void;
 PUTFH  (directory filehandle)
 LOOKUP (entry name)
 GETFH
-        </artwork>
-      </figure>
-
-    </section>
-    <section toc="exclude" anchor="OP_GETFH_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADHANDLE
-NFS4ERR_FHEXPIRED
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
         </artwork>
       </figure>
 
@@ -1155,41 +964,6 @@ NFS4ERR_STALE
       <t>
         Note that symbolic links are created with the CREATE operation.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_LINK_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADNAME
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_DQUOT
-NFS4ERR_EXIST
-NFS4ERR_FHEXPIRED
-NFS4ERR_FILE_OPEN
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_ISDIR
-NFS4ERR_MLINK
-NFS4ERR_MOVED
-NFS4ERR_NAMETOOLONG
-NFS4ERR_NOENT
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOSPC
-NFS4ERR_NOTDIR
-NFS4ERR_NOTSUPP
-NFS4ERR_RESOURCE
-NFS4ERR_ROFS
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_WRONGSEC
-NFS4ERR_XDEV
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -1314,44 +1088,6 @@ NFS4ERR_XDEV
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_LOCK_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_RANGE
-NFS4ERR_BAD_SEQID
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_DEADLOCK
-NFS4ERR_DELAY
-NFS4ERR_DENIED
-NFS4ERR_EXPIRED
-NFS4ERR_FHEXPIRED
-NFS4ERR_GRACE
-NFS4ERR_INVAL
-NFS4ERR_ISDIR
-NFS4ERR_LEASE_MOVED
-NFS4ERR_LOCK_NOTSUPP
-NFS4ERR_LOCK_RANGE
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NO_GRACE
-NFS4ERR_OLD_STATEID
-NFS4ERR_OPENMODE
-NFS4ERR_RECLAIM_BAD
-NFS4ERR_RECLAIM_CONFLICT
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_CLIENTID
-NFS4ERR_STALE_STATEID
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_LOCKT" title="Operation 13: LOCKT - Test For Lock">
 
@@ -1430,32 +1166,6 @@ owner}
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_LOCKT_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_RANGE
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_DENIED
-NFS4ERR_FHEXPIRED
-NFS4ERR_GRACE
-NFS4ERR_INVAL
-NFS4ERR_ISDIR
-NFS4ERR_LEASE_MOVED
-NFS4ERR_LOCK_RANGE
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_CLIENTID
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_LOCKU" title="Operation 14: LOCKU - Unlock File">
 
@@ -1516,35 +1226,6 @@ NFS4ERR_STALE_CLIENTID
         it actually holds, possibly followed by LOCK requests for
         the sub-ranges not being unlocked.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_LOCKU_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_RANGE
-NFS4ERR_BAD_SEQID
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_EXPIRED
-NFS4ERR_FHEXPIRED
-NFS4ERR_GRACE
-NFS4ERR_INVAL
-NFS4ERR_ISDIR
-NFS4ERR_LEASE_MOVED
-NFS4ERR_LOCK_RANGE
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_OLD_STATEID
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_STATEID
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -1656,32 +1337,6 @@ GETFH
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_LOOKUP_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADNAME
-NFS4ERR_BADXDR
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NAMETOOLONG
-NFS4ERR_NOENT
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOTDIR
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_SYMLINK
-NFS4ERR_WRONGSEC
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_LOOKUPP" title="Operation 16: LOOKUPP - Lookup Parent Directory">
 
@@ -1732,25 +1387,6 @@ void;
         If the current filehandle is not a directory or named attribute
         directory, the error NFS4ERR_NOTDIR is returned.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADHANDLE
-NFS4ERR_FHEXPIRED
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NOENT
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOTDIR
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -1820,29 +1456,6 @@ READ 0 32767
         (e.g., time_modify_set) is specified, the error NFS4ERR_INVAL
         is returned to the client.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_NVERIFY_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ATTRNOTSUPP
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_RESOURCE
-NFS4ERR_SAME
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -2217,52 +1830,6 @@ NFS4ERR_STALE
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_OPEN_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_ATTRNOTSUPP
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADNAME
-NFS4ERR_BADOWNER
-NFS4ERR_BAD_SEQID
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_DQUOT
-NFS4ERR_EXIST
-NFS4ERR_EXPIRED
-NFS4ERR_FHEXPIRED
-NFS4ERR_GRACE
-NFS4ERR_IO
-NFS4ERR_INVAL
-NFS4ERR_ISDIR
-NFS4ERR_LEASE_MOVED
-NFS4ERR_MOVED
-NFS4ERR_NAMETOOLONG
-NFS4ERR_NOENT
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOSPC
-NFS4ERR_NOTDIR
-NFS4ERR_NOTSUPP
-NFS4ERR_NO_GRACE
-NFS4ERR_PERM
-NFS4ERR_RECLAIM_BAD
-NFS4ERR_RECLAIM_CONFLICT
-NFS4ERR_RESOURCE
-NFS4ERR_ROFS
-NFS4ERR_SERVERFAULT
-NFS4ERR_SHARE_DENIED
-NFS4ERR_STALE
-NFS4ERR_STALE_CLIENTID
-NFS4ERR_SYMLINK
-NFS4ERR_WRONGSEC
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_OPENATTR" title="Operation 19: OPENATTR - Open Named Attribute Directory">
 
@@ -2319,30 +1886,6 @@ NFS4ERR_WRONGSEC
         filehandle, an error of NFS4ERR_NOTSUPP will be returned to
         the client.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_OPENATTR_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADHANDLE
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_DQUOT
-NFS4ERR_FHEXPIRED
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NOENT
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOSPC
-NFS4ERR_NOTSUPP
-NFS4ERR_RESOURCE
-NFS4ERR_ROFS
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -2468,30 +2011,6 @@ NFS4ERR_STALE
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_OPEN_CONFIRM_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_SEQID
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_EXPIRED
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_ISDIR
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_OLD_STATEID
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_STATEID
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_OPEN_DOWNGRADE" title="Operation 21: OPEN_DOWNGRADE - Reduce Open File Access">
 
@@ -2544,29 +2063,6 @@ NFS4ERR_STALE_STATEID
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_OPEN_DOWNGRADE_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_SEQID
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_EXPIRED
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_OLD_STATEID
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_STATEID
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_PUTFH" title="Operation 22: PUTFH - Set Current Filehandle">
 
@@ -2609,22 +2105,6 @@ filehandle -> (cfh)
         Commonly used as the first operator in an NFS request to set
         the context for following operations.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_PUTFH_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADHANDLE
-NFS4ERR_BADXDR
-NFS4ERR_FHEXPIRED
-NFS4ERR_MOVED
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_WRONGSEC
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -2724,17 +2204,6 @@ void;
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_PUTPUBFH_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_WRONGSEC
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_PUTROOTFH" title="Operation 24: PUTROOTFH - Set Root Filehandle">
 
@@ -2779,17 +2248,6 @@ void;
         Commonly used as the first operator in an NFS request to set
         the context for following operations.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_PUTROOTFH_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_WRONGSEC
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -2903,37 +2361,6 @@ NFS4ERR_WRONGSEC
         re-attempting the READ.  When the READ completes, the client
         should release the record lock via LOCKU.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_READ_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_EXPIRED
-NFS4ERR_FHEXPIRED
-NFS4ERR_GRACE
-NFS4ERR_IO
-NFS4ERR_INVAL
-NFS4ERR_ISDIR
-NFS4ERR_LEASE_MOVED
-NFS4ERR_LOCKED
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NXIO
-NFS4ERR_OLD_STATEID
-NFS4ERR_OPENMODE
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_STATEID
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -3118,29 +2545,6 @@ cookieverf { cookie, name, attrs }
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_READDIR_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_COOKIE
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOTDIR
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_TOOSMALL
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_READLINK" title="Operation 27: READLINK - Read Symbolic Link">
 
@@ -3202,27 +2606,6 @@ void;
         NF4LNK.  The server should return the error, NFS4ERR_INVAL,
         if the object is not of type, NF4LNK.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_READLINK_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADHANDLE
-NFS4ERR_DELAY
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_ISDIR
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOTSUPP
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -3330,34 +2713,6 @@ NFS4ERR_STALE
           </t>
         </list>
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_REMOVE_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADNAME
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_FHEXPIRED
-NFS4ERR_FILE_OPEN
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NAMETOOLONG
-NFS4ERR_NOENT
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOTDIR
-NFS4ERR_NOTEMPTY
-NFS4ERR_RESOURCE
-NFS4ERR_ROFS
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -3469,39 +2824,6 @@ target_change_info
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_RENAME_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADNAME
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_DQUOT
-NFS4ERR_EXIST
-NFS4ERR_FHEXPIRED
-NFS4ERR_FILE_OPEN
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_MOVED
-NFS4ERR_NAMETOOLONG
-NFS4ERR_NOENT
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOSPC
-NFS4ERR_NOTDIR
-NFS4ERR_NOTEMPTY
-NFS4ERR_RESOURCE
-NFS4ERR_ROFS
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_WRONGSEC
-NFS4ERR_XDEV
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_RENEW" title="Operation 30: RENEW - Renew a Lease">
 
@@ -3582,23 +2904,6 @@ clientid -> ()
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_RENEW_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BADXDR
-NFS4ERR_CB_PATH_DOWN
-NFS4ERR_EXPIRED
-NFS4ERR_LEASE_MOVED
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE_CLIENTID
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_RESTOREFH" title="Operation 31: RESTOREFH - Restore Saved Filehandle">
 
@@ -3659,22 +2964,6 @@ GETATTR attrbits     (post-op dir attrs)
       </figure>
 
     </section>
-    <section toc="exclude" anchor="OP_RESTOREFH_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADHANDLE
-NFS4ERR_FHEXPIRED
-NFS4ERR_MOVED
-NFS4ERR_RESOURCE
-NFS4ERR_RESTOREFH
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_WRONGSEC
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_SAVEFH" title="Operation 32: SAVEFH - Save Current Filehandle">
 
@@ -3717,21 +3006,6 @@ void;
 
     </section>
     <section toc="exclude" anchor="OP_SAVEFH_IMPLEMENTATION" title="IMPLEMENTATION">
-
-    </section>
-    <section toc="exclude" anchor="OP_SAVEFH_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADHANDLE
-NFS4ERR_FHEXPIRED
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -3887,29 +3161,6 @@ NFS4ERR_STALE
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_SECINFO_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADNAME
-NFS4ERR_BADXDR
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_MOVED
-NFS4ERR_NAMETOOLONG
-NFS4ERR_NOENT
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOTDIR
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_SETATTR" title="Operation 34: SETATTR - Set Attributes">
 
@@ -4053,43 +3304,6 @@ NFS4ERR_STALE
         mask of attributes requested to be set only if the SETATTR
         completes without error.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_SETATTR_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_ATTRNOTSUPP
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADOWNER
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_DQUOT
-NFS4ERR_EXPIRED
-NFS4ERR_FBIG
-NFS4ERR_FHEXPIRED
-NFS4ERR_GRACE
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_ISDIR
-NFS4ERR_LOCKED
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOSPC
-NFS4ERR_OLD_STATEID
-NFS4ERR_OPENMODE
-NFS4ERR_PERM
-NFS4ERR_RESOURCE
-NFS4ERR_ROFS
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_STATEID
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -4310,19 +3524,6 @@ client, callback, callback_ident -> clientid, setclientid_confirm
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_SETCLIENTID_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADXDR
-NFS4ERR_CLID_INUSE
-NFS4ERR_INVAL
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_SETCLIENTID_CONFIRM" title="Operation 36: SETCLIENTID_CONFIRM - Confirm Clientid">
 
@@ -4536,19 +3737,6 @@ clientid, verifier -> -
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_SETCLIENTID_CONFIRM_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_BADXDR
-NFS4ERR_CLID_INUSE
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE_CLIENTID
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_VERIFY" title="Operation 37: VERIFY - Verify Same Attributes">
 
@@ -4621,28 +3809,6 @@ REMOVE (file name)
         (e.g., time_modify_set) is specified, the error NFS4ERR_INVAL
         is returned to the client.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_VERIFY_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ATTRNOTSUPP
-NFS4ERR_BADCHAR
-NFS4ERR_BADHANDLE
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_FHEXPIRED
-NFS4ERR_INVAL
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOT_SAME
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -4893,41 +4059,6 @@ NFS4ERR_STALE
       </t>
 
     </section>
-    <section toc="exclude" anchor="OP_WRITE_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ACCESS
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BADHANDLE
-NFS4ERR_BAD_STATEID
-NFS4ERR_BADXDR
-NFS4ERR_DELAY
-NFS4ERR_DQUOT
-NFS4ERR_EXPIRED
-NFS4ERR_FBIG
-NFS4ERR_FHEXPIRED
-NFS4ERR_GRACE
-NFS4ERR_INVAL
-NFS4ERR_IO
-NFS4ERR_ISDIR
-NFS4ERR_LEASE_MOVED
-NFS4ERR_LOCKED
-NFS4ERR_MOVED
-NFS4ERR_NOFILEHANDLE
-NFS4ERR_NOSPC
-NFS4ERR_NXIO
-NFS4ERR_OLD_STATEID
-NFS4ERR_OPENMODE
-NFS4ERR_RESOURCE
-NFS4ERR_ROFS
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE
-NFS4ERR_STALE_STATEID
-        </artwork>
-      </figure>
-
-    </section>
   </section>
   <section anchor="OP_RELEASE_LOCKOWNER" title="Operation 39: RELEASE_LOCKOWNER - Release Lockowner State">
 
@@ -4975,22 +4106,6 @@ lockowner -> ()
         under the context of the associated open_owner4, it should
         use RELEASE_LOCKOWNER.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_RELEASE_LOCKOWNER_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_ADMIN_REVOKED
-NFS4ERR_BADXDR
-NFS4ERR_EXPIRED
-NFS4ERR_LEASE_MOVED
-NFS4ERR_LOCKS_HELD
-NFS4ERR_RESOURCE
-NFS4ERR_SERVERFAULT
-NFS4ERR_STALE_CLIENTID
-        </artwork>
-      </figure>
 
     </section>
   </section>
@@ -5045,15 +4160,6 @@ void;
         codes during the XDR decode phase, then the ILLEGAL4res would
         not be returned.
       </t>
-
-    </section>
-    <section toc="exclude" anchor="OP_ILLEGAL_ERRORS" title="ERRORS">
-
-      <figure>
-        <artwork>
-NFS4ERR_OP_ILLEGAL
-        </artwork>
-      </figure>
 
     </section>
   </section>
