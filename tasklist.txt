@@ -65,6 +65,7 @@ Target:
 Action: Take the 4.1 text and pull it back to 4.0
 Owner: Tom
 State: Accepted
+State: Needs review
 Target: IETF 78
 
 6) There is the issue of NFS4ERR_DELAY vs NFS4ERR_RESOURCE that keeps
@@ -602,4 +603,11 @@ Action: Accept diffs
 Owner: Tom
 State: Finished
 Target: IETF 77
+
+33) Arrange the error codes like 5661 and update values for operations.
+
+Action: Edit
+Owner: Tom
+State: Needs Review
+Target: IETF 78
 

@@ -3156,7 +3156,7 @@ void;
       </t>
 
       <t>
-        See <xref target="Security Considerations" /> for a discussion
+        See <xref target="sec:security" /> for a discussion
         on the recommendations for security flavor used by SECINFO.
       </t>
 

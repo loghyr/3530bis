@@ -1630,7 +1630,7 @@ else if ((request.access & file_state.deny)) ||
     </t>
 
   </section>
-  <section title="Migration, Replication and State">
+  <section anchor="sec:mig_state" title="Migration, Replication and State">
 
     <t>
       When responsibility for handling a given file system is transferred
