@@ -9,7 +9,7 @@
     <author fullname="Thomas Haynes" 
             initials="T." 
             surname="Haynes">
-        <organization abbrev="Editor">Oracle</organization>
+        <organization abbrev="Editors">Oracle</organization>
         <address>
             <postal>
                 <street>9110 E 66th St</street>
@@ -18,18 +18,26 @@
                 <code>74133</code>
                 <country>USA</country>
             </postal>
-            <phone>+1-918-307-1415</phone>
+            <phone>+1 918 307 1415</phone>
             <email>tom.haynes@oracle.com</email>
         </address>
     </author>
-    <author fullname="David Noveck" 
-            initials="D." 
-            surname="Noveck">
-        <organization abbrev="Editor">EMC</organization>
-        <address>
-            <email>Noveck_David@emc.com</email>
-        </address>
-    </author>
+  <author initials='D.' surname='Noveck'
+          fullname = 'David Noveck'>
+    <organization abbrev='Editors'>EMC</organization>
+    <address>
+       <postal>
+         <street>32 Coslin Drive</street>
+         <city>Southborough</city> 
+         <region>MA</region>
+         <code>01772</code>
+         <country>US</country>
+       </postal>
+
+       <phone>+1 508 305 8404</phone>
+       <email>novecd@emc.com</email>
+    </address>
+  </author> 
 
     <date year="YEARVAR" month="MONTHVAR" day="DAYVAR"/>
 
