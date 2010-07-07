@@ -739,8 +739,11 @@
   <section title="Name Errors" anchor="errors_name">
     <t>
       Names in NFSv4 are UTF-8 strings.  When the strings are not
-      valid UTF-8 or are of length zero, the error NFS4ERR_INVAL
-      results.  Besides this, there are a number of other errors 
+      are of length zero, the error NFS4ERR_INVAL results.  When 
+      they are not valid UTF-8 the error NFS4ERR_INVAL also results,
+      but servers may accommodate file systems with different 
+      character formats and not return this error.  Besides 
+      this, there are a number of other errors 
       to indicate specific problems with names.
     </t>
     <section title="NFS4ERR_BADCHAR (Error Code 10040)" 
@@ -759,6 +762,13 @@
          An example might be creating a file or directory named ".."
          on a server whose file system uses that name for links to
          parent directories.
+      </t>
+      <t>
+         This error should not be returned due a normalization issue
+         in a string.  When a file system keeps names in a particular
+         normalization form, it is the server's responsiblity to 
+         do the approproriate normalization, rather than rejecting 
+         the name.
       </t>
     </section>
     <section title="NFS4ERR_NAMETOOLONG (Error Code 63)" 

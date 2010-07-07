@@ -16,7 +16,7 @@ typedef :int:int32_t
 typedef :unsigned int:uint32_t
 typedef :hyper:int64_t
 typedef :unsigned hyper:uint64_t
-typedef :opaque:attrlist4<>:Used for file/directory attributes.
+typedef :opaque  :attrlist4<>:Used for file/directory attributes.
 typedef :uint32_t:bitmap4<>:Used in attribute array encoding.
 typedef :uint64_t:changeid4:Used in the definition of change_info4.
 typedef :uint64_t:clientid4:Shorthand reference to client identification.
@@ -24,22 +24,24 @@ typedef :uint32_t:count4:Various count parameters (READ, WRITE, COMMIT).
 typedef :uint64_t:length4:Describes LOCK lengths.
 typedef :uint32_t:mode4:Mode attribute data type.
 typedef :uint64_t:nfs_cookie4:Opaque cookie value for READDIR.
-typedef :opaque:nfs_fh4<NFS4_FHSIZE>:Filehandle definition.
+typedef :opaque  :nfs_fh4<NFS4_FHSIZE>:Filehandle definition.
 :enum:nfs_ftype4:Various defined file types.
 :enum:nfsstat4:Return value for operations.
 typedef :uint64_t:offset4:Various offset designations (READ, WRITE, LOCK, COMMIT).
 typedef :uint32_t:qop4:Quality of protection designation in SECINFO.
-typedef :opaque:sec_oid4<>:Security Object Identifier. The sec_oid4 data type is not really opaque. Instead it contains an ASN.1 OBJECT IDENTIFIER as used by GSS-API in the mech_type argument to GSS_Init_sec_context. See <xref target="RFC2743" /> for details.
+typedef :opaque  :sec_oid4<>:Security Object Identifier. The sec_oid4 data type is not really opaque. Instead it contains an ASN.1 OBJECT IDENTIFIER as used by GSS-API in the mech_type argument to GSS_Init_sec_context. See <xref target="RFC2743" /> for details.
 typedef :uint32_t:seqid4:Sequence identifier used for file locking.
-typedef :opaque:utf8string<>:UTF-8 encoding for strings.
-typedef :utf8string:utf8str_cis:Case-insensitive UTF-8 string.
-typedef :utf8string:utf8str_cs:Case-sensitive UTF-8 string.
-typedef :utf8string:utf8str_mixed:UTF-8 strings with a case sensitive prefix and a case insensitive suffix.
-typedef :utf8str_cs:component4:Represents path name components.
-typedef :utf8str_cs:linktext4:Symbolic link contents.
+typedef :opaque  :utf8string<>:UTF-8 encoding for strings.
+typedef :utf8string:utf8_should:String expected to be UTF8 but no validation
+typedef :utf8string:utf8val_should:String SHOULD be sent UTF8 and SHOULD be validated
+typedef :utf8string:utf8val_must:String MUST be sent UTF8 and MUST be validated
+typedef :utf8string:ascii_must:String MUST be sent as ASCII and thus is automatically UTF8
+typedef :utf8_should:comptag4:Tag should be UTF8 but is not checked
+typedef :utf8val_should:component4:Represents path name components.
+typedef :utf8val_should:linktext4:Symbolic link contents.
 typedef :component4:pathname4<>:Represents path name for fs_locations.
 typedef :uint64_t:nfs_lockid4
-typedef :opaque:verifier4[NFS4_VERIFIER_SIZE]:Verifier used for various operations (COMMIT, CREATE, EXCHANGE_ID, OPEN, READDIR, WRITE) NFS4_VERIFIER_SIZE is defined as 8.
+typedef :opaque  :verifier4[NFS4_VERIFIER_SIZE]:Verifier used for various operations (COMMIT, CREATE, EXCHANGE_ID, OPEN, READDIR, WRITE) NFS4_VERIFIER_SIZE is defined as 8.
 EOF
 
 	fi
@@ -154,7 +156,7 @@ EOF
 
 cat << EOF > $i
 struct fs_location4 {
-	utf8str_cis	server<>;
+	utf8must	server<>;
 	pathname4	rootpath;
 };
 EOF
@@ -326,7 +328,7 @@ struct nfsace4 {
 	acetype4	type;
 	aceflag4	flag;
 	acemask4	access_mask;
-	utf8str_mixed	who;
+	utf8_must	who;
 };
 EOF
 	;;
@@ -449,7 +451,7 @@ EOF
 
 cat << EOF > $i
 struct CB_COMPOUND4args {
-	utf8str_cs	tag;
+	comptag4	tag;
 	uint32_t	minorversion;
 	uint32_t	callback_ident;
 	nfs_cb_argop4	argarray<>;
@@ -472,8 +474,8 @@ EOF
 
 cat << EOF > $i
 struct CB_COMPOUND4res {
-	nfsstat4 status;
-	utf8str_cs	tag;
+    	nfsstat4 	status;
+	comptag4	tag;
 	nfs_cb_resop4	resarray<>;
 };
 EOF
@@ -631,7 +633,7 @@ EOF
 
 cat << EOF > $i
 struct COMPOUND4args {
-	utf8str_cs	tag;
+	comptag4	tag;
 	uint32_t	minorversion;
 	nfs_argop4	argarray<>;
 };
@@ -643,7 +645,7 @@ EOF
 cat << EOF > $i
 struct COMPOUND4res {
 	nfsstat4	status;
-	utf8str_cs	tag;
+	comptag4 	tag;
 	nfs_resop4	resarray<>;
 };
 EOF

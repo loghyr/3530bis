@@ -3,18 +3,46 @@
 <section anchor="sec:intro" title="Introduction" >
   <section anchor="changes_since3530" title="Changes since RFC 3530">
     <t>
-      This document obsoletes RFC 3530 <xref target="RFC3530" />
-      as the authoritative document
-      describing NFSv4, without introducing any over-the-wire protocol
-      changes.  The main changes from RFC 3530 are:
+      This document, together with the companion XDR description 
+      document <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, 
+      obsoletes RFC 3530 <xref target="RFC3530" />
+      as the authoritative document describing NFSv4.  It does
+      not introduce any over-the-wire protocol
+      changes, in the sense that previously valid requests requests
+      remain valid.  However, some requests previously defined as
+      invalid, although not generally rejected, are now 
+      explicitly allowed, in that internationalization handling
+      has been generalized and liberalized.  The main changes from 
+      RFC 3530 are:
 
       <list style='symbols'>
         <t>
-          The RPC definition has been moved to a companion document
+          The XDR definition has been moved to a companion document
           <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />
         </t>
         <t>
           Updates for the latest IETF intellectual property statements
+        </t>
+        <t>
+          There is a restructured and more complete explanation of
+          multi-server namespace features.  In particular, this 
+          explanation explicitly describes handling of inter-server
+          referrals, even where neither migration nor replication
+          is involved.
+        </t>
+        <t>
+          More liberal handling of internationalization for file names
+          and user and group names, with the elimination of restrictions
+          imposed by stringprep, with the recognition that rules for
+          the forms of these name are the province of the receiving
+          entity.
+        </t>
+        <t>
+          Updating handling of domain names to reflect IDNA.
+        </t>
+        <t>
+          Restructuring of string types to more appropriately reflect
+          the reality of required string processing.
         </t>
 	<t>
 	  LIPKEY SPKM/3 has been moved from being mandatory to optional
@@ -162,7 +190,8 @@
     </t>
   </section>
 
-  <section anchor="document_incons" title="Inconsistencies of this Document with the companion document NFS Version 4 Protocol">
+  <section anchor="document_incons" 
+           title="Inconsistencies of this Document with the companion document NFS Version 4 Protocol">
 
     <t>
       <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, NFS Version 4
@@ -365,17 +394,28 @@
         </t>
       </section>
 
-      <section anchor="intro_ram" title="Filesystem Replication and Migration">
+      <section anchor="intro_ram" 
+               title="Filesystem Replication and Migration">
 
         <t>
           With the use of a special file attribute, the ability
-          to migrate or replicate server filesystems is enabled
-          within the protocol.  The filesystem locations attribute
+          to inform the client of filesystem locations on another
+          server is enabled. The filesystem locations attribute
           provides a method for the client to probe the server about
-          the location of a filesystem.  In the event of a migration
+          the location of a filesystem.  In the event that a 
+          fileystems is not present on server the client will 
+          receive an error when attempting to operate on the 
+          filesystem and it can then query as to
+          the correct filesystem location.  Thus is allowed 
+          construction of multi-server namespaces..  
+        </t>
+        <t>
+          These features also allow file system replication and
+          migration.  In the event of a migration
           of a filesystem, the client will receive an error when
-          operating on the filesystem and it can then query as to
-          the new file system location.  Similar steps are used for
+          operating on the filesystem and it can then query 
+          location attribute to determine the new file system location.  
+          Similar steps are used for
           replication, the client is able to query the server for the
           multiple available locations of a particular filesystem.
           From this information, the client can use its own policies

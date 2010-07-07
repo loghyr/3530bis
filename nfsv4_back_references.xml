@@ -6,18 +6,21 @@
       <front>
         <title>NFSv4 Version 0 XDR Description</title>
         <author initials='T' surname='Haynes' fullname='Thomas Haynes'>
-          <organization />
+          <organization abbrev='Editors' />
+        </author>
+        <author initials='D' surname='Noveck' fullname='David Noveck'>
+          <organization abbrev='Editors' />
         </author>
 
-        <date month='Mar' day='10' year='2010' />
+        <date month='Jul' day='07' year='2010' />
 
         <abstract><t>This Internet-Draft provides the XDR description for NFSv4.</t></abstract>
 
       </front>
 
-      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-01' />
+      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-02' />
       <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530-dot-x-01.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530-dot-x-02.txt' />
     </reference>
 
       
@@ -262,6 +265,19 @@
 
       <seriesInfo name='RFC' value='3454' />
       <format type='TXT' octets='138684' target='ftp://ftp.isi.edu/in-notes/rfc3454.txt' />
+    </reference>
+
+    <reference anchor='I-D.draft-ietf-idna'>
+      <front>
+        <title>Internationalized Domain Names in Applications (IDNA): Protocol</title>
+        <author initials='J' surname='Klensin' fullname='John C. Klensin'>
+          <organization />
+        </author>
+        <date month='January' year='2010' />
+      </front>
+      <seriesInfo name='Internet-Draft' value='draft-ietf-idnabis-protocol-18' />
+      <format type='TXT'
+        target='http://www.ietf.org/internet-drafts/draft-ietf-idnabis-protocol-18.txt' />
     </reference>
   </references>
 

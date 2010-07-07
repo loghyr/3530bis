@@ -619,6 +619,14 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
       </t>
 
       <t>
+        If the objname is of zero length, NFS4ERR_INVAL will
+        be returned.  The objname is also subject to the normal
+        UTF-8, character support, and name checks.  See 
+        <xref target="ss:i18n:utf8_err" />
+        for further discussion.
+      </t>
+
+      <t>
         If the objname has a length of 0 (zero), or if objname does
         not obey the UTF-8 definition, the error NFS4ERR_INVAL will
         be returned.
@@ -1267,9 +1275,11 @@ owner}
       </t>
 
       <t>
-        If the component is a zero length string or if any component
-        does not obey the UTF-8 definition, the error NFS4ERR_INVAL
-        will be returned.
+        If the component is of zero length, NFS4ERR_INVAL will
+        be returned.  The component is also subject to the normal
+        UTF-8, character support, and name checks.  See 
+        <xref target="ss:i18n:utf8_err" />
+        for further discussion.
       </t>
 
     </section>
@@ -2634,7 +2644,7 @@ void;
 
       <t>
         The REMOVE operation removes (deletes) a directory entry
-        named by filename from the directory corresponding to the
+M        named by filename from the directory corresponding to the
         current filehandle.  If the entry in the directory was the
         last reference to the corresponding filesystem object, the
         object may be destroyed.
@@ -2649,9 +2659,11 @@ void;
       </t>
 
       <t>
-        If the target has a length of 0 (zero), or if target does
-        not obey the UTF-8 definition, the error NFS4ERR_INVAL will
-        be returned.
+        If the target is of zero length, NFS4ERR_INVAL will
+        be returned.  The target is also subject to the normal
+        UTF-8, character support, and name checks.  See 
+        <xref target="ss:i18n:utf8_err" />
+        for further discussion.
       </t>
 
       <t>
@@ -2786,10 +2798,14 @@ target_change_info
       </t>
 
       <t>
-        If the oldname or newname has a length of 0 (zero), or if
-        oldname or newname does not obey the UTF-8 definition, the
-        error NFS4ERR_INVAL will be returned.
+        If the oldname or newname is of zero length, NFS4ERR_INVAL will
+        be returned.  The oldname and newname are also subject to the 
+        normal UTF-8, character support, and name checks.  See 
+        <xref target="ss:i18n:utf8_err" />
+        for further discussion.
       </t>
+
+
 
     </section>
     <section toc="exclude" anchor="OP_RENAME_IMPLEMENTATION" title="IMPLEMENTATION">

@@ -1,450 +1,1393 @@
 <!-- Copyright (C) The IETF Trust (2009-2010) -->
 <!-- Copyright (C) The Internet Society (2010) -->
 <section anchor="sec:i18n" title="Internationalization">
-
   <t>
-    The primary issue in which NFS version 4 needs to deal with
-    internationalization, or I18N, is with respect to file names and
-    other strings as used within the protocol.  The choice of string
-    representation must allow reasonable name/string access to clients
-    which use various languages.  The UTF-8 encoding of the UCS as
-    defined by <xref target="ISO.10646-1.1993" /> allows for this type of access and follows the
-    policy described in "IETF Policy on Character Sets and Languages",
+    This chapter describes the string-handling aspects
+    of the NFS version 4 protocol, and how they address
+    issues related to internationalization, including 
+    issues related to UTF-8, normalization, string
+    preparation, case folding, and handling of  
+    internationalization issues related to domains.
+  </t>
+  <t>
+    The NFS version 4 protocol needs to deal with 
+    internationalization, or I18N, with respect to file 
+    names and other strings as used within the protocol.  
+    The choice of string representation must allow 
+    for reasonable name/string access 
+    to clients, applications, and users which use various
+    languages.  The UTF-8 encoding of the UCS as
+    defined by <xref target="ISO.10646-1.1993" /> allows 
+    for this type of access and follows the policy
+    described in "IETF Policy on Character Sets and Languages",
     <xref target="RFC2277" />.
   </t>
-
   <t>
-    <xref target="RFC3454" />, otherwise know as "stringprep", documents a framework
-    for using Unicode/UTF-8 in networking protocols, so as "to increase
-    the likelihood that string input and string comparison work in ways
-    that make sense for typical users throughout the world."  A protocol
-    must define a profile of stringprep "in order to fully specify the
-    processing options."  The remainder of this Internationalization
-    section defines the NFS version 4 stringprep profiles.  Much of
-    terminology used for the remainder of this section comes from
-    stringprep.
+    In implementing such policies, it is important to understand 
+    and respect the nature of NFS version 4 as a means by which 
+    client implementations may invoke operations on remote file 
+    systems.  Server implementations act as a conduit to a range 
+    of file system implementations that the NFS version 4 server 
+    typically invokes through a virtual-file-system interface.
   </t>
-
-  <t>
-    There are three UTF-8 string types defined for NFS version 4:
-    utf8str_cs, utf8str_cis, and utf8str_mixed.  Separate profiles are
-    defined for each. Each profile defines the following, as required
-    by stringprep:
-
-    <list style='symbols'>
-      <t>
-        The intended applicability of the profile
-      </t>
-
-      <t>
-        The character repertoire that is the input and output to
-        stringprep (which is Unicode 3.2 for referenced version of
-        stringprep)
-      </t>
-
-      <t>
-        The mapping tables from stringprep used (as described in section
-        3 of stringprep)
-      </t>
-
-      <t>
-        Any additional mapping tables specific to the profile
-      </t>
-
-      <t>
-        The Unicode normalization used, if any (as described in section 4
-        of stringprep)
-      </t>
-
-      <t>
-        The tables from stringprep listing of characters that are
-        prohibited as output (as described in section 5 of stringprep)
-      </t>
-
-      <t>
-        The bidirectional string testing used, if any (as described in
-        section 6 of stringprep)
-      </t>
-
-      <t>
-        Any additional characters that are prohibited as output specific
-        to the profile
-      </t>
-    </list>
+  <t>      
+    Keeping this context in mind, one needs to understand that 
+    the file systems with which clients will be interacting 
+    will generally not be devoted solely to access using NFS 
+    version 4.  Local access and its requirements will generally 
+    be important and often access over other remote file access 
+    protocols will be as well.  It is generally a functional
+    requirement in practice for the users of the NFS version 4
+    protocol (although it may be formally out 
+    of scope for this document) for the implementation to 
+    allow files created by other protocols and by local 
+    operations on the file system to be accessed using NFS 
+    version 4 as well.  
   </t>
-
-  <t>
-    Stringprep discusses Unicode characters, whereas NFS version 4
-    renders UTF-8 characters.  Since there is a one to one mapping
-    from UTF-8 to Unicode, where ever the remainder of this document
-    refers to to Unicode, the reader should assume UTF-8.
-  </t>
-
-  <t>
-    Much of the text for the profiles comes from <xref target="RFC3454" />.
-  </t>
-
-  <section title="Stringprep profile for the utf8str_cs type">
-
+  <t>      
+    It also needs to be understood that a considerable portion of 
+    file name processing will occur within the implementation 
+    of the file system rather than within the limits of 
+    the NFS version 4 server implementation per se.  As a
+    result, cetain aspects of name processing may change as
+    the locus of processing moves from file system to file
+    system.  As a result of these factors, the protocol does 
+    not enforce uniformity of processing NFS version 4 
+    server requests on the server as a whole.  Because the
+    server interacts with existing file system implementations,
+    the same server handling will produce different behavior
+    when interacting with different file system
+    implementations.  To attempt to require uniform behavior,
+    and treat the the protocol server and the file system
+    as a unified application,    
+    would considerably limit the usefulness of the protocol. 
+  </t> 
+  <section title="Use of UTF-8">
     <t>
-      Every use of the utf8str_cs type definition in the NFS version 4
-      protocol specification follows the profile named nfs4_cs_prep.
+      As mentioned above, UTF-8 is used as a convenient 
+      way to encode Unicode which allows clients that 
+      have no internationalization requirements to avoid 
+      these issues since the mapping of ASCII names to 
+      UTF-8 is the identity.  
     </t>
-
-    <section title="Intended applicability of the nfs4_cs_prep profile">
-
+    <section title="Relation to Stringprep">
       <t>
-        The utf8str_cs type is a case sensitive string of UTF-8 characters.
-        Its primary use in NFS Version 4 is for naming components and
-        pathnames.  Components and pathnames are stored on the server's
-        filesystem.  Two valid distinct UTF-8 strings might be the same
-        after processing via the utf8str_cs profile.  If the strings are
-        two names inside a directory, the NFS version 4 server will need
-        to either:
-
+        <xref target='RFC3454'>RFC 3454</xref>, otherwise known 
+        as "stringprep", documents a framework for using 
+        Unicode/UTF-8 in networking protocols, intended  
+        "to increase the likelihood that string input and 
+        string comparison work in ways that make sense for typical 
+        users throughout the world."  A protocol conforming to
+        this framework must define a profile of stringprep 
+        "in order to fully specify the processing options."
+        NFS version 4, while it does make normative references
+        to stringprep and uses elements of that framework,
+        it does not, for reasons that are explained below,
+        conform to that framework, for all of the strings
+        that are used within it.
+      </t>
+      <t>
+        In addition to some specific issues which have caused
+        stringprep to add confusion in handling certain
+        characters for certain languages, there are a number
+        of reasons why stringprep profiles are not suitable
+        for describing NFS version 4.
         <list style='symbols'>
           <t>
-            disallow the creation of a second name if it's post processed
-            form collides with that of an existing name, or
+            Restricting the character repertoire to Unicode 
+            3.2, as required by stringprep is unduly 
+            constricting.
           </t>
-
           <t>
-            allow the creation of the second name, but arrange so that
-            after post processing, the second name is different than the
-            post processed form of the first name.
+            Many of the character tables in stringprep are
+            inappropriate because of this limited character
+            repertoire, so that normative reference to
+            stringprep is not desirable in many case and 
+            instead, we allow more flexibility in the definition
+            of case mapping tables.
+          </t>
+          <t>
+            Because of the presence of different file
+            systems, the specifics of processing are not
+            fully defined and some aspects that are are
+            RECOMMENDED, rather than REQUIRED.
           </t>
         </list>
       </t>
-
-    </section>
-    <section title="Character repertoire of nfs4_cs_prep">
-
       <t>
-        The nfs4_cs_prep profile uses Unicode 3.2, as defined in stringprep's
-        Appendix A.1
-      </t>
-
+        Despite these issues, in many cases
+        the general structure of
+        stringprep profiles, consisting of sections 
+        which deal with the applicability of the 
+        description, the character repertoire, charcter
+        mapping, normalization, prohibited characters,
+        and issues of the handling (i.e. possible
+        prohibition) of bidirectional strings, is a 
+        convenient way to describe the string 
+        handling which is needed and will be used
+        where appropriate.
+      </t>        
     </section>
-    <section title="Mapping used by nfs4_cs_prep">
-
+    <section title="Normalization, Equivalence, and Confusability">
       <t>
-        The nfs4_cs_prep profile specifies mapping using the following tables
-        from stringprep:
-
+        Unicode has defined several equivalence relationships
+        among the set of possible strings.  Understanding 
+        the nature and purpose of these equivalence relations
+        is important to understand the handling of unicode
+        strings within NFS version 4.
         <list style='symbols'>
           <t>
-            Table B.1
+            Some string pairs are thought as only differing
+            in the way accents and other diacritics are
+            encoded.  Such string pairs are called
+            "canonically equivalent".  For example, 
+            the character LATIN SMALL LETTER E WITH ACUTE
+            (U+00E9) is defined as equivalent to the string 
+            consisting of LATIN SMALL LETTER E followed by
+            COMBINING ACUTE ACCENT (U+0065, U+0301).  
+          </t>
+          <t>
+            Additionally there is an equvalence relation
+            of "compatibility equivalence".  Two canonically
+            equivalent strings are necessarily compatibility
+            equivalent, although not the converse.  An
+            example of compatibility equivalent strings
+            which are not canonically equivalent are
+            GREEK CAPITAL LETTER OMEGA (U+03A9) and 
+            OHM SIGN (U+2129).  These are identical in
+            appearance while other compatibility
+            equivalent strings are not.  Another example
+            would be "x2" and the two character string
+            denoting x-squared which are clearly differnt
+            in appearance although compatibility equivalent
+            and not canonically equivalent.  These have 
+            Unicode encodings  
+            LATIN SMALL LETTER X, DIGIT TWO (U+0078, U+0032)
+            and LATIN SMALL LETTER X, SUPERSCRIPT TWO 
+            (U+0078, U+00B2), 
+          </t>
+        </list>  
+      </t>
+      <t>
+        One way to deal with these equivalence relations is
+        via normalization.  A normalization form maps all 
+        strings to correspond normalized string in such a
+        fashion that all strings that are equivalent 
+        (canonically or compatibly, depending on the form)
+        are mapped to the same value.  Thus the image of
+        the mapping is a subset of Unicode strings conceived
+        as the representives of the equivalence classes 
+        defined by the chosed equivalence relation.
+      </t>
+      <t>
+        In the NFS version 4 protocol, handling of issues
+        related to internationalization with regard to 
+        normalization follows one of two basic patterns:
+        <list style='symbols'>
+          <t>
+            For strings whose function is related to
+            other internet standards, such as server
+            and domain naming, the normalization form
+            defined by the appropriate internet standards
+            is used.  For server and domain naming,
+            this involves normalization form NKFC
+            as specified in <xref target='I-D.draft-ietf-idna' />
+          </t>
+          <t>
+            For other strings, particular those passed
+            by the server to file system implementations,
+            normalization requirements are the province
+            of the file system and the job of this 
+            specification is not to specify a particular
+            form but to make sure that interoperability
+            is maximmized, even when clients and 
+            server-based file systems may have different
+            preferences.
+          </t> 
+        </list>  
+      </t> 
+      <t>
+        A related but distinct issue concerns string confusability.  
+        This can occur when two strings (including single-charcter
+        strings) having a similar appearance.  There have 
+        been attempts to define uniform processing in
+        an attempt to avoid such confusion 
+	(see stringprep <xref target="RFC3454" />)
+        but the results have often added to confusion.
+      </t>
+      <t>
+        Some examples of possible confusions and proposed
+        processing intended to reduce/avoid confusions:
+        <list style='symbols'>
+          <t>
+            Deletion of characters supposed to be invisible and 
+            appropriately ignored, justifying their deletion,
+            including, WORD JOINER (U+2060), and the 
+            ZERO WIDTH SPACE (U+200B).
+          </t>
+          <t>
+            Deletion of characters supposed to not bear 
+            semantics and only affect glyph choice,
+            including the ZERO WIDTH NON-JOINER (U+200C) 
+	    and the ZERO WIDTH JOINER (U+200D), where the
+            deletion turns out to be a problem for Farsi 
+            speakers.
+          </t>
+          <t>
+            Prohibition of space characters such as the
+            EM SPACE (U+2003), the EN SPACE (U+2002),
+            and the THIN SPACE (U+2009).
           </t>
         </list>
       </t>
-
       <t>
-        Table B.2 is normally not part of the nfs4_cs_prep profile as it is
-        primarily for dealing with case-insensitive comparisons.  However,
-        if the NFS version 4 file server supports the case_insensitive
-        filesystem attribute, and if case_insensitive is true, the NFS
-        version 4 server MUST use Table B.2 (in addition to Table B1)
-        when processing utf8str_cs strings, and the NFS version 4 client
-        MUST assume Table B.2 (in addition to Table B.1) are being used.
+        In addition, character pairs which apprear very 
+        similar and could and often do result in confusion.  
+        In addition to what Unicode defines as "compatibility
+        equivalence", there are a considerable number of 
+        additional character pairs that could cause 
+        confusion.  This includes characters such as 
+        LATIN CAPITAL LETTER O (U+004F) and DIGIT ZERO
+        (U+0030), and CYRILLIC SMALL LETTER ER (U+0440) 
+        LATIN SMALL LETTER P (U+0070) (also with 
+        MATHEMATICAL BOLD SMALL P (U+1D429) and GREEK
+        SMALL LETTER RHO (U+1D56, for good measure). 
       </t>
-
       <t>
-        If the case_preserving attribute is present and set to false,
-        then the NFS version 4 server MUST use table B.2 to map case when
-        processing utf8str_cs strings.  Whether the server maps from lower
-        to upper case or the upper to lower case is an implementation
-        dependency.
-      </t>
-
-    </section>
-    <section title="Normalization used by nfs4_cs_prep">
-
-      <t>
-        The nfs4_cs_prep profile does not specify a normalization form.  A
-        later revision of this specification may specify a particular
-        normalization form.  Therefore, the server and client can expect
-        that they may receive unnormalized characters within protocol
-        requests and responses.  If the operating environment requires
-        normalization, then the implementation must normalize utf8str_cs
-        strings within the protocol before presenting the information to
-        an application (at the client) or local filesystem (at the server).
-      </t>
-
-    </section>
-    <section title="Prohibited output for nfs4_cs_prep">
-
-      <t>
-        The nfs4_cs_prep profile specifies prohibiting using the following
-        tables from stringprep:
-
+        NFS version 4, as it does with normalization,
+        takes a two-part approach to this issue:
         <list style='symbols'>
           <t>
-            Table C.3
+            For strings whose function is related to
+            other internet standards, such as server
+            and domain naming, any string processing
+            to address the confusability issue is
+            defined by the appropriate internet standards
+            is used.  For server and domain naming,
+            this is the responsibility of IDNA as 
+            described in <xref target='I-D.draft-ietf-idna' />.
           </t>
           <t>
-            Table C.4
+            For other strings, particularly those passed
+            by the server to file system implementations,
+            any such preparation requirements including 
+            the choice of how, or whether to address the
+            confusability issue, are the
+            responsibility of the file system to define,
+            and for this specification to try to add its
+            own set would add unacceptably to complexity,
+            and make many files accessible locally and
+            by other remote file access protocols,
+            inaccessible by NFS version 4.  This
+            specification defines how the protocol
+            maximizes interoperability in the face of
+            different file system implementations.
+          <vspace blankLines='1' />
+            NFS version 4 does allow file systems to map  
+            and to reject characters, including those 
+            likely to result in confusion, since file systems 
+            may choose to do such things.  It defines what
+            the client will see in such cases, in order to
+            limit problems that can
+            arise when a file name is created and it appears
+            to have a different name from the one it is 
+            assigned when the name is created.
           </t>
-          <t>
-            Table C.5
-          </t>
-          <t>
-            Table C.6
-          </t>
-          <t>
-            Table C.7
-          </t>
-          <t>
-            Table C.8
-          </t>
-          <t>
-            Table C.9
-          </t>
-        </list>
-      </t>
-
-    </section>
-    <section title="Bidirectional output for nfs4_cs_prep">
-
-      <t>
-        The nfs4_cs_prep profile does not specify any checking of
-        bidirectional strings.
-      </t>
-
-    </section>
-  </section>
-  <section title="Stringprep profile for the utf8str_cis type">
-
-    <t>
-      Every use of the utf8str_cis type definition in the NFS version
-      4 protocol specification follows the profile named nfs4_cis_prep.
-    </t>
-
-    <section title="Intended applicability of the nfs4_cis_prep profile">
-
-      <t>
-        The utf8str_cis type is a case insensitive string of UTF-8
-        characters.  Its primary use in NFS Version 4 is for naming NFS
-        servers.
-      </t>
-
-    </section>
-    <section title="Character repertoire of nfs4_cis_prep">
-
-      <t>
-        The nfs4_cis_prep profile uses Unicode 3.2, as defined in
-        stringprep's Appendix A.1
-      </t>
-
-    </section>
-    <section title="Mapping used by nfs4_cis_prep">
-
-      <t>
-        The nfs4_cis_prep profile specifies mapping using the following
-        tables from stringprep:
-
-        <list style='symbols'>
-          <t>
-            Table B.1
-          </t>
-          <t>
-            Table B.2
-          </t>
-        </list>
-      </t>
-
-    </section>
-    <section title="Normalization used by nfs4_cis_prep">
-
-      <t>
-        The nfs4_cis_prep profile specifies using Unicode normalization
-        form KC, as described in stringprep.
-      </t>
-
-    </section>
-    <section title="Prohibited output for nfs4_cis_prep">
-
-      <t>
-        The nfs4_cis_prep profile specifies prohibiting using the following
-        tables from stringprep:
-
-        <list style='symbols'>
-          <t>
-            Table C.1.2
-          </t>
-          <t>
-            Table C.2.2
-          </t>
-          <t>
-            Table C.3
-          </t>
-          <t>
-            Table C.4
-          </t>
-          <t>
-            Table C.5
-          </t>
-          <t>
-            Table C.6
-          </t>
-          <t>
-            Table C.7
-          </t>
-          <t>
-            Table C.8
-          </t>
-          <t>
-            Table C.9
-          </t>
-        </list>
-      </t>
-
-    </section>
-    <section title="Bidirectional output for nfs4_cis_prep">
-
-      <t>
-        The nfs4_cis_prep profile specifies checking bidirectional strings
-        as described in stringprep's section 6.
-      </t>
-
-    </section>
-  </section>
-  <section title="Stringprep profile for the utf8str_mixed type">
-
-    <t>
-      Every use of the utf8str_mixed type definition in the NFS version
-      4 protocol specification follows the profile named nfs4_mixed_prep.
-    </t>
-
-    <section title="Intended applicability of the nfs4_mixed_prep profile">
-
-      <t>
-        The utf8str_mixed type is a string of UTF-8 characters, with a prefix
-        that is case sensitive, a separator equal to '@', and a suffix that
-        is fully qualified domain name.  Its primary use in NFS Version
-        4 is for naming principals identified in an Access Control Entry.
-      </t>
-
-    </section>
-    <section title="Character repertoire of nfs4_mixed_prep">
-
-      <t>
-        The nfs4_mixed_prep profile uses Unicode 3.2, as defined in
-        stringprep's Appendix A.1
-      </t>
-
-    </section>
-    <section title="Mapping used by nfs4_cis_prep">
-
-      <t>
-        For the prefix and the separator of a utf8str_mixed string, the
-        nfs4_mixed_prep profile specifies mapping using the following
-        table from stringprep:
-
-        <list style='symbols'>
-          <t>
-            Table B.1
-          </t>
-        </list>
-      </t>
-
-      <t>
-        For the suffix of a utf8str_mixed string, the nfs4_mixed_prep
-        profile specifies mapping using the following tables from
-        stringprep:
-
-        <list style='symbols'>
-          <t>
-            Table B.1
-          </t>
-          <t>
-            Table B.2
-          </t>
-        </list>
-      </t>
-
-    </section>
-    <section title="Normalization used by nfs4_mixed_prep">
-
-      <t>
-        The nfs4_mixed_prep profile specifies using Unicode normalization
-        form KC, as described in stringprep.
-      </t>
-
-    </section>
-    <section title="Prohibited output for nfs4_mixed_prep">
-
-      <t>
-        The nfs4_mixed_prep profile specifies prohibiting using the
-        following tables from stringprep:
-
-        <list style='symbols'>
-          <t>
-            Table C.1.2
-          </t>
-          <t>
-            Table C.2.2
-          </t>
-          <t>
-            Table C.3
-          </t>
-          <t>
-            Table C.4
-          </t>
-          <t>
-            Table C.5
-          </t>
-          <t>
-            Table C.6
-          </t>
-          <t>
-            Table C.7
-          </t>
-          <t>
-            Table C.8
-          </t>
-          <t>
-            Table C.9
-          </t>
-        </list>
-      </t>
-
-    </section>
-    <section title="Bidirectional output for nfs4_mixed_prep">
-
-      <t>
-        The nfs4_mixed_prep profile specifies checking bidirectional
-        strings as described in stringprep's section 6.
+        </list> 
       </t>
     </section>
   </section>
-
-  <section anchor="ss:i18n:utf8_err" title="UTF-8 Related Errors">
-
+  <section title="String Type Overview">
+    <section title="Overall String Class Divisions">
+      <t>
+        NFS version 4 has to deal with with a large 
+        set of diffreent types of strings and 
+        because of the different role of each,
+        internationalization issues will be different
+        for each:
+        <list style='symbols'>
+          <t>
+            For some types of strings, the fundamental 
+            internationalization-related decisions are the 
+            province of the file system or the security-handling 
+            functions of the server and the 
+            protocol's job is to establish the rules under which 
+            file systems and servers are allowed to exercise this 
+            freedom, to avoid adding to confusion.
+          </t>
+          <t>
+            In other cases, the fundamental internationalization
+            issues are the responsibility of other IETF 
+            groups and our jobis simply to reference those
+            and perhaps make a few choices as to how they 
+            are to be used (e.g. U-labels vs. A-labels).
+          </t>
+          <t>
+            There are also cases in which a string has a
+            small amount of NFS version 4 processing which
+            results in one or more strings being referred
+            to one of the other categories.
+          </t>
+        </list>
+      </t>
+      <t>
+        We will divide strings to be dealt with into the 
+        following classes:
+        <list style='hanging'>
+          <t hangText="MIX">
+            indicating that there is small amount of
+            preparatory processing that either picks
+            an appropriate modes of internationalization
+            handling or divides the string into a
+            set of (two) strings with a different mode
+            internationalization handling for each.
+            The details are discussed in the section
+            "<xref target="Type-MIX" format='title' />".          
+          </t>
+          <t hangText="NIP">
+            indicating that, for various reasons, there
+            is no need for internationalization-specific
+            processing to be performed.  The specifics
+            of the various string types handled in this
+            way are described in the section 
+            "<xref target="Type-NIP" format='title' />".
+          </t>
+          <t hangText="INET">
+            indicating that the string needs to be
+            processed in a fashion is goverened by
+            non-NFS-specific internet specifications.
+            The details are discussed in the section
+            "<xref target="Type-INET" format='title' />".
+          </t>
+          <t hangText="NFS">
+            indicating that the string needs to be
+            processed in a fashion is goverened by
+            NFSv4-specific consideration.  The primary
+            focus is on enabling flexibility for the
+            various file systems to be accessed and
+            is described in the section
+            "<xref target="Type-NFS" format='title' />".
+          </t>
+        </list>
+      </t>
+    </section> 
+    <section title="Divisions by Typedef Parent types">
+      <t>
+        There are a number of different string types within
+        NFS version 4 and internationalization handling will
+        be different for different types of strings.  Each
+        the types will be in one of four groups based
+        on the parent type that
+        specifies the nature of its relationship to utf8 and
+        ascii.
+        <list style='hanging'>
+          <t hangText="utf8_should/SHOULD:">
+            indicating that strings of this type should be
+            UTF-8 but clients and servers will not
+            check for valid UTF-8 encoding.
+          </t>
+          <t hangText="utf8val_should/VSHOULD:">
+            indicating that strings of this type should be
+            and generally will be in the form of the UTF-8
+            encoding of Unicode.  Strings in most cases
+            will be checked by the server for valid UTF-8 
+            but for certain file systems, such checking 
+            may be inhibited.  
+          </t>
+          <t hangText="utf8val_must/VMUST:">
+            indicating that strings of this type must be
+            in the form of the UTF-8 encoding of Unicode.
+            Strings will be checked by the server for 
+            valid UTF-8 and the server should ensure that
+            when sent to the client, they are valid UTF-8.
+          </t>
+          <t hangText="ascii_must/ASCII:">
+            indicating that strings of this type must be
+            pure ASCII, and thus automatically UTF-8.
+            The processing of these string must ensure
+            that they are only have ASCII characters but 
+            this need not be a separate step if any
+            normally required check for validity inherently
+            assures that only ASCII characters are present.
+          </t>
+        </list> 
+      </t>
+    </section>
+    <section title="Individual Types and Their Handling">
+      <t>
+        The first table outlines the handling for the primary
+        string types, i.e. those not derived as a prefix or
+        a suffix from a mixture type.
+      </t>
+      <texttable anchor='I18nTable1'> 
+        <ttcol align='left'>Type</ttcol>
+        <ttcol align='left'>Parent</ttcol>
+        <ttcol align='left'>Class</ttcol>
+        <ttcol align='left'>Explanation</ttcol>
+        <c>comptag4</c>
+          <c>SHOULD</c>
+          <c>NIP</c>
+          <c>
+            Should be utf8 but no validation by server or
+            client is to be done.
+          </c>
+        <c>component4</c>
+          <c>VSHOULD</c>
+          <c>NFS</c>
+          <c>
+            Should be utf8 but clients may need to access 
+            file systems with a different name structure.
+            files systems with non-utf8 names.
+          </c>
+        <c>linktext4</c>
+          <c>VSHOULD</c>
+          <c>NFS</c>
+          <c>
+            Should be utf8 since text may include name
+            components.  Because of the need to access 
+            existing file systems, this check may be
+            inhibited.
+          </c>
+        <c>fattr4_mimetype</c>
+          <c>ASCII</c>
+          <c>NIP</c>
+          <c>
+            All mime types are ascii so no specific utf8
+            processing is required, given that you are
+            comparing to that list.
+          </c>
+      </texttable>
+      <t>
+        There are a number of string types that are 
+        compound in that they may consist of multiple
+        conjoined strings with different utf8-related
+        processing for each.
+      </t>
+      <texttable anchor='I18nTable2'>
+        <ttcol align='left'>Type</ttcol>
+        <ttcol align='left'>Parent</ttcol>
+        <ttcol align='left'>Class</ttcol>
+        <ttcol align='left'>Explanation</ttcol>
+        <c>prin4</c>
+          <c>VMUST</c>
+          <c>MIX</c>
+          <c>
+            Consists of two parts separated by an at-sign,
+            a prinpfx4 and a prinsfx4.  These are 
+            described in the next table.
+          </c>
+        <c>server4</c>
+          <c>VMUST</c>
+          <c>MIX</c>
+          <c>
+            Is either an IP address (serveraddr4) which
+            has to be pure ascii or a server name 
+            svrname4, which is described immediately
+            below.
+          </c>
+      </texttable>
+      <t>
+        The last table describes the components of the
+        compound types described above.
+      </t>
+      <texttable anchor='I18nTable3'>
+        <ttcol align='left'>Type</ttcol>
+        <ttcol align='left'>Class</ttcol>
+        <ttcol align='left'>Def</ttcol>
+        <ttcol align='left'>Explanation</ttcol>
+        <c>svraddr4</c>
+          <c>ASCII</c>
+          <c>NIP</c>
+          <c>
+            Server as IP address, whether IPv4 or IPv6,
+          </c>
+        <c>svrname4</c>
+          <c>VMUST</c>
+          <c>INET</c>
+          <c>
+            Server name as returned by server.  Not sent
+            by client, except in VERIFY/NVERIFY.
+          </c>
+        <c>prinsfx4</c>
+          <c>VMUST</c>
+          <c>INET</c>
+          <c>
+            Suffix part of principal, in the form of
+            a domain name.
+          </c>
+        <c>prinpfx4</c>
+          <c>VMUST</c>
+          <c>NFS</c>
+          <c>
+            Must match one of a list of valid users
+            or groups for that particular domain.  
+          </c>
+      </texttable>
+    </section>
+  </section>
+  <section anchor="ss:i18n:utf8_err" title="Errors Related to Strings">
     <t>
-      Where the client sends an invalid UTF-8 string, the server should
-      return an NFS4ERR_INVAL error.  This includes cases in which
-      inappropriate prefixes are detected and where the count includes
-      trailing bytes that do not constitute a full UCS character.
+      When the client sends an invalid UTF-8 string in a 
+      context in which UTF-8 is required, the server MUST 
+      return an NFS4ERR_INVAL error.  When the client sends 
+      an invalid UTF-8 string in a context in which UTF-8 is 
+      recommended, the server SHOULD return an NFS4ERR_INVAL
+      error.  These situations apply to cases in which 
+      inappropriate prefixes are detected and where the 
+      count includes trailing bytes that do not constitute 
+      a full UCS character.
+    </t>  
+    <t>
+      Where the client supplied string is valid UTF-8 but 
+      contains characters that are not supported by the 
+      server file system as a value for that string 
+      (e.g., names containing characters that have more 
+      than two octets on a file system that supports UCS-2 
+      characters only, file name components containing 
+      slashes on file systems that do not allow them in 
+      filename file name components), the server should 
+      MUST return an NFS4ERR_BADCHAR error.
     </t>
-
     <t>
-      Where the client supplied string is valid UTF-8 but contains
-      characters that are not supported by the server as a value for
-      that string (e.g., names containing characters that have more than
-      two octets on a filesystem that supports Unicode characters only),
-      the server should return an NFS4ERR_BADCHAR error.
+      Where a UTF-8 string is used as a file name component, and 
+      the file system, while supporting all of the characters 
+      within the name, does not allow that particular name to 
+      be used, the server should return the error NFS4ERR_BADNAME.  
+      This includes file system prohibitions of "." and ".." 
+      as file names for certain operations, and other such 
+      similar constraints.  It does not include use of strings 
+      with non-preferred normalization modes.
     </t>
-
     <t>
-      Where a UTF-8 string is used as a file name, and the filesystem,
-      while supporting all of the characters within the name, does not
-      allow that particular name to be used, the server should return the
-      error NFS4ERR_BADNAME.  This includes situations in which the server
-      filesystem imposes a normalization constraint on name strings,
-      but will also include such situations as filesystem prohibitions
-      of "."  and ".." as file names for certain operations, and other
-      such constraints.
+      Where a UTF-8 string is used as a file name component, the file 
+      system implementation MUST NOT return NFS4ERR_BADNAME, 
+      simply due to a normalization mismatch.  In such cases 
+      the implementation MAY convert the string to its own 
+      preferred normalization mode before performing the 
+      operation.  As a result, a client cannot assume that
+      a file created with a name it specifies will have 
+      that name when the directory is read.  It may have 
+      instead, the name converted to the file system's 
+      preferred normalization form.
+    </t>
+    <t>
+      Where a UTF-8 string is used as other than a file name 
+      component and the string does not meet the normalization 
+      requirements specified for it, the error NFS4ERR_INVAL is
+      returned.
     </t>
   </section>
+  <section anchor='Type-MIX'
+           title="Types with Pre-processing to Resolve Mixture Issues">
+    <section title="Processing of Principal Strings">
+       <t>
+         Strings denoting principals (users or groups) MUST be
+         UTF-8 but since they consist of a principal prefix, an
+         at-sign, and a domain, all three of which either are
+         checked for being UTF-8, or inherently are UTF-8,
+         checking the string as a whole for being UTF-8 is
+         not required.  Although a server implementation
+         may choose to make this check on the string as whole,
+         for example in converting it to Unicode, the
+         description within this document, will reflect
+         a processing model in which such checking 
+         happens after the division
+         into a principal prefix and suffix, the latter
+         being in the form of a domain name. 
+       </t>
+       <t>
+         The string should be scanned for at-signs.
+         If there is more that one at-sign, the string
+         is considered invalid.  For cases in which 
+         there are no at-signs or the at-sign appears 
+         at the start of end of the string see
+         <xref target="sec:fattr:owner_group"
+               format="title" /> 
+         Otherwise, the portion before the at-sign is 
+         dealt with as a prinpfx4 and the portion after
+         is dealt with as a prinsfx4.
+       </t>
+    </section>
+    <section title="Processing of Server Id Strings">
+       <t>
+         Server id strings typically appear in responses 
+         (as attribute values) and only appear in requests
+         as attribute value presented to VERIFY and
+         NVERIFY.  With that exception,
+         they are not subject to server 
+         validation and posible rejection.  It is 
+         not expected that clients will typically
+         do such validation on receipt of responses
+         but they may
+         as a way to check for proper server 
+         behavior.  The responsibility for sending
+         correct UTF-8 strings is with the server.
+       </t>
+       <t>
+         Servers are identified by either server 
+         names of IP addresses.  Once an id has been
+         identified as an IP address, then there is 
+         no processing specific to internationalization
+         to be done, since such an address must be 
+         ASCII to be valid.
+       </t>
+       <t>
+         Identifiers which are not valid IP addresses
+         are treated as server names for which see 
+         below.  There are fifteen top-level domains
+         that consist of two characters, each within
+         the range a-f.  Given that, it is possible
+         to have a string such as bb.bb.bb.bb, which 
+         might be either an IP address or a server 
+         name.  It is recommended that in such cases,
+         a check for a valid server name be done first
+         and the string interpreted as an IP address
+         only if it found that the string is not a
+         server name.
+       </t>
+    </section>
+  </section> 
+  <section anchor='Type-NIP'
+           title="String Types without Internationalization Processing">
+    <t>
+      There are a number of types of strings which, for 
+      a number of different reasons, do not require 
+      any internationalization-specific handling, such
+      as valdiation of UTF-8, normaliztion, or character
+      mapping or checking.  This does not necessarily 
+      mean that the strings need not be UTF-8.  In some
+      case, other checking on the string ensures that
+      they are valid UTF-8, without doing any checking 
+      specific to internationalization.
+    </t>
+    <t>
+      The following are the specific types:
+      <list style='hanging'>
+        <t hangText='comptag4'>
+           strings are an aid to debugging and the sender 
+           should avoid confusion by not using anything but 
+           valid UTF-8.  But any work validating the string or 
+           modifying it would just add complication
+           to a mechanism whose basic function is best
+           supported by making it not subject to any checking
+           and having data maximally available 
+           to be looked at in a network trace.
+        </t>
+        <t hangText='fattr4_mimetype'>
+           strings need to be validated by matching against
+           a list of valid mime types.  Since these are all
+           ASCII, no processing specific to internationaliztion
+           is required since anything that does not match
+           is invalid and anything which does not obey the
+           rules of UTF-8 will not be ASCII and consequently
+           will not match, and will be invalid.
+        </t>
+        <t hangText='svraddr4'>
+           strings, in order to be valid, need to be ASCII,
+           but if you check them for validity, you have
+           inherently checked that that they are ASCII and
+           thus UTF-8.
+        </t>
+      </list>
+    </t>
+  </section>
+  <section anchor='Type-INET'
+           title="Types with Processing Defined by Other Internet Areas">
+    <t>
+      There are two types of strings which NFS version 4 deals
+      with whose processing is defined by other Internet 
+      standards, and where issues related to different
+      handling choices by server operating systems or
+      server file systems do not apply.
+    </t>
+    <t>
+      These are as follows:
+      <list style='symbols'>
+        <t>
+          Server names as they appear in the fs_locations
+          attribute.  Note that for most purposes, such
+          server names will only be sent by the server
+          to the client.  The exception is use of the
+          fs_locations attribute in a VERIFY or NVERIFY
+          operation.
+        </t>
+        <t>
+          Principal suffixes which are used to denote
+          sets of users and groups, and are in the form
+          of domain names.
+        </t>
+      </list>
+    </t>
+    <t>
+      The general rules for handling all of these domain-related
+      strings are similar and independent of role of the sender
+      or receiver as client or sender, although the consequences
+      of failure to obey these rules may be different for client
+      or server.  
+    </t>
+    <t>
+      The string sent SHOULD be in the form of a U-label although 
+      it MAY be in the form of an A-label or a UTF-8 string that 
+      would not map to itself when canonicalized by applying
+      ToUnicode(ToASCII(...)).  The receiver 
+      needs to be able to accept domain and server names in any 
+      of the formats allowed.  The server MUST
+      reject, using the the error NFS4ERR_INVAL, a string which is
+      not valid UTF-8 or which begins with "xn--" and violates
+      the rules for a valid A-label.
+    </t>
+    <t>
+      When a domain string is part of id@domain or group@domain,
+      the server SHOULD map domain strings which are A-labels
+      or are UTF-8 domain names which are not U-labels, to the
+      corresponding U-label, using ToUnicode(domain) or
+      ToUnicode(ToASCII(domain)).  As a result, the domain
+      name returned within a userid on a GETATTR may not match 
+      that sent when the userid is set using SETATTR, although
+      when this happens, the domain will be in the form of a
+      U-label.  When the server does not map domain strings
+      which are not U-labels into a U-label, which it MAY do,
+      it MUST NOT modify the domain and the domain returned
+      on a GETATTR of the userid MUST be the same as that 
+      using when setting the userid by the SETATTTR.
+    </t>  
+    <t>
+      The server MAY implement VERIFY and NVERIFY
+      without translating internal state to a
+      string form, so that, for example, a user principal
+      which represents a specific numeric user id, will 
+      match a different principal string which represents
+      the same numeric user id.
+    </t>
+  </section>
+  <section anchor='Type-NFS'
+           title="String Types with NFS-specific Processing">
+    <t>
+      For a number of data types within NFSv4, the primary 
+      responsbibility for internationalization-related handling 
+      is that of some entity other than the server itself (see 
+      below for details).  In these situations, the primary 
+      responsibility of NFS version 4 is to provide a framework
+      in which that other entity (file system and server operating
+      system principal naming framework) to implement its own
+      decisions while establishing rules to limit interoperability
+      issues.
+    </t>
+    <t>
+      This pattern applies to the following data types:
+      <list style='symbols'>
+        <t>
+          In the case of name components (strings of type component4), 
+          the server-side file
+          system implementation (of which there may be more than 
+          one for a particular server) deals with internationalization
+          issues, in a fashion that is appropriate to NFS version 4,
+          other remote file access protocols, and local file 
+          access methods.  See 
+          "<xref target="Type-ncomp" format='title' />" 
+          for the detailed treatment.
+        </t>
+        <t>
+          In the case of link text strings (strings of type lintext4),
+          the issues are similar, but file systems are restricted
+          in the set of acceptable internationalization-related
+          processing that they may do, principally because symbolic
+          links may contain name componetns that, when used, are 
+          presented to other file systems and/or other servers.
+          See "<xref target="Type-ltext" format='title' />"
+          for the detailed treatment.	
+        </t>
+        <t>
+          In the case of principal prefix strings, any decisions 
+          regarding internationalization are the responsibility
+          of the server operating systems which may make its own 
+          rules regarding user and group name encoding.
+          See "<xref target="Type-prinp" format='title' />"
+          for the detailed treatment.	
+        </t>
 
+      </list>
+    </t>
+     
+    <section anchor='Type-ncomp'
+             title="Handling of File Came Components">
+      <t>
+        There are a number of places within client and server where 
+        file name components are processed:
+        <list style="symbols"> 
+          <t>
+            On the client, file names may be processed as part 
+            of forming NFS version 4 requests.  Any such processing 
+            will reflect specific needs of the client's environment 
+            and will be treated as out-of-scope from the viewpoint 
+            of this specification.
+          </t>
+          <t>
+            On the server, file names are processed as part of 
+            processing NFS version 4 requests.  In practice, parts 
+            of the processing will be implemented within the NFS 
+            version 4 server while other parts will be implemented 
+            within the file system.  This processing is described 
+            in the sections below.  These sections are organized 
+            in a fashion parallel to a stringprep profile.
+            The same sorts of topics are dealt with but they differ 
+            in that there is a wider range of possible processing 
+            choices.
+          </t>
+          <t>
+            On the server, file name components might potentially 
+            be subject to processing as part of generating NFS 
+            version 4 responses.  This specification assumes that 
+            this processing will be empty and that file name 
+            components will be copied verbatim at this point.  The 
+            file name components may be modified as they appear in 
+            responses, relative to the values used in the request 
+            but this is only treated as reflecting changes made 
+            as part of request processing.  For example, a change 
+            to a file name component made in processing a CREATE 
+            operation will be reflected in the READDIR since the 
+            files created will have names that reflect CREATE-time 
+            processing.
+          </t>
+          <t>
+            On the client, responses will need to be properly 
+            dealt with and the relevant issues will be discussed 
+            in the sections below.  Primarily, this will involve 
+            dealing with the fact that file name components 
+            received in responses may need to be processed to meet 
+            the requirements of the client's internal environment.  
+            This will mainly involve dealing with changes in 
+            name components possibly made by server processing.  
+            It also addresses other sorts of expected behavior 
+            that do not involve a returned component4, such as 
+            whether a LOOKUP finds a given component4 or whether 
+            a CREATE or OPEN finds that a 
+            specified name already exists.
+          </t>
+        </list>
+      </t> 
+      <section title="Nature of Server Processing of Name Components in Request">
+        <t>
+          The component4 type defines a potentially case sensitive 
+          string, typically of UTF-8 characters.  Its use in NFS 
+          version 4 is for representing file name components.  
+          Since file systems can implement case insensitive file 
+          name handling, it can be used for both case sensitive 
+          and case insensitive file name handling, based on the 
+          attributes of the file system.
+        </t>
+        <t>
+          It may be the case that two valid distinct UTF-8 strings 
+          will be the same after the processing described below.  
+          In such a case, a server may either,
+          <list style='symbols'>
+            <t>
+              disallow the creation of a second name if its 
+              post-processed form collides with that of an 
+              existing name, or
+            </t>
+            <t>
+              allow the creation of the second name, but arrange 
+              so that after post processing, the second name is 
+              different than the post-processed form of the first 
+              name.
+            </t>
+          </list>
+        </t>
+  
+      </section>
+      <section title="Character Repertoire for the Component4 Type">
+        <t>
+          The RECOMMENDED character repertoire for file name 
+          components is a recent/current version of Unicode,
+          as encoded via UTF-8.  There are a number of alternate 
+          character repertoires which may be chosen by the server
+          based on implementation constraints including the 
+          requirements of the file system being accessed.
+        </t>
+        <t>
+          Two important alternative repertoires are:
+          <list style='symbols'>
+            <t>
+              One alternate character repertoire is to represent 
+              file name components as strings of bytes with
+              no protocol-defined encoding of multi-byte characters.  
+              Most typically, implementations that support this 
+              single-byte alternative will make it 
+              available as an option set by an administrator 
+              for all file systems within a server or for some 
+              particular file systems.  If a server accepts 
+              non-UTF-8 strings anywhere within a specific 
+              file system, then it MUST do so throughout the 
+              entire file system.
+            </t>
+            <t>
+              Another alternate character repertoires is the
+              set of codepoints, representable by the file system,
+              most typically UCS-4.
+            </t>
+          </list> 
+        </t>
+        <t>
+          Individual file system implementations may have more 
+          restricted character repertoires, as for example file 
+          system that only are capable of storing names consisting 
+          of UCS-2 characters.  When this is the case, and the 
+          character repertoire is not restricted to single-byte
+          characters, characters not within that repertoire are 
+          treated as prohibited and the error NFS4ERR_BADCHAR is 
+          returned by the server when that character is 
+          encountered.
+        </t>
+        <t>
+          Strings are intended to be in UTF-8 format and servers 
+          SHOULD return NFS4ERR_INVAL, as discussed above, when 
+          the characters sent are not valid UTF-8.  When the 
+          character repertoire consists of single-byte characters, 
+          UTF-8 is not enforced.  Such situations should be
+          restricted to those where use is within a restricted 
+          environment where a single character mapping locale 
+          can be administratively enforced, allowing a file 
+          name to be treated as string of bytes, rather than as 
+          a string of characters.  Such an arrangement might
+          be necessary when NFS version 4 access to a file system 
+          containing names which are not valid UTF-8 needs to be
+          provided.
+        </t>
+        <t>
+          However, in any of the following situations, file names 
+          have to be treated as strings of characters and servers 
+          MUST return NFS4ERR_INVAL when file names that are not 
+          in UTF-8 format:
+          <list style='symbols'>
+            <t>
+              Case-insensitive comparisons are specified by the 
+              file system and any characters sent contain 
+              non-ASCII byte codes.
+            </t>
+            <t>
+              Any normalization constraints are enforced by 
+              the server or file system implementation.
+            </t>
+            <t>
+              The server accepts a given name when creating a 
+              file and reports a different one when the directory 
+              is being examined.
+            </t>
+          </list>
+        </t>
+        <t>
+          Much of the discussion below regarding normalization 
+          and silent deletion of characters within component4 
+          strings is not applicable when the server does not 
+          enforce UTF-8 component4 strings and treats them as 
+          strings of bytes.  A client may determine that a
+          given filesystem is operating in this mode by 
+          performing a LOOKUP using a non-UTF-8 string, if 
+          NFS4ERR_INVAL is not returned, then name components 
+          will be treated as opaque and those sorts of 
+          modifications will not be seen. 
+        </t>
+      </section>
+      <section anchor="sec:i18n:case"
+               title="Case-based Mapping Used for Component4 Strings">
+        <t>
+          Case-based mapping is not always a required part of 
+          server processing of name components.  However, if 
+          the NFS version 4 file server supports the 
+          case_insensitive file system attribute, and if 
+          the case_insensitive attribute is true for a given
+          file system, the NFS 
+          version 4 server must use the Unicode case mapping tables
+          for the version of Unicode corresponding to the character
+          repertoire.  In the case where the character repertoire
+          is UCS-2 or UCS-4, the case mapping tables from the
+          latest available version of Unicode should be used.
+        </t>
+        <t>
+          If the case_preserving attribute is present and set 
+          to false, then the NFS version 4 server MUST use the
+          corresponding Unicode case mapping table to map case 
+          when processing component4 strings.  Whether the server 
+          maps from lower to upper case or the upper to lower case 
+          is a matter for implementation choice.
+        </t>
+        <t>
+          Stringprep Table B.2 should not be used for these
+          purpose since it is limited to Unicode version 3.2
+          and also because it erroneously maps the German 
+          ligature eszett to the string "ss", whereas later 
+          versions of Unicode contain both lower-case and 
+          upper-case versions of Eszett (SMALL LETTER SHARP S
+          and CAPITAL LETTER SHARP S).
+        </t>
+        <t>
+          Clients should be aware that servers may have 
+          mapped SMALL LETTER SHARP S to the string "ss"
+          when case-insensitive mapping is in effect, with
+          result that file whose name contains SMALL LETTER
+          SHARP S may have that character replaced by "ss" 
+          or "SS".
+        </t> 
+      </section>
+      <section title="Other Mapping Used for Component4 Strings">
+        <t>
+          Other than for issues of case mapping, an NFS version 4 
+          server SHOULD limit visible (i.e. those that change the 
+          name of file to reflect those mappings to those from 
+          from a subset of the stringprep table B.1.  Note particularly,
+          the mapings from U+200C and U+200D to the empty
+          string should be avoided, due to their undesirable effect 
+          on some strings in Farsi.
+        </t>
+        <t>
+          Table B.1 may be used but it should be used only if 
+          required by the local file system implementation.  For 
+          example, if the file system in question accepts file 
+          names containing the MONGOLIAN TODO SOFT HYPHEN character 
+          (U+1806) and they are distinct from the corresponding 
+          file names 
+          with this character removed, then using Table B.1 will 
+          cause functional problems when clients attempt to
+          interact with that file system.  The NFS version 4 
+          server implementation including the filesystem 
+          MUST NOT silently remove characters not within Table B.1.     
+        </t>
+        <t>
+          If an implementation wishes to eliminate other characters
+          because it is believed that allowing component 
+          name versions that both include the character and
+          not have while otherwise the same, will contribute to
+          confusion, it has two options:
+          <list style='symbols'>
+            <t>
+              Treat the characters as prohibited and return
+              NFS4ERR_BADCHAR.
+            </t>
+            <t>
+              Eliminate the character as part of the name
+              matching processing, while retaining it when
+              a file is created.  This would be analogous 
+              to file systems that are both case-insensitive
+              and case-preserving,as dicussed above, or 
+              those which are both normalization-insensitive
+              and normalization-preserving, as discussed
+              below.  The handling will be insensitive to
+              presence of the chosen characters while 
+              preserving the presence or absence of such
+              chatacters within names.
+            </t>
+          </list>
+        </t>
+        <t>
+          Note that the second of these choices is a desirable
+          way to handle characters within table B.1, again 
+          with the exception of U+200C and U+200D, which can
+          cause issues for Farsi.
+        </t>
+        <t>
+          In addition to modification due to normalization, 
+          discussed below, clients have to be able to deal with 
+          name modifications and other consequences of character 
+          mapping on the server, as discussed above.
+        </t>
+      </section>
+      <section title="Normalization Issues for Component Strings">
+        <t>
+          The issues are best discussed separately for the 
+          server and the client.  It is important to note that 
+          the server and client may have different approaches 
+          to this area, and that the server choice may not match 
+          the client operating environment so the issue of 
+          mismatches and how they will be dealt with by the 
+          client is discussed in a later section.
+        </t>
+        <section title="Server Normalization Issues for Component Strings">
+          <t>
+            The NFS version 4 does not specify required use of 
+            a particular normalization form for component4 strings.   
+            Therefore, the server may receive unnormalized strings 
+            or strings that reflect either normalization form within 
+            protocol requests and responses.  If the operating 
+            environment requires normalization, then the server 
+            implementation must normalize component4 strings
+            within the protocol server before presenting the 
+            information to the local file system.
+          </t>
+          <t>
+            With regard to normalization, servers have the following 
+            choices, with the possibility that different choices may 
+            be selected for different file systems.
+            <list style='symbols'>
+              <t>
+                Implement a particular normalization form,
+                either NFC, or NFD, in which 
+                case file names received from a client are converted 
+                to that normalization form and as a consequence, the 
+                client will always receive names in that normalization 
+                form.  If this option is chosen, then it is impossible 
+                to create two files in the same directory that have 
+                different names which map to the same name when 
+                normalized.
+              </t>
+              <t>
+                Implement handling which is both normalization-insensitive
+                and normalization-preserving.  This makes it impossible 
+                to create two files in the same directory that have 
+                two different canonically equivalent name, i.e.
+                names which map to the same name when normalized.  
+                However, unlike the previous option, clients will not 
+                have the names that they present modified to
+                meet the server's normalization constraints.
+              </t>
+              <t>
+                Implement normalization-sensitive handling without 
+                enforcing a normalization form constraint on file 
+                names.  This exposes the client to the possibility 
+                that two files can be created in the same directory 
+                which have different names which map to the same 
+                name when normalized.  This may be a significant 
+                issue when client which use different normalization 
+                forms are used on the same file system, but this 
+                issue needs to be set against the difficulty of 
+                providing other sorts of normalization handling 
+                for some existing file systems.   
+              </t>
+            </list>
+          </t>
+        </section>
+        <section title="Client Normalization Issues for Component Strings">
+          <t>
+            The client, in processing name components, needs to deal
+            with the fact that the server may impose normalization 
+            on file name components presented to it.  As a result, 
+            a file can be created within a directory and that name 
+            may have different name due to normalization at the 
+            server.
+          </t>
+          <t>
+            Client operating environments differ in their handling 
+            of canonically equivalent name.  Some environments treat 
+            canonically equivalent strings as essentially equal 
+            and we will call these environments normalization-aware.  
+            Others, because of the pattern of their development with 
+            regard to these issues treat different strings as 
+            different, even if they are canonically equivalent.  
+            We call these normalization-unaware.
+          </t>
+          <t>
+            Normalization-aware environments interoperate most 
+            normally with servers that either impose a given 
+            normalization form or those that implement 
+            name handling which is both normalization-insensitive
+            and normalization-preserving name handling.  However, 
+            clients need to be prepared to interoperate with 
+            servers that have normalization-sensitive file naming.  
+            In this situation, the client needs to be prepared for 
+            the fact that a directory may contain multiple names 
+            that it considers equivalent.
+          </t>
+          <t>
+            Normalization-unaware environments interoperate most 
+            normally with servers that implement 
+            normalization-sensitive file naming.  However, clients 
+            need to be prepared to interoperate with servers that 
+            impose a given normalization form or that implement 
+            name handling which is both normalization-insensitive
+            and normalization-preserving.  In the former case, a 
+            file created with a given name may find it changed 
+            to a different (although related name).  In both cases, 
+            the client will have to deal with the fact that it 
+            is unable to create two names within a directory that 
+            are canonically equivalent.
+          </t>
+        </section>
+      </section>
+      <section title='Prohibited Characters for Component Names'>
+        <t>
+          The NFS version 4 protocol does not specify particular 
+          characters that may not appear in component names.  File 
+          systems may have their own set of prohibited characters 
+          for which the error NFS4ERR_BADCHAR should be returned 
+          by the server.  Clients need to be prepared for this 
+          error to occur whenever file name components are 
+          presented to the server.
+        </t>
+        <t>
+          Clients whose character repertoire for acceptable 
+          characters in file name components is smaller than 
+          the entire scope of UCS-4 may need to deal with names 
+          returned by the server that contain characters outside 
+          that repertoire.  It is up to the client whether it 
+          simply ignores these files or modifies the name to 
+          meet its own rules for acceptable names.
+        </t>
+        <t>
+          Clients may encounter names that do not consist of 
+          valid UTF-8, if they interact with servers configured 
+          to allow this option.  They are not required to deal 
+          with this case and may treat the server as not 
+          functioning correctly, or they may handle this as 
+          normal.  Clients will normally make this a configuration 
+          option.  As discussed above, a client can determine 
+          whether a particular file system is being supported 
+          by the server in this mode by issuing a LOOKUP 
+          specifying a name which is not valid UTF-8 and 
+          seeing if NFS4ERR_INVAL is returned.
+        </t>
+      </section>
+      <section title="Bidirectional String Checking for Component Names">
+        <t>
+          The NFS version 4 protocol does not require processing of 
+          component names to check for and reject bidirectional 
+          strings.  Such processing may be a part of the file 
+          system implementation but if so, its particular form 
+          will be defined by the file system implementation.  
+          When strings are rejected on this basis, the error 
+          NFS4ERR_BADNAME would be returned. 
+        </t>
+        <t>
+          Clients need to be prepared for the fact that the 
+          server may reject a file name component if it consists  
+          of a bidirectional string, returning NFS4ERR_BADNAME.
+        </t>
+        <t>
+          Clients may encounter names with bidirectional 
+          strings returned in responses from the server.  
+          If clients treat such strings as not valid file name
+          components, it is up to the client whether it simply 
+          ignores these files or modifies the name component
+          to meet its own rules for acceptable name component
+          strings.
+        </t>
+      </section>
+    </section>
+    <section anchor='Type-ltext'
+             title="Processing of Link Text">
+      <t>
+        Symbolic link text is defined as utf8_should and 
+        therefore the server SHOULD validate link text
+        on a CREATE and return NFS4ERR_INVAL if it is
+        is not valid UTF-8.  Note that file systems
+        which treat names as strings of byte are an exception
+        for which such validation need not be done.
+        One other situation in which an NFS version 4
+        might choose (or be configured) not to make 
+        such a check is when links within file system
+        reference names in another which is configured
+        to treat names as strings of bytes.
+      </t>
+      <t>
+        On the other hand, UTF-8 validation of symbolic
+        link text need not be done on the data resulting
+        from a READLINK.  Such data might have been stored
+        by an NFS Version 4 server configured to allow
+        non-UTF-8 link text or it might have resulted
+        from symbolic link text stored via local file
+        system access or access via another remote file
+        access protocol.
+      </t>
+      <t>
+        Note that because of the role of the symbolic 
+        link, as data stored and read by the user,
+        other sorts of validations or modifications
+        should not be done.  Note that when component
+        names with the symbolic link text are used,
+        such checks and modifications will be done at
+        that time.  In particular,
+        <list style='symbols'>
+          <t>
+            Limitation of the character repertoire 
+            MUST NOT be done.  This includes 
+            limitations to reflect a particular version 
+            of unicode, or the inability of any particualr 
+            file system to store characters beyond UCS-2.
+          </t>
+          <t>
+            Name mapping, whether for case folding or
+            otherwise MUST NOT be done.
+          </t>
+          <t>
+            Checks for a type of normalization or 
+            normalization to a particular form MUST
+            NOT be done.
+          </t>
+          <t>
+            Checks for specific characters excluded
+            by the server or file system MUST NOT
+            be done.
+          </t>
+          <t>
+            Checks for bidrectional strings MUST NOT
+            be done.
+          </t>
+        </list>
+      </t>
+    </section>
+    <section anchor='Type-prinp'
+             title="Processing of Principal Prefixes">
+      <t>
+        As mentioned above, users and groups are designated
+        as a particular string at a specified domain.  Servers
+        will recognize a set of valid principals for one or
+        more domains.  With regard to the handling of these
+        strings, the following rules MUST be followed
+        <list style='symbols'>
+          <t>
+            The string MUST be checked by the server for
+            valid UTF-8 and the error NFS4ERR_INVAL
+            returned if it is not valid.
+          </t>
+          <t>
+            The character repertoire for the principal
+            prefix string should be limited to a current
+            version of Unicode when the server is implemented.
+            However, the client cannot be assured that all
+            characters it receives as part of a user or
+            group attribute are those that are defined
+            in the Unicode version it expects to work
+            with.
+          </t>
+          <t>
+            No character mapping is to be done, as for
+            example table B.1 in stringprep, and no case
+            mapping is to be done.  The user and group
+            names are to be treated as case-sensitive.
+          </t>
+          <t>
+            Strings must not be rejected based on their
+            normalization.  Servers should do normalization
+            insensitive matching in converting a user
+            to group to an internal id.  The client
+            cannot assume that the server preserves
+            normalization so a user set to one string
+            value may be returned as a string which
+            differs in nomralization and the client 
+            must be prepared to deal with that, by,
+            for example, normalizing the string to the
+            client's prferred form.
+          </t>
+          <t>
+            There are no checks for specific invalid 
+            characters but servers may limit the 
+            characters, with the result that any
+            principal presented by the client which
+            has such a characters is treated as
+            invalid.
+          </t>
+          <t>
+            Specific checks for bidrectional strings 
+            are not done but servers may limit the
+            principal prefix strings to those which 
+            are unidirectional or are of a certain
+            direction, with the result that any
+            principal presented by the client which
+            done not meet that criterion will be
+            treated as invaid.         
+          </t>
+        </list>
+      </t>
+    </section>
+  </section>
 </section>
+

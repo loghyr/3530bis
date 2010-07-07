@@ -55,9 +55,12 @@
       caching, and internationalization have been added.  Of course,
       attention has been applied to making NFS version 4 operate well in an
       Internet environment.
-
-      This document replaces RFC 3530 as the definition of the NFS version
-      4 protocol.
+      </t>
+      <t>
+      This document, together with the companion XDR description 
+      document,
+      replaces RFC 3530 as the definition of the 
+      NFS version 4 protocol.
       </t>
     </abstract>
 

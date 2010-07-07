@@ -41,10 +41,13 @@
 <title>NFS Version 4 Protocol</title>
 
 <author initials='T' surname='Haynes' fullname='Thomas Haynes'>
-    <organization />
+    <organization abbrev='Editors' />
+</author>
+<author initials='D' surname='Noveck' fullname='David Noveck'>
+    <organization abbrev='Editors' />
 </author>
 
-<date month='March' day='30' year='2009' />
+<date month='July' day='07' year='2010' />
 
 <abstract>
   <t>
@@ -65,9 +68,9 @@
 
 </front>
 
-<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-00' />
+<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-04' />
 <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-00.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-04.txt' />
 </reference>
 
   </references>

@@ -1,14 +1,27 @@
 <!-- Copyright (C) The IETF Trust (2009-2010) -->
 <!-- Copyright (C) The Internet Society (2010) -->
 <section title="Acknowledgments">
+  <t>
+    Rob Thurlow clarified how a client should contact
+    a new server if a migration has occured.
+  </t>
+  <t>
+    David Black, Nico Williams, Mike Eisler and
+    Trond Myklebust read many drafts of 
+    <xref target="sec:i18n" /> and contributed numerous useful suggestions, 
+    without which the necessary revision of that
+    section for this document would not have been possible.
+  </t>
+  <t>
+    Peter Staubach read almost all of the drafts of
+    <xref target="sec:i18n" /> leading to the published result and his numerous
+    comments were always useful and contributed
+    substantially to improving the quality of the 
+    final result.
+  </t>
 </section>
 
 <section title="RFC Editor Notes">
-
-<t>
-Rob Thurlow clarified how a client should contact
-a new server if a migration has occured.
-</t>
 
 <t>
 [RFC Editor: please remove this section prior to publishing
