@@ -150,7 +150,7 @@ filenames...
 
 Action: Discuss on alias and drive to consensus
 Owner: Dave
-State: Working
+State: Finished
 Target: IETF 78
 
 15) SPKM3/LIPKEY is not implemented by anyone. Remove its
@@ -610,4 +610,26 @@ Action: Edit
 Owner: Tom
 State: Needs Review
 Target: IETF 78
+
+34) Mandatory and minor version
+
+Dave said:
+BTW, I noticed that at the end of chapter 11, we still say that we must
+not make something mandatory in a minor version.  Since we have done
+that in 4.1, maybe we should say something else in rfc3530bis.
+
+Action: Add appropriate text
+Owner:
+State: Accepted
+Target:
+
+35) OPEN_DOWNGRSDE and posix byte range
+
+Trond started this discussion here:
+http://www.ietf.org/mail-archive/web/nfsv4/current/msg08169.html
+
+Action: Add appropriate text
+Owner:
+State: Accepted
+Target:
 
