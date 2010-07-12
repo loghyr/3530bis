@@ -4,8 +4,8 @@
 YEAR=`date +%Y`
 MONTH=`date +%B`
 DAY=`date +%d`
-PREVVERS=02
-VERS=03
+PREVVERS=03
+VERS=04
 VPATH = ../../dotx.d
 
 all: txt filelist
@@ -104,6 +104,7 @@ IDXMLSRC_BASE = \
 	dotx_middle_end.xml \
 	dotx_back_front.xml \
 	dotx_back_references.xml \
+	dotx_back_acks.xml \
 	dotx_back_back.xml
 
 IDCONTENTS = dotx_front_autogen.xml $(IDXMLSRC_BASE)

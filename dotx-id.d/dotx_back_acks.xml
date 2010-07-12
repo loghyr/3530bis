@@ -1,0 +1,24 @@
+<!-- Copyright (C) The IETF Trust (2009-2010) -->
+<!-- Copyright (C) The Internet Society (2010) -->
+<section title="Acknowledgments">
+  <t>
+    David Quigley tested the extraction of the .x file
+    from this document and corrected the two resulting
+    errors.
+  </t>
+</section>
+
+<section title="RFC Editor Notes">
+
+<t>
+[RFC Editor: please remove this section prior to publishing
+this document as an RFC]
+
+</t>
+
+<t>
+[RFC Editor: prior to publishing this document as an RFC, please replace all occurrences of RFCTBD10
+with RFCxxxx where xxxx is the RFC number of this document]
+</t>
+
+</section>
