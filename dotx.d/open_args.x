@@ -4,7 +4,7 @@
 enum createmode4 {
 	UNCHECKED4	= 0,
 	GUARDED4	= 1,
-	EXCLUSIVE4	= 2,
+	EXCLUSIVE4	= 2
 };
 
 union createhow4 switch (createmode4 mode) {
@@ -58,7 +58,7 @@ enum open_claim_type4 {
 	CLAIM_NULL		= 0,
 	CLAIM_PREVIOUS		= 1,
 	CLAIM_DELEGATE_CUR	= 2,
-	CLAIM_DELEGATE_PREV	= 3,
+	CLAIM_DELEGATE_PREV	= 3
 };
 
 struct open_claim_delegate_cur4 {
