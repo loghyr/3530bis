@@ -49,6 +49,8 @@ clobber:
 	$(RM) draft-ietf-nfsv4-rfc3530bis-$(VERS).txt \
 		draft-ietf-nfsv4-rfc3530bis-$(VERS).html \
 		draft-ietf-nfsv4-rfc3530bis-$(VERS).nr
+	export SPECVERS := $(VERS)
+	export VERS := $(VERS)
 	cd dotx-id.d ; SPECVERS=$(VERS) $(MAKE) clobber
 	cd dotx.d ; VERS=$(VERS) $(MAKE) clobber
 

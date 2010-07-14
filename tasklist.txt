@@ -618,10 +618,10 @@ BTW, I noticed that at the end of chapter 11, we still say that we must
 not make something mandatory in a minor version.  Since we have done
 that in 4.1, maybe we should say something else in rfc3530bis.
 
-Action: Add appropriate text
-Owner:
-State: Accepted
-Target:
+Action: Update to 5661 wording
+Owner: Tom
+State: Finished
+Target: IETF 79
 
 35) OPEN_DOWNGRSDE and posix byte range
 

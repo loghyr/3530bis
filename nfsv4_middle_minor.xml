@@ -91,32 +91,32 @@
       </t>
 
       <t>
-        Minor versions may not modify the structure of existing
+        Minor versions must not modify the structure of existing
         attributes.
       </t>
 
       <t>
-        Minor versions may not delete operations.
+        Minor versions must not delete operations.
       <vspace blankLines='1' />
         This prevents the potential reuse of a particular operation
         "slot" in a future minor version.
       </t>
 
       <t>
-        Minor versions may not delete attributes.
+        Minor versions must not delete attributes.
       </t>
 
       <t>
-        Minor versions may not delete flag bits or enumeration values.
+        Minor versions must not delete flag bits or enumeration values.
       </t>
 
       <t>
-        Minor versions may declare an operation as mandatory to NOT
+        Minor versions may declare an operation MUST NOT be
         implement.
       <vspace blankLines='1' />
-        Specifying an operation as "mandatory to not implement" is
+        Specifying that an operation MUST NOT be implemented is
         equivalent to obsoleting an operation.  For the client, it means
-        that the operation should not be sent to the server.  For the
+        that the operation MUST NOT be sent to the server.  For the
         server, an NFS error can be returned as opposed to "dropping"
         the request as an XDR decode error.  This approach allows for
         the obsolescence of an operation while maintaining its structure
@@ -124,39 +124,43 @@
 
         <list style='numbers'>
           <t>
-            Minor versions may declare attributes mandatory to NOT
-            implement.
+            Minor versions may declare that an attribute MUST NOT be
+            implemented.
           </t>
 
           <t>
-            Minor versions may declare flag bits or enumeration values as
-            mandatory to NOT implement.
+            Minor versions may declare that a flag bit or enumeration value
+            MUST NOT be implemented.
           </t>
         </list>
       </t>
 
       <t>
-        Minor versions may downgrade features from mandatory to
-        recommended, or recommended to optional.
+        Minor versions may downgrade features from REQUIRED to
+        RECOMMENDED, or RECOMMENDED to OPTIONAL.
       </t>
 
       <t>
-        Minor versions may upgrade features from optional to recommended
-        or recommended to mandatory.
+        Minor versions may upgrade features from OPTIONAL to RECOMMENDED
+        or RECOMMENDED to REQUIRED.
       </t>
 
       <t>
-        A client and server that support minor version X must support
+        A client and server that support minor version X SHOULD support
         minor versions 0 (zero) through X-1 as well.
       </t>
 
       <t>
-        No new features may be introduced as mandatory in a minor
-        version.
+        Except for infrastructural changes, no new features may be
+        introduced as REQUIRED in a minor version.
+
       <vspace blankLines='1' />
-        This rule allows for the introduction of new functionality and
-        forces the use of implementation experience before designating a
-        feature as mandatory.
+
+        This rule allows for the introduction of new functionality and forces
+        the use of implementation experience before designating a feature as
+        REQUIRED. On the other hand, some classes of features are
+        infrastructural and have broad effects. Allowing such features
+        to not be REQUIRED complicates implementation of the minor version.
       </t>
 
       <t>

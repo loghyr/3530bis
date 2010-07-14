@@ -755,28 +755,6 @@ document are to be interpreted as described in RFC
 	      target="ftp://ftp.isi.edu/in-notes/rfc3530.txt"/>
     </reference>
 
-    <reference anchor='I-D.draft-ietf-nfsv4-referrals'>
-      <front>
-        <title>Implementation Guide for Referrals in NFSv4 </title>
-        <author initials='D' surname='Noveck' fullname='D. Noveck'>
-          <organization />
-        </author>
-        <author initials='R' surname='Burnett' fullname='R. Burnett'>
-          <organization />
-        </author>
-
-        <date month='July' year='2005' />
-
-      </front>
-
-      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-referrals-00' />
-      <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-referrals-00.txt' />
-    </reference>
-
-      
-
-
     <reference anchor='RFC5661'>
       <front>
 	<title>Network File System (NFS) Version 4 Minor Version 1 Protocol</title>

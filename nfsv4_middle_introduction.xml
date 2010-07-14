@@ -45,7 +45,7 @@
           the reality of required string processing.
         </t>
 	<t>
-	  LIPKEY SPKM/3 has been moved from being mandatory to optional
+	  LIPKEY SPKM/3 has been moved from being REQUIRED to OPTIONAL.
 	</t>
 	<t>
 	  Some clarification on a client re-establishing callback
