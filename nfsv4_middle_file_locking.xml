@@ -94,7 +94,7 @@
       <t>
         Client identification is encapsulated in the following structure:
 
-        <?rfc include='autogen/setclientid_args.xml'?>
+        <?rfc include='autogen/type_nfs_client_id4.xml'?>
       </t>
 
       <t>
