@@ -2311,7 +2311,8 @@ void;
       <t>
         The stateid value for a READ request represents a value
         returned from a previous record lock or share reservation
-        request.  The stateid is used by the server to verify that
+        request or the stateid associated with a delegation.
+        The stateid is used by the server to verify that
         the associated share reservation and any record locks are
         still valid and to update lease timeouts for the client.
       </t>
@@ -3890,7 +3891,8 @@ REMOVE (file name)
       <t>
         The stateid value for a WRITE request represents a value
         returned from a previous record lock or share reservation
-        request.  The stateid is used by the server to verify that
+        request or the stateid associated with a delegation.
+        The stateid is used by the server to verify that
         the associated share reservation and any record locks are
         still valid and to update lease timeouts for the client.
       </t>

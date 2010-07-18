@@ -539,8 +539,8 @@ string is sent to each server and the client has sufficient information
 to determine which clientid's and sessions correspond to which
 servers.
 
-Action:
-Owner:
+Action: None
+Owner: Dave
 State: Accepted
 Target:
 
@@ -572,9 +572,9 @@ I believe the consensus was that existing implementations allowed
 this and no one complained about permitting it.
 
 Action: Add appropriate text
-Owner:
-State: Accepted
-Target:
+Owner: Tom
+State: In progress
+Target: IETF 79
 
 32)
 
