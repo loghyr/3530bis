@@ -9,7 +9,7 @@
     <author fullname="Thomas Haynes" 
             initials="T." 
             surname="Haynes">
-        <organization abbrev="Editors">Oracle</organization>
+        <organization abbrev="Editors">NetApp</organization>
         <address>
             <postal>
                 <street>9110 E 66th St</street>
@@ -19,7 +19,7 @@
                 <country>USA</country>
             </postal>
             <phone>+1 918 307 1415</phone>
-            <email>tom.haynes@oracle.com</email>
+            <email>thomas@netapp.com</email>
         </address>
     </author>
   <author initials='D.' surname='Noveck'
