@@ -721,3 +721,35 @@ Owner: Rob
 State: Accepted
 Target: IETF 79
 
+41) Errata for 3530
+Reported By: Jon Bauman
+Date Reported: 2004-02-03
+
+Section 8.1.8. says:
+
+This sequence establishes the use of an lock_owner and associated 
+sequence number.
+
+Should be "a lock_owner"
+
+It should say:
+
+If server replica or a server immigrating a filesystem agrees to
+
+Should be "If a server replica"
+
+Notes:
+
+
+In Section 9.3.2. Data Caching and File Locking, Last Paragraph:
+
+by flushing to the server more data upon an LOCKU than is covered by
+the locked range.
+
+Should be "a LOCKU"
+
+Action: apply fixes
+Owner: Tom
+State: Accepted, Low
+Target: IETF 79
+
