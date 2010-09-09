@@ -654,3 +654,70 @@ Owner:
 State: Accepted
 Target:
 
+36) NFS4ERR_LEASE_MOVED recovery convention
+
+Rob Thurlow observed:
+A client is to clear LEASE_MOVED by requesting fs_locations
+for an affected filesystem, but this does not specify enough
+information to find the clientid to be reset.  We suggest
+that the client include a RENEW op following the GETATTR of
+fs_locations so that the server can do the right thing.
+
+Action: Add appropriate text
+Owner: Rob
+State: Accepted
+Target: IETF 79
+
+37) More ops need to be able to return LEASE_MOVED
+
+Rob Thurlow observed:
+The following OPs need to be able to return LEASE_MOVED - since
+they use state, they must help notify about this condition.
+       OPEN_CONFIRM (14.2.19)
+       OPEN_DOWNGRADE (14.2.19)
+       SETATTR (when the file size is set) (14.2.32)
+
+Action: Add appropriate text
+Owner: Rob
+State: Accepted
+Target: IETF 79
+
+38) Remove potential confusion about implicit lease renewal
+
+Rob Thurlow observed:
+The list of operations that implicitly renew leases and can return
+LEASE_MOVED in 8.14.3 should be written to not appear complete, to
+avoid confusion.
+
+Action: Change text
+Owner: Rob
+State: Accepted
+Target: IETF 79
+
+39) Clarification on renewing sequence IDs
+
+Rob Thurlow observed:
+MOVED and LEASE_MOVED need to be added to the list of errors
+in 8.1.5 which do NOT result in incrementing the open owner
+or lock owner sequence ID; if the sequence ID is incremented,
+we have a problem after a migration.
+
+Action: Add appropriate text
+Owner: Rob
+State: Accepted
+Target: IETF 79
+
+40) NFS4ERR_LEASE_MOVED trumps NFS4ERR_CB_PATH_DOWN
+
+Rob Thurlow observed:
+We should clarify what happens when a server is in a position
+to return both NFS4ERR_LEASE_MOVED and NFS4ERR_CB_PATH_DOWN.
+If the client handles NFS4ERR_CB_PATH_DOWN first by re-establishing
+the callback path, and then gets a recall, progress will be blocked
+as DELEGRETURN with still fail with NFS4ERR_LEASE_MOVED.
+
+Action: Add appropriate text
+Owner: Rob
+State: Accepted
+Target: IETF 79
+
