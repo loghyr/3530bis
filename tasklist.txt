@@ -21,7 +21,7 @@ Target: IETF 78
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Low
 Target:
 
 3) There are places where "lock_owner" is used in sec. 8.n.n and I
@@ -32,7 +32,7 @@ well as a byte range lock.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Low
 Target:
 
 4) What are "courtesy locks"? Dave Noveck to clarify what he wants here
@@ -56,15 +56,14 @@ Dave:
 > started on that but put it aside for a bit.
 
 Action:
-Owner:
-State: Accepted
+Owner: Dave
+State: Accepted, High
 Target:
 
 5) How do we handle Referrals in v4.0.
 
 Action: Take the 4.1 text and pull it back to 4.0
 Owner: Tom
-State: Accepted
 State: Needs review
 Target: IETF 78
 
@@ -76,16 +75,16 @@ they tried NFS4ERR_RESOURCE. So.... Clarify when the server should be
 using NFS4ERR_RESOURCE vs NFS4ERR_DELAY, and what the client is supposed
 to do in either case.
 
-Action:
-Owner:
-State: Accepted
+Action: Add _DELAY
+Owner: Tom
+State: Accepted, LOW
 Target:
 
 7) We need SECINFO workarounds on LOOKUPP and PUTROOTFH.
 
 Action:
 Owner:
-State: Accepted
+State: Ask for clarification
 Target:
 
 8) Clarify the sections on sequence ids. Currently, the text is
@@ -96,8 +95,11 @@ sequence id info, and when are they allowed to forget about it.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Medium
 Target:
+Notes: Trond votes get rid of having to initialize them to zero.
+
+Belongs in lock owner bucket...
 
 9) We should clarify the passage on NFS4ERR_LOCKS_HELD. Since lock owners
 and open owners are different things, we need to clarify which locks may
@@ -110,22 +112,25 @@ discussions about lock_stateids being
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, High
 Target:
+Notes: Add DOWNGRADE here?? Dave
 
 10) Recommendations/workarounds for dealing with the OPEN and CB_RECALL
 race.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, High
 Target:
+Notes: May be hashed out on mailing list - i.e., resolved by existing
+implementations, but not captured in the spec?
 
 11) Clarify the use of the delegation vs lock vs open stateid in SETATTR.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Medium
 Target:
 
 12) Clarify the various scenarios that should result in a delegation recall
@@ -133,8 +138,9 @@ Target:
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Medium
 Target:
+Note: Merge with 11.
 
 13) Perhaps clarify how clients should be managing delegations? There appear
 to be server implementations that expect clients to limit the number of
@@ -142,8 +148,10 @@ delegations they are holding.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Low
 Target:
+Notes: Clients need to implement mechanism to limit number of held delegations.
+Get rid of low value delegations.
 
 14) There's the unimplemented-by-everybody mandatory UTF-8 formatting of
 filenames...
@@ -180,6 +188,11 @@ in 9.6 should work for 4.0 clients and servers too:
 	prepared for the possibility that this final locking request
 	will be accepted.
 
+Action:
+Owner:
+State: Accepted, low
+Target:
+Note: Add to 330bis.
 
 17) Description of Third Edge Condition
 
@@ -195,8 +208,9 @@ holding of the locks.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Medium
 Target:
+Note: Dave track down the mail
 
 18) Issues With NFS4ERR_EXPIRED
 
@@ -278,7 +292,7 @@ I think there needs to be more.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Medium
 Target:
 
 19) Clarify Use of CB_GETATTR and "Implied" Clientid
@@ -332,8 +346,9 @@ This doesn't apply to sessions.  May be an issue for 3530bis.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Medium
 Target:
+Notes: Dave does not swear.
 
 20) Explanatory Text on Stateid Contradicts Self and Rest of Protocol
 
@@ -345,8 +360,9 @@ for details.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Medium
 Target:
+Note: Summarize the issue.
 
 21) Contradiction in 2nd Para of GETATTR Description
 
@@ -359,8 +375,9 @@ This needs to be clarified.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Low
 Target:
+Note: Discuss at the BAT
 
 22) Explain When Server Needs to Return NFS4ERR_DELAY
 
@@ -372,8 +389,9 @@ I'm creating the issue for v4.0 (and it is marked 3530bis).
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, low
 Target:
+Notes: Tom will investigate
 
 23) Need to Explain Revocation of Delegations Not Promptly Returned
 
@@ -385,7 +403,7 @@ I'm creating the issue for v4.0 (and it is marked 3530bis).
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Low
 Target:
 
 24) Description of locker4 Wrong
@@ -397,8 +415,9 @@ separate issue since this would also apply to rfc3530bis.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Low
 Target:
+Note: Pull from 4.1
 
 25) Problems in the Description of OPEN
 
@@ -414,8 +433,9 @@ with open would apply to rfc3530bis.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Low
 Target:
+Note: Pull back
 
 26) Confusion about Unique_handles and Fileid Attribute
 
@@ -442,8 +462,9 @@ not because of this specific issue.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, Low
 Target:
+Notes: Addressed in 4.1?
 
 27) Setattr for a Write Delegated File Should be Done with the
 Delegation Stateid
@@ -541,7 +562,7 @@ servers.
 
 Action: None
 Owner: Dave
-State: Accepted
+State: Finished
 Target:
 
 30) Description of NFS4ERR_BAD_STATED
