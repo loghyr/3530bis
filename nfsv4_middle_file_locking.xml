@@ -665,7 +665,7 @@
         operation will prevent incorrect behavior.  When the server
         observes the use of the lock_owner for the first time, it
         will direct the client to perform the OPEN_CONFIRM for the
-        corresponding OPEN.  This sequence establishes the use of an
+        corresponding OPEN.  This sequence establishes the use of a
         lock_owner and associated sequence number.  Since the OPEN_CONFIRM
         sequence connects a new open_owner on the server with an existing
         open_owner on a client, the sequence number may have any value.
@@ -1645,7 +1645,7 @@ else if ((request.access & file_state.deny)) ||
     </t>
 
     <t>
-      If server replica or a server immigrating a filesystem agrees
+      If a server replica or a server immigrating a filesystem agrees
       to, or is expected to, accept opaque values from the client that
       originated from another server, then it is a wise implementation
       practice for the servers to encode the "opaque" values in network

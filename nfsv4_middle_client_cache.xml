@@ -467,7 +467,7 @@
       <t>
         A client implementation may choose to accommodate applications which
         use record locking in non-standard ways (e.g., using a record lock as
-        a global semaphore) by flushing to the server more data upon an LOCKU
+        a global semaphore) by flushing to the server more data upon a LOCKU
         than is covered by the locked range.  This may include modified data
         within files other than the one for which the unlocks are being done.
         In such cases, the client must not interfere with applications whose
