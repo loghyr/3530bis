@@ -2888,7 +2888,10 @@ clientid -> ()
         established on the server.  If for some reason the lock and
         share reservation lease cannot be renewed, then the server
         MUST return an error other than NFS4ERR_CB_PATH_DOWN, even
-        if the callback path is also down.
+        if the callback path is also down.  In the event that
+        the server has conditions such that is could return either
+        NFS4ERR_CB_PATH_DOWN or NFS4ERR_LEASE_MOVED,
+        NFS4ERR_LEASE_MOVED MUST be handled first.
       </t>
 
       <t>

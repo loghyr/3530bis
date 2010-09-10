@@ -665,7 +665,7 @@ fs_locations so that the server can do the right thing.
 
 Action: Add appropriate text
 Owner: Rob
-State: Accepted
+State: Finished
 Target: IETF 79
 
 37) More ops need to be able to return LEASE_MOVED
@@ -679,7 +679,7 @@ they use state, they must help notify about this condition.
 
 Action: Add appropriate text
 Owner: Rob
-State: Accepted
+State: Finished
 Target: IETF 79
 
 38) Remove potential confusion about implicit lease renewal
@@ -691,7 +691,7 @@ avoid confusion.
 
 Action: Change text
 Owner: Rob
-State: Accepted
+State: Finished
 Target: IETF 79
 
 39) Clarification on renewing sequence IDs
@@ -704,7 +704,7 @@ we have a problem after a migration.
 
 Action: Add appropriate text
 Owner: Rob
-State: Accepted
+State: Finished
 Target: IETF 79
 
 40) NFS4ERR_LEASE_MOVED trumps NFS4ERR_CB_PATH_DOWN
@@ -718,7 +718,7 @@ as DELEGRETURN with still fail with NFS4ERR_LEASE_MOVED.
 
 Action: Add appropriate text
 Owner: Rob
-State: Accepted
+State: Finished
 Target: IETF 79
 
 41) Errata for 3530
@@ -748,7 +748,7 @@ the locked range.
 
 Should be "a LOCKU"
 
-Action: none
+Action: Make edits
 Owner: Tom
 State: Finished
 Target: IETF 79

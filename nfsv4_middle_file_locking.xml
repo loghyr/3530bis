@@ -608,7 +608,8 @@
         The only exception to this rule is if the previous operation
         received one of the following errors: NFS4ERR_STALE_CLIENTID,
         NFS4ERR_STALE_STATEID, NFS4ERR_BAD_STATEID, NFS4ERR_BAD_SEQID,
-        NFS4ERR_BADXDR, NFS4ERR_RESOURCE, NFS4ERR_NOFILEHANDLE.
+        NFS4ERR_BADXDR, NFS4ERR_RESOURCE, NFS4ERR_NOFILEHANDLE,
+        NFS4ERR_LEASE_MOVED, or NFS4ERR_MOVED.
       </t>
 
     </section>
@@ -1745,13 +1746,15 @@ else if ((request.access & file_state.deny)) ||
         have been relocated to the new server, the client must find out
         about lease relocation before those leases expire.  To accomplish
         this, all operations which implicitly renew leases for a client
-        (i.e., OPEN, CLOSE, READ, WRITE, RENEW, LOCK, LOCKT, LOCKU),
+        (such as OPEN, CLOSE, READ, WRITE, RENEW, LOCK, and others),
         will return the error NFS4ERR_LEASE_MOVED if responsibility for
         any of the leases to be renewed has been transferred to a new
         server.  This condition will continue until the client receives
         an NFS4ERR_MOVED error and the server receives the subsequent
         GETATTR(fs_locations) for an access to each filesystem for which
-        a lease has been moved to a new server.
+        a lease has been moved to a new server. By convention, the compound
+        including the GETATTR(fs_locations) SHOULD append a RENEW operation
+        to permit the server to identify the client doing the access.
       </t>
 
       <t>
