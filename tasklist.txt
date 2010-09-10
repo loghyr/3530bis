@@ -77,7 +77,7 @@ to do in either case.
 
 Action: Add _DELAY
 Owner: Tom
-State: Accepted, LOW
+State: Finished
 Target:
 
 7) We need SECINFO workarounds on LOOKUPP and PUTROOTFH.
