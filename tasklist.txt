@@ -481,8 +481,9 @@ such requests.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, medium
 Target:
+Note: Group with stateid issues - backport from 5661?
 
 28) Reclaiming Local Opens with CLAIM_DELEGATE_CUR Instead of CLAIM_PREVIOUS
 
@@ -503,7 +504,7 @@ this open to succeed just like a normal CLAIM_DELEGATE_CUR open.
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, medium
 Target:
 
 29) Clientid Question
@@ -564,8 +565,9 @@ Action: None
 Owner: Dave
 State: Finished
 Target:
+Note: Send Dave a email to make sure.
 
-30) Description of NFS4ERR_BAD_STATED
+30) Description of NFS4ERR_BAD_STATEID
 
 The description of NFS4ERR_BAD_STATEID in RFC3530 is not very clear
 and implies that in cases where a stateid of the wrong type is
@@ -573,8 +575,9 @@ presented, it does not apply (so may NFS4ERR_INVAL should be used?).
 
 Action:
 Owner:
-State: Accepted
+State: Accepted, low
 Target:
+Note: check 5661
 
 31) delegation stateid in READ and WRITE
 
@@ -596,6 +599,8 @@ Action: Add appropriate text
 Owner: Tom
 State: In progress
 Target: IETF 79
+Note: Ask Mike why he thinks it is not permitted. Page 103, 9.4 on open.
+Also check 5661.
 
 32)
 
@@ -651,8 +656,9 @@ http://www.ietf.org/mail-archive/web/nfsv4/current/msg08169.html
 
 Action: Add appropriate text
 Owner:
-State: Accepted
+State: Accepted, medium
 Target:
+Note: Trond will produce a write up.
 
 36) NFS4ERR_LEASE_MOVED recovery convention
 
@@ -681,6 +687,7 @@ Action: Add appropriate text
 Owner: Rob
 State: Finished
 Target: IETF 79
+Note: Rob to bring up on list - OPEN_CONFIRM
 
 38) Remove potential confusion about implicit lease renewal
 
@@ -706,6 +713,7 @@ Action: Add appropriate text
 Owner: Rob
 State: Finished
 Target: IETF 79
+Note: Rob to bring up on the list?
 
 40) NFS4ERR_LEASE_MOVED trumps NFS4ERR_CB_PATH_DOWN
 
@@ -720,6 +728,7 @@ Action: Add appropriate text
 Owner: Rob
 State: Finished
 Target: IETF 79
+Note: Rob will bring up on list
 
 41) Errata for 3530
 Reported By: Jon Bauman
