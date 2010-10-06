@@ -2496,9 +2496,9 @@ cookieverf { cookie, name, attrs }
       </t>
 
       <t>
-        For READDIR arguments, cookie values of 1 and 2 should not
+        For READDIR arguments, cookie values of 1 and 2 SHOULD NOT
         be used and for READDIR results cookie values of 0, 1, and
-        2 should not be returned.
+        2 MUST NOT be returned.
       </t>
 
       <t>

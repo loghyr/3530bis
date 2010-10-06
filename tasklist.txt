@@ -1,39 +1,9 @@
-Notes: This tasklist is unsorted, especially by priority.
-
 Tasks:
 ======
 
-1) Fix ACL chapter to reflect correct ops to access bit matching. Look
-at fixes in 4.1.
-
-Action: Pull ACL changes back from 4.1 to 4.0
-Owner: Tom
-State: Needs review
-Target: IETF 78
-
-2) Explain what associated means in this context:
-
-> In sec. 14.2.2 DESCRIPTION
->
->  The share reservations and other state information released
->  at the server as a result of this CLOSE is only associated
-> with the supplied stateid.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-
-3) There are places where "lock_owner" is used in sec. 8.n.n and I
-found it confusing. Maybe a statement near the beginning of that
-section, noting that "lock_owner" is used to refer to both open_owner4
-and lock_owner4s? Same goes for "lock" referring to an open share as
-well as a byte range lock.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
+=====
+High:
+=====
 
 4) What are "courtesy locks"? Dave Noveck to clarify what he wants here
 to the WG.
@@ -59,47 +29,6 @@ Action:
 Owner: Dave
 State: Accepted, High
 Target:
-
-5) How do we handle Referrals in v4.0.
-
-Action: Take the 4.1 text and pull it back to 4.0
-Owner: Tom
-State: Needs review
-Target: IETF 78
-
-6) There is the issue of NFS4ERR_DELAY vs NFS4ERR_RESOURCE that keeps
-popping up now and again. IIRC, the AIX server wanted to delay clients
-in either SETCLIENTID or SETCLIENTID_CONFIRM while they cleaned out
-stale locking information, and since NFS4ERR_DELAY wasn't available,
-they tried NFS4ERR_RESOURCE. So.... Clarify when the server should be
-using NFS4ERR_RESOURCE vs NFS4ERR_DELAY, and what the client is supposed
-to do in either case.
-
-Action: Add _DELAY
-Owner: Tom
-State: Finished
-Target:
-
-7) We need SECINFO workarounds on LOOKUPP and PUTROOTFH.
-
-Action:
-Owner:
-State: Ask for clarification
-Target:
-
-8) Clarify the sections on sequence ids. Currently, the text is
-inconsistent about whether or not you need to initialize them to zero.
-It would also be nice to have a section that clarifies the life cycle of
-a sequence id. IOW: when do the client and server have to cache the
-sequence id info, and when are they allowed to forget about it.
-
-Action:
-Owner:
-State: Accepted, Medium
-Target:
-Notes: Trond votes get rid of having to initialize them to zero.
-
-Belongs in lock owner bucket...
 
 9) We should clarify the passage on NFS4ERR_LOCKS_HELD. Since lock owners
 and open owners are different things, we need to clarify which locks may
@@ -133,6 +62,24 @@ Owner:
 State: Accepted, Medium
 Target:
 
+=======
+Medium:
+=======
+
+8) Clarify the sections on sequence ids. Currently, the text is
+inconsistent about whether or not you need to initialize them to zero.
+It would also be nice to have a section that clarifies the life cycle of
+a sequence id. IOW: when do the client and server have to cache the
+sequence id info, and when are they allowed to forget about it.
+
+Action:
+Owner:
+State: Accepted, Medium
+Target:
+Notes: Trond votes get rid of having to initialize them to zero.
+
+Belongs in lock owner bucket...
+
 12) Clarify the various scenarios that should result in a delegation recall
 (mainly SETATTR by self).
 
@@ -141,58 +88,6 @@ Owner:
 State: Accepted, Medium
 Target:
 Note: Merge with 11.
-
-13) Perhaps clarify how clients should be managing delegations? There appear
-to be server implementations that expect clients to limit the number of
-delegations they are holding.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-Notes: Clients need to implement mechanism to limit number of held delegations.
-Get rid of low value delegations.
-
-14) There's the unimplemented-by-everybody mandatory UTF-8 formatting of
-filenames...
-
-Action: Discuss on alias and drive to consensus
-Owner: Dave
-State: Finished
-Target: IETF 78
-
-15) SPKM3/LIPKEY is not implemented by anyone. Remove its
-mandatory-to-implement status?
-
-Action: Discussed and agreed to remove
-Owner: Tom
-State: Finished
-Target: IETF 77
-
-16)
-
-Another minor locking item: the blocking-lock canceling recommendation
-in 9.6 should work for 4.0 clients and servers too:
-
-	If a server receives a blocking lock request, denies it, and
-	then later receives a nonblocking request for the same lock,
-	which is also denied, then it should remove the lock in question
-	from its list of pending blocking locks.  Clients should use
-	such a nonblocking request to indicate to the server that this
-	is the last time they intend to poll for the lock, as may happen
-	when the process requesting the lock is interrupted.  This is a
-	courtesy to the server, to prevent it from unnecessarily waiting
-	a lease period before granting other lock requests.  However,
-	clients are not required to perform this courtesy, and servers
-	must not depend on them doing so.  Also, clients must be
-	prepared for the possibility that this final locking request
-	will be accepted.
-
-Action:
-Owner:
-State: Accepted, low
-Target:
-Note: Add to 330bis.
 
 17) Description of Third Edge Condition
 
@@ -211,6 +106,7 @@ Owner:
 State: Accepted, Medium
 Target:
 Note: Dave track down the mail
+5661: Probably
 
 18) Issues With NFS4ERR_EXPIRED
 
@@ -364,6 +260,120 @@ State: Accepted, Medium
 Target:
 Note: Summarize the issue.
 
+27) Setattr for a Write Delegated File Should be Done with the
+Delegation Stateid
+
+If a client holding a write delegation does a setattr for that file
+for something other than set size and chooses to use a special
+stateid to do the setattr, the delegation can be recalled by the
+server. This is because there is no way for the server to know that
+the setattr is coming from the client which is holding the delegation,
+unless it looks at the clientid to figure this out. It would be
+better if the client sends any such setattrs with the delegation
+stateid so that the server can avoid recalling the delegation for
+such requests.
+
+Action:
+Owner:
+State: Accepted, medium
+Target:
+Note: Group with stateid issues - backport from 5661?
+
+28) Reclaiming Local Opens with CLAIM_DELEGATE_CUR Instead of CLAIM_PREVIOUS
+
+Described in
+
+If a client holds some local open/lock state while holding a
+delegation for that file and the server reboots, the client can
+reclaim this state by sending open requests with the claim_type set
+to CLAIM_PREVIOUS. However there is no way to differentiate between
+the reclaim for a regular open and that of a DELEGATE_CUR open. The
+server can figure out that the open being reclaimed is a DELEGATE_CUR
+open by comparing the clientid for that open with the client holding
+the delegation in order to avoid recalling the delegation but it
+would be better if the client either does not reclaim this open
+(since it already has the delegation) or reclaim this by setting
+the claim_type to CLAIM_DELEGATE_CUR so that the server can allow
+this open to succeed just like a normal CLAIM_DELEGATE_CUR open.
+
+Action:
+Owner:
+State: Accepted, medium
+Target:
+
+35) OPEN_DOWNGRADE and posix byte range
+
+Trond started this discussion here:
+http://www.ietf.org/mail-archive/web/nfsv4/current/msg08169.html
+
+Action: Add appropriate text
+Owner:
+State: Accepted, medium
+Target:
+Note: Trond will produce a write up.
+
+=====
+Low:
+=====
+
+2) Explain what associated means in this context:
+
+> In sec. 14.2.2 DESCRIPTION
+>
+>  The share reservations and other state information released
+>  at the server as a result of this CLOSE is only associated
+> with the supplied stateid.
+
+Action:
+Owner:
+State: Accepted, Low
+Target:
+
+3) There are places where "lock_owner" is used in sec. 8.n.n and I
+found it confusing. Maybe a statement near the beginning of that
+section, noting that "lock_owner" is used to refer to both open_owner4
+and lock_owner4s? Same goes for "lock" referring to an open share as
+well as a byte range lock.
+
+Action:
+Owner:
+State: Accepted, Low
+Target:
+
+13) Perhaps clarify how clients should be managing delegations? There appear
+to be server implementations that expect clients to limit the number of
+delegations they are holding.
+
+Action:
+Owner:
+State: Accepted, Low
+Target:
+Notes: Clients need to implement mechanism to limit number of held delegations.
+Get rid of low value delegations.
+
+16) Another minor locking item: the blocking-lock canceling recommendation
+in 9.6 should work for 4.0 clients and servers too:
+
+	If a server receives a blocking lock request, denies it, and
+	then later receives a nonblocking request for the same lock,
+	which is also denied, then it should remove the lock in question
+	from its list of pending blocking locks.  Clients should use
+	such a nonblocking request to indicate to the server that this
+	is the last time they intend to poll for the lock, as may happen
+	when the process requesting the lock is interrupted.  This is a
+	courtesy to the server, to prevent it from unnecessarily waiting
+	a lease period before granting other lock requests.  However,
+	clients are not required to perform this courtesy, and servers
+	must not depend on them doing so.  Also, clients must be
+	prepared for the possibility that this final locking request
+	will be accepted.
+
+Action:
+Owner:
+State: Accepted, low
+Target:
+Note: Add to 330bis.
+
 21) Contradiction in 2nd Para of GETATTR Description
 
 The 2nd paragraph of the description for GETATTR contradicts itself.  It says
@@ -466,46 +476,161 @@ State: Accepted, Low
 Target:
 Notes: Addressed in 4.1?
 
-27) Setattr for a Write Delegated File Should be Done with the
-Delegation Stateid
+30) Description of NFS4ERR_BAD_STATEID
 
-If a client holding a write delegation does a setattr for that file
-for something other than set size and chooses to use a special
-stateid to do the setattr, the delegation can be recalled by the
-server. This is because there is no way for the server to know that
-the setattr is coming from the client which is holding the delegation,
-unless it looks at the clientid to figure this out. It would be
-better if the client sends any such setattrs with the delegation
-stateid so that the server can avoid recalling the delegation for
-such requests.
+The description of NFS4ERR_BAD_STATEID in RFC3530 is not very clear
+and implies that in cases where a stateid of the wrong type is
+presented, it does not apply (so may NFS4ERR_INVAL should be used?).
 
 Action:
 Owner:
-State: Accepted, medium
+State: Accepted, low
 Target:
-Note: Group with stateid issues - backport from 5661?
+Note: check 5661
 
-28) Reclaiming Local Opens with CLAIM_DELEGATE_CUR Instead of CLAIM_PREVIOUS
+43) Not all "should not", etc are capitalized.
 
-Described in
+Action: Change text
+Owner: Tom
+State Accepted, Low
+Target: IETF 79
+5661: No
 
-If a client holds some local open/lock state while holding a
-delegation for that file and the server reboots, the client can
-reclaim this state by sending open requests with the claim_type set
-to CLAIM_PREVIOUS. However there is no way to differentiate between
-the reclaim for a regular open and that of a DELEGATE_CUR open. The
-server can figure out that the open being reclaimed is a DELEGATE_CUR
-open by comparing the clientid for that open with the client holding
-the delegation in order to avoid recalling the delegation but it
-would be better if the client either does not reclaim this open
-(since it already has the delegation) or reclaim this by setting
-the claim_type to CLAIM_DELEGATE_CUR so that the server can allow
-this open to succeed just like a normal CLAIM_DELEGATE_CUR open.
+
+=====
+i18n:
+=====
+
+14) There's the unimplemented-by-everybody mandatory UTF-8 formatting of
+filenames...
+
+Action: Discuss on alias and drive to consensus
+Owner: Dave
+State: Finished
+Target: IETF 78
+
+=======
+Triage:
+=======
+
+7) We need SECINFO workarounds on LOOKUPP and PUTROOTFH.
 
 Action:
 Owner:
-State: Accepted, medium
+State: Ask for clarification
 Target:
+
+31) delegation stateid in READ and WRITE
+
+Mike asked on list:
+
+  In RFC5661, NFSv4.1 clients are permitted to use delegation stateids in
+  READ and WRITE.
+
+  Neither RFC3530 nor the bis I-D explicitly permits this.
+
+  Is it permitted?
+
+  Regardless of the answer, it should be explicit in the bis I-D.
+
+I believe the consensus was that existing implementations allowed
+this and no one complained about permitting it.
+
+Action: Add appropriate text
+Owner: Tom
+State: In progress
+Target: IETF 79
+Note: Ask Mike why he thinks it is not permitted. Page 103, 9.4 on open.
+Also check 5661.
+
+==============
+Clarification:
+==============
+
+37) More ops need to be able to return LEASE_MOVED
+
+Rob Thurlow observed:
+The following OPs need to be able to return LEASE_MOVED - since
+they use state, they must help notify about this condition.
+       OPEN_CONFIRM (14.2.19)
+       OPEN_DOWNGRADE (14.2.19)
+       SETATTR (when the file size is set) (14.2.32)
+
+Action: Add appropriate text
+Owner: Rob
+State: Finished
+Target: IETF 79
+Note: Rob to bring up on list - OPEN_CONFIRM
+
+39) Clarification on renewing sequence IDs
+
+Rob Thurlow observed:
+MOVED and LEASE_MOVED need to be added to the list of errors
+in 8.1.5 which do NOT result in incrementing the open owner
+or lock owner sequence ID; if the sequence ID is incremented,
+we have a problem after a migration.
+
+Action: Add appropriate text
+Owner: Rob
+State: Finished
+Target: IETF 79
+Note: Rob to bring up on the list?
+
+40) NFS4ERR_LEASE_MOVED trumps NFS4ERR_CB_PATH_DOWN
+
+Rob Thurlow observed:
+We should clarify what happens when a server is in a position
+to return both NFS4ERR_LEASE_MOVED and NFS4ERR_CB_PATH_DOWN.
+If the client handles NFS4ERR_CB_PATH_DOWN first by re-establishing
+the callback path, and then gets a recall, progress will be blocked
+as DELEGRETURN with still fail with NFS4ERR_LEASE_MOVED.
+
+Action: Add appropriate text
+Owner: Rob
+State: Finished
+Target: IETF 79
+Note: Rob will bring up on list
+
+
+=====
+Done:
+=====
+
+1) Fix ACL chapter to reflect correct ops to access bit matching. Look
+at fixes in 4.1.
+
+Action: Pull ACL changes back from 4.1 to 4.0
+Owner: Tom
+State: Needs review
+Target: IETF 78
+
+5) How do we handle Referrals in v4.0.
+
+Action: Take the 4.1 text and pull it back to 4.0
+Owner: Tom
+State: Needs review
+Target: IETF 78
+
+6) There is the issue of NFS4ERR_DELAY vs NFS4ERR_RESOURCE that keeps
+popping up now and again. IIRC, the AIX server wanted to delay clients
+in either SETCLIENTID or SETCLIENTID_CONFIRM while they cleaned out
+stale locking information, and since NFS4ERR_DELAY wasn't available,
+they tried NFS4ERR_RESOURCE. So.... Clarify when the server should be
+using NFS4ERR_RESOURCE vs NFS4ERR_DELAY, and what the client is supposed
+to do in either case.
+
+Action: Add _DELAY
+Owner: Tom
+State: Finished
+Target:
+
+15) SPKM3/LIPKEY is not implemented by anyone. Remove its
+mandatory-to-implement status?
+
+Action: Discussed and agreed to remove
+Owner: Tom
+State: Finished
+Target: IETF 77
 
 29) Clientid Question
 
@@ -565,46 +690,9 @@ Action: None
 Owner: Dave
 State: Finished
 Target:
-Note: Send Dave a email to make sure.
+Note: Send Dave a email to make sure. [Done]
 
-30) Description of NFS4ERR_BAD_STATEID
-
-The description of NFS4ERR_BAD_STATEID in RFC3530 is not very clear
-and implies that in cases where a stateid of the wrong type is
-presented, it does not apply (so may NFS4ERR_INVAL should be used?).
-
-Action:
-Owner:
-State: Accepted, low
-Target:
-Note: check 5661
-
-31) delegation stateid in READ and WRITE
-
-Mike asked on list:
-
-  In RFC5661, NFSv4.1 clients are permitted to use delegation stateids in
-  READ and WRITE.
-
-  Neither RFC3530 nor the bis I-D explicitly permits this.
-
-  Is it permitted?
-
-  Regardless of the answer, it should be explicit in the bis I-D.
-
-I believe the consensus was that existing implementations allowed
-this and no one complained about permitting it.
-
-Action: Add appropriate text
-Owner: Tom
-State: In progress
-Target: IETF 79
-Note: Ask Mike why he thinks it is not permitted. Page 103, 9.4 on open.
-Also check 5661.
-
-32)
-
-Rob had some referral changes:
+32) Rob had some referral changes:
 
 Change #1: Section 8.14.1, amend as follows:
 
@@ -649,17 +737,6 @@ Owner: Tom
 State: Finished
 Target: IETF 79
 
-35) OPEN_DOWNGRSDE and posix byte range
-
-Trond started this discussion here:
-http://www.ietf.org/mail-archive/web/nfsv4/current/msg08169.html
-
-Action: Add appropriate text
-Owner:
-State: Accepted, medium
-Target:
-Note: Trond will produce a write up.
-
 36) NFS4ERR_LEASE_MOVED recovery convention
 
 Rob Thurlow observed:
@@ -674,21 +751,6 @@ Owner: Rob
 State: Finished
 Target: IETF 79
 
-37) More ops need to be able to return LEASE_MOVED
-
-Rob Thurlow observed:
-The following OPs need to be able to return LEASE_MOVED - since
-they use state, they must help notify about this condition.
-       OPEN_CONFIRM (14.2.19)
-       OPEN_DOWNGRADE (14.2.19)
-       SETATTR (when the file size is set) (14.2.32)
-
-Action: Add appropriate text
-Owner: Rob
-State: Finished
-Target: IETF 79
-Note: Rob to bring up on list - OPEN_CONFIRM
-
 38) Remove potential confusion about implicit lease renewal
 
 Rob Thurlow observed:
@@ -700,35 +762,6 @@ Action: Change text
 Owner: Rob
 State: Finished
 Target: IETF 79
-
-39) Clarification on renewing sequence IDs
-
-Rob Thurlow observed:
-MOVED and LEASE_MOVED need to be added to the list of errors
-in 8.1.5 which do NOT result in incrementing the open owner
-or lock owner sequence ID; if the sequence ID is incremented,
-we have a problem after a migration.
-
-Action: Add appropriate text
-Owner: Rob
-State: Finished
-Target: IETF 79
-Note: Rob to bring up on the list?
-
-40) NFS4ERR_LEASE_MOVED trumps NFS4ERR_CB_PATH_DOWN
-
-Rob Thurlow observed:
-We should clarify what happens when a server is in a position
-to return both NFS4ERR_LEASE_MOVED and NFS4ERR_CB_PATH_DOWN.
-If the client handles NFS4ERR_CB_PATH_DOWN first by re-establishing
-the callback path, and then gets a recall, progress will be blocked
-as DELEGRETURN with still fail with NFS4ERR_LEASE_MOVED.
-
-Action: Add appropriate text
-Owner: Rob
-State: Finished
-Target: IETF 79
-Note: Rob will bring up on list
 
 41) Errata for 3530
 Reported By: Jon Bauman
@@ -762,3 +795,13 @@ Owner: Tom
 State: Finished
 Target: IETF 79
 
+42) READDIR cookie results
+
+Benny pointed out that READDIR MUST NOT return 0, 1, or 2
+as a cookie value.
+
+Action: Change text
+Owner: Tom
+State: Finished
+Target: IETF 79
+5661: Yes
