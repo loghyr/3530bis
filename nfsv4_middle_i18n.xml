@@ -51,9 +51,9 @@
     the NFS version 4 server implementation per se.  As a
     result, cetain aspects of name processing may change as
     the locus of processing moves from file system to file
-    system.  As a result of these factors, the protocol does 
-    not enforce uniformity of processing NFS version 4 
-    server requests on the server as a whole.  Because the
+    system.  As a result of these factors, the protocol cannot 
+    enforce uniformity of name-related processing upon NFS version 
+    4 server requests on the server as a whole.  Because the
     server interacts with existing file system implementations,
     the same server handling will produce different behavior
     when interacting with different file system
@@ -90,8 +90,8 @@
         In addition to some specific issues which have caused
         stringprep to add confusion in handling certain
         characters for certain languages, there are a number
-        of reasons why stringprep profiles are not suitable
-        for describing NFS version 4.
+        of general reasons why stringprep profiles are not 
+        suitable for describing NFS version 4.
         <list style='symbols'>
           <t>
             Restricting the character repertoire to Unicode 
@@ -133,51 +133,103 @@
         Unicode has defined several equivalence relationships
         among the set of possible strings.  Understanding 
         the nature and purpose of these equivalence relations
-        is important to understand the handling of unicode
+        is important to understand the handling of Unicode
         strings within NFS version 4.
-        <list style='symbols'>
+      </t>
+      <t>
+        Some string pairs are thought as only differing
+        in the way accents and other diacritics are
+        encoded, as illustrated in the examples below.
+        Such string pairs are called
+        "canonically equivalent".  
+        <list>
           <t>
-            Some string pairs are thought as only differing
-            in the way accents and other diacritics are
-            encoded.  Such string pairs are called
-            "canonically equivalent".  For example, 
-            the character LATIN SMALL LETTER E WITH ACUTE
-            (U+00E9) is defined as equivalent to the string 
+            Such equivalence can occur when there 
+            are precomposed
+            characters, as an alternative to encoding a
+            base character in addition to a combining
+            accent.  For example, the character 
+            LATIN SMALL LETTER E WITH ACUTE (U+00E9) is 
+            defined as canonically equivalent to the string 
             consisting of LATIN SMALL LETTER E followed by
             COMBINING ACUTE ACCENT (U+0065, U+0301).  
           </t>
           <t>
-            Additionally there is an equvalence relation
-            of "compatibility equivalence".  Two canonically
-            equivalent strings are necessarily compatibility
-            equivalent, although not the converse.  An
-            example of compatibility equivalent strings
-            which are not canonically equivalent are
-            GREEK CAPITAL LETTER OMEGA (U+03A9) and 
-            OHM SIGN (U+2129).  These are identical in
-            appearance while other compatibility
-            equivalent strings are not.  Another example
-            would be "x2" and the two character string
-            denoting x-squared which are clearly differnt
-            in appearance although compatibility equivalent
-            and not canonically equivalent.  These have 
-            Unicode encodings  
-            LATIN SMALL LETTER X, DIGIT TWO (U+0078, U+0032)
-            and LATIN SMALL LETTER X, SUPERSCRIPT TWO 
-            (U+0078, U+00B2), 
+            When multiple combining diacritics are 
+            present, differences in the ordering 
+            are not reflected in resulting display
+            and the strings are defined as canonically
+            equivalent.  For example, the string 
+            consisting of LATIN SMALL LETTER Q,
+            COMBINING ACUTE ACCENT, COMBINING
+            GRAVE ACCENT (U+0071, U+0301, U+0300)
+            is canonically quivalent to the string 
+            consisting of LATIN SMALL LETTER Q,
+            COMBINING GRAVE ACCENT, COMBINING
+            ACUTE ACCENT (U+0071, U+0300, U+0301)
+          </t>
+          <t>
+            When both situations are present, the 
+            number of canonically equivalent strings
+            can be greater.  Thus, the following
+            strings are all canonically equivalent:
+            <list>
+              <t>
+                LATIN SMALL LETTER E, COMBINING MACRON,
+                ACCENT, COMBINING ACUTE ACCENT 
+                (U+0xxx, U+0304, U+0301)
+              </t>
+              <t>
+                LATIN SMALL LETTER E, COMBINING ACUTE
+                ACCENT, COMBINING MACRON 
+                (U+0xxx, U+0301, U+0304)
+              </t>
+              <t>
+                LATIN SMALL LETTER E WITH MACRON,
+                COMBINING ACUTE ACCENT (U+011E, U+0301)
+              </t>
+              <t>
+                LATIN SMALL LETTER E WITH ACUTE,
+                COMBINING MACRON (U+00E9, U+0304)
+              </t>
+              <t>
+                LATIN SMALL LETTER E WITH MACRON AND
+                ACUTE (U+1E16)
+              </t>
+            </list>
           </t>
         </list>  
       </t>
       <t>
+        Additionally there is an equivalence relation
+        of "compatibility equivalence".  Two canonically
+        equivalent strings are necessarily compatibility
+        equivalent, although not the converse.  An
+        example of compatibility equivalent strings
+        which are not canonically equivalent are
+        GREEK CAPITAL LETTER OMEGA (U+03A9) and 
+        OHM SIGN (U+2129).  These are identical in
+        appearance while other compatibility
+        equivalent strings are not.  Another example
+        would be "x2" and the two character string
+        denoting x-squared which are clearly differnt
+        in appearance although compatibility equivalent
+        and not canonically equivalent.  These have 
+        Unicode encodings  
+        LATIN SMALL LETTER X, DIGIT TWO (U+0078, U+0032)
+        and LATIN SMALL LETTER X, SUPERSCRIPT TWO 
+        (U+0078, U+00B2), 
+      </t>
+      <t>
         One way to deal with these equivalence relations is
         via normalization.  A normalization form maps all 
-        strings to correspond normalized string in such a
-        fashion that all strings that are equivalent 
+        strings to a correspondig normalized string in such 
+        a fashion that all strings that are equivalent 
         (canonically or compatibly, depending on the form)
         are mapped to the same value.  Thus the image of
         the mapping is a subset of Unicode strings conceived
         as the representives of the equivalence classes 
-        defined by the chosed equivalence relation.
+        defined by the chosen equivalence relation.
       </t>
       <t>
         In the NFS version 4 protocol, handling of issues
@@ -190,7 +242,7 @@
             and domain naming, the normalization form
             defined by the appropriate internet standards
             is used.  For server and domain naming,
-            this involves normalization form NKFC
+            this involves normalization form NFKC
             as specified in <xref target='I-D.draft-ietf-idna' />
           </t>
           <t>
@@ -201,7 +253,7 @@
             specification is not to specify a particular
             form but to make sure that interoperability
             is maximmized, even when clients and 
-            server-based file systems may have different
+            server-based file systems have different
             preferences.
           </t> 
         </list>  
@@ -213,14 +265,14 @@
         been attempts to define uniform processing in
         an attempt to avoid such confusion 
 	(see stringprep <xref target="RFC3454" />)
-        but the results have often added to confusion.
+        but the results have often added confusion.
       </t>
       <t>
         Some examples of possible confusions and proposed
         processing intended to reduce/avoid confusions:
         <list style='symbols'>
           <t>
-            Deletion of characters supposed to be invisible and 
+            Deletion of characters believed to be invisible and 
             appropriately ignored, justifying their deletion,
             including, WORD JOINER (U+2060), and the 
             ZERO WIDTH SPACE (U+200B).
@@ -281,8 +333,8 @@
             inaccessible by NFS version 4.  This
             specification defines how the protocol
             maximizes interoperability in the face of
-            different file system implementations.
-          <vspace blankLines='1' />
+            different file system implementations
+.
             NFS version 4 does allow file systems to map  
             and to reject characters, including those 
             likely to result in confusion, since file systems 
@@ -300,7 +352,7 @@
   <section title="String Type Overview">
     <section title="Overall String Class Divisions">
       <t>
-        NFS version 4 has to deal with with a large 
+        NFS version 4 has to deal with a large 
         set of diffreent types of strings and 
         because of the different role of each,
         internationalization issues will be different
@@ -337,8 +389,8 @@
           <t hangText="MIX">
             indicating that there is small amount of
             preparatory processing that either picks
-            an appropriate modes of internationalization
-            handling or divides the string into a
+            an internationalization hadling mode or
+            divides the string into a
             set of (two) strings with a different mode
             internationalization handling for each.
             The details are discussed in the section
@@ -354,15 +406,15 @@
           </t>
           <t hangText="INET">
             indicating that the string needs to be
-            processed in a fashion is goverened by
+            processed in a fashion goverened by
             non-NFS-specific internet specifications.
             The details are discussed in the section
             "<xref target="Type-INET" format='title' />".
           </t>
           <t hangText="NFS">
             indicating that the string needs to be
-            processed in a fashion is goverened by
-            NFSv4-specific consideration.  The primary
+            processed in a fashion governed by
+            NFSv4-specific considerations.  The primary
             focus is on enabling flexibility for the
             various file systems to be accessed and
             is described in the section
@@ -381,28 +433,28 @@
         specifies the nature of its relationship to utf8 and
         ascii.
         <list style='hanging'>
-          <t hangText="utf8_should/SHOULD:">
-            indicating that strings of this type should be
+          <t hangText="utf8_should/USHOULD:">
+            indicating that strings of this type SHOULD be
             UTF-8 but clients and servers will not
-            check for valid UTF-8 encoding.
+            check for valid UTF-8 encoding. 
           </t>
-          <t hangText="utf8val_should/VSHOULD:">
-            indicating that strings of this type should be
+          <t hangText="utf8val_should/UVSHOULD:">
+            indicating that strings of this type SHOULD be
             and generally will be in the form of the UTF-8
             encoding of Unicode.  Strings in most cases
             will be checked by the server for valid UTF-8 
             but for certain file systems, such checking 
             may be inhibited.  
           </t>
-          <t hangText="utf8val_must/VMUST:">
-            indicating that strings of this type must be
+          <t hangText="utf8val_must/UVMUST:">
+            indicating that strings of this type MUST be
             in the form of the UTF-8 encoding of Unicode.
             Strings will be checked by the server for 
-            valid UTF-8 and the server should ensure that
+            valid UTF-8 and the server SHOULD ensure that
             when sent to the client, they are valid UTF-8.
           </t>
           <t hangText="ascii_must/ASCII:">
-            indicating that strings of this type must be
+            indicating that strings of this type MUST be
             pure ASCII, and thus automatically UTF-8.
             The processing of these string must ensure
             that they are only have ASCII characters but 
@@ -411,6 +463,14 @@
             assures that only ASCII characters are present.
           </t>
         </list> 
+      </t>
+      <t>
+        In those cases where UTF-8 is not required, USHOULD
+        and UVSHOULD, and strings that are not valid UTF-8
+        are received and accepted, the receiver MUST NOT
+        modify the strings.  For example, setting particular
+        bits such as the high-order bit to zero MUST NOT
+        be done. 
       </t>
     </section>
     <section title="Individual Types and Their Handling">
@@ -425,22 +485,22 @@
         <ttcol align='left'>Class</ttcol>
         <ttcol align='left'>Explanation</ttcol>
         <c>comptag4</c>
-          <c>SHOULD</c>
+          <c>USHOULD</c>
           <c>NIP</c>
           <c>
             Should be utf8 but no validation by server or
             client is to be done.
           </c>
         <c>component4</c>
-          <c>VSHOULD</c>
+          <c>UVSHOULD</c>
           <c>NFS</c>
           <c>
             Should be utf8 but clients may need to access 
-            file systems with a different name structure.
-            files systems with non-utf8 names.
+            file systems with a different name structure,
+            such as file systems that have non-utf8 names.
           </c>
         <c>linktext4</c>
-          <c>VSHOULD</c>
+          <c>UVSHOULD</c>
           <c>NFS</c>
           <c>
             Should be utf8 since text may include name
@@ -459,9 +519,12 @@
       </texttable>
       <t>
         There are a number of string types that are 
-        compound in that they may consist of multiple
-        conjoined strings with different utf8-related
-        processing for each.
+        subject to preliminary processing.  This processing
+        may take the form either of selecting one of two possible
+        forms based on the string contents or it in may consist 
+        of dividing the string into multiple
+        conjoined strings each with different utf8-related
+        processing.
       </t>
       <texttable anchor='I18nTable2'>
         <ttcol align='left'>Type</ttcol>
@@ -469,7 +532,7 @@
         <ttcol align='left'>Class</ttcol>
         <ttcol align='left'>Explanation</ttcol>
         <c>prin4</c>
-          <c>VMUST</c>
+          <c>UVMUST</c>
           <c>MIX</c>
           <c>
             Consists of two parts separated by an at-sign,
@@ -477,7 +540,7 @@
             described in the next table.
           </c>
         <c>server4</c>
-          <c>VMUST</c>
+          <c>UVMUST</c>
           <c>MIX</c>
           <c>
             Is either an IP address (serveraddr4) which
@@ -499,24 +562,24 @@
           <c>ASCII</c>
           <c>NIP</c>
           <c>
-            Server as IP address, whether IPv4 or IPv6,
+            Server as IP address, whether IPv4 or IPv6.
           </c>
         <c>svrname4</c>
-          <c>VMUST</c>
+          <c>UVMUST</c>
           <c>INET</c>
           <c>
             Server name as returned by server.  Not sent
             by client, except in VERIFY/NVERIFY.
           </c>
         <c>prinsfx4</c>
-          <c>VMUST</c>
+          <c>UVMUST</c>
           <c>INET</c>
           <c>
             Suffix part of principal, in the form of
             a domain name.
           </c>
         <c>prinpfx4</c>
-          <c>VMUST</c>
+          <c>UVMUST</c>
           <c>NFS</c>
           <c>
             Must match one of a list of valid users
@@ -528,24 +591,30 @@
   <section anchor="ss:i18n:utf8_err" title="Errors Related to Strings">
     <t>
       When the client sends an invalid UTF-8 string in a 
-      context in which UTF-8 is required, the server MUST 
-      return an NFS4ERR_INVAL error.  When the client sends 
-      an invalid UTF-8 string in a context in which UTF-8 is 
-      recommended, the server SHOULD return an NFS4ERR_INVAL
-      error.  These situations apply to cases in which 
+      context in which UTF-8 is REQUIRED, the server MUST 
+      return an NFS4ERR_INVAL error.  Within the framework
+      of the previous section, this applies to strings whose
+      type is defined as utf8val_must or ascii_must.    
+      When the client sends  an invalid UTF-8 string in a 
+      context in which UTF-8 is RECOMMENDED and the server
+      should test for UTF-8, the server SHOULD return an 
+      NFS4ERR_INVAL error.  Within the framework
+      of the previous section, this applies to strings whose
+      type is defined as utf8val_should.    These situations 
+      apply to cases in which 
       inappropriate prefixes are detected and where the 
       count includes trailing bytes that do not constitute 
       a full UCS character.
     </t>  
     <t>
-      Where the client supplied string is valid UTF-8 but 
+      Where the client-supplied string is valid UTF-8 but 
       contains characters that are not supported by the 
       server file system as a value for that string 
-      (e.g., names containing characters that have more 
+      (e.g. names containing characters that have more 
       than two octets on a file system that supports UCS-2 
       characters only, file name components containing 
       slashes on file systems that do not allow them in 
-      filename file name components), the server should 
+      file name components), the server 
       MUST return an NFS4ERR_BADCHAR error.
     </t>
     <t>
@@ -562,7 +631,7 @@
       Where a UTF-8 string is used as a file name component, the file 
       system implementation MUST NOT return NFS4ERR_BADNAME, 
       simply due to a normalization mismatch.  In such cases 
-      the implementation MAY convert the string to its own 
+      the implementation SHOULD convert the string to its own 
       preferred normalization mode before performing the 
       operation.  As a result, a client cannot assume that
       a file created with a name it specifies will have 
@@ -571,8 +640,9 @@
       preferred normalization form.
     </t>
     <t>
-      Where a UTF-8 string is used as other than a file name 
-      component and the string does not meet the normalization 
+      Where a UTF-8 string is used as other than as file name 
+      component (or as symbolic link text)
+      and the string does not meet the normalization 
       requirements specified for it, the error NFS4ERR_INVAL is
       returned.
     </t>
@@ -600,9 +670,9 @@
          If there is more that one at-sign, the string
          is considered invalid.  For cases in which 
          there are no at-signs or the at-sign appears 
-         at the start of end of the string see
+         at the start or end of the string see
          <xref target="sec:fattr:owner_group"
-               format="title" /> 
+               format="title" />.  
          Otherwise, the portion before the at-sign is 
          dealt with as a prinpfx4 and the portion after
          is dealt with as a prinsfx4.
@@ -612,7 +682,7 @@
        <t>
          Server id strings typically appear in responses 
          (as attribute values) and only appear in requests
-         as attribute value presented to VERIFY and
+         as an attribute value presented to VERIFY and
          NVERIFY.  With that exception,
          they are not subject to server 
          validation and posible rejection.  It is 
@@ -625,25 +695,11 @@
        </t>
        <t>
          Servers are identified by either server 
-         names of IP addresses.  Once an id has been
+         names or IP addresses.  Once an id has been
          identified as an IP address, then there is 
          no processing specific to internationalization
          to be done, since such an address must be 
          ASCII to be valid.
-       </t>
-       <t>
-         Identifiers which are not valid IP addresses
-         are treated as server names for which see 
-         below.  There are fifteen top-level domains
-         that consist of two characters, each within
-         the range a-f.  Given that, it is possible
-         to have a string such as bb.bb.bb.bb, which 
-         might be either an IP address or a server 
-         name.  It is recommended that in such cases,
-         a check for a valid server name be done first
-         and the string interpreted as an IP address
-         only if it found that the string is not a
-         server name.
        </t>
     </section>
   </section> 
@@ -653,7 +709,7 @@
       There are a number of types of strings which, for 
       a number of different reasons, do not require 
       any internationalization-specific handling, such
-      as valdiation of UTF-8, normaliztion, or character
+      as validation of UTF-8, normalization, or character
       mapping or checking.  This does not necessarily 
       mean that the strings need not be UTF-8.  In some
       case, other checking on the string ensures that
@@ -667,7 +723,7 @@
            strings are an aid to debugging and the sender 
            should avoid confusion by not using anything but 
            valid UTF-8.  But any work validating the string or 
-           modifying it would just add complication
+           modifying it would only add complication
            to a mechanism whose basic function is best
            supported by making it not subject to any checking
            and having data maximally available 
@@ -720,10 +776,12 @@
     </t>
     <t>
       The general rules for handling all of these domain-related
-      strings are similar and independent of role of the sender
-      or receiver as client or sender, although the consequences
+      strings are similar and independent of role the of the sender
+      or receiver as client or server although the consequences
       of failure to obey these rules may be different for client
-      or server.  
+      or server.  The server can report errors when it
+      is sent invalid strings, whereas the client will simply
+      ignore invalid string or use a default value in their place.  
     </t>
     <t>
       The string sent SHOULD be in the form of a U-label although 
@@ -749,7 +807,7 @@
       which are not U-labels into a U-label, which it MAY do,
       it MUST NOT modify the domain and the domain returned
       on a GETATTR of the userid MUST be the same as that 
-      using when setting the userid by the SETATTTR.
+      used when setting the userid by the SETATTTR.
     </t>  
     <t>
       The server MAY implement VERIFY and NVERIFY
@@ -769,7 +827,7 @@
       below for details).  In these situations, the primary 
       responsibility of NFS version 4 is to provide a framework
       in which that other entity (file system and server operating
-      system principal naming framework) to implement its own
+      system principal naming framework) implements its own
       decisions while establishing rules to limit interoperability
       issues.
     </t>
@@ -810,7 +868,7 @@
     </t>
      
     <section anchor='Type-ncomp'
-             title="Handling of File Came Components">
+             title="Handling of File Name Components">
       <t>
         There are a number of places within client and server where 
         file name components are processed:
@@ -922,7 +980,7 @@
               entire file system.
             </t>
             <t>
-              Another alternate character repertoires is the
+              Another alternate character repertoire is the
               set of codepoints, representable by the file system,
               most typically UCS-4.
             </t>
@@ -948,7 +1006,7 @@
           restricted to those where use is within a restricted 
           environment where a single character mapping locale 
           can be administratively enforced, allowing a file 
-          name to be treated as string of bytes, rather than as 
+          name to be treated as a string of bytes, rather than as 
           a string of characters.  Such an arrangement might
           be necessary when NFS version 4 access to a file system 
           containing names which are not valid UTF-8 needs to be
@@ -956,9 +1014,9 @@
         </t>
         <t>
           However, in any of the following situations, file names 
-          have to be treated as strings of characters and servers 
-          MUST return NFS4ERR_INVAL when file names that are not 
-          in UTF-8 format:
+          have to be treated as strings of Unicode characters and 
+          servers MUST return NFS4ERR_INVAL when file names that 
+          are not in UTF-8 format:
           <list style='symbols'>
             <t>
               Case-insensitive comparisons are specified by the 
@@ -998,11 +1056,11 @@
           case_insensitive file system attribute, and if 
           the case_insensitive attribute is true for a given
           file system, the NFS 
-          version 4 server must use the Unicode case mapping tables
+          version 4 server MUST use the Unicode case mapping tables
           for the version of Unicode corresponding to the character
           repertoire.  In the case where the character repertoire
           is UCS-2 or UCS-4, the case mapping tables from the
-          latest available version of Unicode should be used.
+          latest available version of Unicode SHOULD be used.
         </t>
         <t>
           If the case_preserving attribute is present and set 
@@ -1057,7 +1115,7 @@
           If an implementation wishes to eliminate other characters
           because it is believed that allowing component 
           name versions that both include the character and
-          not have while otherwise the same, will contribute to
+          do not have while otherwise the same, will contribute to
           confusion, it has two options:
           <list style='symbols'>
             <t>
@@ -1073,9 +1131,9 @@
               those which are both normalization-insensitive
               and normalization-preserving, as discussed
               below.  The handling will be insensitive to
-              presence of the chosen characters while 
+              the presence of the chosen characters while 
               preserving the presence or absence of such
-              chatacters within names.
+              characters within names.
             </t>
           </list>
         </t>
@@ -1098,8 +1156,8 @@
           server and the client.  It is important to note that 
           the server and client may have different approaches 
           to this area, and that the server choice may not match 
-          the client operating environment so the issue of 
-          mismatches and how they will be dealt with by the 
+          the client operating environment.  The issue of 
+          mismatches and how they may be best dealt with by the 
           client is discussed in a later section.
         </t>
         <section title="Server Normalization Issues for Component Strings">
@@ -1108,8 +1166,8 @@
             a particular normalization form for component4 strings.   
             Therefore, the server may receive unnormalized strings 
             or strings that reflect either normalization form within 
-            protocol requests and responses.  If the operating 
-            environment requires normalization, then the server 
+            protocol requests and responses.  If the file system 
+            requires normalization, then the server 
             implementation must normalize component4 strings
             within the protocol server before presenting the 
             information to the local file system.
@@ -1134,7 +1192,7 @@
                 Implement handling which is both normalization-insensitive
                 and normalization-preserving.  This makes it impossible 
                 to create two files in the same directory that have 
-                two different canonically equivalent name, i.e.
+                two different canonically equivalent names, i.e.
                 names which map to the same name when normalized.  
                 However, unlike the previous option, clients will not 
                 have the names that they present modified to
@@ -1147,7 +1205,7 @@
                 that two files can be created in the same directory 
                 which have different names which map to the same 
                 name when normalized.  This may be a significant 
-                issue when client which use different normalization 
+                issue when clients which use different normalization 
                 forms are used on the same file system, but this 
                 issue needs to be set against the difficulty of 
                 providing other sorts of normalization handling 
@@ -1162,18 +1220,34 @@
             with the fact that the server may impose normalization 
             on file name components presented to it.  As a result, 
             a file can be created within a directory and that name 
-            may have different name due to normalization at the 
-            server.
+            be different from that sent by the client due to 
+            normalization at the server.
           </t>
           <t>
             Client operating environments differ in their handling 
-            of canonically equivalent name.  Some environments treat 
+            of canonically equivalent names.  Some environments treat 
             canonically equivalent strings as essentially equal 
             and we will call these environments normalization-aware.  
             Others, because of the pattern of their development with 
             regard to these issues treat different strings as 
             different, even if they are canonically equivalent.  
             We call these normalization-unaware.
+          </t>
+          <t>
+            We discuss below issues that may arise when each
+            of these types of environments interact with the
+            various types of file systems, with regard to
+            normalization handling.  Note that complexity for 
+            the client is increased given that there are no file
+            system attributes to determine the normalization 
+            handling present for that file system.  Where the 
+            client has the ability to create files (file system 
+            not read-only and security allows it), attempting
+            to create multiple files with
+            canonically equivalent names and looking 
+            at success paaaters and the names assigned by the 
+            server to these files can serve as a way to 
+            determine the relevant information.
           </t>
           <t>
             Normalization-aware environments interoperate most 
@@ -1188,6 +1262,99 @@
             that it considers equivalent.
           </t>
           <t>
+            The following suggestions may be helpful in handling
+            interoperability issues for normalization-aware
+            client environments, when they interact with 
+            normalization-sensitive file systems. 
+            <list>
+              <t>
+                When READDIR is done, the names returned 
+                may include names that do not match the 
+                client's normalization form, but instead
+                are other names canonically equivalent
+                to the normalized name. 
+              <vspace blankLines='1' /> 
+                When it can be determined that a 
+                normalization-insensitive server file 
+                system is not 
+                involved, the client can simply 
+                normalize filename components strings
+                to its preferred normalization form.            
+              <vspace blankLines='1' />
+                When it cannot be determined that a 
+                normalization-insensitive server file 
+                system is not 
+                involved, the client is generally best
+                advised to process incoming name
+                components so as to allow all name
+                components in a canonical equivalence
+                class to be together.  When only a 
+                single member of class exists, it should
+                generally mapped directly to the preferred
+                normalization form, whether the name was
+                of that form or not.
+              <vspace blankLines='1' />
+                When the client sees multiple names that are 
+                canonically equivalent, it is clear you
+                have a file systen which is normalization
+                sensitive.  Clients should generally 
+                replace each canonically equivalent name
+                with one that appends some distinguishing 
+                suffix, usually including a number.  The
+                numbers should be assigned so that each 
+                distinct possible name with the set of 
+                canonically equivalent names has an assigned
+                numeric value.  Note that for some cases in
+                which there are multiple instances of strings 
+                that might be composed or decomposed and/or
+                situations with multiple diacritics to be applied
+                to the same character, the class might be large.
+              </t>
+              <t>
+                When interacting with a normalization-sensitive
+                filesystem, it may be that the environment contains 
+                clients or implementations local to the OS in which
+                the file system is embedded, which use a different
+                normalization form.  In such situations, a LOOKUP
+                may well fail, even though the directory contains a 
+                name canonically equivalent to the name sought.
+                One solution to this problem is to re-do the 
+                LOOKUP in that situation with name converted to
+                the alternate normalization form.
+              </t>
+              <t>
+                In the case in which normalization-unaware
+                clients are involved in the mix, LOOKUP can
+                fail and then the second lOOKUP, described
+                above can also fail, even though there may 
+                well be a oanonically equivalent name in
+                the directory.  One possible approach in
+                that case is to use a READDIR to find the
+                equivalent name and lookup that, although this
+                can greatly add to client implementation 
+                complexity.
+              </t>
+              <t>
+                When interacting with a normalization-sensitive
+                filesystem, the situation where the environment 
+                contains clients or implementations local to the 
+                OS in which the file system is embedded, which use 
+                a different normalization form can also cause
+                issues when a file (or symlink or directory, etc.)
+                is being created.  In such cases, you may be able 
+                to create an object of the specified name even
+                though, the directory contains a canonically 
+                equivalent name.  Similar issues can occur with
+                LINK and RENAME.  The client can't really do 
+                much about such sitautions, except be aware that
+                they may occur.  That's one of the reasons 
+                normalization-sensitive server file system
+                implementations can be problematic to use when
+                internationalization issues are important.
+              </t>
+            </list>
+          </t>
+          <t>
             Normalization-unaware environments interoperate most 
             normally with servers that implement 
             normalization-sensitive file naming.  However, clients 
@@ -1200,6 +1367,63 @@
             the client will have to deal with the fact that it 
             is unable to create two names within a directory that 
             are canonically equivalent.
+          </t>
+          <t>
+            Note that although the client
+            implementation itself and the kernel implementation
+            may be normalization-unware, treating name components
+            as strings not subject to normalization, the environment
+            as a whole may be normalization-aware if commonly
+            used libraries result in an application environment
+            where a single normalization form is used throughout.
+            Because of this, normalization-unaware environments
+            may be relatively rare.
+          </t>
+          <t>
+            The following suggestions may be helpful in handling
+            interoperability issues for truely normalization-unaware
+            client environments, when they interact with file
+            systems other than those which are 
+            normalization-sensitive.  The issues tend to be the
+            inverse of those for normalization-aware environments.
+            The implementer should be careful not to erroneously
+            treat the environment as normalization-unaware, based
+            solely on the details of the kernel implementation.
+            <list>
+              <t>
+                Unless the file system is normalization-preserving,
+                when files (or other objects) are
+                created, the object name as reported by a
+                READDIR of the associated directory may show
+                a name different than the one used to create
+                the object.  This behavior is something that
+                the client has to accept.  Since it has no
+                preferred normalization form, it has no way
+                of converting the name to a preferred form.
+              </t>
+              <t>
+                In situations where there is an attempt to
+                create multiple objects in the same directory
+                which have canonically-equivalent names.
+                these file systems will either report that
+                an object of name already exists or simply
+                open a file of that other name. 
+              <vspace blankLines='1' />
+                If it desired to have those two obects in
+                the same directory, the names must be made
+                not canonically equivalent.  It is possible
+                to append some distinguishing character to
+                the name of the second object but in clients
+                having a typical file API (such as POSIX),
+                the fact that the name change occurred 
+                cannot be propagated back to the requester.
+              <vspace blankLines='1' />
+                In cases where a client is application-specific,
+                it may be possible for it to deal with such
+                a collision by modifying the name and taking
+                note of the changed name.
+              </t>
+            <list>
           </t>
         </section>
       </section>
@@ -1265,7 +1489,7 @@
     <section anchor='Type-ltext'
              title="Processing of Link Text">
       <t>
-        Symbolic link text is defined as utf8_should and 
+        Symbolic link text is defined as utf8val_should and 
         therefore the server SHOULD validate link text
         on a CREATE and return NFS4ERR_INVAL if it is
         is not valid UTF-8.  Note that file systems
@@ -1390,4 +1614,3 @@
     </section>
   </section>
 </section>
-
