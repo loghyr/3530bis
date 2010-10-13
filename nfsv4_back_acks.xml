@@ -6,8 +6,8 @@
     a new server if a migration has occured.
   </t>
   <t>
-    David Black, Nico Williams, Mike Eisler and
-    Trond Myklebust read many drafts of 
+    David Black, Nico Williams, Mike Eisler,
+    Trond Myklebust, and James Lentini read many drafts of 
     <xref target="sec:i18n" /> and contributed numerous useful suggestions, 
     without which the necessary revision of that
     section for this document would not have been possible.
@@ -18,6 +18,16 @@
     comments were always useful and contributed
     substantially to improving the quality of the 
     final result.
+  </t>
+  <t>
+    James Lentini graciously read the rewrite of 
+    <xref target="sec:mars" /> and his comments were
+    vital in improving the quality of that effort.
+  </t>
+  <t>
+    Rob Thurlow, Sorin Faibish, James Lentini, Bruce Fields,
+    and Trond Myklebust were faithful attendants of the
+    biweekly triage meeting and accepted many an action item.
   </t>
 </section>
 

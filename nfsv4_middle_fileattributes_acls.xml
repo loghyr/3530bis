@@ -972,7 +972,7 @@
               <t>
                 All servers will allow a user the ability to read
                 the data of the file when only the execute
-                permission is granted (i.e. If the ACL denies the
+                permission is granted (i.e., If the ACL denies the
                 user the ACE4_READ_DATA access and allows the user
                 ACE4_EXECUTE, the server will allow the user to
                 read the data of the file).
@@ -1274,7 +1274,7 @@
               If neither mode nor ACL are given in the call:
               <vspace blankLines="1" />
               In the case where an object is being created without
-              any initial attributes at all, e.g. an OPEN operation
+              any initial attributes at all, e.g., an OPEN operation
               with an opentype4 of OPEN4_CREATE and a createmode4 of
               EXCLUSIVE4, inheritance SHOULD NOT take place.
               Instead, the server SHOULD set permissions to deny all

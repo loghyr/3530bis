@@ -1690,7 +1690,7 @@ else if ((request.access & file_state.deny)) ||
         The servers may choose not to transfer the state information
         upon migration.  However, this choice is discouraged.  In this
         case, when the client presents state information from the
-        original server (e.g.  in a RENEW op or a READ op of zero length),
+        original server (e.g., in a RENEW op or a READ op of zero length),
 	the client must be prepared to receive either
         NFS4ERR_STALE_CLIENTID or NFS4ERR_STALE_STATEID from the new
         server.  The client should then recover its state information as

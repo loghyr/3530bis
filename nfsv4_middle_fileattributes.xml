@@ -172,7 +172,7 @@
         </t>
         <t>
           Doing a RENAME of a named attribute to a different named 
-          attribute directory or to an ordinary (i.e. non-named-attribute)
+          attribute directory or to an ordinary (i.e., non-named-attribute)
           directory is not allowed.
         </t>
         <t>
@@ -246,9 +246,9 @@
   <section anchor="rw_attr" 
 	   title="Set-Only and Get-Only Attributes">
     <t>
-     Some REQUIRED and RECOMMENDED attributes are set-only, i.e. they
+     Some REQUIRED and RECOMMENDED attributes are set-only, i.e., they
      can be set via SETATTR but not retrieved via GETATTR. Similarly, some
-     REQUIRED and RECOMMENDED attributes are get-only, i.e. they
+     REQUIRED and RECOMMENDED attributes are get-only, i.e., they
      can be retrieved GETATTR but not set via SETATTR. If a client attempts
      to set a get-only attribute or get a set-only attributes, the server
      MUST return NFS4ERR_INVAL.
@@ -855,7 +855,7 @@
     <section toc="exclude" anchor="attrdef_homogeneous"
 	     title="Attribute 26: homogeneous">
       <t>
-	True, if this object's file system is homogeneous, i.e.  are
+	True, if this object's file system is homogeneous, i.e.,  are
 	per file system attributes the same for all file system's
 	objects.
       </t>
@@ -966,7 +966,7 @@
 	is requested in a GETATTR operation, the server should obey an
 	invariant that has it returning a value that is equal to the
 	file object's entry in the object's parent directory,
-	i.e. what readdir() would have returned.  Some operating
+	i.e., what readdir() would have returned.  Some operating
 	environments allow a series of two or more file systems to be
 	mounted onto a single mount point. In this case, for the
 	server to obey the aforementioned invariant, it will need to

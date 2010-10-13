@@ -431,7 +431,7 @@
         The logical current or saved filehandle value is required by 
         the current operation and is not set.
         This may be a result of a malformed COMPOUND
-        operation (i.e. no PUTFH or PUTROOTFH before an operation that
+        operation (i.e., no PUTFH or PUTROOTFH before an operation that
         requires the current filehandle be set).
       </t>
     </section>
@@ -871,7 +871,7 @@
              anchor="err_OPENMODE">
       <t>
         The client attempted a READ, WRITE, LOCK or other operation
-        not sanctioned by the stateid passed (e.g. writing to a file
+        not sanctioned by the stateid passed (e.g., writing to a file
         opened only for read).
       </t>
     </section>

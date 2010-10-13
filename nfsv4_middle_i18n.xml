@@ -121,7 +121,7 @@
         which deal with the applicability of the 
         description, the character repertoire, charcter
         mapping, normalization, prohibited characters,
-        and issues of the handling (i.e. possible
+        and issues of the handling (i.e., possible
         prohibition) of bidirectional strings, is a 
         convenient way to describe the string 
         handling which is needed and will be used
@@ -372,7 +372,7 @@
             issues are the responsibility of other IETF 
             groups and our jobis simply to reference those
             and perhaps make a few choices as to how they 
-            are to be used (e.g. U-labels vs. A-labels).
+            are to be used (e.g., U-labels vs. A-labels).
           </t>
           <t>
             There are also cases in which a string has a
@@ -476,7 +476,7 @@
     <section title="Individual Types and Their Handling">
       <t>
         The first table outlines the handling for the primary
-        string types, i.e. those not derived as a prefix or
+        string types, i.e., those not derived as a prefix or
         a suffix from a mixture type.
       </t>
       <texttable anchor='I18nTable1'> 
@@ -610,7 +610,7 @@
       Where the client-supplied string is valid UTF-8 but 
       contains characters that are not supported by the 
       server file system as a value for that string 
-      (e.g. names containing characters that have more 
+      (e.g., names containing characters that have more 
       than two octets on a file system that supports UCS-2 
       characters only, file name components containing 
       slashes on file systems that do not allow them in 
@@ -1091,7 +1091,7 @@
       <section title="Other Mapping Used for Component4 Strings">
         <t>
           Other than for issues of case mapping, an NFS version 4 
-          server SHOULD limit visible (i.e. those that change the 
+          server SHOULD limit visible (i.e., those that change the 
           name of file to reflect those mappings to those from 
           from a subset of the stringprep table B.1.  Note particularly,
           the mapings from U+200C and U+200D to the empty
@@ -1192,7 +1192,7 @@
                 Implement handling which is both normalization-insensitive
                 and normalization-preserving.  This makes it impossible 
                 to create two files in the same directory that have 
-                two different canonically equivalent names, i.e.
+                two different canonically equivalent names, i.e.,
                 names which map to the same name when normalized.  
                 However, unlike the previous option, clients will not 
                 have the names that they present modified to
@@ -1423,7 +1423,7 @@
                 a collision by modifying the name and taking
                 note of the changed name.
               </t>
-            <list>
+            </list>
           </t>
         </section>
       </section>
