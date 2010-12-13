@@ -498,7 +498,7 @@ State: Accepted, low
 Target:
 Note: check 5661
 
-43) Not all "should not", etc are capitalized.
+44) Not all "should not", etc are capitalized.
 
 Action: Change text
 Owner: Tom
@@ -529,29 +529,6 @@ Action:
 Owner:
 State: Ask for clarification
 Target:
-
-31) delegation stateid in READ and WRITE
-
-Mike asked on list:
-
-  In RFC5661, NFSv4.1 clients are permitted to use delegation stateids in
-  READ and WRITE.
-
-  Neither RFC3530 nor the bis I-D explicitly permits this.
-
-  Is it permitted?
-
-  Regardless of the answer, it should be explicit in the bis I-D.
-
-I believe the consensus was that existing implementations allowed
-this and no one complained about permitting it.
-
-Action: Add appropriate text
-Owner: Tom
-State: In progress
-Target: IETF 79
-Note: Ask Mike why he thinks it is not permitted. Page 103, 9.4 on open.
-Also check 5661.
 
 ==============
 Clarification:
@@ -601,6 +578,185 @@ State: Finished
 Target: IETF 79
 Note: Rob will bring up on list
 
+=====
+New:
+=====
+
+45) Theresa Raj points out that on page 95:
+
+
+   o  READDIR (rdattr_error, fsid, size, time_modify, mounted_on_fileid)
+      --> NFS_OK.  The attributes for directory entry with the component
+      named "path" will only contain rdattr_error with the value
+      NFS4ERR_MOVED, together with an fsid value and a value for
+      mounted_on_fileid.
+
+This contradicts the changes we have made for namespaces.
+
+Action: Remove text?
+Owner: Tom
+State:
+Target: IETF 80
+
+46) Marcel Telka has an errata:
+
+Section 14.2.18. says:
+
+Instead, to avoid unbounded memory use, the server needs to implement
+a strategy for disposing of open_owner4s that have no current lock,
+open, or delegation state for any files and have not been used
+recently.
+
+It should say:
+
+Instead, to avoid unbounded memory use, the server needs to implement
+a strategy for disposing of open_owner4s that have no current open
+state for any files and have not been used recently.
+
+Notes:
+
+A lock can be held on already opened files only. This means that
+every lock state can exist only in case the accompanied open state
+is already there.
+
+So if there is a lock state held by server then there must be an
+open state for the file too. This means that we do not need to
+mention the "current lock state" in the RFC's sentence above.
+
+Next, the delegation state is allocated only in case the delegation
+is granted by server to a client for a file. The delegation state
+is related to file and client. It is not related/tied to openowner.
+This means that it is not possible to test whether an openowner
+have any delegation states. Delegation states are simply not related
+to the openowner.
+
+It is easily possible to have a client with some delegation granted
+with no valid openowner held by a server.
+
+Action:
+Owner: Tom
+State:
+Target: IETF 80
+
+47) Marcel Telka has an errata:
+
+   SYNOPSIS
+
+        (cfh) locktype, offset, length owner -> {void, NFS4ERR_DENIED ->
+     owner}
+     It should say:
+
+        SYNOPSIS
+
+     (cfh) locktype, offset, length, owner -> {void, NFS4ERR_DENIED ->
+          owner}
+  Notes:
+
+  Missing comma in the LOCKT synopsis.
+
+Action:
+Owner: Tom
+State:
+Target: IETF 80
+
+48) Marcel Telka has an errata:
+
+     SYNOPSIS
+
+          (cfh), seqid, share_access, share_deny, owner, openhow, claim ->
+       (cfh), stateid, cinfo, rflags, open_confirm, attrset delegation
+
+       It should say:
+
+          SYNOPSIS
+
+       (cfh), seqid, share_access, share_deny, owner, openhow, claim ->
+            (cfh), stateid, cinfo, rflags, attrset, delegation
+    Notes:
+
+    i) The open_confirm should be removed (it is not a part of the OPEN4resok structure).
+    ii) There is missing command between attrset and delegation.
+
+Action:
+Owner: Tom
+State:
+Target: IETF 80
+
+49) Marcel Telka has an errata:
+
+    Section 4.2.3. says:
+
+       FH4_VOLATILE_ANY
+                    The filehandle may expire at any time, except as
+                 specifically excluded (i.e., FH4_NO_EXPIRE_WITH_OPEN).
+
+ It should say:
+
+    FH4_VOLATILE_ANY
+                 The filehandle may expire at any time, except as
+              specifically excluded (i.e., FH4_NOEXPIRE_WITH_OPEN).
+
+      Notes:
+
+      The FH4_NO_EXPIRE_WITH_OPEN should be replaced with FH4_NOEXPIRE_WITH_OPEN.
+
+Action:
+Owner: Tom
+State:
+Target: IETF 80
+
+50) Marcel Telka has an errata:
+
+      Section 4.2.3. says:
+
+         FH4_VOL_MIGRATION
+             The filehandle will expire as a result of migration.  If
+             FH4_VOL_ANY is set, FH4_VOL_MIGRATION is redundant.
+
+      FH4_VOL_RENAME
+             The filehandle will expire during rename.  This includes a
+             rename by the requesting client or a rename by any other
+             client.  If FH4_VOL_ANY is set, FH4_VOL_RENAME is
+             redundant.
+
+  .....
+
+  Note that the bits FH4_VOL_MIGRATION and FH4_VOL_RENAME allow the
+  client to determine that expiration has occurred whenever a specific
+  event occurs, without an explicit filehandle expiration error from
+  the server.  FH4_VOL_ANY does not provide this form of information.
+  In situations where the server will expire many, but not all
+  filehandles upon migration (e.g., all but those that are open),
+
+  It should say:
+
+       FH4_VOL_MIGRATION
+             The filehandle will expire as a result of migration.  If
+             FH4_VOLATILE_ANY is set, FH4_VOL_MIGRATION is redundant.
+
+    FH4_VOL_RENAME
+             The filehandle will expire during rename.  This includes a
+             rename by the requesting client or a rename by any other
+             client.  If FH4_VOLATILE_ANY is set, FH4_VOL_RENAME is
+             redundant.
+
+.....
+
+   Note that the bits FH4_VOL_MIGRATION and FH4_VOL_RENAME allow the
+   client to determine that expiration has occurred whenever a specific
+   event occurs, without an explicit filehandle expiration error from
+   the server.  FH4_VOLATILE_ANY does not provide this form of information.
+   In situations where the server will expire many, but not all
+   filehandles upon migration (e.g., all but those that are open),
+
+  Notes:
+
+  The FH4_VOL_ANY should be replaced with FH4_VOLATILE_ANY (three times).
+
+Action:
+Owner: Tom
+State:
+Target: IETF 80
 
 =====
 Done:
@@ -701,6 +857,29 @@ Owner: Dave
 State: Finished
 Target:
 Note: Send Dave a email to make sure. [Done]
+
+31) delegation stateid in READ and WRITE
+
+Mike asked on list:
+
+  In RFC5661, NFSv4.1 clients are permitted to use delegation stateids in
+  READ and WRITE.
+
+  Neither RFC3530 nor the bis I-D explicitly permits this.
+
+  Is it permitted?
+
+  Regardless of the answer, it should be explicit in the bis I-D.
+
+I believe the consensus was that existing implementations allowed
+this and no one complained about permitting it.
+
+Action: Add appropriate text
+Owner: Tom
+State: Finished
+Target: IETF 79
+Note: Ask Mike why he thinks it is not permitted. Page 103, 9.4 on open.
+Also check 5661.
 
 32) Rob had some referral changes:
 
