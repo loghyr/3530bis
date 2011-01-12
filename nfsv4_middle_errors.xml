@@ -505,7 +505,7 @@
              anchor="err_RESOURCE">
       <t>
         For the processing of the Compound procedure, the server may
-        exhaust available resources and can not continue processing
+        exhaust available resources and cannot continue processing
         operations within the Compound procedure.  This error will
         be returned from the server in those instances of resource
         exhaustion related to the processing of the Compound procedure.
@@ -896,7 +896,7 @@
       <t>
         A reclaim of client state was attempted in circumstances in 
         which the server cannot guarantee that conflicting state has 
-        not been provided to another client.  As a result, the server can not
+        not been provided to another client.  As a result, the server cannot
         guarantee that conflicting state has not been provided to
         another client.
       </t>

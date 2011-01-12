@@ -3,12 +3,12 @@
 <section anchor="file_attributes" title="File Attributes">
   <t>
     To meet the requirements of extensibility and increased
-    interoperability with non-UNIX platforms, attributes must be handled
+    interoperability with non-UNIX platforms, attributes need to be handled
     in a flexible manner.  The NFSv3 fattr3 structure contains a
     fixed list of attributes that not all clients and servers are able to
-    support or care about.  The fattr3 structure can not be extended as
+    support or care about.  The fattr3 structure cannot be extended as
     new needs arise and it provides no way to indicate non-support.  With
-    the NFSv4.0 protocol, the client is able query what attributes
+    the NFSv4.0 protocol, the client is able to query what attributes
     the server supports and construct requests with only those supported
     attributes (or a subset thereof).
   </t>
@@ -22,7 +22,7 @@
     in the response.  New REQUIRED or RECOMMENDED attributes may be added
     to the NFSv4 protocol as part of a new minor version
     by publishing a
-    standards-track RFC which allocates a new attribute number value and
+    Standards Track RFC which allocates a new attribute number value and
     defines the encoding for the attribute.  See
     <xref target="sec:minor"/> for further
     discussion.
@@ -50,13 +50,13 @@
     Named attributes are intended for data needed by applications rather
     than by an NFS client implementation.  NFS implementors are strongly
     encouraged to define their new attributes as RECOMMENDED attributes by
-    bringing them to the IETF standards-track process.
+    bringing them to the IETF Standards Track process.
   </t>
   <t>
-    The set of attributes which are classified as REQUIRED is
-    deliberately small since servers must do whatever it takes to support
+    The set of attributes that are classified as REQUIRED is
+    deliberately small since servers need to do whatever it takes to support
     them.  A server should support as many of the RECOMMENDED attributes
-    as possible but by their definition, the server is not required to
+    as possible but, by their definition, the server is not required to
     support all of them.  Attributes are deemed REQUIRED if the data is
     both needed by a large number of clients and is not otherwise
     reasonably computable by the client when support is not provided on
@@ -65,20 +65,20 @@
   <t>
     Note that the hidden directory returned by OPENATTR is a convenience
     for protocol processing.  The client should not make any assumptions
-    about the server's implementation of named attributes and whether the
-    underlying file system at the server has a named attribute directory or
-    not.  Therefore, operations such as SETATTR and GETATTR on the named
+    about the server's implementation of named attributes and whether or
+    not the underlying file system at the server has a named attribute
+    directory.  Therefore, operations such as SETATTR and GETATTR on the named
     attribute directory are undefined.
   </t>
   <section anchor="mandatory_attributes_intro" title="REQUIRED Attributes">
     <t>
       These MUST be supported by every NFSv4.0 client and server in
       order to ensure a minimum level of interoperability.  The server MUST
-      store and return these attributes and the client MUST be able to
+      store and return these attributes, and the client MUST be able to
       function with an attribute set limited to these attributes.  With just
       the REQUIRED attributes some client functionality may be impaired or
       limited in some ways.  A client may ask for any of these attributes to
-      be returned by setting a bit in the GETATTR request and the server
+      be returned by setting a bit in the GETATTR request, and the server
       must return their value.
     </t>
   </section>
@@ -86,20 +86,20 @@
     <t>
       These attributes are understood well enough to warrant support in the
       NFSv4.0 protocol.  However, they may not be supported on all
-      clients and servers.  A client may ask for any of these attributes to
+      clients and servers.  A client MAY ask for any of these attributes to
       be returned by setting a bit in the GETATTR request but must handle
-      the case where the server does not return them.  A client may ask for
+      the case where the server does not return them.  A client MAY ask for
       the set of attributes the server supports and SHOULD NOT request
       attributes the server does not support.  A server should be tolerant
       of requests for unsupported attributes and simply not return them
       rather than considering the request an error.  It is expected that
       servers will support all attributes they comfortably can and only fail
-      to support attributes which are difficult to support in their
+      to support attributes that are difficult to support in their
       operating environments.  A server should provide attributes whenever
       they don't have to "tell lies" to the client.  For example, a file
       modification time should be either an accurate time or should not be
-      supported by the server.  This will not always be comfortable to
-      clients but the client is better positioned decide whether and how to
+      supported by the server.  At times this will be difficult for
+      clients, but a client is better positioned to decide whether and how to
       fabricate or construct an attribute or whether to do without the
       attribute.
     </t>
@@ -108,13 +108,13 @@
     <t>
       These attributes are not supported by direct encoding in the NFSv4 
       protocol but are accessed by string names rather than
-      numbers and correspond to an uninterpreted stream of bytes which are
+      numbers and correspond to an uninterpreted stream of bytes that are
       stored with the file system object.  The name space for these
       attributes may be accessed by using the OPENATTR operation.  The
       OPENATTR operation returns a filehandle for a virtual "named attribute
-      directory" and further perusal and modification of the name space may 
+      directory", and further perusal and modification of the name space may 
       be done using operations that work on more typical directories.  In
-      particular, READDIR may be used to get a list of such named attributes
+      particular, READDIR may be used to get a list of such named attributes,
       and LOOKUP and OPEN may select a particular attribute.  Creation of
       a new named attribute may be the result of an OPEN specifying file
       creation.
@@ -126,18 +126,18 @@
     </t>
     <t>
       Named attributes and the named attribute directory may have 
-      their own (non-named) attributes.  Each of objects must have all 
+      their own (non-named) attributes.  Each of these objects must have all 
       of the REQUIRED attributes and may have additional RECOMMENDED 
       attributes.  However, the set of attributes for named attributes 
-      and the named attribute directory need not be as large as, and
-      typically will not be as large as that for other objects in that 
+      and the named attribute directory need not be, and
+      typically will not be, as large as that for other objects in that 
       file system.
     </t>
     <t>
-      Named attributes and the named attribute directory may be the
+      Named attributes and the named attribute directory might be the
       target of delegations (in the case of the named attribute directory
       these will be directory delegations).  However, since granting of
-      delegations or not is within the server's discretion, a server
+      delegations is at the server's discretion, a server
       need not support delegations on named attributes or the named
       attribute directory.
     </t>
@@ -145,7 +145,7 @@
       It is RECOMMENDED that servers support arbitrary named attributes.  A
       client should not depend on the ability to store any named attributes
       in the server's file system.  If a server does support named
-      attributes, a client which is also able to handle them should be able
+      attributes, a client that is also able to handle them should be able
       to copy a file's data and metadata with complete transparency from
       one location to another; this would imply that names allowed for
       regular directory entries are valid for named attribute names as well.
@@ -155,15 +155,15 @@
       restricted in a number of ways, in order to prevent the development
       of non-interoperable implementations in which some servers support
       a fully general hierarchical directory structure for named attributes
-      while others support a limited set, but fully adequate to the feature's
-      goals.  In such an environment, clients or applications might come to
+      while others support a limited but adequate structure for named
+      attributes.  In such an environment, clients or applications might come to
       depend on non-portable extensions.  The restrictions are:
       <list style="symbols">
         <t>
           CREATE is not allowed in a named attribute directory.  Thus, such
           objects as symbolic links and special files are not allowed to
           be named attributes.   Further, directories may not be created
-          in a named attribute directory so no hierarchical structure of
+          in a named attribute directory, so no hierarchical structure of
           named attributes for a single object is allowed.
         </t>
         <t>
@@ -184,88 +184,98 @@
     </t>
     <t>
       Names of attributes will not be controlled by this document or other
-      IETF standards track documents.  See <xref target="sec:iana"/>
+      IETF Standards Track documents.  See <xref target="sec:iana"/>
       for further discussion.
     </t>
   </section>
   <section title="Classification of Attributes">
     <t>
       Each of the REQUIRED and RECOMMENDED attributes can be classified in
-      one of three categories: per server, per file system, or per file system
+      one of three categories: per server (i.e., the value of the attribute
+      will be the same for all file objects that share the same server),
+      per file
+      system (i.e., the value of the attribute will be the same for some or
+      all file objects that share the same fsid attribute (Section 5.8.1.9)
+      and server owner), or per file system
       object.  Note that it is possible that some per file system attributes
-      may vary within the file system.  See the "homogeneous" attribute for
-      its definition.  Note that the attributes time_access_set and
-      time_modify_set are not listed in this section because they are
-      write-only attributes corresponding to time_access and time_modify,
-      and are used in a special instance of SETATTR.
+      may vary within the file system.  Note that it is
+      possible that some per file system attributes may vary within the
+      file system, depending on the value of the "homogeneous"
+      (Section 5.8.2.16) attribute.  Note that the attributes
+      time_access_set and time_modify_set are not listed in this section
+      because they are write-only attributes corresponding to time_access
+      and time_modify, and are used in a special instance of SETATTR.
       <list style='symbols'>
-	<t>
-	  The per server attribute is:
-	  <list style='empty'>
-	    <t>
-	      lease_time
-	    </t>
-	  </list>
-	</t>
-	<t>
-	  The per file system attributes are:
-	  <list style='empty'>
-	    <t>
-	      supported_attrs, fh_expire_type, link_support,
-	      symlink_support, unique_handles, aclsupport,
-	      cansettime, case_insensitive, case_preserving,
-	      chown_restricted, files_avail, files_free,
-	      files_total, fs_locations, homogeneous, maxfilesize,
-	      maxname, maxread, maxwrite, no_trunc, space_avail,
-	      space_free, space_total, time_delta,
-	    </t>
-	  </list>
-	</t>    
-	<t>
-	  The per file system object attributes are:
-	  <list style='empty'>
-	    <t>
-	      type, change, size, named_attr, fsid, rdattr_error,
-	      filehandle, acl, archive, fileid, hidden, maxlink,
-	      mimetype, mode, numlinks, owner, owner_group, rawdev,
-	      space_used, system, time_access, time_backup,
-	      time_create, time_metadata, time_modify,
-	      mounted_on_fileid
-	    </t>
-	  </list>
-	</t>
+        <t>
+          The per-server attribute is:
+          <list style='empty'>
+            <t>
+              lease_time
+            </t>
+          </list>
+        </t>
+        <t>
+          The per-file system attributes are:
+          <list style='empty'>
+            <t>
+              supported_attrs, fh_expire_type, link_support,
+              symlink_support, unique_handles, aclsupport,
+              cansettime, case_insensitive, case_preserving,
+              chown_restricted, files_avail, files_free,
+              files_total, fs_locations, homogeneous, maxfilesize,
+              maxname, maxread, maxwrite, no_trunc, space_avail,
+              space_free, space_total, time_delta,
+            </t>
+          </list>
+        </t>    
+        <t>
+          The per-file system object attributes are:
+          <list style='empty'>
+            <t>
+              type, change, size, named_attr, fsid, rdattr_error,
+              filehandle, acl, archive, fileid, hidden, maxlink,
+              mimetype, mode, numlinks, owner, owner_group, rawdev,
+              space_used, system, time_access, time_backup,
+              time_create, time_metadata, time_modify,
+              mounted_on_fileid
+            </t>
+          </list>
+        </t>
       </list>
     </t>
     <t>
-      For quota_avail_hard, quota_avail_soft, and quota_used see their
+      For quota_avail_hard, quota_avail_soft, and quota_used, see their
       definitions below for the appropriate classification.
     </t>
 
   </section>
 
   <section anchor="rw_attr" 
-	   title="Set-Only and Get-Only Attributes">
+           title="Set-Only and Get-Only Attributes">
     <t>
-     Some REQUIRED and RECOMMENDED attributes are set-only, i.e., they
+     Some REQUIRED and RECOMMENDED attributes are set-only; i.e., they
      can be set via SETATTR but not retrieved via GETATTR. Similarly, some
-     REQUIRED and RECOMMENDED attributes are get-only, i.e., they
-     can be retrieved GETATTR but not set via SETATTR. If a client attempts
-     to set a get-only attribute or get a set-only attributes, the server
+     REQUIRED and RECOMMENDED attributes are get-only; i.e., they
+     can be retrieved via GETATTR but not set via SETATTR. If a client attempts
+     to set a get-only attribute or get a set-only attribute, the server
      MUST return NFS4ERR_INVAL.
    </t>
 
   </section>
 
   <section anchor="mandatory_attributes" 
-	   title="REQUIRED Attributes - List and Definition References">
+           title="REQUIRED Attributes - List and Definition References">
     <t>
      The list of REQUIRED attributes appears in <xref target="req_attr_table"/>.
      The meaning of the columns of the table are:
      <list style='symbols'>
-     <t>Name: the name of attribute</t>
-     <t>Id: the number assigned to the attribute. In
+     <t>Name: The name of attribute</t>
+     <t>Id: The number assigned to the attribute. In
         the event of conflicts between the assigned number and <xref
-        target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>, the latter is authoritative.</t>
+        target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>, the latter is
+	likely authoritative, but should be resolved with Errata to this
+	document and/or <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>.
+	See <xref target="ISEG_errata"/> for the Errata process.</t>
      <t>Data Type: The XDR data type of the attribute.</t>
      <t>
         Acc: Access allowed to the attribute. R means
@@ -275,7 +285,7 @@
         may retrieve, SETATTR may set).
 
      </t>
-     <t>Defined in: the section of this specification that describes the
+     <t>Defined in: The section of this specification that describes the
         attribute.</t>
      </list>
     </t>
@@ -289,73 +299,73 @@
 
       <c>supported_attrs</c><c>0</c><c>bitmap4</c><c>R</c>
       <c>
-	<xref target="attrdef_supp_attr" />
+        <xref target="attrdef_supp_attr" />
       </c>
 
       <c>type</c><c>1</c><c>nfs_ftype4</c><c>R</c>
       <c>
-	<xref target="attrdef_type"  />
+        <xref target="attrdef_type"  />
       </c>
 
       <c>fh_expire_type</c><c>2</c><c>uint32_t</c><c>R</c>
       <c>
-	<xref target="attrdef_fh_expire_type"  />
+        <xref target="attrdef_fh_expire_type"  />
       </c>
 
       <c>change</c><c>3</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_change"  />
+        <xref target="attrdef_change"  />
       </c>
       
       <c>size</c><c>4</c><c>uint64_t</c><c>R W</c>
       <c>
-	<xref target="attrdef_size" />
+        <xref target="attrdef_size" />
       </c>
 
       <c>link_support</c><c>5</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_link_support" />
+        <xref target="attrdef_link_support" />
       </c>
 
       <c>symlink_support</c><c>6</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_symlink_support" />
+        <xref target="attrdef_symlink_support" />
       </c>
 
       <c>named_attr</c><c>7</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_named_attr" />
+        <xref target="attrdef_named_attr" />
       </c>
 
       <c>fsid</c><c>8</c><c>fsid4</c><c>R</c>
       <c>
-	<xref target="attrdef_fsid" />
+        <xref target="attrdef_fsid" />
       </c>
 
       <c>unique_handles</c><c>9</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_unique_handles" />
+        <xref target="attrdef_unique_handles" />
       </c>
 
       <c>lease_time</c><c>10</c><c>nfs_lease4</c><c>R</c>
       <c>
-	<xref target="attrdef_lease_time" />
+        <xref target="attrdef_lease_time" />
       </c>
 
       <c>rdattr_error</c><c>11</c><c>enum</c><c>R</c>
       <c>
-	<xref target="attrdef_rdattr_error" />
+        <xref target="attrdef_rdattr_error" />
       </c>
 
       <c>filehandle</c><c>19</c><c>nfs_fh4</c><c>R</c>
       <c>
-	<xref target="attrdef_filehandle" />
+        <xref target="attrdef_filehandle" />
       </c>
 
     </texttable>
   </section>
   <section anchor="recommended_attributes" 
-	   title="RECOMMENDED Attributes - List and Definition References">
+           title="RECOMMENDED Attributes - List and Definition References">
     <t>
      The RECOMMENDED attributes are defined in
      <xref target="rec_attr_tbl"/>.  The meanings
@@ -373,247 +383,247 @@
 
       <c>acl</c><c>12</c><c>nfsace4&lt;></c><c>R W</c>
       <c>
-	<xref target="attrdef_acl" />
+        <xref target="attrdef_acl" />
       </c>
 
       <c>aclsupport</c><c>13</c><c>uint32_t</c><c>R</c>
       <c>
-	<xref target="attrdef_aclsupport" />
+        <xref target="attrdef_aclsupport" />
       </c>
 
       <c>archive</c><c>14</c><c>bool</c><c>R W</c>
       <c>
-	<xref target="attrdef_archive" />
+        <xref target="attrdef_archive" />
       </c>
 
       <c>cansettime</c><c>15</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_cansettime" />
+        <xref target="attrdef_cansettime" />
       </c>
 
       <c>case_insensitive</c><c>16</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_case_insensitive" />
+        <xref target="attrdef_case_insensitive" />
       </c>
 
       <c>case_preserving</c><c>17</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_case_preserving" />
+        <xref target="attrdef_case_preserving" />
       </c>
 
       <c>chown_restricted</c><c>18</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_chown_restricted" />
+        <xref target="attrdef_chown_restricted" />
       </c>
 
       <c>fileid</c><c>20</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_fileid" />
+        <xref target="attrdef_fileid" />
       </c>
 
       <c>files_avail</c><c>21</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_files_avail" />
+        <xref target="attrdef_files_avail" />
       </c>
 
       <c>files_free</c><c>22</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_files_free" />
+        <xref target="attrdef_files_free" />
       </c>
 
       <c>files_total</c><c>23</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_files_total" />
+        <xref target="attrdef_files_total" />
       </c>
 
       <c>fs_locations</c><c>24</c><c>fs_locations</c><c>R</c>
       <c>
-	<xref target="attrdef_fs_locations" />
+        <xref target="attrdef_fs_locations" />
       </c>
 
       <c>hidden</c><c>25</c><c>bool</c><c>R W</c>
       <c>
-	<xref target="attrdef_hidden" />
+        <xref target="attrdef_hidden" />
       </c>
 
       <c>homogeneous</c><c>26</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_homogeneous" />
+        <xref target="attrdef_homogeneous" />
       </c>
 
       <c>maxfilesize</c><c>27</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_maxfilesize" />
+        <xref target="attrdef_maxfilesize" />
       </c>
 
       <c>maxlink</c><c>28</c><c>uint32_t</c><c>R</c>
       <c>
-	<xref target="attrdef_maxlink" />
+        <xref target="attrdef_maxlink" />
       </c>
 
       <c>maxname</c><c>29</c><c>uint32_t</c><c>R</c>
       <c>
-	<xref target="attrdef_maxname" />
+        <xref target="attrdef_maxname" />
       </c>
 
       <c>maxread</c><c>30</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_maxread" />
+        <xref target="attrdef_maxread" />
       </c>
 
       <c>maxwrite</c><c>31</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_maxwrite" />
+        <xref target="attrdef_maxwrite" />
       </c>
 
       <c>mimetype</c><c>32</c><c>utf8&lt;></c><c>R W</c>
       <c>
-	<xref target="attrdef_mimetype" />
+        <xref target="attrdef_mimetype" />
       </c>
 
       <c>mode</c><c>33</c><c>mode4</c><c>R W</c>
       <c>
-	<xref target="attrdef_mode" />
+        <xref target="attrdef_mode" />
       </c>
 
       <c>mounted_on_fileid</c><c>55</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_mounted_on_fileid" />
+        <xref target="attrdef_mounted_on_fileid" />
       </c>
 
       <c>no_trunc</c><c>34</c><c>bool</c><c>R</c>
       <c>
-	<xref target="attrdef_no_trunc" />
+        <xref target="attrdef_no_trunc" />
       </c>
 
       <c>numlinks</c><c>35</c><c>uint32_t</c><c>R</c>
       <c>
-	<xref target="attrdef_numlinks" />
+        <xref target="attrdef_numlinks" />
       </c>
 
       <c>owner</c>
       <c>36</c><c>utf8&lt;></c><c>R W</c>
       <c>
-	<xref target="attrdef_owner" />
+        <xref target="attrdef_owner" />
       </c>
 
       <c>owner_group</c>
       <c>37</c><c>utf8&lt;></c><c>R W</c>
       <c>
-	<xref target="attrdef_owner_group" />
+        <xref target="attrdef_owner_group" />
       </c>
 
       <c>quota_avail_hard</c>
       <c>38</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_quota_avail_hard" />
+        <xref target="attrdef_quota_avail_hard" />
       </c>
 
       <c>quota_avail_soft</c>
       <c>39</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_quota_avail_soft" />
+        <xref target="attrdef_quota_avail_soft" />
       </c>
 
       <c>quota_used</c>
       <c>40</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_quota_used" />
+        <xref target="attrdef_quota_used" />
       </c>
 
       <c>rawdev</c><c>41</c><c>specdata4</c><c>R</c>
       <c>
-	<xref target="attrdef_rawdev" />
+        <xref target="attrdef_rawdev" />
       </c>
 
       <c>space_avail</c><c>42</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_space_avail" />
+        <xref target="attrdef_space_avail" />
       </c>
 
       <c>space_free</c><c>43</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_space_free" />
+        <xref target="attrdef_space_free" />
       </c>
 
       <c>space_total</c><c>44</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_space_total" />
+        <xref target="attrdef_space_total" />
       </c>
 
       <c>space_used</c><c>45</c><c>uint64_t</c><c>R</c>
       <c>
-	<xref target="attrdef_space_used" />
+        <xref target="attrdef_space_used" />
       </c>
 
       <c>system</c><c>46</c><c>bool</c><c>R W</c>
       <c>
-	<xref target="attrdef_system" />
+        <xref target="attrdef_system" />
       </c>
 
       <c>time_access</c>
       <c>47</c><c>nfstime4</c><c>R</c>
       <c>
-	<xref target="attrdef_time_access" />
+        <xref target="attrdef_time_access" />
       </c>
 
       <c>time_access_set</c><c>48</c><c>settime4</c><c>&nbsp;&nbsp;W</c>
       <c>
-	<xref target="attrdef_time_access_set" />
+        <xref target="attrdef_time_access_set" />
       </c>
 
       <c>time_backup</c><c>49</c><c>nfstime4</c><c>R W</c>
       <c>
-	<xref target="attrdef_time_backup" />
+        <xref target="attrdef_time_backup" />
       </c>
 
       <c>time_create</c><c>50</c><c>nfstime4</c><c>R W</c>
       <c>
-	<xref target="attrdef_time_create" />
+        <xref target="attrdef_time_create" />
       </c>
 
       <c>time_delta</c><c>51</c><c>nfstime4</c><c>R</c>
       <c>
-	<xref target="attrdef_time_delta" />
+        <xref target="attrdef_time_delta" />
       </c>
 
       <c>time_metadata</c><c>52</c><c>nfstime4</c><c>R</c>
       <c>
-	<xref target="attrdef_time_metadata" />
+        <xref target="attrdef_time_metadata" />
       </c>
 
       <c>time_modify</c><c>53</c><c>nfstime4</c><c>R</c>
       <c>
-	<xref target="attrdef_time_modify" />
+        <xref target="attrdef_time_modify" />
       </c>
 
       <c>time_modify_set</c><c>54</c><c>settime4</c><c>&nbsp;&nbsp;W</c>
       <c>
-	<xref target="attrdef_time_modify_set" />
+        <xref target="attrdef_time_modify_set" />
       </c>
 
     </texttable>
   </section>
 
   <section anchor="attribute_definitions" title="Attribute
-						 Definitions">
+                                                 Definitions">
 
    <section anchor="required_attr" title="Definitions of REQUIRED Attributes">
 
     <section toc="exclude" anchor="attrdef_supp_attr" 
-	     title="Attribute 0: supported_attrs">
-	<t>
-	The bit vector which would retrieve all REQUIRED and
-	RECOMMENDED attributes that are supported for this object.
-	The scope of this attribute applies to all objects with a
-	matching fsid.
-	</t>
+             title="Attribute 0: supported_attrs">
+        <t>
+        The bit vector that would retrieve all REQUIRED and
+        RECOMMENDED attributes that are supported for this object.
+        The scope of this attribute applies to all objects with a
+        matching fsid.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_type" 
-	     title="Attribute 1: type">
-	<t>
-	  Designates the type of an object in terms of one of a number
+             title="Attribute 1: type">
+        <t>
+          Designates the type of an object in terms of one of a number
           of special constants:
           <list style="symbols">
             <t>
@@ -644,114 +654,114 @@
               NF4NAMEDATTR designates a named attribute.
             </t>
           </list>
-	</t>
-	<t>
+        </t>
+        <t>
           Within the explanatory text and operation descriptions, the
           following phrases will be used with the meanings given below:
           <list style="symbols">
             <t>
-              The phrase "is a directory" means that the object is of
-              type NF4DIR or of type NF4ATTRDIR.
+              The phrase "is a directory" means that the object's
+              type attribute is NF4DIR or NF4ATTRDIR.
             </t>
             <t>
-              The phrase "is a special file" means that the object is of
-              one of the types NF4BLK, NF4CHR, NF4SOCK, or NF4FIFO. 
+              The phrase "is a special file" means that the object's
+	      type attribute is NF4BLK, NF4CHR, NF4SOCK, or NF4FIFO. 
             </t>
             <t>
-              The phrase "is an ordinary file" means that the object 
-              is of type NF4REG or of type NF4NAMEDATTR.
+              The phrase "is an ordinary file" means that the object's
+	      type attribute is NF4REG or NF4NAMEDATTR.
             </t>
           </list>
-	</t>
+        </t>
 
     </section>
 
     <section toc="exclude" anchor="attrdef_fh_expire_type" 
-	     title="Attribute 2: fh_expire_type">
-	<t>
-	  Server uses this to specify filehandle expiration behavior
-	  to the client.  See <xref target="sec:filehandles"/> for additional
-	  description.
-	</t>
+             title="Attribute 2: fh_expire_type">
+        <t>
+          Server uses this to specify filehandle expiration behavior
+          to the client.  See <xref target="sec:filehandles"/> for additional
+          description.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_change" 
-	     title="Attribute 3: change">
-	<t>
-	  A value created by the server that the client can use to
-	  determine if file data, directory contents or attributes of
-	  the object have been modified.  The server may return the
-	  object's time_metadata attribute for this attribute's value
-	  but only if the file system object can not be updated more
-	  frequently than the resolution of time_metadata.
-	</t>
+             title="Attribute 3: change">
+        <t>
+          A value created by the server that the client can use to
+          determine if file data, directory contents, or attributes of
+          the object have been modified.  The server may return the
+          object's time_metadata attribute for this attribute's value
+          but only if the file system object cannot be updated more
+          frequently than the resolution of time_metadata.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_size" 
-	     title="Attribute 4: size">
-	<t>
-	  The size of the object in bytes.
-	</t>
+             title="Attribute 4: size">
+        <t>
+          The size of the object in bytes.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_link_support" 
-	     title="Attribute 5: link_support">
-	<t>
-	  True, if the object's file system supports hard links.
-	</t>
+             title="Attribute 5: link_support">
+        <t>
+          TRUE, if the object's file system supports hard links.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_symlink_support" 
-	     title="Attribute 6: symlink_support">
-	<t>
-	  True, if the object's file system supports symbolic links.
-	</t>
+             title="Attribute 6: symlink_support">
+        <t>
+          TRUE, if the object's file system supports symbolic links.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_named_attr" 
-	     title="Attribute 7: named_attr">
-	<t>
-	  True, if this object has named attributes. In other words,
-	  object has a non-empty named attribute directory.
-	</t>
+             title="Attribute 7: named_attr">
+        <t>
+          TRUE, if this object has named attributes. In other words,
+          object has a non-empty named attribute directory.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_fsid" 
-	     title="Attribute 8: fsid">
-	<t>
-	  Unique file system identifier for the file system holding this
-	  object.  fsid contains major and minor components each of
-	  which are of data type uint64_t.
-	</t>
+             title="Attribute 8: fsid">
+        <t>
+          Unique file system identifier for the file system holding this
+          object.  The fsid attribute has major and minor components, each of
+          which are of data type uint64_t.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_unique_handles" 
-	     title="Attribute 9: unique_handles">
-	<t>
-	  True, if two distinct filehandles guaranteed to refer to two
-	  different file system objects.
-	</t>
+             title="Attribute 9: unique_handles">
+        <t>
+          TRUE, if two distinct filehandles are guaranteed to refer to two
+          different file system objects.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_lease_time" 
-	     title="Attribute 10: lease_time">
-	<t>
-	  Duration of leases at server in seconds.
-	</t>
+             title="Attribute 10: lease_time">
+        <t>
+          Duration of the lease at server in seconds.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_rdattr_error" 
-	     title="Attribute 11: rdattr_error">
-	<t>
-	  Error returned from an attempt to retrieve attributes during a READDIR operation.
-	</t>
+             title="Attribute 11: rdattr_error">
+        <t>
+          Error returned from an attempt to retrieve attributes during a READDIR operation.
+        </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_filehandle" 
-	     title="Attribute 19: filehandle">
-	<t>
-	  The filehandle of this object (primarily for READDIR requests).
-	</t>
+             title="Attribute 19: filehandle">
+        <t>
+          The filehandle of this object (primarily for READDIR requests).
+        </t>
     </section>
 
    </section>
@@ -763,75 +773,75 @@
     </t>
 
     <section toc="exclude" anchor="attrdef_archive"
-	     title="Attribute 14: archive">
+             title="Attribute 14: archive">
       <t>
-	True, if this file has been archived since the time of last
-	modification (deprecated in favor of time_backup).
+        TRUE, if this file has been archived since the time of last
+        modification (deprecated in favor of time_backup).
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_cansettime"
-	     title="Attribute 15: cansettime">
+             title="Attribute 15: cansettime">
       <t>
-	True, if the server able to change the times for a
-	file system object as specified in a SETATTR operation.
+        TRUE, if the server is able to change the times for a
+        file system object as specified in a SETATTR operation.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_case_insensitive"
-	     title="Attribute 16: case_insensitive">
+             title="Attribute 16: case_insensitive">
       <t>
-	True, if file name comparisons on this file system are case
-	insensitive.
+        TRUE, if file name comparisons on this file system are case
+        insensitive.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_case_preserving"
-	     title="Attribute 17: case_preserving">
+             title="Attribute 17: case_preserving">
       <t>
-	True, if file name case on this file system is preserved.
+        TRUE, if file name case on this file system is preserved.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_chown_restricted"
-	     title="Attribute 18: chown_restricted">
+             title="Attribute 18: chown_restricted">
       <t>
-	If TRUE, the server will reject any request to change either
-	the owner or the group associated with a file if the caller
-	is not a privileged user (for example, "root" in UNIX
-	operating environments or in Windows 2000 the "Take
-	Ownership" privilege).
+        If TRUE, the server will reject any request to change either
+        the owner or the group associated with a file if the caller
+        is not a privileged user (for example, "root" in UNIX
+        operating environments or in Windows 2000, the "Take
+        Ownership" privilege).
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_fileid"
-	     title="Attribute 20: fileid">
+             title="Attribute 20: fileid">
       <t>
-	A number uniquely identifying the file within the file system.
+        A number uniquely identifying the file within the file system.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_files_avail"
-	     title="Attribute 21: files_avail">
+             title="Attribute 21: files_avail">
       <t>
-	File slots available to this user on the file system
-	containing this object - this should be the smallest
-	relevant limit.
+        File slots available to this user on the file system
+        containing this object -- this should be the smallest
+        relevant limit.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_files_free"
-	     title="Attribute 22: files_free">
+             title="Attribute 22: files_free">
       <t>
-	Free file slots on the file system containing this object -
-	this should be the smallest relevant limit.
+        Free file slots on the file system containing this object -
+        this should be the smallest relevant limit.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_files_total"
-	     title="Attribute 23: files_total">
+             title="Attribute 23: files_total">
       <t>
-	Total file slots on the file system containing this object.
+        Total file slots on the file system containing this object.
       </t>
     </section>
 
@@ -845,334 +855,337 @@
     </section>
 
     <section toc="exclude" anchor="attrdef_hidden"
-	     title="Attribute 25: hidden">
+             title="Attribute 25: hidden">
       <t>
-	True, if the file is considered hidden with respect to 
-	the Windows API.
+        TRUE, if the file is considered hidden with respect to 
+        the Windows API.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_homogeneous"
-	     title="Attribute 26: homogeneous">
+             title="Attribute 26: homogeneous">
       <t>
-	True, if this object's file system is homogeneous, i.e.,  are
-	per file system attributes the same for all file system's
-	objects.
+        TRUE, if this object's file system is homogeneous, i.e., all
+        objects in the file system (all objects on the server with
+	the same fsid) have common values for all per-file-system attributes.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_maxfilesize"
-	     title="Attribute 27: maxfilesize">
+             title="Attribute 27: maxfilesize">
       <t>
-	Maximum supported file size for the file system of this object.
+        Maximum supported file size for the file system of this object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_maxlink"
-	     title="Attribute 28: maxlink">
+             title="Attribute 28: maxlink">
       <t>
-	Maximum number of links for this object.
+        Maximum number of links for this object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_maxname"
-	     title="Attribute 29: maxname">
+             title="Attribute 29: maxname">
       <t>
-	Maximum file name size supported for this object.
+        Maximum file name size supported for this object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_maxread"
-	     title="Attribute 30: maxread">
+             title="Attribute 30: maxread">
       <t>
-	Maximum read size supported for this object.
+        Maximum amount of data the READ operation will return for this
+	object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_maxwrite"
-	     title="Attribute 31: maxwrite">
+             title="Attribute 31: maxwrite">
       <t>
-	Maximum write size supported for this object.  This
-	attribute SHOULD be supported if the file is writable.  Lack
-	of this attribute can lead to the client either wasting
-	bandwidth or not receiving the best performance.
+        Maximum amount of data the WRITE operation will accept for this
+        object.  This attribute SHOULD be supported if the file is writable.
+        Lack of this attribute can lead to the client either wasting
+        bandwidth or not receiving the best performance.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_mimetype"
-	     title="Attribute 32: mimetype">
+             title="Attribute 32: mimetype">
       <t>
-	MIME body type/subtype of this object.
+        MIME body type/subtype of this object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_mounted_on_fileid"
-	     title="Attribute 55: mounted_on_fileid">
+             title="Attribute 55: mounted_on_fileid">
       <t>
-	Like fileid, but if the target filehandle is the root of a
-	file system, this attribute represents the fileid of the underlying directory.
+        Like fileid, but if the target filehandle is the root of a
+        file system, this attribute represents the fileid of the underlying directory.
       </t>
       <t>
-	UNIX-based operating environments connect a file system into
-	the namespace by connecting (mounting) the file system onto
-	the existing file object (the mount point, usually a
-	directory) of an existing file system. When the mount point's
-	parent directory is read via an API like readdir(), the return
-	results are directory entries, each with a component name and
-	a fileid. The fileid of the mount point's directory entry will
-	be different from the fileid that the stat() system call
-	returns. The stat() system call is returning the fileid of the
-	root of the mounted file system, whereas readdir() is
-	returning the fileid stat() would have returned before any
-	file systems were mounted on the mount point.
+        UNIX-based operating environments connect a file system into
+        the namespace by connecting (mounting) the file system onto
+        the existing file object (the mount point, usually a
+        directory) of an existing file system. When the mount point's
+        parent directory is read via an API like readdir(), the return
+        results are directory entries, each with a component name and
+        a fileid. The fileid of the mount point's directory entry will
+        be different from the fileid that the stat() system call
+        returns. The stat() system call is returning the fileid of the
+        root of the mounted file system, whereas readdir() is
+        returning the fileid that stat() would have returned before any
+        file systems were mounted on the mount point.
       </t>
       <t>
-	Unlike NFSv3, NFSv4.0 allows a client's LOOKUP
-	request to cross other file systems. The client detects the
-	file system crossing whenever the filehandle argument of
-	LOOKUP has an fsid attribute different from that of the
-	filehandle returned by LOOKUP. A UNIX-based client will
-	consider this a "mount point crossing".  UNIX has a legacy
-	scheme for allowing a process to determine its current working
-	directory. This relies on readdir() of a mount point's parent
-	and stat() of the mount point returning fileids as previously
-	described.  The mounted_on_fileid attribute corresponds to the
-	fileid that readdir() would have returned as described
-	previously.
+        Unlike NFSv3, NFSv4.0 allows a client's LOOKUP
+        request to cross other file systems. The client detects the
+        file system crossing whenever the filehandle argument of
+        LOOKUP has an fsid attribute different from that of the
+        filehandle returned by LOOKUP. A UNIX-based client will
+        consider this a "mount point crossing".  UNIX has a legacy
+        scheme for allowing a process to determine its current working
+        directory. This relies on readdir() of a mount point's parent
+        and stat() of the mount point returning fileids as previously
+        described.  The mounted_on_fileid attribute corresponds to the
+        fileid that readdir() would have returned as described
+        previously.
       </t>
       <t>
-	While the NFSv4.0 client could simply fabricate a fileid
-	corresponding to what mounted_on_fileid provides (and if the
-	server does not support mounted_on_fileid, the client has no
-	choice), there is a risk that the client will generate a
-	fileid that conflicts with one that is already assigned to
-	another object in the file system. Instead, if the server can
-	provide the mounted_on_fileid, the potential for client
-	operational problems in this area is eliminated.
+        While the NFSv4.0 client could simply fabricate a fileid
+        corresponding to what mounted_on_fileid provides (and if the
+        server does not support mounted_on_fileid, the client has no
+        choice), there is a risk that the client will generate a
+        fileid that conflicts with one that is already assigned to
+        another object in the file system. Instead, if the server can
+        provide the mounted_on_fileid, the potential for client
+        operational problems in this area is eliminated.
       </t>
       <t>
-	If the server detects that there is no mounted point at the
-	target file object, then the value for mounted_on_fileid that
-	it returns is the same as that of the fileid attribute.
+        If the server detects that there is no mounted point at the
+        target file object, then the value for mounted_on_fileid that
+        it returns is the same as that of the fileid attribute.
       </t>
       <t>
-	The mounted_on_fileid attribute is RECOMMENDED, so the server
-	SHOULD provide it if possible, and for a UNIX-based server,
-	this is straightforward. Usually, mounted_on_fileid will be
-	requested during a READDIR operation, in which case it is
-	trivial (at least for UNIX-based servers) to return
-	mounted_on_fileid since it is equal to the fileid of a
-	directory entry returned by readdir().  If mounted_on_fileid
-	is requested in a GETATTR operation, the server should obey an
-	invariant that has it returning a value that is equal to the
-	file object's entry in the object's parent directory,
-	i.e., what readdir() would have returned.  Some operating
-	environments allow a series of two or more file systems to be
-	mounted onto a single mount point. In this case, for the
-	server to obey the aforementioned invariant, it will need to
-	find the base mount point, and not the intermediate mount
-	points.
+        The mounted_on_fileid attribute is RECOMMENDED, so the server
+        SHOULD provide it if possible, and for a UNIX-based server,
+        this is straightforward. Usually, mounted_on_fileid will be
+        requested during a READDIR operation, in which case it is
+        trivial (at least for UNIX-based servers) to return
+        mounted_on_fileid since it is equal to the fileid of a
+        directory entry returned by readdir().  If mounted_on_fileid
+        is requested in a GETATTR operation, the server should obey an
+        invariant that has it returning a value that is equal to the
+        file object's entry in the object's parent directory,
+        i.e., what readdir() would have returned.  Some operating
+        environments allow a series of two or more file systems to be
+        mounted onto a single mount point. In this case, for the
+        server to obey the aforementioned invariant, it will need to
+        find the base mount point, and not the intermediate mount
+        points.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_no_trunc"
-	     title="Attribute 34: no_trunc">
+             title="Attribute 34: no_trunc">
       <t>
-	If this attribute is TRUE, then if the client uses a file
+        If this attribute is TRUE, then if the client uses a file
         name longer than name_max, an error will be
-	returned instead of the name being truncated.
+        returned instead of the name being truncated.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_numlinks"
-	     title="Attribute 35: numlinks">
+             title="Attribute 35: numlinks">
       <t>
-	Number of hard links to this object.
+        Number of hard links to this object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_owner"
-	     title="Attribute 36: owner">
+             title="Attribute 36: owner">
       <t>
-	The string name of the owner of this object.
+        The string name of the owner of this object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_owner_group"
-	     title="Attribute 37: owner_group">
+             title="Attribute 37: owner_group">
       <t>
-	The string name of the group ownership of this object.
+        The string name of the group ownership of this object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_quota_avail_hard"
-	     title="Attribute 38: quota_avail_hard">
+             title="Attribute 38: quota_avail_hard">
       <t anchor="quota_avail_hard">
-	The value in bytes which represents the amount of additional
-	disk space beyond the current allocation that can be allocated
-	to this file or directory before further allocations will be
-	refused.  It is understood that this space may be consumed by
-	allocations to other files or directories.
+        The value in bytes that represents the amount of additional
+        disk space beyond the current allocation that can be allocated
+        to this file or directory before further allocations will be
+        refused.  It is understood that this space may be consumed by
+        allocations to other files or directories.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_quota_avail_soft"
-	     title="Attribute 39: quota_avail_soft">
+             title="Attribute 39: quota_avail_soft">
       <t anchor="quota_avail_soft">
-	The value in bytes which represents the amount of additional
-	disk space that can be allocated to this file or directory
-	before the user may reasonably be warned.  It is understood
-	that this space may be consumed by allocations to other files
-	or directories though there is a rule as to which other files
-	or directories.
+        The value in bytes that represents the amount of additional
+        disk space that can be allocated to this file or directory
+        before the user may reasonably be warned.  It is understood
+        that this space may be consumed by allocations to other files
+        or directories though there is a rule as to which other files
+        or directories.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_quota_used"
-	     title="Attribute 40: quota_used">
+             title="Attribute 40: quota_used">
       <t anchor="quota_used">
-	The value in bytes which represent the amount of disc
-	space used by this file or directory and possibly a
-	number of other similar files or directories, where the
-	set of "similar" meets at least the criterion that
-	allocating space to any file or directory in the set
-	will reduce the "quota_avail_hard" of every other file
-	or directory in the set.
-	<vspace blankLines='1' />
-	Note that there may be a number of distinct but
-	overlapping sets of files or directories for which a
-	quota_used value is maintained. E.g. "all files with a
-	given owner", "all files with a given group owner". etc.
-	<vspace blankLines='1' />
-	The server is at liberty to choose any of those sets but
-	should do so in a repeatable way.  The rule may be
-	configured per file system or may be "choose the set with
-	the smallest quota".
+        The value in bytes that represents the amount of disc
+        space used by this file or directory and possibly a
+        number of other similar files or directories, where the
+        set of "similar" meets at least the criterion that
+        allocating space to any file or directory in the set
+        will reduce the "quota_avail_hard" of every other file
+        or directory in the set.
+        <vspace blankLines='1' />
+        Note that there may be a number of distinct but
+        overlapping sets of files or directories for which a
+        quota_used value is maintained, e.g. "all files with a
+        given owner", "all files with a given group owner". etc.
+        The server is at liberty to choose any of those sets
+	when providing the content of the quota_used attribute, but
+        should do so in a repeatable way.  The rule may be
+        configured per file system or may be "choose the set with
+        the smallest quota".
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_rawdev"
-	     title="Attribute 41: rawdev">
+             title="Attribute 41: rawdev">
       <t>
-	Raw device identifier; the UNIX device major/minor node
-	information.  If the value of type is not NF4BLK or NF4CHR,
-	the value returned SHOULD NOT be considered useful.
+        Raw device number of file of type NF4BLK or NF4CHR.  The device
+        number is split into major and minor numbers.  If the file's type
+        attribute is not NF4BLK or NF4CHR, the value returned SHOULD NOT be
+        considered useful.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_space_avail"
-	     title="Attribute 42: space_avail">
+             title="Attribute 42: space_avail">
       <t>
-	Disk space in bytes available to this user on the file system
-	containing this object - this should be the smallest
-	relevant limit.
+        Disk space in bytes available to this user on the file system
+        containing this object -- this should be the smallest
+        relevant limit.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_space_free"
-	     title="Attribute 43: space_free">
+             title="Attribute 43: space_free">
       <t>
-	Free disk space in bytes on the file system containing this
-	object - this should be the smallest relevant limit.
+        Free disk space in bytes on the file system containing this
+        object -- this should be the smallest relevant limit.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_space_total"
-	     title="Attribute 44: space_total">
+             title="Attribute 44: space_total">
       <t>
-	Total disk space in bytes on the file system containing this object.
+        Total disk space in bytes on the file system containing this object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_space_used"
-	     title="Attribute 45: space_used">
+             title="Attribute 45: space_used">
       <t>
-	Number of file system bytes allocated to this object.
+        Number of file system bytes allocated to this object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_system"
-	     title="Attribute 46: system">
+             title="Attribute 46: system">
       <t>
-	This attribute is TRUE if this file is a "system" file with respect to the Windows operating environment.
+        This attribute is TRUE if this file is a "system" file with respect to the Windows operating environment.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_time_access"
-	     title="Attribute 47: time_access">
+             title="Attribute 47: time_access">
       <t>
-	The time_access attribute represents the time of last access
-	to the object by a read that was satisfied by the server.  The
-	notion of what is an "access" depends on server's operating
-	environment and/or the server's file system semantics.  For
-	example, for servers obeying POSIX semantics, time_access
-	would be updated only by the READLINK, READ, and READDIR
-	operations and not any of the operations that modify the
-	content of the object. Of course, setting the corresponding
-	time_access_set attribute is another way to modify the
-	time_access attribute.
+        The time_access attribute represents the time of last access
+        to the object by a READ operation sent to the server.  The notion of what is
+        an "access" depends on the server's operating environment and/or the
+        server's file system semantics.  For example, for servers obeying
+        Portable Operating System Interface (POSIX) semantics, time_access
+        would be updated only by the READ and READDIR operations and not any
+        of the operations that modify the content of the object [16], [17],
+	<xref target="read_api"/>, <xref target="readdir_api" />,
+	<xref target="write_api"/>.  Of course, setting the corresponding
+	time_access_set attribute is another way to modify the time_access
+	attribute.
       </t>
       <t>
-	Whenever the file object resides on a writable file system,
-	the server should make best efforts to record time_access into
-	stable storage.  However, to mitigate the performance effects
-	of doing so, and most especially whenever the server is
-	satisfying the read of the object's content from its cache,
-	the server MAY cache access time updates and lazily write them
-	to stable storage.  It is also acceptable to give
-	administrators of the server the option to disable time_access
-	updates.
+        Whenever the file object resides on a writable file system,
+        the server should make its best efforts to record time_access into
+        stable storage.  However, to mitigate the performance effects
+        of doing so, and most especially whenever the server is
+        satisfying the read of the object's content from its cache,
+        the server MAY cache access time updates and lazily write them
+        to stable storage.  It is also acceptable to give
+        administrators of the server the option to disable time_access
+        updates.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_time_access_set"
-	     title="Attribute 48: time_access_set">
+             title="Attribute 48: time_access_set">
       <t>
-	Set the time of last access to the object.  SETATTR use only.
+        Sets the time of last access to the object.  SETATTR use only.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_time_backup"
-	     title="Attribute 49: time_backup">
+             title="Attribute 49: time_backup">
       <t>
-	The time of last backup of the object.
+        The time of last backup of the object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_time_create"
-	     title="Attribute 50: time_create">
+             title="Attribute 50: time_create">
       <t>
-	The time of creation of the object. This attribute does not
-	have any relation to the traditional UNIX file attribute
-	"ctime" or "change time".
+        The time of creation of the object. This attribute does not
+        have any relation to the traditional UNIX file attribute
+        "ctime" or "change time".
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_time_delta"
-	     title="Attribute 51: time_delta">
+             title="Attribute 51: time_delta">
       <t>
-	Smallest useful server time granularity.
+        Smallest useful server time granularity.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_time_metadata"
-	     title="Attribute 52: time_metadata">
+             title="Attribute 52: time_metadata">
       <t>
-	The time of last metadata modification of the object.
+        The time of last metadata modification of the object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_time_modify"
-	     title="Attribute 53: time_modify">
+             title="Attribute 53: time_modify">
       <t>
-	The time of last modification to the object.
+        The time of last modification to the object.
       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_time_modify_set"
-	     title="Attribute 54: time_modify_set">
+             title="Attribute 54: time_modify_set">
       <t>
-	Set the time of last modification to the object.  SETATTR use only.
+        Sets the time of last modification to the object.  SETATTR use only.
       </t>
     </section>
 
@@ -1181,19 +1194,19 @@
   </section>
 
   <section anchor="sec:fattr:owner_group" 
-	   title="Interpreting owner and owner_group">
+           title="Interpreting owner and owner_group">
     <t>
       The RECOMMENDED attributes "owner" and "owner_group" (and also
       users and groups within the "acl" attribute) are represented in
       terms of a UTF-8 string.  To avoid a representation that is tied
       to a particular underlying implementation at the client or
       server, the use of the UTF-8 string has been chosen.  Note that
-      section 6.1 of <xref target="RFC2624">RFC2624</xref> provides
+      section 6.1 of <xref target="RFC2624">RFC 2624</xref> provides
       additional rationale.  It is expected that the client and server
       will have their own local representation of owner and
       owner_group that is used for local storage or presentation to
       the end user.  Therefore, it is expected that when these
-      attributes are transferred between the client and server that
+      attributes are transferred between the client and server,
       the local representation is translated to a syntax of the form
       "user@dns_domain".  This will allow for a client and server that
       do not use the same local representation the ability to
@@ -1207,7 +1220,7 @@
       identifying the users corresponding to these security
       principals.  When these local identifiers are translated to
       the form of the owner attribute, associated with files created
-      by such principals they identify, in a common format, the
+      by such principals, they identify, in a common format, the
       users associated with each corresponding set of security
       principals.
     </t>
@@ -1215,7 +1228,7 @@
       The translation used to interpret owner and group strings is
       not specified as part of the protocol.  This allows various
       solutions to be employed.  For example, a local translation
-      table may be consulted that maps between a numeric identifier to the
+      table may be consulted that maps a numeric identifier to the
       user@dns_domain syntax.  A name service may also be used to
       accomplish the translation.  A server may provide a more
       general service, not limited by any particular translation
@@ -1229,14 +1242,14 @@
     </t>
     <t>
       Servers that do not provide support for all possible values of
-      the owner and owner_group attributes, SHOULD return an error
+      the owner and owner_group attributes SHOULD return an error
       (NFS4ERR_BADOWNER) when a string is presented that has no
       translation, as the value to be set for a SETATTR of the
       owner, owner_group, or acl attributes.  When a server does
       accept an owner or owner_group value as valid on a SETATTR
       (and similarly for the owner and group strings in an acl), it
-      needs to try to return that same string 
-      for which see below) when a corresponding
+      is promising to return that same string for which see below)
+      when a corresponding
       GETATTR is done.  For some internationalization-related
       exceptions where this is not possible, see below.
       Configuration changes (including
@@ -1250,7 +1263,7 @@
     </t>
     <t>
       The "dns_domain" portion of the owner string is meant to be a
-      DNS domain name.  For example, user@ietf.org.  Servers should
+      DNS domain name.  For example, user@example.org.  Servers should
       accept as valid a set of users for at least one domain.  A
       server may treat other domains as having no valid
       translations.  A more general service is provided when a
@@ -1281,13 +1294,13 @@
     </t>
     <t>
       In the case where there is no translation available to the
-      client or server, the attribute value must be constructed
+      client or server, the attribute value will be constructed
       without the "@".  Therefore, the absence of the @ from the
       owner or owner_group attribute signifies that no translation
       was available at the sender and that the receiver of the
       attribute should not use that string as a basis for
       translation into its own internal format.  Even though the
-      attribute value can not be translated, it may still be useful.
+      attribute value cannot be translated, it may still be useful.
       In the case of a client, the attribute string may be used for
       local display of ownership.
     </t>
@@ -1298,7 +1311,7 @@
       owner and group
       strings that consist of decimal numeric values with no leading
       zeros can be given a special interpretation by clients and
-      servers which choose to provide such support.  The receiver
+      servers that choose to provide such support.  The receiver
       may treat such a user or group string as representing the same
       user as would be represented by an NFSv3 uid or gid having the
       corresponding numeric value.  A server is not obligated to
@@ -1319,8 +1332,7 @@
     </t>
   </section>
 
-  <section anchor="character_case_attributes" 
-	   title="Character Case Attributes">
+  <section anchor="character_case_attributes" title="Character Case Attributes">
     <t>
       With respect to the case_insensitive and case_preserving
       attributes, each UCS-4 character (which UTF-8 encodes) has a

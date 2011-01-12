@@ -705,59 +705,6 @@ Owner: Tom
 State:
 Target: IETF 80
 
-50) Marcel Telka has an errata:
-
-      Section 4.2.3. says:
-
-         FH4_VOL_MIGRATION
-             The filehandle will expire as a result of migration.  If
-             FH4_VOL_ANY is set, FH4_VOL_MIGRATION is redundant.
-
-      FH4_VOL_RENAME
-             The filehandle will expire during rename.  This includes a
-             rename by the requesting client or a rename by any other
-             client.  If FH4_VOL_ANY is set, FH4_VOL_RENAME is
-             redundant.
-
-  .....
-
-  Note that the bits FH4_VOL_MIGRATION and FH4_VOL_RENAME allow the
-  client to determine that expiration has occurred whenever a specific
-  event occurs, without an explicit filehandle expiration error from
-  the server.  FH4_VOL_ANY does not provide this form of information.
-  In situations where the server will expire many, but not all
-  filehandles upon migration (e.g., all but those that are open),
-
-  It should say:
-
-       FH4_VOL_MIGRATION
-             The filehandle will expire as a result of migration.  If
-             FH4_VOLATILE_ANY is set, FH4_VOL_MIGRATION is redundant.
-
-    FH4_VOL_RENAME
-             The filehandle will expire during rename.  This includes a
-             rename by the requesting client or a rename by any other
-             client.  If FH4_VOLATILE_ANY is set, FH4_VOL_RENAME is
-             redundant.
-
-.....
-
-   Note that the bits FH4_VOL_MIGRATION and FH4_VOL_RENAME allow the
-   client to determine that expiration has occurred whenever a specific
-   event occurs, without an explicit filehandle expiration error from
-   the server.  FH4_VOLATILE_ANY does not provide this form of information.
-   In situations where the server will expire many, but not all
-   filehandles upon migration (e.g., all but those that are open),
-
-  Notes:
-
-  The FH4_VOL_ANY should be replaced with FH4_VOLATILE_ANY (three times).
-
-Action:
-Owner: Tom
-State:
-Target: IETF 80
-
 =====
 Done:
 =====
@@ -994,3 +941,57 @@ Owner: Tom
 State: Finished
 Target: IETF 79
 5661: Yes
+
+50) Marcel Telka has an errata:
+
+      Section 4.2.3. says:
+
+         FH4_VOL_MIGRATION
+             The filehandle will expire as a result of migration.  If
+             FH4_VOL_ANY is set, FH4_VOL_MIGRATION is redundant.
+
+      FH4_VOL_RENAME
+             The filehandle will expire during rename.  This includes a
+             rename by the requesting client or a rename by any other
+             client.  If FH4_VOL_ANY is set, FH4_VOL_RENAME is
+             redundant.
+
+  .....
+
+  Note that the bits FH4_VOL_MIGRATION and FH4_VOL_RENAME allow the
+  client to determine that expiration has occurred whenever a specific
+  event occurs, without an explicit filehandle expiration error from
+  the server.  FH4_VOL_ANY does not provide this form of information.
+  In situations where the server will expire many, but not all
+  filehandles upon migration (e.g., all but those that are open),
+
+  It should say:
+
+       FH4_VOL_MIGRATION
+             The filehandle will expire as a result of migration.  If
+             FH4_VOLATILE_ANY is set, FH4_VOL_MIGRATION is redundant.
+
+    FH4_VOL_RENAME
+             The filehandle will expire during rename.  This includes a
+             rename by the requesting client or a rename by any other
+             client.  If FH4_VOLATILE_ANY is set, FH4_VOL_RENAME is
+             redundant.
+
+.....
+
+   Note that the bits FH4_VOL_MIGRATION and FH4_VOL_RENAME allow the
+   client to determine that expiration has occurred whenever a specific
+   event occurs, without an explicit filehandle expiration error from
+   the server.  FH4_VOLATILE_ANY does not provide this form of information.
+   In situations where the server will expire many, but not all
+   filehandles upon migration (e.g., all but those that are open),
+
+  Notes:
+
+  The FH4_VOL_ANY should be replaced with FH4_VOLATILE_ANY (three times).
+
+Action: Make changes
+Owner: Tom
+State: Finished
+Target: IETF 80
+

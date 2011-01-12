@@ -919,5 +919,50 @@ document are to be interpreted as described in RFC
 <format type='TXT' octets='101692' target='ftp://ftp.isi.edu/in-notes/rfc2025.txt' />
 </reference>
 
+<reference anchor='ISEG_errata'>
+<front>
+<title>IESG Processing of RFC Errata for the IETF Stream</title>
+	<author>
+<organization>IESG</organization>
+	</author>
+<date year='2008' month='July' />
+</front>
+</reference>
+
+    <reference anchor="read_api">
+      <front>
+     <title>Section 'read()' of System Interfaces of The Open Group Base Specifications Issue 6, IEEE Std 1003.1, 2004 Edition
+     </title>
+	<author>
+	  <organization>The Open Group
+	  </organization>
+	</author>
+	<date year="2004" />
+      </front>
+    </reference>
+
+    <reference anchor="readdir_api">
+      <front>
+     <title>Section 'readdir()' of System Interfaces of The Open Group Base Specifications Issue 6, IEEE Std 1003.1, 2004 Edition
+     </title>
+	<author>
+	  <organization>The Open Group
+	  </organization>
+	</author>
+	<date year="2004" />
+      </front>
+    </reference>
+
+    <reference anchor="write_api">
+      <front>
+     <title>Section 'write()' of System Interfaces of The Open Group Base Specifications Issue 6, IEEE Std 1003.1, 2004 Edition
+     </title>
+	<author>
+	  <organization>The Open Group
+	  </organization>
+	</author>
+	<date year="2004" />
+      </front>
+    </reference>
 
 </references>

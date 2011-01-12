@@ -1019,7 +1019,7 @@
         overwhelming the server.  Further discussion of the general issue
         is included in <xref target="Floyd" />.  The client must account for the server
         that is able to perform I/O and non-reclaim locking requests
-        within the grace period as well as those that can not do so.
+        within the grace period as well as those that cannot do so.
       </t>
 
       <t>

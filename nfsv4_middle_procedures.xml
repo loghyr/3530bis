@@ -312,7 +312,7 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
         may perform uid or gid mapping or enforce additional access
         control restrictions.  It is also possible that the server
         may not be in the same ID space as the client.  In these cases
-        (and perhaps others), the client can not reliably perform an
+        (and perhaps others), the client cannot reliably perform an
         access check with only current file attributes.
       </t>
 
@@ -1762,7 +1762,7 @@ READ 0 32767
       </t>
 
       <t>
-        If the server can not support these exclusive create semantics,
+        If the server cannot support these exclusive create semantics,
         possibly because of the requirement to commit the verifier
         to stable storage, it should fail the OPEN request with the
         error, NFS4ERR_NOTSUPP.

@@ -501,7 +501,7 @@
         able to notify the initial client and recall the delegation.
         This requires that a callback path exist between the server and
         client.  If this callback path does not exist, then delegations
-        can not be granted.  The essence of a delegation is that it
+        cannot be granted.  The essence of a delegation is that it
         allows the client to locally service operations such as OPEN,
         CLOSE, LOCK, LOCKU, READ, WRITE without immediate interaction
         with the server.

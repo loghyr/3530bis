@@ -1210,7 +1210,7 @@ return to client (that sent GETATTR) the attributes
           </t>
 
           <t>
-            When the client holds a delegation, it can not rely on operations,
+            When the client holds a delegation, it cannot rely on operations,
             except for RENEW, that take a stateid, to renew delegation leases
             across callback path failures.  The client that wants to keep
             delegations in force across callback path failures must use RENEW
