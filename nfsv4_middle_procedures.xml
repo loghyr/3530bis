@@ -1103,7 +1103,7 @@ GETFH
 
       <figure>
         <artwork>
-(cfh) locktype, offset, length owner -> {void, NFS4ERR_DENIED ->
+(cfh) locktype, offset, length, owner -> {void, NFS4ERR_DENIED ->
 owner}
         </artwork>
       </figure>
@@ -1476,7 +1476,7 @@ READ 0 32767
       <figure>
         <artwork>
 (cfh), seqid, share_access, share_deny, owner, openhow, claim ->
-(cfh), stateid, cinfo, rflags, open_confirm, attrset delegation
+(cfh), stateid, cinfo, rflags, attrset, delegation
         </artwork>
       </figure>
 
@@ -1688,14 +1688,14 @@ READ 0 32767
       </t>
 
       <t>
-        When an OPEN is done and the specified lockowner already
+        When an OPEN is done and the specified open_owner already
         has the resulting filehandle open, the result is to "OR"
         together the new share and deny status together with the
         existing status.  In this case, only a single CLOSE need be
         done, even though multiple OPENs were completed.  When such
         an OPEN is done, checking of share reservations for the new
         OPEN proceeds normally, with no exception for the existing
-        OPEN held by the same lockowner.
+        OPEN held by the same owner.
       </t>
 
       <t>
@@ -1929,7 +1929,7 @@ READ 0 32767
         argument for this operation along with the next sequence id for
         the open_owner.  The sequence id passed to the OPEN_CONFIRM
         must be 1 (one) greater than the seqid passed to the OPEN
-        operation from which the open_confirm value was obtained.
+        operation.
         If the server receives an unexpected sequence id with respect
         to the original open, then the server assumes that the client
         will not confirm the original OPEN and all state associated
@@ -1952,7 +1952,7 @@ READ 0 32767
         open_owner4: such an operation is of no use in that situation.
         Instead, to avoid unbounded memory use, the server needs to
         implement a strategy for disposing of open_owner4s that have
-        no current lock, open, or delegation state for any files and
+        no current open state for any files and
         have not been used recently.  The time period used to determine
         when to dispose of open_owner4s is an implementation choice.
         The time period should certainly be no less than the lease

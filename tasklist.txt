@@ -364,19 +364,19 @@ Get rid of low value delegations.
 16) Another minor locking item: the blocking-lock canceling recommendation
 in 9.6 should work for 4.0 clients and servers too:
 
-	If a server receives a blocking lock request, denies it, and
-	then later receives a nonblocking request for the same lock,
-	which is also denied, then it should remove the lock in question
-	from its list of pending blocking locks.  Clients should use
-	such a nonblocking request to indicate to the server that this
-	is the last time they intend to poll for the lock, as may happen
-	when the process requesting the lock is interrupted.  This is a
-	courtesy to the server, to prevent it from unnecessarily waiting
-	a lease period before granting other lock requests.  However,
-	clients are not required to perform this courtesy, and servers
-	must not depend on them doing so.  Also, clients must be
-	prepared for the possibility that this final locking request
-	will be accepted.
+If a server receives a blocking lock request, denies it, and
+then later receives a nonblocking request for the same lock,
+which is also denied, then it should remove the lock in question
+from its list of pending blocking locks.  Clients should use
+such a nonblocking request to indicate to the server that this
+is the last time they intend to poll for the lock, as may happen
+when the process requesting the lock is interrupted.  This is a
+courtesy to the server, to prevent it from unnecessarily waiting
+a lease period before granting other lock requests.  However,
+clients are not required to perform this courtesy, and servers
+must not depend on them doing so.  Also, clients must be
+prepared for the possibility that this final locking request
+will be accepted.
 
 Action:
 Owner:
@@ -594,113 +594,6 @@ New:
 This contradicts the changes we have made for namespaces.
 
 Action: Remove text?
-Owner: Tom
-State:
-Target: IETF 80
-
-46) Marcel Telka has an errata:
-
-Section 14.2.18. says:
-
-Instead, to avoid unbounded memory use, the server needs to implement
-a strategy for disposing of open_owner4s that have no current lock,
-open, or delegation state for any files and have not been used
-recently.
-
-It should say:
-
-Instead, to avoid unbounded memory use, the server needs to implement
-a strategy for disposing of open_owner4s that have no current open
-state for any files and have not been used recently.
-
-Notes:
-
-A lock can be held on already opened files only. This means that
-every lock state can exist only in case the accompanied open state
-is already there.
-
-So if there is a lock state held by server then there must be an
-open state for the file too. This means that we do not need to
-mention the "current lock state" in the RFC's sentence above.
-
-Next, the delegation state is allocated only in case the delegation
-is granted by server to a client for a file. The delegation state
-is related to file and client. It is not related/tied to openowner.
-This means that it is not possible to test whether an openowner
-have any delegation states. Delegation states are simply not related
-to the openowner.
-
-It is easily possible to have a client with some delegation granted
-with no valid openowner held by a server.
-
-Action:
-Owner: Tom
-State:
-Target: IETF 80
-
-47) Marcel Telka has an errata:
-
-   SYNOPSIS
-
-        (cfh) locktype, offset, length owner -> {void, NFS4ERR_DENIED ->
-     owner}
-     It should say:
-
-        SYNOPSIS
-
-     (cfh) locktype, offset, length, owner -> {void, NFS4ERR_DENIED ->
-          owner}
-  Notes:
-
-  Missing comma in the LOCKT synopsis.
-
-Action:
-Owner: Tom
-State:
-Target: IETF 80
-
-48) Marcel Telka has an errata:
-
-     SYNOPSIS
-
-          (cfh), seqid, share_access, share_deny, owner, openhow, claim ->
-       (cfh), stateid, cinfo, rflags, open_confirm, attrset delegation
-
-       It should say:
-
-          SYNOPSIS
-
-       (cfh), seqid, share_access, share_deny, owner, openhow, claim ->
-            (cfh), stateid, cinfo, rflags, attrset, delegation
-    Notes:
-
-    i) The open_confirm should be removed (it is not a part of the OPEN4resok structure).
-    ii) There is missing command between attrset and delegation.
-
-Action:
-Owner: Tom
-State:
-Target: IETF 80
-
-49) Marcel Telka has an errata:
-
-    Section 4.2.3. says:
-
-       FH4_VOLATILE_ANY
-                    The filehandle may expire at any time, except as
-                 specifically excluded (i.e., FH4_NO_EXPIRE_WITH_OPEN).
-
- It should say:
-
-    FH4_VOLATILE_ANY
-                 The filehandle may expire at any time, except as
-              specifically excluded (i.e., FH4_NOEXPIRE_WITH_OPEN).
-
-      Notes:
-
-      The FH4_NO_EXPIRE_WITH_OPEN should be replaced with FH4_NOEXPIRE_WITH_OPEN.
-
-Action:
 Owner: Tom
 State:
 Target: IETF 80
@@ -991,6 +884,223 @@ Target: IETF 79
   The FH4_VOL_ANY should be replaced with FH4_VOLATILE_ANY (three times).
 
 Action: Make changes
+Owner: Tom
+State: Finished
+Target: IETF 80
+
+49) Marcel Telka has an errata:
+
+    Section 4.2.3. says:
+
+       FH4_VOLATILE_ANY
+                    The filehandle may expire at any time, except as
+                 specifically excluded (i.e., FH4_NO_EXPIRE_WITH_OPEN).
+
+ It should say:
+
+    FH4_VOLATILE_ANY
+                 The filehandle may expire at any time, except as
+              specifically excluded (i.e., FH4_NOEXPIRE_WITH_OPEN).
+
+      Notes:
+
+      The FH4_NO_EXPIRE_WITH_OPEN should be replaced with FH4_NOEXPIRE_WITH_OPEN.
+
+Action: Edit
+Owner: Tom
+State: Finished
+Target: IETF 80
+
+48) Marcel Telka has an errata:
+
+     SYNOPSIS
+
+          (cfh), seqid, share_access, share_deny, owner, openhow, claim ->
+       (cfh), stateid, cinfo, rflags, open_confirm, attrset delegation
+
+       It should say:
+
+          SYNOPSIS
+
+       (cfh), seqid, share_access, share_deny, owner, openhow, claim ->
+            (cfh), stateid, cinfo, rflags, attrset, delegation
+    Notes:
+
+    i) The open_confirm should be removed (it is not a part of the OPEN4resok structure).
+    ii) There is missing command between attrset and delegation.
+
+Action: Edit
+Owner: Tom
+State: Finished
+Target: IETF 80
+
+47) Marcel Telka has an errata:
+
+   SYNOPSIS
+
+        (cfh) locktype, offset, length owner -> {void, NFS4ERR_DENIED ->
+     owner}
+     It should say:
+
+        SYNOPSIS
+
+     (cfh) locktype, offset, length, owner -> {void, NFS4ERR_DENIED ->
+          owner}
+  Notes:
+
+  Missing comma in the LOCKT synopsis.
+
+Action: Edit
+Owner: Tom
+State: Finished
+Target: IETF 80
+
+46) Marcel Telka has an errata:
+
+Section 14.2.18. says:
+
+Instead, to avoid unbounded memory use, the server needs to implement
+a strategy for disposing of open_owner4s that have no current lock,
+open, or delegation state for any files and have not been used
+recently.
+
+It should say:
+
+Instead, to avoid unbounded memory use, the server needs to implement
+a strategy for disposing of open_owner4s that have no current open
+state for any files and have not been used recently.
+
+Notes:
+
+A lock can be held on already opened files only. This means that
+every lock state can exist only in case the accompanied open state
+is already there.
+
+So if there is a lock state held by server then there must be an
+open state for the file too. This means that we do not need to
+mention the "current lock state" in the RFC's sentence above.
+
+Next, the delegation state is allocated only in case the delegation
+is granted by server to a client for a file. The delegation state
+is related to file and client. It is not related/tied to openowner.
+This means that it is not possible to test whether an openowner
+have any delegation states. Delegation states are simply not related
+to the openowner.
+
+It is easily possible to have a client with some delegation granted
+with no valid openowner held by a server.
+
+Action: Edit
+Owner: Tom
+State: Finished
+Target: IETF 80
+
+51) Marcel Telka has an errata:
+
+Section 14.2.18. says:
+
+   This operation is used to confirm the sequence id usage for the first
+   time that a open_owner is used by a client.  The stateid returned
+   from the OPEN operation is used as the argument for this operation
+   along with the next sequence id for the open_owner.  The sequence id
+   passed to the OPEN_CONFIRM must be 1 (one) greater than the seqid
+   passed to the OPEN operation from which the open_confirm value was
+   obtained.  If the server receives an unexpected sequence id with
+   respect to the original open, then the server assumes that the client
+   will not confirm the original OPEN and all state associated with the
+   original OPEN is released by the server.
+
+      It should say:
+
+   This operation is used to confirm the sequence id usage for the first
+   time that a open_owner is used by a client.  The stateid returned
+   from the OPEN operation is used as the argument for this operation
+   along with the next sequence id for the open_owner.  The sequence id
+   passed to the OPEN_CONFIRM must be 1 (one) greater than the seqid
+   passed to the previous OPEN operation.
+   the server receives an unexpected sequence id with
+   respect to the original open, then the server assumes that the client
+   will not confirm the original OPEN and all state associated with the
+   original OPEN is released by the server.
+
+    Notes:
+
+    The OPEN operation does not return the open_confirm value.
+
+Action: Edit
+Owner: Tom
+State: Finished
+Target: IETF 80
+
+52) Marcel Telka has an errata:
+
+Section 14.2.16. says:
+
+   When an OPEN is done and the specified lockowner already has the
+   resulting filehandle open, the result is to "OR" together the new
+   share and deny status together with the existing status.  In this
+   case, only a single CLOSE need be done, even though multiple OPENs
+   were completed.  When such an OPEN is done, checking of share
+   reservations for the new OPEN proceeds normally, with no exception
+   for the existing OPEN held by the same lockowner.
+
+   It should say:
+
+   When an OPEN is done and the specified owner already has the
+   resulting filehandle open, the result is to "OR" together the new
+   share and deny status together with the existing status.  In this
+   case, only a single CLOSE need be done, even though multiple OPENs
+   were completed.  When such an OPEN is done, checking of share
+   reservations for the new OPEN proceeds normally, with no exception
+   for the existing OPEN held by the same owner.
+
+  Notes:
+
+  The 'lockowner' should be replaced by 'owner' (twice in the paragraph). The lockowner is not related to the OPEN operation. Instead, the owner (open_owner) is related.
+
+Action: Edit
+Owner: Tom
+State: Finished
+Target: IETF 80
+
+53) Marcel Telka has an errata:
+
+Section 8.11. says:
+
+  When an OPEN is done for a file and the lockowner for which the open
+  is being done already has the file open, the result is to upgrade the
+  open file status maintained on the server to include the access and
+  deny bits specified by the new OPEN as well as those for the existing
+  OPEN.  The result is that there is one open file, as far as the
+  protocol is concerned, and it includes the union of the access and
+  deny bits for all of the OPEN requests completed.  Only a single
+  CLOSE will be done to reset the effects of both OPENs.  Note that the
+  client, when issuing the OPEN, may not know that the same file is in
+  fact being opened.  The above only applies if both OPENs result in
+  the OPENed object being designated by the same filehandle.
+
+ It should say:
+
+  When an OPEN is done for a file and the open_owner for which the open
+  is being done already has the file open, the result is to upgrade the
+  open file status maintained on the server to include the access and
+  deny bits specified by the new OPEN as well as those for the existing
+  OPEN.  The result is that there is one open file, as far as the
+  protocol is concerned, and it includes the union of the access and
+  deny bits for all of the OPEN requests completed.  Only a single
+  CLOSE will be done to reset the effects of both OPENs.  Note that the
+  client, when issuing the OPEN, may not know that the same file is in
+  fact being opened.  The above only applies if both OPENs result in
+  the OPENed object being designated by the same filehandle.
+
+  Notes:
+
+  The file opens are related to open_owners, not lockowners. The lockowner
+  should be replaced by open_owner in the first sentence of the paragraph above.
+
+
+
+Action: Edit
 Owner: Tom
 State: Finished
 Target: IETF 80

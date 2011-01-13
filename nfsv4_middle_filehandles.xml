@@ -202,7 +202,7 @@
 
           <t hangText="FH4_VOLATILE_ANY">
              The filehandle may expire at any time, except as
-             specifically excluded (i.e., FH4_NO_EXPIRE_WITH_OPEN).
+             specifically excluded (i.e., FH4_NOEXPIRE_WITH_OPEN).
           </t>
 
           <t hangText="FH4_NOEXPIRE_WITH_OPEN">

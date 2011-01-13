@@ -1916,7 +1916,7 @@ Internet-Draft                    NFSv4                    December 2010
       which none of the bits specified below are set.
 
    FH4_VOLATILE_ANY  The filehandle may expire at any time, except as
-      specifically excluded (i.e., FH4_NO_EXPIRE_WITH_OPEN).
+      specifically excluded (i.e., FH4_NOEXPIRE_WITH_OPEN).
 
    FH4_NOEXPIRE_WITH_OPEN  May only be set when FH4_VOLATILE_ANY is set.
       If this bit is set, then the meaning of FH4_VOLATILE_ANY is
@@ -12997,7 +12997,7 @@ Internet-Draft                    NFSv4                    December 2010
 
 15.13.1.  SYNOPSIS
 
-   (cfh) locktype, offset, length owner -> {void, NFS4ERR_DENIED ->
+   (cfh) locktype, offset, length, owner -> {void, NFS4ERR_DENIED ->
    owner}
 
 15.13.2.  ARGUMENT
@@ -13345,7 +13345,7 @@ Internet-Draft                    NFSv4                    December 2010
 15.18.1.  SYNOPSIS
 
    (cfh), seqid, share_access, share_deny, owner, openhow, claim ->
-   (cfh), stateid, cinfo, rflags, open_confirm, attrset delegation
+   (cfh), stateid, cinfo, rflags, attrset, delegation
 
 15.18.2.  ARGUMENT
 
@@ -13728,13 +13728,13 @@ Internet-Draft                    NFSv4                    December 2010
    The component is also subject to the normal UTF-8, character support,
    and name checks.  See Section 12.3 for further discussion.
 
-   When an OPEN is done and the specified lockowner already has the
+   When an OPEN is done and the specified open_owner already has the
    resulting filehandle open, the result is to "OR" together the new
    share and deny status together with the existing status.  In this
    case, only a single CLOSE need be done, even though multiple OPENs
    were completed.  When such an OPEN is done, checking of share
    reservations for the new OPEN proceeds normally, with no exception
-   for the existing OPEN held by the same lockowner.
+   for the existing OPEN held by the same owner.
 
    If the underlying filesystem at the server is only accessible in a
    read-only mode and the OPEN request has specified ACCESS_WRITE or
@@ -13966,11 +13966,10 @@ Internet-Draft                    NFSv4                    December 2010
    from the OPEN operation is used as the argument for this operation
    along with the next sequence id for the open_owner.  The sequence id
    passed to the OPEN_CONFIRM must be 1 (one) greater than the seqid
-   passed to the OPEN operation from which the open_confirm value was
-   obtained.  If the server receives an unexpected sequence id with
-   respect to the original open, then the server assumes that the client
-   will not confirm the original OPEN and all state associated with the
-   original OPEN is released by the server.
+   passed to the OPEN operation.  If the server receives an unexpected
+   sequence id with respect to the original open, then the server
+   assumes that the client will not confirm the original OPEN and all
+   state associated with the original OPEN is released by the server.
 
    On success, the current filehandle retains its value.
 
@@ -13983,16 +13982,17 @@ Internet-Draft                    NFSv4                    December 2010
    explicit operation to exit an open_owner4: such an operation is of no
    use in that situation.  Instead, to avoid unbounded memory use, the
    server needs to implement a strategy for disposing of open_owner4s
-   that have no current lock, open, or delegation state for any files
-   and have not been used recently.  The time period used to determine
-   when to dispose of open_owner4s is an implementation choice.  The
-   time period should certainly be no less than the lease time plus any
-   grace period the server wishes to implement beyond a lease time.  The
-   OPEN_CONFIRM operation allows the server to safely dispose of unused
-   open_owner4 data structures.
+   that have no current open state for any files and have not been used
+   recently.  The time period used to determine when to dispose of
+   open_owner4s is an implementation choice.  The time period should
+   certainly be no less than the lease time plus any grace period the
+   server wishes to implement beyond a lease time.  The OPEN_CONFIRM
+   operation allows the server to safely dispose of unused open_owner4
+   data structures.
 
    In the case that a client issues an OPEN operation and the server no
    longer has a record of the open_owner4, the server needs to ensure
+   that this is a new OPEN and not a replay or retransmission.
 
 
 
@@ -14000,8 +14000,6 @@ Haynes & Noveck           Expires June 16, 2011               [Page 250]
 
 Internet-Draft                    NFSv4                    December 2010
 
-
-   that this is a new OPEN and not a replay or retransmission.
 
    Servers must not require confirmation on OPENs that grant delegations
    or are doing reclaim operations.  See Section 9.1.8 for details.  The
@@ -14045,6 +14043,8 @@ Internet-Draft                    NFSv4                    December 2010
 15.21.1.  SYNOPSIS
 
    (cfh), stateid, seqid, access, deny -> stateid
+
+
 
 
 
