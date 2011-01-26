@@ -806,9 +806,8 @@ document are to be interpreted as described in RFC
 		avoids work in the server by handling
 		duplicate requests. More important, though
 		listed as a side-effect, the reply cache
-		aids in the avoidance of destructive non-
-		idempotent operation re-application --
-		improving correctness.
+		aids in the avoidance of destructive non-idempotent
+		operation re-application -- improving correctness.
 
 	    </t>
 	    </abstract>
