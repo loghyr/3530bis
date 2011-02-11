@@ -273,9 +273,9 @@
      <t>Id: The number assigned to the attribute. In
         the event of conflicts between the assigned number and <xref
         target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>, the latter is
-	likely authoritative, but should be resolved with Errata to this
-	document and/or <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>.
-	See <xref target="ISEG_errata"/> for the Errata process.</t>
+        likely authoritative, but should be resolved with Errata to this
+        document and/or <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>.
+        See <xref target="ISEG_errata"/> for the Errata process.</t>
      <t>Data Type: The XDR data type of the attribute.</t>
      <t>
         Acc: Access allowed to the attribute. R means
@@ -665,11 +665,11 @@
             </t>
             <t>
               The phrase "is a special file" means that the object's
-	      type attribute is NF4BLK, NF4CHR, NF4SOCK, or NF4FIFO. 
+              type attribute is NF4BLK, NF4CHR, NF4SOCK, or NF4FIFO. 
             </t>
             <t>
               The phrase "is an ordinary file" means that the object's
-	      type attribute is NF4REG or NF4NAMEDATTR.
+              type attribute is NF4REG or NF4NAMEDATTR.
             </t>
           </list>
         </t>
@@ -833,8 +833,8 @@
     <section toc="exclude" anchor="attrdef_files_free"
              title="Attribute 22: files_free">
       <t>
-        Free file slots on the file system containing this object -
-        this should be the smallest relevant limit.
+        Free file slots on the file system containing this
+        object - this should be the smallest relevant limit.
       </t>
     </section>
 
@@ -867,7 +867,7 @@
       <t>
         TRUE, if this object's file system is homogeneous, i.e., all
         objects in the file system (all objects on the server with
-	the same fsid) have common values for all per-file-system attributes.
+        the same fsid) have common values for all per-file-system attributes.
       </t>
     </section>
 
@@ -896,7 +896,7 @@
              title="Attribute 30: maxread">
       <t>
         Maximum amount of data the READ operation will return for this
-	object.
+        object.
       </t>
     </section>
 
@@ -1055,7 +1055,7 @@
         quota_used value is maintained, e.g. "all files with a
         given owner", "all files with a given group owner". etc.
         The server is at liberty to choose any of those sets
-	when providing the content of the quota_used attribute, but
+        when providing the content of the quota_used attribute, but
         should do so in a repeatable way.  The rule may be
         configured per file system or may be "choose the set with
         the smallest quota".
@@ -1120,10 +1120,10 @@
         Portable Operating System Interface (POSIX) semantics, time_access
         would be updated only by the READ and READDIR operations and not any
         of the operations that modify the content of the object [16], [17],
-	<xref target="read_api"/>, <xref target="readdir_api" />,
-	<xref target="write_api"/>.  Of course, setting the corresponding
-	time_access_set attribute is another way to modify the time_access
-	attribute.
+        <xref target="read_api"/>, <xref target="readdir_api" />,
+        <xref target="write_api"/>.  Of course, setting the corresponding
+        time_access_set attribute is another way to modify the time_access
+        attribute.
       </t>
       <t>
         Whenever the file object resides on a writable file system,

@@ -502,8 +502,8 @@
         Every stateid other than the special stateid values noted in this
         section, whether returned by an OPEN-type operation (i.e., OPEN,
         OPEN_DOWNGRADE), or by a LOCK-type operation (i.e., LOCK or LOCKU),
-        defines an access mode for the file (i.e., READ, WRITE, or READ-
-        WRITE) as established by the original OPEN which began the stateid
+        defines an access mode for the file (i.e., READ, WRITE, or
+        READ-WRITE) as established by the original OPEN which began the stateid
         sequence, and as modified by subsequent OPENs and OPEN_DOWNGRADEs
         within that stateid sequence.  When a READ, WRITE, or SETATTR which
         specifies the size attribute, is done, the operation is subject to
@@ -709,8 +709,8 @@
       <t>
         Delegations being sent with an open requiring confirmation are
         troublesome because recovering from non-confirmation adds undue
-        complexity to the protocol while requiring confirmation on reclaim-
-        type opens poses difficulties in that the inability to resolve the
+        complexity to the protocol while requiring confirmation on
+        reclaim-type opens poses difficulties in that the inability to resolve the
         status of the reclaim until lease expiration may make it difficult
         to have timely determination of the set of locks being reclaimed
         (since the grace period may expire).
@@ -1691,7 +1691,7 @@ else if ((request.access & file_state.deny)) ||
         upon migration.  However, this choice is discouraged.  In this
         case, when the client presents state information from the
         original server (e.g., in a RENEW op or a READ op of zero length),
-	the client must be prepared to receive either
+        the client must be prepared to receive either
         NFS4ERR_STALE_CLIENTID or NFS4ERR_STALE_STATEID from the new
         server.  The client should then recover its state information as
         it normally would in response to a server failure.  The new server
@@ -1700,12 +1700,12 @@ else if ((request.access & file_state.deny)) ||
       </t>
 
       <t>
-	A client SHOULD re-establish new callback information
-	with the new server as soon as possible, according to 
-	sequences described in <xref target="OP_SETCLIENTID" />
-	and <xref target="OP_SETCLIENTID_CONFIRM" />.
-	This ensures that server operations are not blocked by
-	the inability to recall delegations. 
+        A client SHOULD re-establish new callback information
+        with the new server as soon as possible, according to 
+        sequences described in <xref target="OP_SETCLIENTID" />
+        and <xref target="OP_SETCLIENTID_CONFIRM" />.
+        This ensures that server operations are not blocked by
+        the inability to recall delegations. 
       </t>
 
     </section>

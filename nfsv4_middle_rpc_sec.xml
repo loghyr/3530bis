@@ -44,8 +44,8 @@
     <t>
       As noted in <xref target="sec:security" />,
       the authentication
-      model for NFS version 4 has moved from machine-based to principal-
-      based.  However, this modification of the authentication model does not
+      model for NFS version 4 has moved from machine-based to
+      principal-based.  However, this modification of the authentication model does not
       imply a technical requirement to move the TCP connection management
       model from whole machine-based to one based on a per user model.
       In particular, NFS over TCP client implementations have traditionally
@@ -264,8 +264,8 @@ column descriptions:
         </t>
 
         <t>
-          Because SPKM-3 negotiates the algorithms, subsequent calls to SPKM-
-          3's GSS_Wrap() and GSS_GetMIC() by RPCSEC_GSS will use a quality
+          Because SPKM-3 negotiates the algorithms, subsequent calls to
+          SPKM-3's GSS_Wrap() and GSS_GetMIC() by RPCSEC_GSS will use a quality
           of protection value of 0 (zero).  See section 5.2 of <xref target="RFC2025" /> for
           an explanation.
         </t>

@@ -1044,7 +1044,7 @@ GETFH
         length of the conflicting lock, the same offset and length
         that were provided in the arguments should be returned in
         the denied results.  <xref target="sec:lock_share" />
-	contains a full
+        contains a full
         description of this and the other file locking operations.
       </t>
 
@@ -1183,7 +1183,7 @@ owner}
         length of the conflicting lock, the same offset and length
         that were provided in the arguments should be returned in the
         denied results.  <xref target="sec:lock_share" />
-	contains further discussion of the file locking mechanisms.
+        contains further discussion of the file locking mechanisms.
       </t>
 
       <t>
@@ -2933,8 +2933,8 @@ clientid -> ()
 
         <list style='symbols'>
           <t>
-            The client uses the same principal, RPC security flavor --
-            and if the flavor was RPCSEC_GSS -- the same mechanism and
+            The client uses the same principal, RPC security
+            flavor -- and if the flavor was RPCSEC_GSS -- the same mechanism and
             service that was used when the client id was established
             via SETCLIENTID_CONFIRM.
           </t>
