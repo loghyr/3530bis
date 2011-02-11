@@ -560,9 +560,9 @@
         To accomplish this, each lock request contains a sequence number
         that is a consecutively increasing integer.  Different lock_owners
         have different sequences.  The server maintains the last sequence
-        number (L) received and the response that was returned.  The first
-        request issued for any given lock_owner is issued with a sequence
-        number of zero.
+        number (L) received and the response that was returned.  The server
+	is free to assign any value for the first request issued for any
+	given lock_owner.
       </t>
 
       <t>

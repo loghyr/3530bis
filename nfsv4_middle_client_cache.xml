@@ -150,13 +150,16 @@
 
     <t>
       On recall, the client holding the delegation must flush modified
-      state (such as modified data) to the server and return the delegation.
-      The conflicting request will not receive a response until the recall
-      is complete.  The recall is considered complete when the client
-      returns the delegation or the server times out on the recall and
-      revokes the delegation as a result of the timeout.  Following the
-      resolution of the recall, the server has the information necessary
-      to grant or deny the second client's request.
+      state (such as modified data) to the server and return the
+      delegation.  The conflicting request will not be acted on until
+      the recall is complete.  The recall is considered complete when
+      the client returns the delegation or the server times its wait
+      for the delegation to be returned and revokes the delegation as
+      a result of the timeout.  In the interim, the server will either
+      delay responding to conflicting requests or respond to them with
+      NFS4ERR_DELAY.  Following the resolution of the recall, the
+      server has the information necessary to grant or deny the second
+      client's request.
     </t>
 
     <t>

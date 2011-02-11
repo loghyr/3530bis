@@ -76,20 +76,6 @@ Owner:
 State: Accepted, Medium
 Target:
 
-8) Clarify the sections on sequence ids. Currently, the text is
-inconsistent about whether or not you need to initialize them to zero.
-It would also be nice to have a section that clarifies the life cycle of
-a sequence id. IOW: when do the client and server have to cache the
-sequence id info, and when are they allowed to forget about it.
-
-Action:
-Owner:
-State: Accepted, Medium
-Target:
-Notes: Trond votes get rid of having to initialize them to zero.
-
-Belongs in lock owner bucket...
-
 12) Clarify the various scenarios that should result in a delegation recall
 (mainly SETATTR by self).
 
@@ -317,7 +303,7 @@ Trond started this discussion here:
 http://www.ietf.org/mail-archive/web/nfsv4/current/msg08169.html
 
 Action: Add appropriate text
-Owner:
+Owner: Trond
 State: Accepted, medium
 Target:
 Note: Trond will produce a write up.
@@ -412,32 +398,6 @@ Owner:
 State: Accepted, low
 Target:
 Notes: Tom will investigate
-
-23) Need to Explain Revocation of Delegations Not Promptly Returned
-
-The case of revoking a delegation that is not promptly returned
-(even when the lease is renewed) should be addressed explicitly.
-
-This is resolved-no-change since it is dealt with in draft-05 but
-I'm creating the issue for v4.0 (and it is marked 3530bis).
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-
-24) Description of locker4 Wrong
-
-The description of locker4 in the section on the LOCK op is not
-correct.  I've fixed this as part of updating the op descriptions
-to reflect changes for v4.1 (mostly sessions), but have created a
-separate issue since this would also apply to rfc3530bis.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-Note: Pull from 4.1
 
 25) Problems in the Description of OPEN
 
@@ -1104,4 +1064,47 @@ Action: Edit
 Owner: Tom
 State: Finished
 Target: IETF 80
+
+8) Clarify the sections on sequence ids.
+
+a) Currently, the text is inconsistent about whether or not you need
+to initialize them to zero.
+
+b) It would also be nice to have a section that clarifies the life cycle of
+a sequence id. IOW: when do the client and server have to cache the
+sequence id info, and when are they allowed to forget about it.
+
+Action: Accepted a and rejected b.
+Owner: Tom
+State: Finished
+Target: IETF 80
+Notes: Trond votes get rid of having to initialize them to zero.
+
+Belongs in lock owner bucket...
+
+24) Description of locker4 Wrong
+
+The description of locker4 in the section on the LOCK op is not
+correct.  I've fixed this as part of updating the op descriptions
+to reflect changes for v4.1 (mostly sessions), but have created a
+separate issue since this would also apply to rfc3530bis.
+
+Action: Take change
+Owner: Tom
+State: Finished
+Target: IETF 80
+Note: Pull from 4.1
+
+23) Need to Explain Revocation of Delegations Not Promptly Returned
+
+The case of revoking a delegation that is not promptly returned
+(even when the lease is renewed) should be addressed explicitly.
+
+This is resolved-no-change since it is dealt with in draft-05 but
+I'm creating the issue for v4.0 (and it is marked 3530bis).
+
+Action: DUP of 22!
+Owner:
+State: Accepted, Low
+Target:
 

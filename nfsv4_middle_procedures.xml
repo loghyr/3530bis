@@ -1081,19 +1081,51 @@ GETFH
       </t>
 
       <t>
-        The locker argument specifies the lock_owner that is associated
-        with the LOCK request.  The locker4 structure is a switched
-        union that indicates whether the lock_owner is known to the
-        server or if the lock_owner is new to the server.  In the
-        case that the lock_owner is known to the server and has an
-        established lock_seqid, the argument is just the lock_owner
-        and lock_seqid.  In the case that the lock_owner is not known
-        to the server, the argument contains not only the lock_owner
-        and lock_seqid but also the open_stateid and open_seqid.
-        The new lock_owner case covers the very first lock done by the
-        lock_owner and offers a method to use the established state
-        of the open_stateid to transition to the use of the lock_owner.
+        The locker argument specifies the lock-owner that is associated with
+        the LOCK request.  The locker4 structure is a switched union that
+        indicates whether the client has already created byte-range locking
+        state associated with the current open file and lock-owner.  In the
+        case in which it has, the argument is just a stateid representing
+        the set of locks associated with that open file and lock-owner,
+	together with a lock_seqid value which MAY be any value and MUST
+	be ignored by the server.  In the case where no byte-range locking
+	state has been established, or the client does not have the stateid
+	available, the argument contains the
+        stateid of the open file with which this lock is to be associated,
+        together with the lock-owner with which the lock is to be associated.
+        The open_to_lock_owner case covers the very first lock done by a
+        lock-owner for a given open file and offers a method to use the 
+        established state of the open_stateid to transition to the use of 
+        a lock stateid.
       </t>
+
+      <t>
+        The following fields of the locker parameter MAY be
+        set to any value by the client and MUST be ignored
+        by the server:
+
+        <list style='symbols'>
+          <t>
+            The clientid field of the lock_owner
+            field of the open_owner field
+            (locker.open_owner.lock_owner.clientid). The
+            reason the server MUST ignore the clientid field
+            is that the server MUST derive the client ID from
+            the session ID from the SEQUENCE operation of the
+            COMPOUND request.
+          </t>
+          <t>
+            The open_seqid and lock_seqid fields of the
+            open_owner field (locker.open_owner.open_seqid and
+            locker.open_owner.lock_seqid).
+
+          </t>
+          <t>
+            The lock_seqid field of the lock_owner field
+            (locker.lock_owner.lock_seqid).
+          </t>
+        </list>
+    </t>
 
     </section>
   </section>
