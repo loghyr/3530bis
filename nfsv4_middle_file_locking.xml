@@ -561,8 +561,8 @@
         that is a consecutively increasing integer.  Different lock_owners
         have different sequences.  The server maintains the last sequence
         number (L) received and the response that was returned.  The server
-	is free to assign any value for the first request issued for any
-	given lock_owner.
+        is free to assign any value for the first request issued for any
+        given lock_owner.
       </t>
 
       <t>
@@ -816,6 +816,21 @@
       avoid the burden of needlessly frequent polling for blocking locks.
       The server should take care in the length of delay in the event
       the client retransmits the request.
+    </t>
+
+    <t>
+      If a server receives a blocking lock request, denies it, and then
+      later receives a nonblocking request for the same lock, which is also
+      denied, then it should remove the lock in question from its list of
+      pending blocking locks.  Clients should use such a nonblocking
+      request to indicate to the server that this is the last time they
+      intend to poll for the lock, as may happen when the process
+      requesting the lock is interrupted.  This is a courtesy to the
+      server, to prevent it from unnecessarily waiting a lease period
+      before granting other lock requests.  However, clients are not
+      required to perform this courtesy, and servers must not depend on
+      them doing so.  Also, clients must be prepared for the possibility
+      that this final locking request will be accepted.
     </t>
 
   </section>
