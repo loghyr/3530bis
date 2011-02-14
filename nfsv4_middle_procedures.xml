@@ -3143,8 +3143,8 @@ void;
         As mentioned, the server's security policies will
         determine when a client request receives NFS4ERR_WRONGSEC.
         The operations which may receive this error are: LINK,
-        LOOKUP, OPEN, PUTFH, PUTPUBFH, PUTROOTFH, RESTOREFH,
-        RENAME, and indirectly READDIR.  LINK and RENAME will only
+        LOOKUP, LOOKUPP, OPEN, PUTFH, PUTPUBFH, PUTROOTFH, RENAME, RESTOREFH,
+        and indirectly READDIR.  LINK and RENAME will only
         receive this error if the security used for the operation
         is inappropriate for saved filehandle.  With the exception
         of READDIR, these operations represent the point at which
@@ -3179,7 +3179,7 @@ void;
           </t>
 
           <t>
-            For PUTROOTFH and PUTPUBFH, the client will be unable
+            For LOOKUPP, PUTROOTFH and PUTPUBFH, the client will be unable
             to use the SECINFO operation since SECINFO requires a
             current filehandle and none exist for these two operations.
             Therefore, the client must iterate through the security

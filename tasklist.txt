@@ -413,7 +413,7 @@ Notes: Addressed in 4.1?
 
 The description of NFS4ERR_BAD_STATEID in RFC3530 is not very clear
 and implies that in cases where a stateid of the wrong type is
-presented, it does not apply (so may NFS4ERR_INVAL should be used?).
+presented, it does not apply (so maybe NFS4ERR_INVAL should be used?).
 
 Action:
 Owner:
@@ -430,32 +430,17 @@ Target: IETF 79
 5661: No
 
 
-=====
-i18n:
-=====
-
-14) There's the unimplemented-by-everybody mandatory UTF-8 formatting of
-filenames...
-
-Action: Discuss on alias and drive to consensus
-Owner: Dave
-State: Finished
-Target: IETF 78
-
-=======
-Triage:
-=======
-
-7) We need SECINFO workarounds on LOOKUPP and PUTROOTFH.
-
-Action:
-Owner:
-State: Ask for clarification
-Target:
-
 ==============
 Clarification:
 ==============
+
+=====
+New:
+=====
+
+=====
+Done:
+=====
 
 37) More ops need to be able to return LEASE_MOVED
 
@@ -500,14 +485,6 @@ Owner: Rob
 State: Finished
 Target: IETF 79
 Note: Rob will bring up on list
-
-=====
-New:
-=====
-
-=====
-Done:
-=====
 
 1) Fix ACL chapter to reflect correct ops to access bit matching. Look
 at fixes in 4.1.
@@ -1106,4 +1083,19 @@ Owner: Tom
 State: Finished
 Target: IETF 80
 Note: Add to 330bis.
+
+14) There's the unimplemented-by-everybody mandatory UTF-8 formatting of
+filenames...
+
+Action: Discuss on alias and drive to consensus
+Owner: Dave
+State: Finished
+Target: IETF 78
+
+7) We need SECINFO workarounds on LOOKUPP and PUTROOTFH.
+
+Action: Clarified with Trond, added new text
+Owner: Tom
+State: Finished
+Target: IETF 80
 
