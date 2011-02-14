@@ -357,34 +357,34 @@ Internet-Draft                    NFSv4                     January 2011
      15.12. Operation 12: LOCK - Create Lock . . . . . . . . . . . . 228
      15.13. Operation 13: LOCKT - Test For Lock  . . . . . . . . . . 232
      15.14. Operation 14: LOCKU - Unlock File  . . . . . . . . . . . 233
-     15.15. Operation 15: LOOKUP - Lookup Filename . . . . . . . . . 234
+     15.15. Operation 15: LOOKUP - Lookup Filename . . . . . . . . . 235
      15.16. Operation 16: LOOKUPP - Lookup Parent Directory  . . . . 236
      15.17. Operation 17: NVERIFY - Verify Difference in
             Attributes . . . . . . . . . . . . . . . . . . . . . . . 237
      15.18. Operation 18: OPEN - Open a Regular File . . . . . . . . 238
      15.19. Operation 19: OPENATTR - Open Named Attribute
-            Directory  . . . . . . . . . . . . . . . . . . . . . . . 247
-     15.20. Operation 20: OPEN_CONFIRM - Confirm Open  . . . . . . . 248
-     15.21. Operation 21: OPEN_DOWNGRADE - Reduce Open File Access . 250
+            Directory  . . . . . . . . . . . . . . . . . . . . . . . 248
+     15.20. Operation 20: OPEN_CONFIRM - Confirm Open  . . . . . . . 249
+     15.21. Operation 21: OPEN_DOWNGRADE - Reduce Open File Access . 251
      15.22. Operation 22: PUTFH - Set Current Filehandle . . . . . . 252
      15.23. Operation 23: PUTPUBFH - Set Public Filehandle . . . . . 252
      15.24. Operation 24: PUTROOTFH - Set Root Filehandle  . . . . . 254
      15.25. Operation 25: READ - Read from File  . . . . . . . . . . 254
-     15.26. Operation 26: READDIR - Read Directory . . . . . . . . . 256
+     15.26. Operation 26: READDIR - Read Directory . . . . . . . . . 257
      15.27. Operation 27: READLINK - Read Symbolic Link  . . . . . . 260
      15.28. Operation 28: REMOVE - Remove Filesystem Object  . . . . 261
      15.29. Operation 29: RENAME - Rename Directory Entry  . . . . . 263
      15.30. Operation 30: RENEW - Renew a Lease  . . . . . . . . . . 265
      15.31. Operation 31: RESTOREFH - Restore Saved Filehandle . . . 266
      15.32. Operation 32: SAVEFH - Save Current Filehandle . . . . . 267
-     15.33. Operation 33: SECINFO - Obtain Available Security  . . . 267
-     15.34. Operation 34: SETATTR - Set Attributes . . . . . . . . . 270
-     15.35. Operation 35: SETCLIENTID - Negotiate Clientid . . . . . 273
-     15.36. Operation 36: SETCLIENTID_CONFIRM - Confirm Clientid . . 276
-     15.37. Operation 37: VERIFY - Verify Same Attributes  . . . . . 280
-     15.38. Operation 38: WRITE - Write to File  . . . . . . . . . . 281
+     15.33. Operation 33: SECINFO - Obtain Available Security  . . . 268
+     15.34. Operation 34: SETATTR - Set Attributes . . . . . . . . . 271
+     15.35. Operation 35: SETCLIENTID - Negotiate Clientid . . . . . 274
+     15.36. Operation 36: SETCLIENTID_CONFIRM - Confirm Clientid . . 277
+     15.37. Operation 37: VERIFY - Verify Same Attributes  . . . . . 281
+     15.38. Operation 38: WRITE - Write to File  . . . . . . . . . . 282
      15.39. Operation 39: RELEASE_LOCKOWNER - Release Lockowner
-            State  . . . . . . . . . . . . . . . . . . . . . . . . . 285
+            State  . . . . . . . . . . . . . . . . . . . . . . . . . 286
 
 
 
@@ -393,24 +393,24 @@ Haynes & Noveck           Expires July 16, 2011                 [Page 7]
 Internet-Draft                    NFSv4                     January 2011
 
 
-     15.40. Operation 10044: ILLEGAL - Illegal operation . . . . . . 286
-   16. NFS version 4 Callback Procedures . . . . . . . . . . . . . . 287
-     16.1.  Procedure 0: CB_NULL - No Operation  . . . . . . . . . . 287
-     16.2.  Procedure 1: CB_COMPOUND - Compound Operations . . . . . 288
-       16.2.6.  Operation 3: CB_GETATTR - Get Attributes . . . . . . 289
-       16.2.7.  Operation 4: CB_RECALL - Recall an Open Delegation . 290
+     15.40. Operation 10044: ILLEGAL - Illegal operation . . . . . . 287
+   16. NFS version 4 Callback Procedures . . . . . . . . . . . . . . 288
+     16.1.  Procedure 0: CB_NULL - No Operation  . . . . . . . . . . 288
+     16.2.  Procedure 1: CB_COMPOUND - Compound Operations . . . . . 289
+       16.2.6.  Operation 3: CB_GETATTR - Get Attributes . . . . . . 290
+       16.2.7.  Operation 4: CB_RECALL - Recall an Open Delegation . 291
        16.2.8.  Operation 10044: CB_ILLEGAL - Illegal Callback
-                Operation  . . . . . . . . . . . . . . . . . . . . . 291
-   17. Security Considerations . . . . . . . . . . . . . . . . . . . 292
-   18. IANA Considerations . . . . . . . . . . . . . . . . . . . . . 294
-     18.1.  Named Attribute Definition . . . . . . . . . . . . . . . 294
-     18.2.  ONC RPC Network Identifiers (netids) . . . . . . . . . . 294
-   19. References  . . . . . . . . . . . . . . . . . . . . . . . . . 295
-     19.1.  Normative References . . . . . . . . . . . . . . . . . . 295
-     19.2.  Informative References . . . . . . . . . . . . . . . . . 296
-   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . . 298
-   Appendix B.  RFC Editor Notes . . . . . . . . . . . . . . . . . . 298
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 299
+                Operation  . . . . . . . . . . . . . . . . . . . . . 292
+   17. Security Considerations . . . . . . . . . . . . . . . . . . . 293
+   18. IANA Considerations . . . . . . . . . . . . . . . . . . . . . 295
+     18.1.  Named Attribute Definition . . . . . . . . . . . . . . . 295
+     18.2.  ONC RPC Network Identifiers (netids) . . . . . . . . . . 295
+   19. References  . . . . . . . . . . . . . . . . . . . . . . . . . 296
+     19.1.  Normative References . . . . . . . . . . . . . . . . . . 296
+     19.2.  Informative References . . . . . . . . . . . . . . . . . 297
+   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . . 299
+   Appendix B.  RFC Editor Notes . . . . . . . . . . . . . . . . . . 299
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 300
 
 
 
@@ -1382,7 +1382,7 @@ Internet-Draft                    NFSv4                     January 2011
    handshakes.
 
    As noted in Section 17, the authentication model for NFS version 4
-   has moved from machine-based to principal- based.  However, this
+   has moved from machine-based to principal-based.  However, this
    modification of the authentication model does not imply a technical
    requirement to move the TCP connection management model from whole
    machine-based to one based on a per user model.  In particular, NFS
@@ -1574,9 +1574,9 @@ Internet-Draft                    NFSv4                     January 2011
    For a discussion as to why the mechanism algorithm is listed as
    "negotiated", see Section 3.2.1.2.
 
-   Because SPKM-3 negotiates the algorithms, subsequent calls to SPKM-
-   3's GSS_Wrap() and GSS_GetMIC() by RPCSEC_GSS will use a quality of
-   protection value of 0 (zero).  See section 5.2 of [22] for an
+   Because SPKM-3 negotiates the algorithms, subsequent calls to
+   SPKM-3's GSS_Wrap() and GSS_GetMIC() by RPCSEC_GSS will use a quality
+   of protection value of 0 (zero).  See section 5.2 of [22] for an
    explanation.
 
    Even though LIPKEY is layered over SPKM-3, SPKM-3 is specified as a
@@ -6284,8 +6284,8 @@ Internet-Draft                    NFSv4                     January 2011
    request contains a sequence number that is a consecutively increasing
    integer.  Different lock_owners have different sequences.  The server
    maintains the last sequence number (L) received and the response that
-   was returned.  The first request issued for any given lock_owner is
-   issued with a sequence number of zero.
+   was returned.  The server is free to assign any value for the first
+   request issued for any given lock_owner.
 
    Note that for requests that contain a sequence number, for each
    lock_owner, there should be no more than one outstanding request.
@@ -7491,12 +7491,12 @@ Internet-Draft                    NFSv4                     January 2011
 
    On recall, the client holding the delegation must flush modified
    state (such as modified data) to the server and return the
-   delegation.  The conflicting request will not receive a response
-   until the recall is complete.  The recall is considered complete when
-   the client returns the delegation or the server times out on the
-   recall and revokes the delegation as a result of the timeout.
-   Following the resolution of the recall, the server has the
-   information necessary to grant or deny the second client's request.
+   delegation.  The conflicting request will not be acted on until the
+   recall is complete.  The recall is considered complete when the
+   client returns the delegation or the server times its wait for the
+   delegation to be returned and revokes the delegation as a result of
+   the timeout.  In the interim, the server will either delay responding
+   to conflicting requests or respond to them with NFS4ERR_DELAY.
 
 
 
@@ -7504,6 +7504,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 134]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   Following the resolution of the recall, the server has the
+   information necessary to grant or deny the second client's request.
 
    At the time the client receives a delegation recall, it may have
    substantial state that needs to be flushed to the server.  Therefore,
@@ -7550,9 +7553,6 @@ Internet-Draft                    NFSv4                     January 2011
    To allow for this type of client recovery, the server MAY extend the
    period for delegation recovery beyond the typical lease expiration
    period.  This implies that requests from other clients that conflict
-   with these delegations will need to wait.  Because the normal recall
-   process may require significant time for the client to flush changed
-   state to the server, other clients need be prepared for delays that
 
 
 
@@ -7561,6 +7561,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 135]
 Internet-Draft                    NFSv4                     January 2011
 
 
+   with these delegations will need to wait.  Because the normal recall
+   process may require significant time for the client to flush changed
+   state to the server, other clients need be prepared for delays that
    occur because of a conflicting delegation.  This longer interval
    would increase the window for clients to reboot and consult stable
    storage so that the delegations can be reclaimed.  For open
@@ -7606,9 +7609,6 @@ Internet-Draft                    NFSv4                     January 2011
    requests are held off.  Eventually the occurrence of a conflicting
    request from another client will cause revocation of the delegation.
    A loss of the callback path (e.g., by later network configuration
-   change) will have the same effect.  A recall request will fail and
-   revocation of the delegation will result.
-
 
 
 
@@ -7616,6 +7616,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 136]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   change) will have the same effect.  A recall request will fail and
+   revocation of the delegation will result.
 
    A client normally finds out about revocation of a delegation when it
    uses a stateid associated with a delegation and receives the error
@@ -7662,9 +7665,6 @@ Internet-Draft                    NFSv4                     January 2011
    o  First, cached data present on a client must be revalidated after
       doing an OPEN.  Revalidating means that the client fetches the
       change attribute from the server, compares it with the cached
-      change attribute, and if different, declares the cached data (as
-      well as the cached attributes) as invalid.  This is to ensure that
-      the data for the OPENed file is still correctly reflected in the
 
 
 
@@ -7673,6 +7673,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 137]
 Internet-Draft                    NFSv4                     January 2011
 
 
+      change attribute, and if different, declares the cached data (as
+      well as the cached attributes) as invalid.  This is to ensure that
+      the data for the OPENed file is still correctly reflected in the
       client's cache.  This validation must be done at least when the
       client's OPEN operation includes DENY=WRITE or BOTH thus
       terminating a period in which other clients may have had the
@@ -7718,9 +7721,6 @@ Internet-Draft                    NFSv4                     January 2011
    region.  A lock for write on byte one of the file would represent the
    right to do READ and WRITE operations on the second region.  As long
    as all applications manipulating the file obey this convention, they
-   will work on a local filesystem.  However, they may not work with the
-   NFS version 4 protocol unless clients refrain from data caching.
-
 
 
 
@@ -7728,6 +7728,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 138]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   will work on a local filesystem.  However, they may not work with the
+   NFS version 4 protocol unless clients refrain from data caching.
 
    The rules for data caching in the file locking environment are:
 
@@ -7774,9 +7777,6 @@ Internet-Draft                    NFSv4                     January 2011
    within files other than the one for which the unlocks are being done.
    In such cases, the client must not interfere with applications whose
    READs and WRITEs are being done only within the bounds of record
-   locks which the application holds.  For example, an application locks
-   a single byte of a file and proceeds to write that single byte.  A
-   client that chose to handle a LOCKU by flushing all modified data to
 
 
 
@@ -7785,6 +7785,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 139]
 Internet-Draft                    NFSv4                     January 2011
 
 
+   locks which the application holds.  For example, an application locks
+   a single byte of a file and proceeds to write that single byte.  A
+   client that chose to handle a LOCKU by flushing all modified data to
    the server could validly write that single byte in response to an
    unrelated unlock.  However, it would not be valid to write the entire
    block in which that single written byte was located since it includes
@@ -7830,9 +7833,6 @@ Internet-Draft                    NFSv4                     January 2011
    were simply to assume that all distinct filehandles denote distinct
    objects and proceed to do data caching on this basis, caching
    inconsistencies would arise between the distinct client side objects
-   which mapped to the same server side object.
-
-   By providing a method to differentiate filehandles, the NFS version 4
 
 
 
@@ -7841,6 +7841,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 140]
 Internet-Draft                    NFSv4                     January 2011
 
 
+   which mapped to the same server side object.
+
+   By providing a method to differentiate filehandles, the NFS version 4
    protocol alleviates a potential functional regression in comparison
    with the NFS version 3 protocol.  Without this method, caching
    inconsistencies within the same client could occur and this has not
@@ -7885,9 +7888,6 @@ Internet-Draft                    NFSv4                     January 2011
    set of conditions that servers might use in deciding whether OPEN
    should be delegated:
 
-   o  The client must be able to respond to the server's callback
-      requests.  The server will use the CB_NULL procedure for a test of
-      callback ability.
 
 
 
@@ -7896,6 +7896,10 @@ Haynes & Noveck           Expires July 16, 2011               [Page 141]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   o  The client must be able to respond to the server's callback
+      requests.  The server will use the CB_NULL procedure for a test of
+      callback ability.
 
    o  The client must have responded properly to previous recalls.
 
@@ -7940,10 +7944,6 @@ Internet-Draft                    NFSv4                     January 2011
 
    o  the type of delegation (read or write)
 
-   o  space limitation information to control flushing of data on close
-      (write open delegation only, see Section 10.4.1)
-
-   o  an nfsace4 specifying read and write permissions
 
 
 
@@ -7952,6 +7952,11 @@ Haynes & Noveck           Expires July 16, 2011               [Page 142]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   o  space limitation information to control flushing of data on close
+      (write open delegation only, see Section 10.4.1)
+
+   o  an nfsace4 specifying read and write permissions
 
    o  a stateid to represent the delegation for READ and WRITE
 
@@ -7996,11 +8001,6 @@ Internet-Draft                    NFSv4                     January 2011
    authentication, the client should be sure authentication occurs for
    each user by use of the ACCESS operation.  This should be the case
    even if an ACCESS operation would not be required otherwise.  As
-   mentioned before, the server may enforce frequent authentication by
-   returning an nfsace4 denying all access with every open delegation.
-
-
-
 
 
 
@@ -8008,6 +8008,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 143]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   mentioned before, the server may enforce frequent authentication by
+   returning an nfsace4 denying all access with every open delegation.
 
 10.4.1.  Open Delegation and Data Caching
 
@@ -8054,9 +8057,6 @@ Internet-Draft                    NFSv4                     January 2011
    into account available filesystem space and any applicable quotas.
    The server can recall delegations as a result of managing the
    available filesystem space.  The client should abide by the server's
-   state space limits for delegations.  If the client exceeds the stated
-   limits for the delegation, the server's behavior is undefined.
-
 
 
 
@@ -8064,6 +8064,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 144]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   state space limits for delegations.  If the client exceeds the stated
+   limits for the delegation, the server's behavior is undefined.
 
    Based on server conditions, quotas or available filesystem space, the
    server may grant write open delegations with very restrictive space
@@ -8110,9 +8113,6 @@ Internet-Draft                    NFSv4                     January 2011
    delegation has a modified version of the file.  If the client's copy
    of the delegated file is not modified (data or size), the server can
    satisfy the second client's GETATTR request from the attributes
-   stored locally at the server.  If the file is modified, the server
-   only needs to know about this modified state.  If the server
-   determines that the file is currently modified, it will respond to
 
 
 
@@ -8121,6 +8121,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 145]
 Internet-Draft                    NFSv4                     January 2011
 
 
+   stored locally at the server.  If the file is modified, the server
+   only needs to know about this modified state.  If the server
+   determines that the file is currently modified, it will respond to
    the second client's GETATTR as if the file had been modified locally
    at the server.
 
@@ -8166,9 +8169,6 @@ Internet-Draft                    NFSv4                     January 2011
    when sending it to the server.  For this reason, change is defined as
    an unsigned integer rather than an opaque array of octets.
 
-   For the server, the following steps will be taken when providing a
-   write delegation:
-
 
 
 
@@ -8176,6 +8176,9 @@ Haynes & Noveck           Expires July 16, 2011               [Page 146]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   For the server, the following steps will be taken when providing a
+   write delegation:
 
    o  Upon providing a write delegation, the server will cache a copy of
       the change attribute in the data structure it uses to record the
@@ -8220,9 +8223,6 @@ Internet-Draft                    NFSv4                     January 2011
       != sc, and would stay true until the delegation is returned or
       revoked.  The processing for constructing nsc, time_modify, and
       time_metadata would use this pseudo code:
-
-
-
 
 
 
@@ -12973,18 +12973,18 @@ Internet-Draft                    NFSv4                     January 2011
    Such operations may not perfectly reflect the required semantics in
    the face of conflicting lock requests from other clients.
 
-   The locker argument specifies the lock_owner that is associated with
+   The locker argument specifies the lock-owner that is associated with
    the LOCK request.  The locker4 structure is a switched union that
-   indicates whether the lock_owner is known to the server or if the
-   lock_owner is new to the server.  In the case that the lock_owner is
-   known to the server and has an established lock_seqid, the argument
-   is just the lock_owner and lock_seqid.  In the case that the
-   lock_owner is not known to the server, the argument contains not only
-   the lock_owner and lock_seqid but also the open_stateid and
-   open_seqid.  The new lock_owner case covers the very first lock done
-   by the lock_owner and offers a method to use the established state of
-   the open_stateid to transition to the use of the lock_owner.
-
+   indicates whether the client has already created byte-range locking
+   state associated with the current open file and lock-owner.  In the
+   case in which it has, the argument is just a stateid representing the
+   set of locks associated with that open file and lock-owner, together
+   with a lock_seqid value which MAY be any value and MUST be ignored by
+   the server.  In the case where no byte-range locking state has been
+   established, or the client does not have the stateid available, the
+   argument contains the stateid of the open file with which this lock
+   is to be associated, together with the lock-owner with which the lock
+   is to be associated.  The open_to_lock_owner case covers the very
 
 
 
@@ -12992,6 +12992,25 @@ Haynes & Noveck           Expires July 16, 2011               [Page 232]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   first lock done by a lock-owner for a given open file and offers a
+   method to use the established state of the open_stateid to transition
+   to the use of a lock stateid.
+
+   The following fields of the locker parameter MAY be set to any value
+   by the client and MUST be ignored by the server:
+
+   o  The clientid field of the lock_owner field of the open_owner field
+      (locker.open_owner.lock_owner.clientid).  The reason the server
+      MUST ignore the clientid field is that the server MUST derive the
+      client ID from the session ID from the SEQUENCE operation of the
+      COMPOUND request.
+
+   o  The open_seqid and lock_seqid fields of the open_owner field
+      (locker.open_owner.open_seqid and locker.open_owner.lock_seqid).
+
+   o  The lock_seqid field of the lock_owner field
+      (locker.lock_owner.lock_seqid).
 
 15.13.  Operation 13: LOCKT - Test For Lock
 
@@ -13023,6 +13042,13 @@ Internet-Draft                    NFSv4                     January 2011
    };
 
 
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 233]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
 15.13.4.  DESCRIPTION
 
    The LOCKT operation tests the lock as specified in the arguments.  If
@@ -13038,16 +13064,6 @@ Internet-Draft                    NFSv4                     January 2011
    for LOCK.
 
    On success, the current filehandle retains its value.
-
-
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 233]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
 15.13.5.  IMPLEMENTATION
 
@@ -13076,6 +13092,19 @@ Internet-Draft                    NFSv4                     January 2011
 
    (cfh) type, seqid, stateid, offset, length -> stateid
 
+
+
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 234]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
 15.14.2.  ARGUMENT
 
    struct LOCKU4args {
@@ -13096,13 +13125,6 @@ Internet-Draft                    NFSv4                     January 2011
     default:
             void;
    };
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 234]
-
-Internet-Draft                    NFSv4                     January 2011
 
 
 15.14.4.  DESCRIPTION
@@ -13131,6 +13153,14 @@ Internet-Draft                    NFSv4                     January 2011
    this error, should if it desires support for such operations,
    simulate the operation using LOCKU on ranges corresponding to locks
    it actually holds, possibly followed by LOCK requests for the sub-
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 235]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    ranges not being unlocked.
 
 15.15.  Operation 15: LOOKUP - Lookup Filename
@@ -13145,20 +13175,6 @@ Internet-Draft                    NFSv4                     January 2011
            /* CURRENT_FH: directory */
            component4      objname;
    };
-
-
-
-
-
-
-
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 235]
-
-Internet-Draft                    NFSv4                     January 2011
 
 
 15.15.3.  RESULT
@@ -13191,6 +13207,16 @@ Internet-Draft                    NFSv4                     January 2011
    lookup, it may construct a COMPOUND request such as (and obtain each
    filehandle):
 
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 236]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    PUTFH  (directory filehandle)
    LOOKUP "pub"
    GETFH
@@ -13208,14 +13234,6 @@ Internet-Draft                    NFSv4                     January 2011
    mountpoint crossing will need to mount the server's filesystem.  This
    needs to be done to maintain the file object identity checking
    mechanisms common to UNIX clients.
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 236]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
    Servers that limit NFS access to "shares" or "exported" filesystems
    should provide a pseudo-filesystem into which the exported
@@ -13247,6 +13265,14 @@ Internet-Draft                    NFSv4                     January 2011
    /* CURRENT_FH: object */
    void;
 
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 237]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
 15.16.3.  RESULT
 
    struct LOOKUPP4res {
@@ -13263,15 +13289,6 @@ Internet-Draft                    NFSv4                     January 2011
    directory an NFS4ERR_NOENT error must be returned.  Therefore,
    NFS4ERR_NOENT will be returned by the server when the current
    filehandle is at the root or top of the server's file tree.
-
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 237]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
 15.16.5.  IMPLEMENTATION
 
@@ -13301,6 +13318,17 @@ Internet-Draft                    NFSv4                     January 2011
    };
 
 
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 238]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
 15.17.4.  DESCRIPTION
 
    This operation is used to prefix a sequence of operations to be
@@ -13321,14 +13349,6 @@ Internet-Draft                    NFSv4                     January 2011
    PUTFH  (public)
    LOOKUP "foobar"
    NVERIFY attrbits attrs
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 238]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    READ 0 32767
 
    In the case that a recommended attribute is specified in the NVERIFY
@@ -13358,6 +13378,13 @@ Internet-Draft                    NFSv4                     January 2011
            EXCLUSIVE4      = 2
    };
 
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 239]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    union createhow4 switch (createmode4 mode) {
     case UNCHECKED4:
     case GUARDED4:
@@ -13377,13 +13404,6 @@ Internet-Draft                    NFSv4                     January 2011
     default:
             void;
    };
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 239]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
    /* Next definitions used for OPEN delegation */
    enum limit_by4 {
@@ -13413,6 +13433,14 @@ Internet-Draft                    NFSv4                     January 2011
    };
 
    enum open_claim_type4 {
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 240]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
            CLAIM_NULL              = 0,
            CLAIM_PREVIOUS          = 1,
            CLAIM_DELEGATE_CUR      = 2,
@@ -13433,14 +13461,6 @@ Internet-Draft                    NFSv4                     January 2011
            /* CURRENT_FH: directory */
            component4      file;
     /*
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 240]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
      * Right to the file established by an
      * open previous to server reboot. File
      * identified by filehandle obtained at
@@ -13469,6 +13489,14 @@ Internet-Draft                    NFSv4                     January 2011
            component4      file_delegate_prev;
    };
 
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 241]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    /*
     * OPEN: Open a file, potentially receiving an open delegation
     */
@@ -13489,13 +13517,6 @@ Internet-Draft                    NFSv4                     January 2011
     bool     recall;     /* Pre-recalled flag for
                             delegations obtained
                             by reclaim (CLAIM_PREVIOUS) */
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 241]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
     nfsace4 permissions; /* Defines users who don't
                             need an ACCESS call to
@@ -13524,6 +13545,14 @@ Internet-Draft                    NFSv4                     January 2011
 
    union open_delegation4
    switch (open_delegation_type4 delegation_type) {
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 242]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
            case OPEN_DELEGATE_NONE:
                    void;
            case OPEN_DELEGATE_READ:
@@ -13545,14 +13574,6 @@ Internet-Draft                    NFSv4                     January 2011
     stateid4       stateid;      /* Stateid for open */
     change_info4   cinfo;        /* Directory Change Info */
     uint32_t       rflags;       /* Result flags */
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 242]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
     bitmap4        attrset;      /* attribute set for create*/
     open_delegation4 delegation; /* Info on any open
                                     delegation */
@@ -13580,6 +13601,14 @@ Internet-Draft                    NFSv4                     January 2011
 
    Simply waiting for the lease on the file to expire is insufficient
    because the server may maintain the state indefinitely as long as
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 243]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    another client does not attempt to make a conflicting access to the
    same file.
 
@@ -13601,14 +13630,6 @@ Internet-Draft                    NFSv4                     January 2011
    name does not exist and encountering an existing regular file of that
    name is not an error.  For this type of create, createattrs specifies
    the initial set of attributes for the file.  The set of attributes
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 243]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    may include any writable attribute valid for regular files.  When an
    UNCHECKED create encounters an existing file, the attributes
    specified by createattrs are not used, except that when an size of
@@ -13636,6 +13657,14 @@ Internet-Draft                    NFSv4                     January 2011
    appropriate bit in the attribute mask that is returned in the
    results.
 
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 244]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    For the target directory, the server returns change_info4 information
    in cinfo.  With the atomic field of the change_info4 struct, the
    server will indicate if the before and after change attributes were
@@ -13657,14 +13686,6 @@ Internet-Draft                    NFSv4                     January 2011
 
    In the case that the client is recovering state from a server
    failure, the claim field of the OPEN argument is used to signify that
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 244]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    the request is meant to reclaim state previously held.
 
    The "claim" field of the OPEN argument is used to specify the file to
@@ -13692,6 +13713,14 @@ Internet-Draft                    NFSv4                     January 2011
       DELEGPURGE operation.
 
    For OPEN requests whose claim type is other than CLAIM_PREVIOUS
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 245]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    (i.e., requests other than those devoted to reclaiming opens after a
    server reboot) that reach the server during its grace or lease
    expiration period, the server returns an error of NFS4ERR_GRACE.
@@ -13713,14 +13742,6 @@ Internet-Draft                    NFSv4                     January 2011
    OPEN_CONFIRM operation before using the open file.
    OPEN4_RESULT_LOCKTYPE_POSIX indicates the server's file locking
    behavior supports the complete set of Posix locking techniques.  From
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 245]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    this the client can choose to manage file locking state in a way to
    handle a mis-match of file locking management.
 
@@ -13748,6 +13769,14 @@ Internet-Draft                    NFSv4                     January 2011
    calls do not include the createattrs field.  Conversely, if
    createattrs is specified, and includes owner or group (or
    corresponding ACEs) that the principal in the RPC call's credentials
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 246]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    does not have authorization to create files for, then the server may
    return NFS4ERR_PERM.
 
@@ -13769,14 +13798,6 @@ Internet-Draft                    NFSv4                     January 2011
    If the object does not exist, the server creates the object and
    stores the verifier in stable storage.  For filesystems that do not
    provide a mechanism for the storage of arbitrary file attributes, the
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 246]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    server may use one or more elements of the object meta-data to store
    the verifier.  The verifier must be stored in stable storage to
    prevent erroneous failure on retransmission of the request.  It is
@@ -13804,6 +13825,14 @@ Internet-Draft                    NFSv4                     January 2011
    an earlier, successful request for which the reply was lost and that
    the server duplicate request cache mechanism did not detect.  If the
    verifiers do not match, the request is rejected with the status,
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 247]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    NFS4ERR_EXIST.
 
    Once the client has performed a successful exclusive create, it must
@@ -13825,13 +13854,6 @@ Internet-Draft                    NFSv4                     January 2011
    out and retransmitting the create request, the client can use GUARDED
    to prevent against a sequence like: create, write, create
    (retransmitted) from occurring.
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 247]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
    For SHARE reservations, the client must specify a value for
    share_access that is one of READ, WRITE, or BOTH.  For share_deny,
@@ -13858,6 +13880,15 @@ Internet-Draft                    NFSv4                     January 2011
    filehandle is not a directory, the error NFS4ERR_NOTDIR will be
    returned.
 
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 248]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
 15.19.  Operation 19: OPENATTR - Open Named Attribute Directory
 
 15.19.1.  SYNOPSIS
@@ -13878,15 +13909,6 @@ Internet-Draft                    NFSv4                     January 2011
            /* CURRENT_FH: named attr directory */
            nfsstat4        status;
    };
-
-
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 248]
-
-Internet-Draft                    NFSv4                     January 2011
 
 
 15.19.4.  DESCRIPTION
@@ -13916,6 +13938,13 @@ Internet-Draft                    NFSv4                     January 2011
    filehandle, an error of NFS4ERR_NOTSUPP will be returned to the
    client.
 
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 249]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
 15.20.  Operation 20: OPEN_CONFIRM - Confirm Open
 
 15.20.1.  SYNOPSIS
@@ -13929,20 +13958,6 @@ Internet-Draft                    NFSv4                     January 2011
            stateid4        open_stateid;
            seqid4          seqid;
    };
-
-
-
-
-
-
-
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 249]
-
-Internet-Draft                    NFSv4                     January 2011
 
 
 15.20.3.  RESULT
@@ -13978,6 +13993,14 @@ Internet-Draft                    NFSv4                     January 2011
    A given client might generate many open_owner4 data structures for a
    given clientid.  The client will periodically either dispose of its
    open_owner4s or stop using them for indefinite periods of time.  The
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 250]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    latter situation is why the NFS version 4 protocol does not have an
    explicit operation to exit an open_owner4: such an operation is of no
    use in that situation.  Instead, to avoid unbounded memory use, the
@@ -13993,13 +14016,6 @@ Internet-Draft                    NFSv4                     January 2011
    In the case that a client issues an OPEN operation and the server no
    longer has a record of the open_owner4, the server needs to ensure
    that this is a new OPEN and not a replay or retransmission.
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 250]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
    Servers must not require confirmation on OPENs that grant delegations
    or are doing reclaim operations.  See Section 9.1.8 for details.  The
@@ -14034,6 +14050,13 @@ Internet-Draft                    NFSv4                     January 2011
    operation is a replay: if the server has no established OPEN state,
    then there is no way, for example, a LOCK operation could be valid.
 
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 251]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    Third, neither of the two aforementioned events occur for the
    open_owner4 within the lease period.  In this case, the OPEN state is
    canceled and disposal of the open_owner4 can occur.
@@ -14043,19 +14066,6 @@ Internet-Draft                    NFSv4                     January 2011
 15.21.1.  SYNOPSIS
 
    (cfh), stateid, seqid, access, deny -> stateid
-
-
-
-
-
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 251]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
 15.21.2.  ARGUMENT
 
@@ -14095,16 +14105,6 @@ Internet-Draft                    NFSv4                     January 2011
    replace the current ones for the specified open file.  The
    share_access and share_deny bits specified must be exactly equal to
    the union of the share_access and share_deny bits specified for some
-   subset of the OPENs in effect for current openowner on the current
-   file.  If that constraint is not respected, the error NFS4ERR_INVAL
-   should be returned.  Since share_access and share_deny bits are
-   subsets of those already granted, it is not possible for this request
-   to be denied because of conflicting share reservations.
-
-   On success, the current filehandle retains its value.
-
-
-
 
 
 
@@ -14112,6 +14112,14 @@ Haynes & Noveck           Expires July 16, 2011               [Page 252]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   subset of the OPENs in effect for current openowner on the current
+   file.  If that constraint is not respected, the error NFS4ERR_INVAL
+   should be returned.  Since share_access and share_deny bits are
+   subsets of those already granted, it is not possible for this request
+   to be denied because of conflicting share reservations.
+
+   On success, the current filehandle retains its value.
 
 15.22.  Operation 22: PUTFH - Set Current Filehandle
 
@@ -14154,20 +14162,16 @@ Internet-Draft                    NFSv4                     January 2011
 
    - -> (cfh)
 
-15.23.2.  ARGUMENT
-
-   void;
-
-
-
-
-
 
 
 Haynes & Noveck           Expires July 16, 2011               [Page 253]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+15.23.2.  ARGUMENT
+
+   void;
 
 15.23.3.  RESULT
 
@@ -14213,10 +14217,6 @@ Internet-Draft                    NFSv4                     January 2011
 
    Note that there are warnings mentioned in [35] with respect to the
    use of absolute evaluation and the restrictions the server may place
-   on that evaluation with respect to how much of its namespace has been
-   made available.  These same warnings apply to NFS version 4.  It is
-   likely, therefore that because of server implementation details, an
-   NFS version 3 absolute public filehandle lookup may behave
 
 
 
@@ -14225,6 +14225,10 @@ Haynes & Noveck           Expires July 16, 2011               [Page 254]
 Internet-Draft                    NFSv4                     January 2011
 
 
+   on that evaluation with respect to how much of its namespace has been
+   made available.  These same warnings apply to NFS version 4.  It is
+   likely, therefore that because of server implementation details, an
+   NFS version 3 absolute public filehandle lookup may behave
    differently than an NFS version 4 absolute resolution.
 
    There is a form of security negotiation as described in [36] that
@@ -14267,10 +14271,6 @@ Internet-Draft                    NFSv4                     January 2011
 
 15.25.  Operation 25: READ - Read from File
 
-15.25.1.  SYNOPSIS
-
-   (cfh), stateid, offset, count -> eof, data
-
 
 
 
@@ -14280,6 +14280,10 @@ Haynes & Noveck           Expires July 16, 2011               [Page 255]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+15.25.1.  SYNOPSIS
+
+   (cfh), stateid, offset, count -> eof, data
 
 15.25.2.  ARGUMENT
 
@@ -14325,10 +14329,6 @@ Internet-Draft                    NFSv4                     January 2011
    condition and handle the condition appropriately.
 
    The stateid value for a READ request represents a value returned from
-   a previous record lock or share reservation request or the stateid
-   associated with a delegation.  The stateid is used by the server to
-   verify that the associated share reservation and any record locks are
-   still valid and to update lease timeouts for the client.
 
 
 
@@ -14336,6 +14336,11 @@ Haynes & Noveck           Expires July 16, 2011               [Page 256]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+   a previous record lock or share reservation request or the stateid
+   associated with a delegation.  The stateid is used by the server to
+   verify that the associated share reservation and any record locks are
+   still valid and to update lease timeouts for the client.
 
    If the read ended at the end-of-file (formally, in a correctly formed
    READ request, if offset + count is equal to the size of the file), or
@@ -14379,12 +14384,7 @@ Internet-Draft                    NFSv4                     January 2011
    READ.  When the READ completes, the client should release the record
    lock via LOCKU.
 
-15.26.  Operation 26: READDIR - Read Directory
 
-15.26.1.  SYNOPSIS
-
-   (cfh), cookie, cookieverf, dircount, maxcount, attr_request ->
-   cookieverf { cookie, name, attrs }
 
 
 
@@ -14392,6 +14392,13 @@ Haynes & Noveck           Expires July 16, 2011               [Page 257]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+15.26.  Operation 26: READDIR - Read Directory
+
+15.26.1.  SYNOPSIS
+
+   (cfh), cookie, cookieverf, dircount, maxcount, attr_request ->
+   cookieverf { cookie, name, attrs }
 
 15.26.2.  ARGUMENT
 
@@ -14434,13 +14441,6 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-15.26.4.  DESCRIPTION
-
-   The READDIR operation retrieves a variable number of entries from a
-   filesystem directory and returns client requested attributes for each
-   entry along with information to allow the client to request
-   additional directory entries in a subsequent READDIR.
-
 
 
 
@@ -14448,6 +14448,13 @@ Haynes & Noveck           Expires July 16, 2011               [Page 258]
 
 Internet-Draft                    NFSv4                     January 2011
 
+
+15.26.4.  DESCRIPTION
+
+   The READDIR operation retrieves a variable number of entries from a
+   filesystem directory and returns client requested attributes for each
+   entry along with information to allow the client to request
+   additional directory entries in a subsequent READDIR.
 
    The arguments contain a cookie value that represents where the
    READDIR should start within the directory.  A value of 0 (zero) for
@@ -14490,13 +14497,6 @@ Internet-Draft                    NFSv4                     January 2011
    "bookmark" for the directory entry.  As mentioned, this cookie is
    used by the client for subsequent READDIR operations so that it may
    continue reading a directory.  The cookie is similar in concept to a
-   READ offset but should not be interpreted as such by the client.
-   Ideally, the cookie value should not change if the directory is
-   modified since the client may be caching these values.
-
-   In some cases, the server may encounter an error while obtaining the
-   attributes for a directory entry.  Instead of returning an error for
-   the entire READDIR operation, the server can instead return the
 
 
 
@@ -14505,6 +14505,13 @@ Haynes & Noveck           Expires July 16, 2011               [Page 259]
 Internet-Draft                    NFSv4                     January 2011
 
 
+   READ offset but should not be interpreted as such by the client.
+   Ideally, the cookie value should not change if the directory is
+   modified since the client may be caching these values.
+
+   In some cases, the server may encounter an error while obtaining the
+   attributes for a directory entry.  Instead of returning an error for
+   the entire READDIR operation, the server can instead return the
    attribute 'fattr4_rdattr_error'.  With this, the server is able to
    communicate the failure to the client and not fail the entire
    operation in the instance of what might be a transient failure.
@@ -14546,13 +14553,6 @@ Internet-Draft                    NFSv4                     January 2011
 
    The cookieverf may be used by the server to help manage cookie values
    that may become stale.  It should be a rare occurrence that a server
-   is unable to continue properly reading a directory with the provided
-   cookie/cookieverf pair.  The server should make every effort to avoid
-   this condition since the application at the client may not be able to
-   properly handle this type of failure.
-
-   The use of the cookieverf will also protect the client from using
-   READDIR cookie values that may be stale.  For example, if the file
 
 
 
@@ -14561,6 +14561,13 @@ Haynes & Noveck           Expires July 16, 2011               [Page 260]
 Internet-Draft                    NFSv4                     January 2011
 
 
+   is unable to continue properly reading a directory with the provided
+   cookie/cookieverf pair.  The server should make every effort to avoid
+   this condition since the application at the client may not be able to
+   properly handle this type of failure.
+
+   The use of the cookieverf will also protect the client from using
+   READDIR cookie values that may be stale.  For example, if the file
    system has been migrated, the server may or may not be able to use
    the same cookie values to service READDIR as the previous server
    used.  With the client providing the cookieverf, the server is able
@@ -14599,6 +14606,17 @@ Internet-Draft                    NFSv4                     January 2011
    };
 
 
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 261]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
 15.27.4.  DESCRIPTION
 
    READLINK reads the data associated with a symbolic link.  The data is
@@ -14608,14 +14626,6 @@ Internet-Draft                    NFSv4                     January 2011
    stored.
 
    On success, the current filehandle retains its value.
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 261]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
 15.27.5.  IMPLEMENTATION
 
@@ -14646,6 +14656,23 @@ Internet-Draft                    NFSv4                     January 2011
    };
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 262]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
 15.28.3.  RESULT
 
    struct REMOVE4resok {
@@ -14665,14 +14692,6 @@ Internet-Draft                    NFSv4                     January 2011
    The REMOVE operation removes (deletes) a directory entry M named by
    filename from the directory corresponding to the current filehandle.
    If the entry in the directory was the last reference to the
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 262]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    corresponding filesystem object, the object may be destroyed.
 
    For the directory where the filename was removed, the server returns
@@ -14702,6 +14721,14 @@ Internet-Draft                    NFSv4                     January 2011
    allowed to remove before issuing a REMOVE.  Alternatively, the
    implementor can produce a COMPOUND call that includes a LOOKUP/VERIFY
    sequence to verify the file type before a REMOVE operation in the
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 263]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    same COMPOUND call.
 
    The concept of last reference is server specific.  However, if the
@@ -14721,13 +14748,6 @@ Internet-Draft                    NFSv4                     January 2011
    o  The server SHOULD NOT delete the file's directory entry if the
       file was opened with OPEN4_SHARE_DENY_WRITE or
       OPEN4_SHARE_DENY_BOTH.
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 263]
-
-Internet-Draft                    NFSv4                     January 2011
-
 
    o  If the file was not opened with OPEN4_SHARE_DENY_WRITE or
       OPEN4_SHARE_DENY_BOTH, the server SHOULD delete the file's
@@ -14750,6 +14770,19 @@ Internet-Draft                    NFSv4                     January 2011
            /* CURRENT_FH: target directory */
            component4      newname;
    };
+
+
+
+
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 264]
+
+Internet-Draft                    NFSv4                     January 2011
 
 
 15.29.3.  RESULT
@@ -14777,14 +14810,6 @@ Internet-Draft                    NFSv4                     January 2011
    filesystem on the server.  On success, the current filehandle will
    continue to be the target directory.
 
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 264]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    If the target directory already contains an entry with the name,
    newname, the source object must be compatible with the target: either
    both are non-directories or both are directories and the target must
@@ -14807,6 +14832,14 @@ Internet-Draft                    NFSv4                     January 2011
    filehandles refer to different filesystem objects, the server will
    return NFS4ERR_XDEV just as if the saved and current filehandles
    represented directories on different filesystems.
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 265]
+
+Internet-Draft                    NFSv4                     January 2011
+
 
    If the oldname or newname is of zero length, NFS4ERR_INVAL will be
    returned.  The oldname and newname are also subject to the normal
@@ -14833,14 +14866,6 @@ Internet-Draft                    NFSv4                     January 2011
    will return the error NFS4ERR_INVAL in these cases.
 
    If either of the source or target filehandles are not directories,
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 265]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    the server will return NFS4ERR_NOTDIR.
 
 15.30.  Operation 30: RENEW - Renew a Lease
@@ -14861,6 +14886,15 @@ Internet-Draft                    NFSv4                     January 2011
    struct RENEW4res {
            nfsstat4        status;
    };
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 266]
+
+Internet-Draft                    NFSv4                     January 2011
 
 
 15.30.4.  DESCRIPTION
@@ -14889,14 +14923,6 @@ Internet-Draft                    NFSv4                     January 2011
 
    The client that issues RENEW MUST choose the principal, RPC security
    flavor, and if applicable, GSS-API mechanism and service via one of
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 266]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    the following algorithms:
 
    o  The client uses the same principal, RPC security flavor -- and if
@@ -14918,6 +14944,14 @@ Internet-Draft                    NFSv4                     January 2011
 15.31.1.  SYNOPSIS
 
    (sfh) -> (cfh)
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 267]
+
+Internet-Draft                    NFSv4                     January 2011
+
 
 15.31.2.  ARGUMENT
 
@@ -14946,13 +14980,6 @@ Internet-Draft                    NFSv4                     January 2011
    is commonly used to obtain post-operation attributes for the
    directory, e.g.,
 
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 267]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    PUTFH (directory filehandle)
    SAVEFH
    GETATTR attrbits     (pre-op dir attrs)
@@ -14971,6 +14998,16 @@ Internet-Draft                    NFSv4                     January 2011
 
    /* CURRENT_FH: */
    void;
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 268]
+
+Internet-Draft                    NFSv4                     January 2011
+
 
 15.32.3.  RESULT
 
@@ -14996,25 +15033,36 @@ Internet-Draft                    NFSv4                     January 2011
 
    (cfh), name -> { secinfo }
 
-
-
-
-
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 268]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
 15.33.2.  ARGUMENT
 
    struct SECINFO4args {
            /* CURRENT_FH: directory */
            component4      name;
    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 269]
+
+Internet-Draft                    NFSv4                     January 2011
 
 
 15.33.3.  RESULT
@@ -15057,14 +15105,6 @@ Internet-Draft                    NFSv4                     January 2011
    The SECINFO operation is used by the client to obtain a list of valid
    RPC authentication flavors for a specific directory filehandle, file
    name pair.  SECINFO should apply the same access methodology used for
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 269]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    LOOKUP when evaluating the name.  Therefore, if the requester does
    not have the appropriate access to LOOKUP the name then SECINFO must
    behave the same way and return NFS4ERR_ACCESS.
@@ -15073,6 +15113,14 @@ Internet-Draft                    NFSv4                     January 2011
    mechanisms available, with an order corresponding to server's
    preferences, the most preferred being first in the array.  The client
    is free to pick whatever security mechanism it both desires and
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 270]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    supports, or to pick in the server's preference order the first one
    it supports.  The array entries are represented by the secinfo4
    structure.  The field 'flavor' will contain a value of AUTH_NONE,
@@ -15113,14 +15161,6 @@ Internet-Draft                    NFSv4                     January 2011
    translation (LOOKUP and OPEN).  RESTOREFH is different because the
    filehandle is a result of a previous SAVEFH.  Even though the
    filehandle, for RESTOREFH, might have previously passed the server's
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 270]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    inspection for a security match, the server will check it again on
    RESTOREFH to ensure that the security policy has not changed.
 
@@ -15129,6 +15169,14 @@ Internet-Draft                    NFSv4                     January 2011
 
    o  For LOOKUP and OPEN, the client will use SECINFO with the same
       current filehandle and name as provided in the original LOOKUP or
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 271]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
       OPEN to enumerate the available security triples.
 
    o  For LINK, PUTFH, RENAME, and RESTOREFH, the client will use
@@ -15165,18 +15213,6 @@ Internet-Draft                    NFSv4                     January 2011
 
    (cfh), stateid, attrmask, attr_vals -> attrsset
 
-
-
-
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 271]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
 15.34.2.  ARGUMENT
 
    struct SETATTR4args {
@@ -15184,6 +15220,17 @@ Internet-Draft                    NFSv4                     January 2011
            stateid4        stateid;
            fattr4          obj_attributes;
    };
+
+
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 272]
+
+Internet-Draft                    NFSv4                     January 2011
 
 
 15.34.3.  RESULT
@@ -15225,14 +15272,6 @@ Internet-Draft                    NFSv4                     January 2011
 
    If the request specifies the owner attribute to be set, the server
    should allow the operation to succeed if the current owner of the
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 272]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    object matches the value specified in the request.  Some servers may
    be implemented in a way as to prohibit the setting of the owner
    attribute unless the requester has privilege to do so.  If the server
@@ -15242,6 +15281,14 @@ Internet-Draft                    NFSv4                     January 2011
 
    The file size attribute is used to request changes to the size of a
    file.  A value of 0 (zero) causes the file to be truncated, a value
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 273]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    less than the current size of the file causes data from new size to
    the end of the file to be discarded, and a size greater than the
    current size of the file causes logically zeroed data bytes to be
@@ -15282,13 +15329,6 @@ Internet-Draft                    NFSv4                     January 2011
    take care to avoid such delays, to the degree possible, when
    executing such a request.
 
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 273]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    If the server does not support an attribute as requested by the
    client, the server should return NFS4ERR_ATTRNOTSUPP.
 
@@ -15296,6 +15336,14 @@ Internet-Draft                    NFSv4                     January 2011
    cases.  That mask must not include attributes bits not requested to
    be set by the client, and must be equal to the mask of attributes
    requested to be set only if the SETATTR completes without error.
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 274]
+
+Internet-Draft                    NFSv4                     January 2011
+
 
 15.35.  Operation 35: SETCLIENTID - Negotiate Clientid
 
@@ -15337,14 +15385,6 @@ Internet-Draft                    NFSv4                     January 2011
    share reservation, and delegation state on the server.  Upon
    successful completion the server will return a shorthand clientid
    which, if confirmed via a separate step, will be used in subsequent
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 274]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    file locking and file open requests.  Confirmation of the clientid
    must be done via the SETCLIENTID_CONFIRM operation to return the
    clientid and setclientid_confirm values, as verifiers, to the server.
@@ -15353,6 +15393,13 @@ Internet-Draft                    NFSv4                     January 2011
    callback_ident information but not the shorthand clientid.  In that
    event, the setclientid_confirm value is effectively the only
    verifier.
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 275]
+
+Internet-Draft                    NFSv4                     January 2011
+
 
    The callback information provided in this operation will be used if
    the client is provided an open delegation at a future point.
@@ -15393,14 +15440,6 @@ Internet-Draft                    NFSv4                     January 2011
    the server is implementing the duplicate request cache (DRC).
 
    When the server gets a SETCLIENTID { v, x, k } request, it processes
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 275]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    it in the following manner.
 
    o  It first looks up the request in the DRC.  If there is a hit, it
@@ -15410,6 +15449,14 @@ Internet-Draft                    NFSv4                     January 2011
 
       For any DRC miss, the server takes the client id string x, and
       searches for client records for x that the server may have
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 276]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
       recorded from previous SETCLIENTID calls.  For any confirmed
       record with the same id string x, if the recorded principal does
       not match that of SETCLIENTID call, then the server returns a
@@ -15449,14 +15496,6 @@ Internet-Draft                    NFSv4                     January 2011
 
       The server returns { d, t }.
 
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 276]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
       The server awaits confirmation of { d, k } via SETCLIENTID_CONFIRM
       { d, t }.
 
@@ -15466,6 +15505,14 @@ Internet-Draft                    NFSv4                     January 2011
    o  The server has previously recorded a confirmed { u, x, c, l, s }
       record such that v != u, l may or may not equal k, and recorded an
       unconfirmed { w, x, d, m, t } record such that c != d, t != s, m
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 277]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
       may or may not equal k, m may or may not equal l, and k may or may
       not equal l.  Whether w == v or w != v makes no difference.  The
       server simply removes the unconfirmed { w, x, d, m, t } record and
@@ -15503,22 +15550,23 @@ Internet-Draft                    NFSv4                     January 2011
 
    clientid, verifier -> -
 
-
-
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 277]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
 15.36.2.  ARGUMENT
 
    struct SETCLIENTID_CONFIRM4args {
            clientid4       clientid;
            verifier4       setclientid_confirm;
    };
+
+
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 278]
+
+Internet-Draft                    NFSv4                     January 2011
 
 
 15.36.3.  RESULT
@@ -15561,14 +15609,6 @@ Internet-Draft                    NFSv4                     January 2011
 
    We use the same notation and definitions for v, x, c, k, s, and
    unconfirmed and confirmed client records as introduced in the
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 278]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    description of the SETCLIENTID operation.  The arguments to
    SETCLIENTID_CONFIRM are indicated by the notation { c, s }, where c
    is a value of type clientid4, and s is a value of type verifier4
@@ -15577,6 +15617,13 @@ Internet-Draft                    NFSv4                     January 2011
    As with SETCLIENTID, SETCLIENTID_CONFIRM is a non-idempotent
    operation, and we assume that the server is implementing the
    duplicate request cache (DRC).
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 279]
+
+Internet-Draft                    NFSv4                     January 2011
+
 
    When the server gets a SETCLIENTID_CONFIRM { c, s } request, it
    processes it in the following manner.
@@ -15617,14 +15664,6 @@ Internet-Draft                    NFSv4                     January 2011
       the DRC entry has been purged.  Whatever the scenario, since the
       principals match, as well as { c, s } matching a confirmed record,
       the server leaves client x's relevant leased client state intact,
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 279]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
       leaves its callback and callback_ident values unmodified, and
       returns NFS4_OK.
 
@@ -15634,6 +15673,14 @@ Internet-Draft                    NFSv4                     January 2011
       SETCLIENTID_CONFIRM attempt was not received by the server.  Retry
       or not, the server doesn't know, but it processes it as if were a
       first try.  If the principal of the unconfirmed { *, x, c, k, s }
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 280]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
       record mismatches that of the SETCLIENTID_CONFIRM request the
       server returns NFS4ERR_CLID_INUSE without removing any relevant
       leased client state.
@@ -15673,14 +15720,6 @@ Internet-Draft                    NFSv4                     January 2011
 
    If the client does send a SETCLIENTID_CONFIRM for an unconfirmed
    record that the server has already deleted, the client will get
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 280]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    NFS4ERR_STALE_CLIENTID back.  If so, the client should then start
    over, and send SETCLIENTID to reestablish an unconfirmed client
    record and get back an unconfirmed clientid and setclientid_confirm
@@ -15690,6 +15729,14 @@ Internet-Draft                    NFSv4                     January 2011
    SETCLIENTID_CONFIRM does not establish or renew a lease.  However, if
    SETCLIENTID_CONFIRM removes relevant leased client state, and that
    state does not include existing delegations, the server MUST allow
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 281]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    the client a period of time no less than the value of lease_time
    attribute, to reclaim, (via the CLAIM_DELEGATE_PREV claim type of the
    OPEN operation) its delegations before removing unreclaimed
@@ -15729,14 +15776,6 @@ Internet-Draft                    NFSv4                     January 2011
    One possible use of the VERIFY operation is the following compound
    sequence.  With this the client is attempting to verify that the file
    being removed will match what the client expects to be removed.  This
-
-
-
-Haynes & Noveck           Expires July 16, 2011               [Page 281]
-
-Internet-Draft                    NFSv4                     January 2011
-
-
    sequence can help prevent the unintended deletion of a file.
 
    PUTFH (directory filehandle)
@@ -15746,6 +15785,14 @@ Internet-Draft                    NFSv4                     January 2011
    REMOVE (file name)
 
    This sequence does not prevent a second client from removing and
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 282]
+
+Internet-Draft                    NFSv4                     January 2011
+
+
    creating a new file in the middle of this sequence but it does help
    avoid the unintended result.
 
@@ -15788,7 +15835,16 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 282]
+
+
+
+
+
+
+
+
+
+Haynes & Noveck           Expires July 16, 2011               [Page 283]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -15844,7 +15900,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 283]
+Haynes & Noveck           Expires July 16, 2011               [Page 284]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -15900,7 +15956,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 284]
+Haynes & Noveck           Expires July 16, 2011               [Page 285]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -15956,7 +16012,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 285]
+Haynes & Noveck           Expires July 16, 2011               [Page 286]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16012,7 +16068,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 286]
+Haynes & Noveck           Expires July 16, 2011               [Page 287]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16068,7 +16124,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 287]
+Haynes & Noveck           Expires July 16, 2011               [Page 288]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16124,7 +16180,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 288]
+Haynes & Noveck           Expires July 16, 2011               [Page 289]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16180,7 +16236,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 289]
+Haynes & Noveck           Expires July 16, 2011               [Page 290]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16236,7 +16292,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 290]
+Haynes & Noveck           Expires July 16, 2011               [Page 291]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16292,7 +16348,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 291]
+Haynes & Noveck           Expires July 16, 2011               [Page 292]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16348,7 +16404,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 292]
+Haynes & Noveck           Expires July 16, 2011               [Page 293]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16404,7 +16460,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 293]
+Haynes & Noveck           Expires July 16, 2011               [Page 294]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16460,7 +16516,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 294]
+Haynes & Noveck           Expires July 16, 2011               [Page 295]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16516,7 +16572,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 295]
+Haynes & Noveck           Expires July 16, 2011               [Page 296]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16572,7 +16628,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 296]
+Haynes & Noveck           Expires July 16, 2011               [Page 297]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16628,7 +16684,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 297]
+Haynes & Noveck           Expires July 16, 2011               [Page 298]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16684,7 +16740,7 @@ Internet-Draft                    NFSv4                     January 2011
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 298]
+Haynes & Noveck           Expires July 16, 2011               [Page 299]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16740,7 +16796,7 @@ Appendix B.  RFC Editor Notes
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 299]
+Haynes & Noveck           Expires July 16, 2011               [Page 300]
 
 Internet-Draft                    NFSv4                     January 2011
 
@@ -16796,5 +16852,5 @@ Authors' Addresses
 
 
 
-Haynes & Noveck           Expires July 16, 2011               [Page 300]
+Haynes & Noveck           Expires July 16, 2011               [Page 301]
 

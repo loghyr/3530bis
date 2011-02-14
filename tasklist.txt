@@ -385,20 +385,6 @@ State: Accepted, Low
 Target:
 Note: Discuss at the BAT
 
-22) Explain When Server Needs to Return NFS4ERR_DELAY
-
-The case of revoking a delegation that is not promptly returned
-(even when the lease is renewed) should be addressed explicitly.
-
-This is resolved-no-change since it is dealt with in draft-05 but
-I'm creating the issue for v4.0 (and it is marked 3530bis).
-
-Action:
-Owner:
-State: Accepted, low
-Target:
-Notes: Tom will investigate
-
 25) Problems in the Description of OPEN
 
 There are a number of problems with the description of OPEN that
@@ -541,22 +527,6 @@ Note: Rob will bring up on list
 =====
 New:
 =====
-
-45) Theresa Raj points out that on page 95:
-
-
-   o  READDIR (rdattr_error, fsid, size, time_modify, mounted_on_fileid)
-      --> NFS_OK.  The attributes for directory entry with the component
-      named "path" will only contain rdattr_error with the value
-      NFS4ERR_MOVED, together with an fsid value and a value for
-      mounted_on_fileid.
-
-This contradicts the changes we have made for namespaces.
-
-Action: Remove text?
-Owner: Tom
-State:
-Target: IETF 80
 
 =====
 Done:
@@ -1107,4 +1077,33 @@ Action: DUP of 22!
 Owner:
 State: Accepted, Low
 Target:
+
+22) Explain When Server Needs to Return NFS4ERR_DELAY
+
+The case of revoking a delegation that is not promptly returned
+(even when the lease is renewed) should be addressed explicitly.
+
+This is resolved-no-change since it is dealt with in draft-05 but
+I'm creating the issue for v4.0 (and it is marked 3530bis).
+
+Action: Pull in 4.1 text
+Owner: Tom
+State: Fixed
+Target: IETF 80
+Notes: Tom will investigate
+
+45) Theresa Raj points out that on page 95:
+
+   o  READDIR (rdattr_error, fsid, size, time_modify, mounted_on_fileid)
+      --> NFS_OK.  The attributes for directory entry with the component
+      named "path" will only contain rdattr_error with the value
+      NFS4ERR_MOVED, together with an fsid value and a value for
+      mounted_on_fileid.
+
+This contradicts the changes we have made for namespaces.
+
+Action: Verified that example is okay
+Owner: Tom
+State: Not an issue
+Target: IETF 80
 
