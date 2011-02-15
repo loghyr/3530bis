@@ -312,19 +312,6 @@ Note: Trond will produce a write up.
 Low:
 =====
 
-2) Explain what associated means in this context:
-
-> In sec. 14.2.2 DESCRIPTION
->
->  The share reservations and other state information released
->  at the server as a result of this CLOSE is only associated
-> with the supplied stateid.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-
 3) There are places where "lock_owner" is used in sec. 8.n.n and I
 found it confusing. Maybe a statement near the beginning of that
 section, noting that "lock_owner" is used to refer to both open_owner4
@@ -335,6 +322,7 @@ Action:
 Owner:
 State: Accepted, Low
 Target:
+Note: And it appears 5661 is crisper in this regards.
 
 13) Perhaps clarify how clients should be managing delegations? There appear
 to be server implementations that expect clients to limit the number of
@@ -1097,5 +1085,18 @@ Target: IETF 78
 Action: Clarified with Trond, added new text
 Owner: Tom
 State: Finished
+Target: IETF 80
+
+2) Explain what associated means in this context:
+
+> In sec. 14.2.2 DESCRIPTION
+>
+>  The share reservations and other state information released
+>  at the server as a result of this CLOSE is only associated
+> with the supplied stateid.
+
+Action: Take none
+Owner: Tom
+State: Retired
 Target: IETF 80
 

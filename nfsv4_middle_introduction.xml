@@ -503,7 +503,7 @@
         client.  If this callback path does not exist, then delegations
         cannot be granted.  The essence of a delegation is that it
         allows the client to locally service operations such as OPEN,
-        CLOSE, LOCK, LOCKU, READ, WRITE without immediate interaction
+        CLOSE, LOCK, LOCKU, READ, or WRITE without immediate interaction
         with the server.
       </t>
     </section>

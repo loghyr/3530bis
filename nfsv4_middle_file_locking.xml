@@ -858,7 +858,7 @@
         <t>
           Any operation made with a valid stateid (CLOSE, DELEGPURGE,
           DELEGRETURN, LOCK, LOCKU, OPEN, OPEN_CONFIRM, OPEN_DOWNGRADE,
-          READ, RENEW, SETATTR, WRITE).  This does not include the
+          READ, RENEW, SETATTR, or WRITE).  This does not include the
           special stateids of all bits 0 or all bits 1.
         <vspace blankLines='1' />
           Note that if the client had restarted or rebooted, the
@@ -1460,7 +1460,7 @@ else if ((request.access & file_state.deny)) ||
     <t>
       To provide correct share semantics, a client MUST use the OPEN
       operation to obtain the initial filehandle and indicate the
-      desired access and what if any access to deny.  Even if the
+      desired access and what access, if any, to deny.  Even if the
       client intends to use a stateid of all 0's or all 1's, it must
       still obtain the filehandle for the regular file with the OPEN
       operation so the appropriate share semantics can be applied.
