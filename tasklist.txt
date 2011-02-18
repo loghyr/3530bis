@@ -409,6 +409,19 @@ State: Accepted, low
 Target:
 Note: check 5661
 
+2) Explain what associated means in this context:
+
+> In sec. 14.2.2 DESCRIPTION
+>
+>  The share reservations and other state information released
+>  at the server as a result of this CLOSE is only associated
+> with the supplied stateid.
+
+Action: Look at Item 9
+Owner: Tom
+State: Accepted, Low
+Target: IETF 80
+
 44) Not all "should not", etc are capitalized.
 
 Action: Change text
@@ -425,6 +438,14 @@ Clarification:
 =====
 New:
 =====
+
+54) Tom: Can't use PID in client id for user space NFS
+
+Action: Change text
+Owner: Tom
+State Accepted, Low
+Target: IETF 80
+5661: Perhaps
 
 =====
 Done:
@@ -1086,17 +1107,3 @@ Action: Clarified with Trond, added new text
 Owner: Tom
 State: Finished
 Target: IETF 80
-
-2) Explain what associated means in this context:
-
-> In sec. 14.2.2 DESCRIPTION
->
->  The share reservations and other state information released
->  at the server as a result of this CLOSE is only associated
-> with the supplied stateid.
-
-Action: Take none
-Owner: Tom
-State: Retired
-Target: IETF 80
-
