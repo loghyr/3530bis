@@ -75,6 +75,7 @@ Action:
 Owner:
 State: Accepted, Medium
 Target:
+Note: Sync with 4.1
 
 12) Clarify the various scenarios that should result in a delegation recall
 (mainly SETATTR by self).
@@ -307,6 +308,7 @@ Owner: Trond
 State: Accepted, medium
 Target:
 Note: Trond will produce a write up.
+Item #9...
 
 =====
 Low:
@@ -443,9 +445,25 @@ New:
 
 Action: Change text
 Owner: Tom
-State Accepted, Low
+State: Accepted, Low
 Target: IETF 80
 5661: Perhaps
+
+55) uid across AUTH_SYS
+
+Action: Change text
+Owner: Tom
+State: Accepted, Medium
+Target: IETF 80
+5661: Yes
+
+56) LEASED_MOVED error
+
+Action: Change text
+Owner: Tom
+State: Accepted, Medium
+Target: IETF 80
+
 
 =====
 Done:
