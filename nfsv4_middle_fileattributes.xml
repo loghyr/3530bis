@@ -1303,7 +1303,7 @@
     <t>
       In the case where there is no translation available to the
       client or server, the attribute value will be constructed
-      without the "@".  Therefore, the absence of the @ from the
+      without the "@".  Therefore, the absence of the "@" from the
       owner or owner_group attribute signifies that no translation
       was available at the sender and that the receiver of the
       attribute should not use that string as a basis for
@@ -1321,15 +1321,32 @@
       servers that choose to provide such support.  The receiver
       may treat such a user or group string as representing the same
       user as would be represented by an NFSv3 uid or gid having the
-      corresponding numeric value.  A server is not obligated to
-      accept such a string, but may return an NFS4ERR_BADOWNER
-      instead.  To avoid this mechanism being used to subvert user
-      and group translation, so that a client might pass all of the
-      owners and groups in numeric form, a server SHOULD return an
-      NFS4ERR_BADOWNER error when there is a valid translation for
-      the user or owner designated in this way.  In that case, the
-      client must use the appropriate user@domain string and not the
-      special form for compatibility.
+      corresponding numeric value.
+    </t>
+    <t>
+      A server SHOULD reject such a numeric value if the security
+      mechanism is kerberized. I.e., in such a scenario, the client
+      will already need to form "user@domain" strings. For any
+      other security mechanism, the server SHOULD accept such
+      numeric values. As an implementation note, the server could
+      make such an acceptance be configurable. If the server does
+      not support numeric values or if it is configured off, then
+      it MUST return an NFS4ERR_BADOWNER error. If the security
+      mechanism is kerberized and the client attempts to use the
+      special form, then the server SHOULD return an NFS4ERR_BADOWNER
+      error when there is a valid translation for the user or owner
+      designated in this way.  In that case, the client must use
+      the appropriate user@domain string and not the special form
+      for compatibility.
+    </t>
+    <t>
+      The client MUST always accept numeric values if the security
+      mechanism is not kerberized.  A client can determine if a
+      server supports such a mechanism by first attempting to
+      provide a numeric value and only if it is rejected with
+      an NFS4ERR_BADOWNER error, then providing a name value.
+      After the first detection of such an error, the client
+      should only use the special form.
     </t>
     <t>
       The owner string "nobody" may be used to designate an
