@@ -175,8 +175,8 @@
           <t>
             For a user level NFS version 4 client, it should contain
             additional information to distinguish the client from other
-            user level clients running on the same host, such as a process
-            id or other unique sequence.
+            user level clients running on the same host, such as an universally
+	    unique identifier (UUID).
           </t>
 
           <t>
