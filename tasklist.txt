@@ -441,22 +441,6 @@ Clarification:
 New:
 =====
 
-54) Tom: Can't use PID in client id for user space NFS
-
-Action: Change text
-Owner: Tom
-State: Accepted, Low
-Target: IETF 80
-5661: Perhaps
-
-55) uid across AUTH_SYS
-
-Action: Change text
-Owner: Tom
-State: Accepted, Medium
-Target: IETF 80
-5661: Yes
-
 56) LEASED_MOVED error
 
 Action: Change text
@@ -1125,3 +1109,20 @@ Action: Clarified with Trond, added new text
 Owner: Tom
 State: Finished
 Target: IETF 80
+
+54) Tom: Can't use PID in client id for user space NFS
+
+Action: Change text
+Owner: Tom
+State: Finished
+Target: IETF 80
+5661: Perhaps
+
+55) uid across AUTH_SYS
+
+Action: Change text
+Owner: Tom
+State: Fixed
+Target: IETF 80
+5661: Yes
+

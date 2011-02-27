@@ -1249,14 +1249,13 @@
       accept an owner or owner_group value as valid on a SETATTR
       (and similarly for the owner and group strings in an acl), it
       is promising to return that same string for which see below)
-      when a corresponding
-      GETATTR is done.  For some internationalization-related
-      exceptions where this is not possible, see below.
-      Configuration changes (including
+      when a corresponding GETATTR is done.  For some
+      internationalization-related exceptions where this is not
+      possible, see below.  Configuration changes (including
       changes from the mapping of the string to the local representation)
-      and ill-constructed
-      name translations (those that contain aliasing) may make that
-      promise impossible to honor.  Servers should make appropriate
+      and ill-constructed name translations (those that contain
+      aliasing) may make that promise impossible to honor.  Servers
+      should make appropriate
       efforts to avoid a situation in which these attributes have
       their values changed when no real change to ownership has
       occurred.
@@ -1269,6 +1268,15 @@
       translations.  A more general service is provided when a
       server is capable of accepting users for multiple domains, or
       for all domains, subject to security constraints.
+    </t>
+    <t>
+      As an implementation guide, both clients and servers may
+      provide a means to configure the "dns_domain" portion of the
+      owner string. For example, the DNS domain name might be
+      "lab.example.org", but the user names are defined in
+      "example.org". In the absence of such a configuration,
+      or as a default, the current DNS domain name should be 
+      the value used for the "dns_domain".
     </t>
     <t>
       As mentioned above, it is desirable that a server when
@@ -1306,9 +1314,8 @@
     </t>
     <t>
       To provide a greater degree of compatibility with NFSv3,
-      which identified users and
-      groups by 32-bit unsigned user identifiers and group identifiers, 
-      owner and group
+      which identified users and groups by 32-bit unsigned user
+      identifiers and group identifiers, owner and group
       strings that consist of decimal numeric values with no leading
       zeros can be given a special interpretation by clients and
       servers that choose to provide such support.  The receiver
@@ -1321,7 +1328,7 @@
       owners and groups in numeric form, a server SHOULD return an
       NFS4ERR_BADOWNER error when there is a valid translation for
       the user or owner designated in this way.  In that case, the
-      client must use the appropriate name@domain string and not the
+      client must use the appropriate user@domain string and not the
       special form for compatibility.
     </t>
     <t>
