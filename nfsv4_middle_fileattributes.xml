@@ -852,6 +852,12 @@
        returns NFS4ERR_MOVED as an error, this attribute MUST be
        supported.
        </t>
+       <t>
+         The server can specify a root path by setting an array of
+	 zero path compenents. Other than this special case, the
+	 server MUST not present empty path components to the
+	 client.
+       </t>
     </section>
 
     <section toc="exclude" anchor="attrdef_hidden"

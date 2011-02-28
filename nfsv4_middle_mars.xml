@@ -26,8 +26,7 @@
     </t>
     <t>
       The fs_locations RECOMMENDED attribute allows specification
-      of the file system
-      locations where the data corresponding to a given file
+      of the file system locations where the data corresponding to a given file
       system may be found.
     </t>
   </section>
@@ -229,8 +228,7 @@
       file system impossible or otherwise impractical.
       Under some circumstances, multiple alternative locations
       may be used simultaneously to provide higher-performance
-      access to the file system in question.
-      Provision of
+      access to the file system in question.  Provision of
       such alternate locations is referred to as "replication"
       although there are cases in which replicated sets of data are
       not in fact present, and the replicas are instead different
@@ -265,10 +263,9 @@
     </t>
     <section anchor="replication" title="File System Replication">
       <t>
-        The fs_locations attribute provides
-        alternative locations, to be used to access data in place
-        of or in addition to
-        the current file system instance.  On first access to a
+        The fs_locations attribute provides alternative locations,
+	to be used to access data in place of or in addition to
+	the current file system instance.  On first access to a
         file system, the client should obtain the value of the set
         of alternate locations by interrogating the fs_locations
         attribute.
