@@ -189,6 +189,18 @@
       still on the client.
     </t>
 
+    <t>
+      Clients need to be aware that server implementors may enforce practical
+      limitations on the number of delegations issued. Further, as there is
+      no way to determine which delegations to revoke, the server is allowed
+      to revoke any. If the server is implemented to revoke another delegation
+      held by that client, then the client may be able to determine that 
+      a limit has been reached because each new delegation request results
+      in a revoke. The client could then determine which delegations it may not
+      need and preemptively release them.
+    </t>
+
+
     <section anchor="ss:cc:deleg_recovery" title="Delegation Recovery">
 
       <t>

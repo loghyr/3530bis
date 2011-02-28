@@ -326,17 +326,6 @@ State: Accepted, Low
 Target:
 Note: And it appears 5661 is crisper in this regards.
 
-13) Perhaps clarify how clients should be managing delegations? There appear
-to be server implementations that expect clients to limit the number of
-delegations they are holding.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-Notes: Clients need to implement mechanism to limit number of held delegations.
-Get rid of low value delegations.
-
 21) Contradiction in 2nd Para of GETATTR Description
 
 The 2nd paragraph of the description for GETATTR contradicts itself.  It says
@@ -410,19 +399,6 @@ Owner:
 State: Accepted, low
 Target:
 Note: check 5661
-
-2) Explain what associated means in this context:
-
-> In sec. 14.2.2 DESCRIPTION
->
->  The share reservations and other state information released
->  at the server as a result of this CLOSE is only associated
-> with the supplied stateid.
-
-Action: Look at Item 9
-Owner: Tom
-State: Accepted, Low
-Target: IETF 80
 
 44) Not all "should not", etc are capitalized.
 
@@ -1125,4 +1101,28 @@ Owner: Tom
 State: Fixed
 Target: IETF 80
 5661: Yes
+
+2) Explain what associated means in this context:
+
+> In sec. 14.2.2 DESCRIPTION
+>
+>  The share reservations and other state information released
+>  at the server as a result of this CLOSE is only associated
+> with the supplied stateid.
+
+Action: Look at Item 9
+Owner: Tom
+State: Finished
+Target: IETF 80
+
+13) Perhaps clarify how clients should be managing delegations? There appear
+to be server implementations that expect clients to limit the number of
+delegations they are holding.
+
+Action: Add suggestive text
+Owner: Tom
+State: Finished
+Target: IETF 80
+Notes: Clients need to implement mechanism to limit number of held delegations.
+Get rid of low value delegations.
 
