@@ -1773,15 +1773,29 @@ else if ((request.access & file_state.deny)) ||
       </t>
 
       <t>
-        When a client receives an NFS4ERR_LEASE_MOVED error, it should
-        perform an operation on each filesystem associated with the server
-        in question.  When the client receives an NFS4ERR_MOVED error,
+	Upon receiving the NFS4ERR_LEASE_MOVED error, a client that supports
+	filesystem migration MUST probe all filesystems from that server on
+	which it holds open state. Once the client has successfully probed all those
+	filesystems which are migrated, the server MUST resume normal
+	handling of stateful requests from that client.
+      </t>
+
+      <t>
+	In order to support legacy clients that do not handle the
+	NFS4ERR_LEASE_MOVED error correctly, the server SHOULD time out after a
+	wait of at least two lease periods, at which time it will resume normal
+	handling of stateful requests from all clients. If a client attempts to
+	access the migrated files, the server MUST reply NFS4ERR_MOVED.
+      </t>
+
+      <t>
+	When the client receives an NFS4ERR_MOVED error,
         the client can follow the normal process to obtain the new server
         information (through the fs_locations attribute) and perform
-        renewal of those leases on the new server.  If the server has not
-        had state transferred to it transparently, the client will receive
-        either NFS4ERR_STALE_CLIENTID or NFS4ERR_STALE_STATEID from the
-        new server, as described above, and the client can then recover
+        renewal of those leases on the new server.
+        If the server has not had state transferred to it transparently,
+	the client will receive either NFS4ERR_STALE_CLIENTID or NFS4ERR_STALE_STATEID
+	from the new server, as described above. The client can then recover
         state information as it does in the event of server failure.
       </t>
 

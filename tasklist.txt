@@ -385,13 +385,6 @@ Clarification:
 New:
 =====
 
-56) LEASED_MOVED error
-
-Action: Change text
-Owner: Tom
-State: Accepted, Medium
-Target: IETF 80
-
 
 =====
 Done:
@@ -1124,5 +1117,12 @@ this open to succeed just like a normal CLAIM_DELEGATE_CUR open.
 Action: Pull back from 4.1
 Owner: Tom
 State: Finished
+Target: IETF 80
+
+56) LEASED_MOVED error
+
+Action: Change text
+Owner: Trond
+State: Accepted, Medium
 Target: IETF 80
 
