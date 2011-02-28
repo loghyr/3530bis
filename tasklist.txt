@@ -55,16 +55,6 @@ Target:
 Notes: May be hashed out on mailing list - i.e., resolved by existing
 implementations, but not captured in the spec?
 
-43) How to interpret empty path components in fs_locations/fs_locations_info
-
-Brought up by Trond on the mailing list:
-http://www.ietf.org/mail-archive/web/nfsv4/current/msg08632.html
-
-Action: Make some changes
-Owner: Trond
-State: Accepted, high
-Target: IETF80
-
 =======
 Medium:
 =======
@@ -1125,4 +1115,14 @@ State: Finished
 Target: IETF 80
 Notes: Clients need to implement mechanism to limit number of held delegations.
 Get rid of low value delegations.
+
+43) How to interpret empty path components in fs_locations/fs_locations_info
+
+Brought up by Trond on the mailing list:
+http://www.ietf.org/mail-archive/web/nfsv4/current/msg08632.html
+
+Action: Make some changes
+Owner: Trond
+State: Finished
+Target: IETF80
 
