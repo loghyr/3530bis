@@ -266,28 +266,6 @@ State: Accepted, medium
 Target:
 Note: Group with stateid issues - backport from 5661?
 
-28) Reclaiming Local Opens with CLAIM_DELEGATE_CUR Instead of CLAIM_PREVIOUS
-
-Described in
-
-If a client holds some local open/lock state while holding a
-delegation for that file and the server reboots, the client can
-reclaim this state by sending open requests with the claim_type set
-to CLAIM_PREVIOUS. However there is no way to differentiate between
-the reclaim for a regular open and that of a DELEGATE_CUR open. The
-server can figure out that the open being reclaimed is a DELEGATE_CUR
-open by comparing the clientid for that open with the client holding
-the delegation in order to avoid recalling the delegation but it
-would be better if the client either does not reclaim this open
-(since it already has the delegation) or reclaim this by setting
-the claim_type to CLAIM_DELEGATE_CUR so that the server can allow
-this open to succeed just like a normal CLAIM_DELEGATE_CUR open.
-
-Action:
-Owner:
-State: Accepted, medium
-Target:
-
 35) OPEN_DOWNGRADE and posix byte range
 
 Trond started this discussion here:
@@ -1125,4 +1103,26 @@ Action: Make some changes
 Owner: Trond
 State: Finished
 Target: IETF80
+
+28) Reclaiming Local Opens with CLAIM_DELEGATE_CUR Instead of CLAIM_PREVIOUS
+
+Described in
+
+If a client holds some local open/lock state while holding a
+delegation for that file and the server reboots, the client can
+reclaim this state by sending open requests with the claim_type set
+to CLAIM_PREVIOUS. However there is no way to differentiate between
+the reclaim for a regular open and that of a DELEGATE_CUR open. The
+server can figure out that the open being reclaimed is a DELEGATE_CUR
+open by comparing the clientid for that open with the client holding
+the delegation in order to avoid recalling the delegation but it
+would be better if the client either does not reclaim this open
+(since it already has the delegation) or reclaim this by setting
+the claim_type to CLAIM_DELEGATE_CUR so that the server can allow
+this open to succeed just like a normal CLAIM_DELEGATE_CUR open.
+
+Action: Pull back from 4.1
+Owner: Tom
+State: Finished
+Target: IETF 80
 

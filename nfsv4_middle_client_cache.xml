@@ -296,6 +296,14 @@
       </t>
 
       <t>
+        When a client has more than a single open associated with a
+        delegation, state for those additional opens can be established using
+        OPEN operations of type CLAIM_DELEGATE_CUR.  When these are used to
+        establish opens associated with reclaimed delegations, the server
+        MUST allow them when made within the grace period.
+      </t>
+
+      <t>
         When a network partition occurs, delegations are subject
         to freeing by the server when the lease renewal period
         expires.  This is similar to the behavior for locks and
@@ -321,10 +329,9 @@
         Note also that when delegations are revoked, information about
         the revoked delegation will be written by the server to stable
         storage (as described in <xref target="ss:fl:crash_recov" />).
-        This is done to deal with the case in
-        which a server reboots after revoking a delegation but before
-        the client holding the revoked delegation is notified about
-        the revocation.
+        This is done to deal with the case in which a server reboots
+	after revoking a delegation but before the client holding the
+	revoked delegation is notified about the revocation.
       </t>
 
     </section>
