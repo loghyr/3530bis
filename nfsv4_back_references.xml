@@ -964,4 +964,61 @@ document are to be interpreted as described in RFC
       </front>
     </reference>
 
+    <reference anchor="fcntl">
+      <front>
+  	    <title>
+          Section 'fcntl()' of System Interfaces of The
+          Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004
+          Edition, HTML Version (www.opengroup.org), ISBN 1931624232
+        </title>
+	      <author>
+	        <organization>The Open Group </organization>
+	      </author>
+	      <date  year="2004"/>
+      </front>
+    </reference>
+
+    <reference anchor="fsync">
+      <front>
+  	    <title>
+         Section 'fsync()' of System Interfaces of The
+         Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004
+         Edition, HTML Version (www.opengroup.org), ISBN 1931624232
+        </title>
+	      <author>
+	        <organization>The Open Group </organization>
+	      </author>
+	      <date  year="2004"/>
+      </front>
+    </reference>
+
+    <reference anchor="getpwnam">
+      <front>
+  	    <title>
+         Section 'getpwnam()' of System Interfaces of
+         The Open Group Base Specifications Issue 6 IEEE Std 1003.1,
+         2004 Edition, HTML Version (www.opengroup.org), ISBN
+         1931624232
+        </title>
+	      <author>
+	        <organization>The Open Group </organization>
+	      </author>
+	      <date  year="2004"/>
+      </front>
+    </reference>
+
+    <reference anchor="unlink">
+      <front>
+  	    <title>
+         Section 'unlink()' of System Interfaces of The
+         Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004
+         Edition, HTML Version (www.opengroup.org), ISBN 1931624232
+        </title>
+	      <author>
+	        <organization>The Open Group </organization>
+	      </author>
+	      <date  year="2004"/>
+      </front>
+    </reference>
+
 </references>

@@ -484,12 +484,12 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
 
       <t>
         The COMMIT operation is similar in operation and semantics
-        to the POSIX fsync(2) system call that synchronizes a file's
+        to the POSIX fsync() <xref target="fsync" /> system call that synchronizes a file's
         state with the disk (file data and metadata is flushed to
         disk or stable storage).  COMMIT performs the same operation
         for a client, flushing any unsynchronized data and metadata
         on the server to the server's disk or stable storage for
-        the specified file.  Like fsync(2), it may be that there
+        the specified file.  Like fsync(), it may be that there
         is some modified data or no modified data to synchronize.
         The data may have been synchronized by the server's normal
         periodic buffer synchronization activity.  COMMIT should
@@ -497,7 +497,7 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
       </t>
 
       <t>
-        COMMIT differs from fsync(2) in that it is possible for the
+        COMMIT differs from fsync() in that it is possible for the
         client to flush a range of the file (most likely triggered
         by a buffer-reclamation scheme on the client before file
         has been completely written).
@@ -661,7 +661,7 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
         from the RPC call's credentials, such as the group principal
         if the credentials include it (such as with AUTH_SYS), from
         the group identifier associated with the principal in the
-        credentials (for e.g., POSIX systems have a passwd database
+        credentials (e.g., POSIX systems have a user database <xref target="getpwnam" />
         that has the group identifier for every user identifier),
         inherited from directory the object is created in, or whatever
         else the server's operating environment or filesystem semantics
@@ -1096,10 +1096,10 @@ GETFH
         state associated with the current open file and lock-owner.  In the
         case in which it has, the argument is just a stateid representing
         the set of locks associated with that open file and lock-owner,
-	together with a lock_seqid value which MAY be any value and MUST
-	be ignored by the server.  In the case where no byte-range locking
-	state has been established, or the client does not have the stateid
-	available, the argument contains the
+	      together with a lock_seqid value which MAY be any value and MUST
+	      be ignored by the server.  In the case where no byte-range locking
+	      state has been established, or the client does not have the stateid
+	      available, the argument contains the
         stateid of the open file with which this lock is to be associated,
         together with the lock-owner with which the lock is to be associated.
         The open_to_lock_owner case covers the very first lock done by a
@@ -1269,7 +1269,7 @@ owner}
         the area locked, where it overlaps the area locked without
         matching exactly or the area specified includes multiple
         locks held by the lockowner.  In all of these cases, allowed
-        by POSIX locking semantics, a client receiving this error,
+        by POSIX locking <xref target="fcntl" /> semantics, a client receiving this error,
         should if it desires support for such operations, simulate
         the operation using LOCKU on ranges corresponding to locks
         it actually holds, possibly followed by LOCK requests for
@@ -1561,8 +1561,8 @@ READ 0 32767
         a directory with the provided name.  If the file does not
         exist at the server and creation is desired, specification of
         the method of creation is provided by the openhow parameter.
-        The client has the choice of three creation methods: UNCHECKED,
-        GUARDED, or EXCLUSIVE.
+        The client has the choice of three creation methods: UNCHECKED4,
+        GUARDED4, or EXCLUSIVE4.
       </t>
 
       <t>
@@ -1574,27 +1574,27 @@ READ 0 32767
       </t>
 
       <t>
-        UNCHECKED means that the file should be created if a file
+        UNCHECKED4 means that the file should be created if a file
         of that name does not exist and encountering an existing
         regular file of that name is not an error.  For this type of
         create, createattrs specifies the initial set of attributes
         for the file.  The set of attributes may include any writable
-        attribute valid for regular files.  When an UNCHECKED create
+        attribute valid for regular files.  When an UNCHECKED4 create
         encounters an existing file, the attributes specified by
         createattrs are not used, except that when an size of zero
-        is specified, the existing file is truncated.  If GUARDED is
+        is specified, the existing file is truncated.  If GUARDED4 is
         specified, the server checks for the presence of a duplicate
         object by name before performing the create.  If a duplicate
         exists, an error of NFS4ERR_EXIST is returned as the status.
         If the object does not exist, the request is performed as
-        described for UNCHECKED.  For each of these cases (UNCHECKED
-        and GUARDED) where the operation is successful, the server
+        described for UNCHECKED4.  For each of these cases (UNCHECKED4
+        and GUARDED4) where the operation is successful, the server
         will return to the client an attribute mask signifying which
         attributes were successfully set for the object.
       </t>
 
       <t>
-        EXCLUSIVE specifies that the server is to follow exclusive
+        EXCLUSIVE4 specifies that the server is to follow exclusive
         creation semantics, using the verifier to ensure exclusive
         creation of the target.  The server should check for the
         presence of a duplicate object by name.  If the object does not
@@ -1715,7 +1715,8 @@ READ 0 32767
         OPEN4_RESULT_CONFIRM indicates that the client MUST execute
         an OPEN_CONFIRM operation before using the open file.
         OPEN4_RESULT_LOCKTYPE_POSIX indicates the server's file locking
-        behavior supports the complete set of Posix locking techniques.
+        behavior supports the complete set of Posix locking techniques
+				<xref target="fcntl" />.
         From this the client can choose to manage file locking state
         in a way to handle a mis-match of file locking management.
       </t>
@@ -1768,11 +1769,11 @@ READ 0 32767
     <section toc="exclude" anchor="OP_OPEN_IMPLEMENTATION" title="IMPLEMENTATION">
 
       <t>
-        The OPEN operation contains support for EXCLUSIVE create.
+        The OPEN operation contains support for EXCLUSIVE4 create.
         The mechanism is similar to the support in NFS version 3 <xref
         target="RFC1813" />.  As in NFS version 3, this mechanism
         provides reliable exclusive creation.  Exclusive create is
-        invoked when the how parameter is EXCLUSIVE.  In this case,
+        invoked when the how parameter is EXCLUSIVE4.  In this case,
         the client provides a verifier that can reasonably be expected
         to be unique.  A combination of a client identifier, perhaps
         the client network address, and a unique number generated
@@ -1834,7 +1835,7 @@ READ 0 32767
       </t>
 
       <t>
-        Use of the GUARDED attribute does not provide exactly-once
+        Use of the GUARDED4 attribute does not provide exactly-once
         semantics.  In particular, if a reply is lost and the
         server does not detect the retransmission of the request,
         the operation can fail with NFS4ERR_EXIST, even though the
@@ -1843,7 +1844,7 @@ READ 0 32767
         an exclusive create but has asked to have the file truncated
         when the file is opened.  In the case of the client timing
         out and retransmitting the create request, the client can use
-        GUARDED to prevent against a sequence like: create, write,
+        GUARDED4 to prevent against a sequence like: create, write,
         create (retransmitted) from occurring.
       </t>
 
@@ -2716,10 +2717,10 @@ M        named by filename from the directory corresponding to the
     <section toc="exclude" anchor="OP_REMOVE_IMPLEMENTATION" title="IMPLEMENTATION">
 
       <t>
-        NFS versions 2 and 3 required a different operator RMDIR for
+        NFSv3 required a different operator RMDIR for
         directory removal and REMOVE for non-directory removal. This
         allowed clients to skip checking the file type when being
-        passed a non-directory delete system call (e.g., unlink()
+        passed a non-directory delete system call (e.g., unlink() <xref target="unlink" />
         in POSIX) to remove a directory, as well as the converse
         (e.g., a rmdir() on a non-directory) because they knew the
         server would check the file type.  NFS version 4 REMOVE can

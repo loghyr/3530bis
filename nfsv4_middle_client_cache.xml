@@ -1140,7 +1140,7 @@ if (modified) {
             With the write open delegation in place, it is possible that the
             file was truncated during the duration of the delegation.  For
             example, the truncation could have occurred as a result of an
-            OPEN UNCHECKED with a size attribute value of zero.  Therefore,
+            OPEN UNCHECKED4 with a size attribute value of zero.  Therefore,
             if a truncation of the file has occurred and this operation has
             not been propagated to the server, the truncation must occur
             before any modified data is written to the server.

@@ -860,7 +860,7 @@
         currently held lock for the current lock owner and does not
         precisely match a single such lock where the server 
         does not support this type of request, and thus does not 
-        implement POSIX locking semantics. See
+        implement POSIX locking semantics <xref target="fcntl" />. See
         <xref target="OP_LOCK_IMPLEMENTATION" />,
         <xref target="OP_LOCKT_IMPLEMENTATION" />, and
         <xref target="OP_LOCKU_IMPLEMENTATION" /> for a discussion of
