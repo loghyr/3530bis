@@ -1096,7 +1096,7 @@ GETFH
         state associated with the current open file and lock-owner.  In the
         case in which it has, the argument is just a stateid representing
         the set of locks associated with that open file and lock-owner,
-	      together with a lock_seqid value which MAY be any value and MUST
+	      together with a lock_seqid value that MAY be any value and MUST
 	      be ignored by the server.  In the case where no byte-range locking
 	      state has been established, or the client does not have the stateid
 	      available, the argument contains the
@@ -1737,7 +1737,10 @@ READ 0 32767
         done, even though multiple OPENs were completed.  When such
         an OPEN is done, checking of share reservations for the new
         OPEN proceeds normally, with no exception for the existing
-        OPEN held by the same owner.
+        OPEN held by the same owner. In this case, the stateid returned
+        as an "other" field that matches that of the previous open
+        while the "seqid" field is incremented to reflect the
+        change status due to the new open.
       </t>
 
       <t>

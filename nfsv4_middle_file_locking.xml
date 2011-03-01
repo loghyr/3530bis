@@ -6,21 +6,22 @@
     Integrating locking into the NFS protocol necessarily causes it
     to be stateful.  With the inclusion of share reservations the
     protocol becomes substantially more dependent on state than the
-    traditional combination of NFS and NLM <xref target="xnfs" />.  There are three
+    traditional combination of NFS and NLM (Network Lock Manager)
+    <xref target="xnfs" />.  There are three
     components to making this state manageable:
 
     <list style='symbols'>
       <t>
-        Clear division between client and server
+        clear division between client and server
       </t>
 
       <t>
-      Ability to reliably detect inconsistency in state between
-      client and server
+        ability to reliably detect inconsistency in state between
+        client and server
       </t>
 
       <t>
-      Simple and robust recovery mechanisms
+        simple and robust recovery mechanisms
       </t>
     </list>
   </t>
@@ -71,11 +72,7 @@
 
       <t>
         For each LOCK request, the client must identify itself to the
-        server.
-      </t>
-
-      <t>
-        This is done in such a way as to allow for correct lock
+        server.  This is done in such a way as to allow for correct lock
         identification and crash recovery.  A sequence of a SETCLIENTID
         operation followed by a SETCLIENTID_CONFIRM operation is
         required to establish the identification onto the server.
@@ -415,7 +412,7 @@
       </t>
 
     </section>
-    <section title="Use of the stateid and Locking">
+    <section title="Use of the Stateid and Locking">
 
       <t>
         All READ, WRITE and SETATTR operations contain a stateid.  For the
@@ -1423,8 +1420,9 @@
       It is a separate and independent mechanism from record locking.
       When a client opens a file, it issues an OPEN operation to the
       server specifying the type of access required (READ, WRITE, or
-      BOTH) and the type of access to deny others (deny NONE, READ,
-      WRITE, or BOTH).  If the OPEN fails the client will fail the
+      BOTH) and the type of access to deny others (OPEN4_SHARE_DENY_NONE,
+      OPEN4_SHARE_DENY_READ, OPEN4_SHARE_DENY_WRITE, or
+      OPEN4_SHARE_DENY_BOTH).  If the OPEN fails the client will fail the
       application's open request.
     </t>
 
@@ -1464,8 +1462,9 @@ else if ((request.access & file_state.deny)) ||
       client intends to use a stateid of all 0's or all 1's, it must
       still obtain the filehandle for the regular file with the OPEN
       operation so the appropriate share semantics can be applied.
-      For clients that do not have a deny mode built into their open
-      programming interfaces, deny equal to NONE should be used.
+      Clients that do not have a deny mode built into their programming
+      interfaces for opening a file should request a deny mode of
+      OPEN4_SHARE_DENY_NONE.  
     </t>
 
     <t>
@@ -1487,10 +1486,13 @@ else if ((request.access & file_state.deny)) ||
     <t>
       The LOOKUP operation will return a filehandle without establishing
       any lock state on the server.  Without a valid stateid, the server
-      will assume the client has the least access.  For example, a file
-      opened with deny READ/WRITE cannot be accessed using a filehandle
-      obtained through LOOKUP because it would not have a valid stateid
-      (i.e., using a stateid of all bits 0 or all bits 1).
+      will assume the client has the least access. For example, if
+      one client opened a file with OPEN4_SHARE_DENY_BOTH and another
+      client accesses the file via a filehandle obtained through LOOKUP,
+      the second client could only read the file using the special read
+      bypass stateid.  The second client could not WRITE the file at all
+      because it would not have a valid stateid from OPEN and the special
+      anonymous stateid would not be allowed access.
     </t>
 
     <section title="Close and Retention of State Information">
@@ -1583,7 +1585,11 @@ else if ((request.access & file_state.deny)) ||
       (i.e., a proper subset) than previously.  The OPEN_DOWNGRADE
       operation is used to make the necessary change and the client
       should use it to update the server so that share reservation
-      requests by other clients are handled properly.
+      requests by other clients are handled properly. The stateid
+      returned has the same "other" field as that passed to the server.
+      The "seqid" value in the returned stateid MUST be incremented,
+      even in situations in which there is no change to the access and
+      deny bits for the file.  
     </t>
 
   </section>

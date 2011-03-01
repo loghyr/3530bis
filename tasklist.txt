@@ -275,24 +275,6 @@ State: Accepted, Low
 Target:
 Note: And it appears 5661 is crisper in this regards.
 
-25) Problems in the Description of OPEN
-
-There are a number of problems with the description of OPEN that
-revolve around that share reservations are described as a separate
-feature.  The text in RFC3530 that we inherited talks about specifying
-owner and seqid if you have a share reservation, with the implication
-that you have a choice in the matter.
-
-I have fixed this as part of updating the locking ops to reflect
-v4.1 changes but we need this separate issue since the basic problems
-with open would apply to rfc3530bis.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-Note: Pull back
-
 26) Confusion about Unique_handles and Fileid Attribute
 
 Section 9.3.4 (as of draft-08) contains the following statement:
@@ -1140,5 +1122,24 @@ Owner: Tom
 State: Rejected
 Target:
 Note: Discuss at the BAT
+
+25) Problems in the Description of OPEN
+
+There are a number of problems with the description of OPEN that
+revolve around that share reservations are described as a separate
+feature.  The text in RFC3530 that we inherited talks about specifying
+owner and seqid if you have a share reservation, with the implication
+that you have a choice in the matter.
+
+I have fixed this as part of updating the locking ops to reflect
+v4.1 changes but we need this separate issue since the basic problems
+with open would apply to rfc3530bis.
+
+Action: Fixed
+Owner: Tom
+State: Accepted, Low
+Target: IETF 80
+Note: Pull back // It would have been really nice to "point" to what
+text to take.
 
 =====
