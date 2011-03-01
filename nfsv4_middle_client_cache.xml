@@ -116,7 +116,7 @@
       used to represent the delegation when performing operations that
       depend on the delegation.  This stateid is similar to those
       associated with locks and share reservations but differs in that the
-      stateid for a delegation is associated with a clientid and may be used
+      stateid for a delegation is associated with a client ID and may be used
       on behalf of all the open_owners for the given client.  A delegation
       is made to the client as a whole and not to any specific process or
       thread of control within it.

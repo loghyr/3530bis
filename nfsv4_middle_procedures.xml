@@ -1986,7 +1986,7 @@ READ 0 32767
 
       <t>
         A given client might generate many open_owner4 data structures
-        for a given clientid.  The client will periodically either
+        for a given client ID.  The client will periodically either
         dispose of its open_owner4s or stop using them for indefinite
         periods of time.  The latter situation is why the NFS version
         4 protocol does not have an explicit operation to exit an
@@ -2015,7 +2015,7 @@ READ 0 32767
         <xref target="ss:fl:open_conf" />
         for details.  The server can easily avoid
         this by noting whether it has disposed of one open_owner4 for
-        the given clientid.  If the server does not support delegation,
+        the given client ID.  If the server does not support delegation,
         it might simply maintain a single bit that notes whether any
         open_owner4 (for any client) has been disposed of.
       </t>
@@ -3276,7 +3276,7 @@ void;
 	stateid to do the SETATTR, the delegation can be recalled by the
 	server. This is because there is no way for the server to know that
 	the SETATTR is coming from the client which is holding the delegation,
-	unless it looks at the clientid to figure this out. It would be
+	unless it looks at the client ID to figure this out. It would be
 	better if the client sends any such SETATTR with the delegation
 	stateid so that the server can avoid recalling the delegation for
 	such requests.
@@ -3380,7 +3380,7 @@ void;
 
     </section>
   </section>
-  <section anchor="OP_SETCLIENTID" title="Operation 35: SETCLIENTID - Negotiate Clientid">
+  <section anchor="OP_SETCLIENTID" title="Operation 35: SETCLIENTID - Negotiate Client ID">
 
     <section toc="exclude" anchor="OP_SETCLIENTID_SYNOPSIS" title="SYNOPSIS">
 
@@ -3409,15 +3409,15 @@ client, callback, callback_ident -> clientid, setclientid_confirm
         callback, and callback_ident for subsequent requests that
         entail creating lock, share reservation, and delegation
         state on the server.  Upon successful completion the server
-        will return a shorthand clientid which, if confirmed via a
+        will return a shorthand client ID which, if confirmed via a
         separate step, will be used in subsequent file locking and
-        file open requests. Confirmation of the clientid must be done
-        via the SETCLIENTID_CONFIRM operation to return the clientid
+        file open requests. Confirmation of the client ID must be done
+        via the SETCLIENTID_CONFIRM operation to return the client ID
         and setclientid_confirm values, as verifiers, to the server.
         The reason why two verifiers are necessary is that it is
         possible to use SETCLIENTID and SETCLIENTID_CONFIRM to modify
         the callback and callback_ident information but not the
-        shorthand clientid.  In that event, the setclientid_confirm
+        shorthand client ID.  In that event, the setclientid_confirm
         value is effectively the only verifier.
       </t>
 
@@ -3456,7 +3456,7 @@ client, callback, callback_ident -> clientid, setclientid_confirm
           </t>
 
           <t hangText="c">
-            be the value of the clientid field returned in the
+            be the value of the client ID field returned in the
             SETCLIENTID4resok structure.
           </t>
 
@@ -3598,7 +3598,7 @@ client, callback, callback_ident -> clientid, setclientid_confirm
 
     </section>
   </section>
-  <section anchor="OP_SETCLIENTID_CONFIRM" title="Operation 36: SETCLIENTID_CONFIRM - Confirm Clientid">
+  <section anchor="OP_SETCLIENTID_CONFIRM" title="Operation 36: SETCLIENTID_CONFIRM - Confirm Client ID">
 
     <section toc="exclude" anchor="OP_SETCLIENTID_CONFIRM_SYNOPSIS" title="SYNOPSIS">
 
@@ -3624,7 +3624,7 @@ clientid, verifier -> -
       <t>
         This operation is used by the client to confirm the results
         from a previous call to SETCLIENTID.  The client provides
-        the server supplied (from a SETCLIENTID response) clientid.
+        the server supplied (from a SETCLIENTID response) client ID.
         The server responds with a simple status of success or failure.
       </t>
 
@@ -3795,8 +3795,8 @@ clientid, verifier -> -
         client will get NFS4ERR_STALE_CLIENTID back.  If so, the client
         should then start over, and send SETCLIENTID to reestablish
         an unconfirmed client record and get back an unconfirmed
-        clientid and setclientid_confirm verifier.  The client should
-        then send the SETCLIENTID_CONFIRM to confirm the clientid.
+        client ID and setclientid_confirm verifier.  The client should
+        then send the SETCLIENTID_CONFIRM to confirm the client ID.
       </t>
 
       <t>

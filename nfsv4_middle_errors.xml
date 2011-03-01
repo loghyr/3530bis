@@ -936,7 +936,7 @@
     <section title="NFS4ERR_STALE_CLIENTID (Error Code 10022)" 
              anchor="err_STALE_CLIENTID">
       <t>
-        A clientid not recognized by the server was used in a locking
+        A client ID not recognized by the server was used in a locking
         or SETCLIENTID_CONFIRM request.
       </t>
     </section>

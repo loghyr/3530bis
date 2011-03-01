@@ -522,27 +522,37 @@
       an appropriate context for the reader.
 
       <list style='hanging'>
+        <t hangText="Byte">
+          In this document, a byte is an octet, i.e., a datum exactly 8
+          bits in length.
+        </t>
         <t hangText="Client" anchor="client_def">
-          The "client" is the entity that accesses the NFS server's
-          resources.  The client may be an application which contains
+          The client is the entity that accesses the NFS server's
+          resources.  The client may be an application that contains
           the logic to access the NFS server directly.  The client
-          may also be the traditional operating system client remote
-          filesystem services for a set of applications.
+          may also be the traditional operating system client that
+          provides remote filesystem services for a set of applications.
         <vspace blankLines='1' />
-          In the case of file locking the client is the entity
-          that maintains a set of locks on behalf of one or more
-          applications.  This client is responsible for crash or
-          failure recovery for those locks it manages.
+          With reference to byte-range locking, the client is also the
+          entity that maintains a set of locks on behalf of one or more
+          applications.  This client is responsible for crash or failure
+          recovery for those locks it manages.
         <vspace blankLines='1' />
-
-          Note that multiple clients may share the same transport
-          and multiple clients may exist on the same network node.
+          Note that multiple clients may share the same transport and
+          connection and multiple clients may exist on the same network
+          node.
         </t>
 
-        <t hangText="Clientid">
+        <t hangText="Client ID">
           A 64-bit quantity used as a unique, short-hand reference to
           a client supplied Verifier and ID.  The server is responsible
-          for supplying the Clientid.
+          for supplying the Client ID.
+        </t>
+
+        <t hangText="File System">
+          The file system is the collection of objects on a
+          server that share the same fsid attribute
+          (see <xref target="attrdef_fsid"/>).
         </t>
 
         <t hangText="Lease">
@@ -552,10 +562,10 @@
           been extended.  The lock must be revoked if a conflicting
           lock has been granted after the lease interval.
         <vspace blankLines='1' />
-          All leases granted by a server have the same fixed interval.
-          Note that the fixed interval was chosen to alleviate the
-          expense a server would have in maintaining state about
-          variable length leases across server failures.
+          All leases granted by a server have the same fixed
+          interval.  Note that the fixed interval was chosen to
+          alleviate the expense a server would have in maintaining
+          state about variable length leases across server failures.
         </t>
 
         <t hangText="Lock">

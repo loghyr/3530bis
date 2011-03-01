@@ -138,7 +138,7 @@
       <t>
         The clientaddr4 structure is used as part of the SETCLIENTID
         operation to either specify the address of the client that is
-        using a clientid or as part of the callback registration.  The
+        using a client ID or as part of the callback registration.  The
         r_netid and r_addr fields are specified in <xref target="RFC1833" />, but they
         are underspecified in <xref target="RFC1833" /> as far as what they should look
         like for specific protocols.

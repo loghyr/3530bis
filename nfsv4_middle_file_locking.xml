@@ -233,13 +233,13 @@
         successfully completed, the client uses the shorthand client
         identifier, of type clientid4, instead of the longer and less
         compact nfs_client_id4 structure.  This shorthand client identifier
-        (a clientid) is assigned by the server and should be chosen so
-        that it will not conflict with a clientid previously assigned
+        (a client ID) is assigned by the server and should be chosen so
+        that it will not conflict with a client ID previously assigned
         by the server.  This applies across server restarts or reboots.
-        When a clientid is presented to a server and that clientid is not
+        When a client ID is presented to a server and that client ID is not
         recognized, as would happen after a server reboot, the server
         will reject the request with the error NFS4ERR_STALE_CLIENTID.
-        When this happens, the client must obtain a new clientid by
+        When this happens, the client must obtain a new client ID by
         use of the SETCLIENTID operation and then proceed to any other
         necessary recovery for the server reboot case (See
         <xref target="ss:fl:sfr" />).
@@ -248,8 +248,8 @@
       <t>
         The client must also employ the SETCLIENTID operation when it
         receives a NFS4ERR_STALE_STATEID error using a stateid derived
-        from its current clientid, since this also indicates a server
-        reboot which has invalidated the existing clientid (see 
+        from its current client ID, since this also indicates a server
+        reboot which has invalidated the existing client ID (see 
         <xref target="ss:fl:losd" /> for details).
       </t>
 
@@ -259,21 +259,21 @@
       </t>
 
     </section>
-    <section title="Server Release of Clientid">
+    <section title="Server Release of Client ID">
 
       <t>
         If the server determines that the client holds no associated state
-        for its clientid, the server may choose to release the clientid.
+        for its client ID, the server may choose to release the client ID.
         The server may make this choice for an inactive client so that
         resources are not consumed by those intermittently active clients.
         If the client contacts the server after this release, the server
         must ensure the client receives the appropriate error so that it
         will use the SETCLIENTID/SETCLIENTID_CONFIRM sequence to establish
         a new identity.  It should be clear that the server must be very
-        hesitant to release a clientid since the resulting work on the
+        hesitant to release a client ID since the resulting work on the
         client to recover from such an event will be the same burden
         as if the server had failed and restarted.  Typically a server
-        would not release a clientid unless there had been no activity
+        would not release a client ID unless there had been no activity
         from that client for many minutes.
       </t>
 
@@ -297,7 +297,7 @@
         In that event, when the server gets a SETCLIENTID for a client id
         that currently has no state, or it has state, but the lease has
         expired, rather than returning NFS4ERR_CLID_INUSE, the server MUST
-        allow the SETCLIENTID, and confirm the new clientid if followed
+        allow the SETCLIENTID, and confirm the new client ID if followed
         by the appropriate SETCLIENTID_CONFIRM.
       </t>
 
@@ -306,13 +306,13 @@
 
       <t>
         When requesting a lock, the client must present to the server the
-        clientid and an identifier for the owner of the requested lock.
+        client ID and an identifier for the owner of the requested lock.
         These two fields are referred to as the lock_owner and the
         definition of those fields are:
 
         <list style='symbols'>
           <t>
-            A clientid returned by the server as part of the client's use
+            A client ID returned by the server as part of the client's use
             of the SETCLIENTID operation.
           </t>
 
@@ -845,14 +845,14 @@
 
     <t>
       The following events cause implicit renewal of all of the leases
-      for a given client (i.e., all those sharing a given clientid).
+      for a given client (i.e., all those sharing a given client ID).
       Each of these is a positive indication that the client is still
       active and that the associated state held at the server, for the
       client, is still valid.
 
       <list style='symbols'>
         <t>
-          An OPEN with a valid clientid.
+          An OPEN with a valid client ID.
         </t>
 
         <t>
@@ -870,7 +870,7 @@
           never renews a lease.
         <vspace blankLines='1' />
           If the server has rebooted, the stateids (NFS4ERR_STALE_STATEID
-          error) or the clientid (NFS4ERR_STALE_CLIENTID error) will
+          error) or the client ID (NFS4ERR_STALE_CLIENTID error) will
           not be valid hence preventing spurious renewals.
         </t>
       </list>
@@ -920,9 +920,9 @@
         To minimize client delay upon restart, lock requests are associated
         with an instance of the client by a client supplied verifier.
         This verifier is part of the initial SETCLIENTID call made by
-        the client.  The server returns a clientid as a result of the
+        the client.  The server returns a client ID as a result of the
         SETCLIENTID operation.  The client then confirms the use of the
-        clientid with SETCLIENTID_CONFIRM.  The clientid in combination
+        client ID with SETCLIENTID_CONFIRM.  The client ID in combination
         with an opaque owner field is then used by the client to identify
         the lock owner for OPEN.  This chain of associations is then used
         to identify all locks for a particular client.
@@ -935,7 +935,7 @@
         they do not match.  This signifies the client's new instantiation
         and subsequent loss of locking state.  As a result, the server
         is free to release all locks held which are associated with the
-        old clientid which was derived from the old verifier.
+        old client ID which was derived from the old verifier.
       </t>
 
       <t>
@@ -964,8 +964,8 @@
         locking state) has occurred, when it receives one of two errors.
         The NFS4ERR_STALE_STATEID error indicates a stateid invalidated by
         a reboot or restart.  The NFS4ERR_STALE_CLIENTID error indicates
-        a clientid invalidated by reboot or restart.  When either of
-        these are received, the client must establish a new clientid
+        a client ID invalidated by reboot or restart.  When either of
+        these are received, the client must establish a new client ID
         (see <xref target="ss:fl:client_id" />) and re-establish the locking state
         as discussed below.
       </t>
@@ -1045,7 +1045,7 @@
 
       <t>
         A server may, upon restart, establish a new value for the
-        lease period.  Therefore, clients should, once a new clientid is
+        lease period.  Therefore, clients should, once a new client ID is
         established, refetch the lease_time attribute and use it as the
         basis for lease renewal for the lease associated with that server.
         However, the server must establish, for this restart event, a
@@ -1654,7 +1654,7 @@ else if ((request.access & file_state.deny)) ||
       alternate server (e.g., in response to server unresponsiveness) in
       the context of file system replication, the appropriate handling of
       state shared between the client and server (i.e., locks, leases,
-      stateids, and clientids) is as described below.  The handling
+      stateids, and client IDs) is as described below.  The handling
       differs between migration and replication.  For related discussion
       of file server state and recover of such see the sections under
       <xref target="ss:fl:crash_recov" />.
@@ -1683,7 +1683,7 @@ else if ((request.access & file_state.deny)) ||
         servers are successful in transferring all state, the client
         will continue to use stateids assigned by the original server.
         Therefore the new server must recognize these stateids as valid.
-        This holds true for the clientid as well.  Since responsibility
+        This holds true for the client ID as well.  Since responsibility
         for an entire filesystem is transferred with a migration event,
         there is no possibility that conflicts will arise on the new
         server as a result of the transfer of locks.
@@ -1729,7 +1729,7 @@ else if ((request.access & file_state.deny)) ||
       <t>
         Since client switch-over in the case of replication is not
         under server control, the handling of state is different.
-        In this case, leases, stateids and clientids do not have validity
+        In this case, leases, stateids and client IDs do not have validity
         across a transition from one server to another.  The client must
         re-establish its locks on the new server.  This can be compared
         to the re-establishment of locks by means of reclaim-type

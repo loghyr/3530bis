@@ -339,7 +339,7 @@ column descriptions:
       <t>
         Except as noted elsewhere in this section, the callback RPC (described
         later) MUST mutually authenticate the NFS server to the principal
-        that acquired the clientid (also described later), using the security
+        that acquired the client ID (also described later), using the security
         flavor the original SETCLIENTID operation used.
       </t>
 
