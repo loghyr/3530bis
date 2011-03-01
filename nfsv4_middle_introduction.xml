@@ -49,7 +49,7 @@
 	</t>
 	<t>
 	  Some clarification on a client re-establishing callback
-	  information to the new server if state has been migrated
+	  information to the new server if state has been migrated.
 	</t>
       </list>
     </t>
@@ -345,81 +345,87 @@
       </section>
 
       <section anchor="intro_attrs" title="Attribute Types">
-
         <t>
-          The NFS version 4 protocol introduces three classes
-          of filesystem or file attributes.  Like the additional
-          filehandle type, the classification of file attributes
-          has been done to ease server implementations along with
-          extending the overall functionality of the NFS protocol.
-          This attribute model is structured to be extensible such
-          that new attributes can be introduced in minor revisions
-          of the protocol without requiring significant rework.
+	  The NFSv4 protocol has a rich and extensible
+	  file object attribute structure, which is divided
+	  into REQUIRED, RECOMMENDED, and named attributes
+	  (see <xref target="file_attributes"/>).
         </t>
-
         <t>
-          The three classifications are: mandatory, recommended and
-          named attributes.  This is a significant departure from
-          the previous attribute model used in the NFS protocol.
-          Previously, the attributes for the filesystem and file
-          objects were a fixed set of mainly UNIX attributes.  If the
-          server or client did not support a particular attribute,
-          it would have to simulate the attribute the best it could.
+	  Several (but not all) of the REQUIRED attributes
+	  are derived from the attributes of NFSv3 (see
+	  definition of the fattr3 data type in <xref
+	  target="RFC1813"/>). An example of a REQUIRED
+	  attribute is the file object's type (<xref
+	  target="attrdef_type"/>) so that regular files
+	  can be distinguished from directories (also known
+	  as folders in some operating environments) and
+	  other types of objects. REQUIRED attributes are
+	  discussed in <xref
+	  target="mandatory_attributes_intro"/>.
         </t>
-
         <t>
-          Mandatory attributes are the minimal set of file or
-          filesystem attributes that must be provided by the
-          server and must be properly represented by the server.
-          Recommended attributes represent different filesystem types
-          and operating environments.  The recommended attributes
-          will allow for better interoperability and the inclusion of
-          more operating environments.  The mandatory and recommended
-          attribute sets are traditional file or filesystem attributes.
-          The third type of attribute is the named attribute.  A named
-          attribute is an opaque byte stream that is associated
-          with a directory or file and referred to by a string name.
-          Named attributes are meant to be used by client applications
-          as a method to associate application specific data with a
-          regular file or directory.
+	  An example of three RECOMMENDED attributes are
+	  acl, sacl, and dacl.  These attributes define an
+	  Access Control List (ACL) on a file object
+	  ((<xref target="acl"/>).  An ACL provides
+	  directory and file access control beyond the
+	  model used in NFSv3.   The ACL definition allows
+	  for specification of specific sets of permissions
+	  for individual users and groups.  In addition,
+	  ACL inheritance allows propagation of access
+	  permissions and restriction down a directory tree
+	  as file system objects are created.  RECOMMENDED
+	  attributes are discussed in <xref
+	  target="recommended_attributes_intro"/>.
         </t>
-
         <t>
-          One significant addition to the recommended set of file
-          attributes is the Access Control List (ACL) attribute.
-          This attribute provides for directory and file access
-          control beyond the model used in previous versions of the
-          NFS protocol.  The ACL definition allows for specification
-          of user and group level access control.
+          A
+          named attribute is an opaque byte stream that is associated 
+          with a directory or file and referred to by a string name.  
+          Named attributes are meant to be used by client applications 
+          as a method to associate application-specific data with a 
+          regular file or directory.  NFSv4.1 modifies named attributes
+          relative to NFSv4.0 by tightening the allowed operations in
+          order to prevent the development of non-interoperable
+          implementations.  Named attributes are discussed
+	  in <xref target="named_attributes_intro" />.
         </t>
       </section>
-
-      <section anchor="intro_ram" 
-               title="Filesystem Replication and Migration">
-
+      <section anchor="intro_ms_namespace" title="Multi-server Namespace">
         <t>
-          With the use of a special file attribute, the ability
-          to inform the client of filesystem locations on another
-          server is enabled. The filesystem locations attribute
-          provides a method for the client to probe the server about
-          the location of a filesystem.  In the event that a 
-          fileystems is not present on server the client will 
-          receive an error when attempting to operate on the 
-          filesystem and it can then query as to
-          the correct filesystem location.  Thus is allowed 
-          construction of multi-server namespaces..  
+          NFSv4 contains a number of features to allow
+          implementation of namespaces that cross server boundaries
+          and that allow and facilitate a non-disruptive transfer of 
+          support for individual file systems between servers.  They 
+          are all based upon attributes that allow one file system to
+          specify alternate or new locations for that file system.   
         </t>
         <t>
-          These features also allow file system replication and
-          migration.  In the event of a migration
-          of a filesystem, the client will receive an error when
-          operating on the filesystem and it can then query 
-          location attribute to determine the new file system location.  
-          Similar steps are used for
-          replication, the client is able to query the server for the
-          multiple available locations of a particular filesystem.
-          From this information, the client can use its own policies
-          to access the appropriate filesystem location.
+          These attributes may be used together with the concept
+          of absent file systems, which provide specifications
+          for additional locations but no actual file system 
+          content.  This allows a number of important facilities:
+          <list style="symbols">
+            <t>
+              Location attributes may be used with absent file systems
+              to implement referrals whereby one server may direct the
+              client to a file system provided by another server.  This
+              allows extensive multi-server namespaces to be constructed.
+            </t>
+            <t>
+              Location attributes may be provided for present file systems
+              to provide the locations of alternate file system instances
+              or replicas to be used in the event that the current 
+              file system instance becomes unavailable.
+            </t>
+            <t>
+              Location attributes may be provided when a previously
+              present file system becomes absent.  This allows 
+              non-disruptive migration of file systems to alternate
+              servers.
+            </t>
+          </list>
         </t>
       </section>
     </section>

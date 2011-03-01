@@ -16,10 +16,10 @@
     <t>
       Historically, NFS version 2 and version 3 servers have resided on
       port 2049.  The registered port 2049 <xref target="RFC3232" /> for the NFS protocol
-      should be the default configuration.  Using the registered port
+      SHOULD be the default configuration.  Using the registered port
       for NFS services means the NFS client will not need to use the RPC
-      binding protocols as described in <xref target="RFC1833" />; this will allow NFS to
-      transit firewalls.
+      binding protocols as described in <xref target="RFC1833" />; this
+      will allow NFS to transit firewalls.
     </t>
 
     <t>
@@ -43,9 +43,9 @@
 
     <t>
       As noted in <xref target="sec:security" />,
-      the authentication
-      model for NFS version 4 has moved from machine-based to
-      principal-based.  However, this modification of the authentication model does not
+      the authentication model for NFS version 4 has moved from
+      machine-based to principal-based.  However, this modification
+      of the authentication model does not
       imply a technical requirement to move the TCP connection management
       model from whole machine-based to one based on a per user model.
       In particular, NFS over TCP client implementations have traditionally
@@ -117,9 +117,10 @@
 
     <t>
       Traditional RPC implementations have included AUTH_NONE, AUTH_SYS,
-      AUTH_DH, and AUTH_KRB4 as security flavors.  With <xref target="RFC2203" /> an
-      additional security flavor of RPCSEC_GSS has been introduced which
-      uses the functionality of GSS-API <xref target="RFC2743" />.  This allows for the
+      AUTH_DH, and AUTH_KRB4 as security flavors.  With
+      <xref target="RFC2203" /> an additional security flavor of RPCSEC_GSS
+      has been introduced which uses the functionality of GSS-API
+      <xref target="RFC2743" />.  This allows for the
       use of various security mechanisms by the RPC layer without the
       additional implementation overhead of adding RPC security flavors.
       For NFS version 4, the RPCSEC_GSS security flavor MUST be used to
@@ -295,7 +296,7 @@ column descriptions:
   </t>
 
   <t>
-    The security negotiation between client and server must be done
+    The security negotiation between client and server SHOULD be done
     with a secure channel to eliminate the possibility of a third party
     intercepting the negotiation sequence and forcing the client and
     server to choose a lower level of security than required or desired.
@@ -319,7 +320,7 @@ column descriptions:
 
       <t>
         Based on the assumption that each NFS version 4 client and server
-        must support a minimum set of security (i.e., LIPKEY, SPKM-3, and
+        MUST support a minimum set of security (i.e., LIPKEY, SPKM-3, and
         Kerberos-V5 all under RPCSEC_GSS), the NFS client will start its
         communication with the server with one of the minimal security triples.
         During communication with the server, the client may receive an NFS
