@@ -3256,9 +3256,21 @@ void;
         specified as the target of WRITE, for the purpose of checking
         conflicts with record locks, for those cases in which a
         server is implementing mandatory record locking behavior.
-        A valid stateid should always be specified.  When the file
+        A valid stateid SHOULD always be specified.  When the file
         size attribute is not set, the special stateid consisting of
-        all bits zero should be passed.
+        all bits zero MAY be passed.
+      </t>
+
+      <t>
+        If a client holding a write delegation does a SETATTR for that file
+	for something other than set size and chooses to use a special
+	stateid to do the SETATTR, the delegation can be recalled by the
+	server. This is because there is no way for the server to know that
+	the SETATTR is coming from the client which is holding the delegation,
+	unless it looks at the clientid to figure this out. It would be
+	better if the client sends any such SETATTR with the delegation
+	stateid so that the server can avoid recalling the delegation for
+	such requests.
       </t>
 
       <t>

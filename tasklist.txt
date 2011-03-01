@@ -247,25 +247,6 @@ State: Accepted, Medium
 Target:
 Note: Summarize the issue.
 
-27) Setattr for a Write Delegated File Should be Done with the
-Delegation Stateid
-
-If a client holding a write delegation does a setattr for that file
-for something other than set size and chooses to use a special
-stateid to do the setattr, the delegation can be recalled by the
-server. This is because there is no way for the server to know that
-the setattr is coming from the client which is holding the delegation,
-unless it looks at the clientid to figure this out. It would be
-better if the client sends any such setattrs with the delegation
-stateid so that the server can avoid recalling the delegation for
-such requests.
-
-Action:
-Owner:
-State: Accepted, medium
-Target:
-Note: Group with stateid issues - backport from 5661?
-
 35) OPEN_DOWNGRADE and posix byte range
 
 Trond started this discussion here:
@@ -1139,5 +1120,25 @@ Action: Text changes
 Owner: Tom
 State: Finished
 Target: IETF 80
+
+27) Setattr for a Write Delegated File Should be Done with the
+Delegation Stateid
+
+If a client holding a write delegation does a setattr for that file
+for something other than set size and chooses to use a special
+stateid to do the setattr, the delegation can be recalled by the
+server. This is because there is no way for the server to know that
+the setattr is coming from the client which is holding the delegation,
+unless it looks at the clientid to figure this out. It would be
+better if the client sends any such setattrs with the delegation
+stateid so that the server can avoid recalling the delegation for
+such requests.
+
+Action: Accept text
+Owner: Tom
+State: Finished
+Target: IETF 80
+Note: Group with stateid issues - backport from 5661? No.
+5661: Yes.
 
 =====
