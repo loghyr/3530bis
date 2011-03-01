@@ -535,14 +535,14 @@
       <t>
         When clients cache data, the file data needs to be organized
         according to the filesystem object to which the data belongs.  For
-        NFS version 3 clients, the typical practice has been to assume for
+        NFSv3 clients, the typical practice has been to assume for
         the purpose of caching that distinct filehandles represent distinct
         filesystem objects.  The client then has the choice to organize and
         maintain the data cache on this basis.
       </t>
 
       <t>
-        In the NFS version 4 protocol, there is now the possibility to
+        In the NFSv4 protocol, there is now the possibility to
         have significant deviations from a "one filehandle per object"
         model because a filehandle may be constructed on the basis of the
         object's pathname.  Therefore, clients need a reliable method to
@@ -554,9 +554,9 @@
       </t>
 
       <t>
-        By providing a method to differentiate filehandles, the NFS version 4
+        By providing a method to differentiate filehandles, the NFSv4
         protocol alleviates a potential functional regression in comparison
-        with the NFS version 3 protocol.  Without this method, caching
+        with the NFSv3 protocol.  Without this method, caching
         inconsistencies within the same client could occur and this has not
         been present in previous versions of the NFS protocol.  Note that it
         is possible to have such inconsistencies with applications executing
@@ -564,8 +564,8 @@
       </t>
 
       <t>
-        For the purposes of data caching, the following steps allow an NFS
-        version 4 client to determine whether two distinct filehandles denote
+        For the purposes of data caching, the following steps allow an NFSv4
+        client to determine whether two distinct filehandles denote
         the same server side object:
 
         <list style='symbols'>
@@ -586,7 +586,10 @@
             fileid attribute for both of the handles, then it cannot be
             determined whether the two objects are the same.  Therefore,
             operations which depend on that knowledge (e.g., client side data
-            caching) cannot be done reliably.
+            caching) cannot be done reliably. Note that if GETATTR does not
+            return the fileid attribute for both filehandles, it will return
+            it for neither of the filehandles, since the fsid for both
+            filehandles is the same.
           </t>
 
           <t>

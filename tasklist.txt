@@ -263,35 +263,6 @@ Item #9...
 Low:
 =====
 
-26) Confusion about Unique_handles and Fileid Attribute
-
-Section 9.3.4 (as of draft-08) contains the following statement:
-
- If GETATTR directed to the two filehandles does not return the
- fileid attribute for both of the handles, then it cannot be
- determined whether the two objects are the same. Therefore,
- operations which depend on that knowledge (e.g. client side data
- caching) cannot be done reliably.
-
-As written, this has led some to conclude that we might have two
-handles such that one but not the other returns the fileid attribute,
-and that therefore the unique_handles (or rather non-unique-handles)
-is a total and irretrievable mess.
-
-Without deciding the issue about unique handles, it should be made
-clear that this specific issue does not bear on its wellfoundedness.
-Given that the two handles in this case must be from the same fsid
-(different fsid's having already been excluded, they must both
-support or not support fileid uniformly and this should be made
-clear.  It still may that non-unique handles are indeed a mess, but
-not because of this specific issue.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-Notes: Addressed in 4.1?
-
 =====
 Ongoing, no need to close:
 =====
@@ -1148,11 +1119,40 @@ section, noting that "lock_owner" is used to refer to both open_owner4
 and lock_owner4s? Same goes for "lock" referring to an open share as
 well as a byte range lock.
 
-Action:
-Owner:
-State: Accepted, Low
-Target:
+Action: Add a warning, also change record -> byte-range
+Owner: Tom
+State: Finished
+Target: IETF80
 Note: And it appears 5661 is crisper in this regards.
+
+26) Confusion about Unique_handles and Fileid Attribute
+
+Section 9.3.4 (as of draft-08) contains the following statement:
+
+ If GETATTR directed to the two filehandles does not return the
+ fileid attribute for both of the handles, then it cannot be
+ determined whether the two objects are the same. Therefore,
+ operations which depend on that knowledge (e.g. client side data
+ caching) cannot be done reliably.
+
+As written, this has led some to conclude that we might have two
+handles such that one but not the other returns the fileid attribute,
+and that therefore the unique_handles (or rather non-unique-handles)
+is a total and irretrievable mess.
+
+Without deciding the issue about unique handles, it should be made
+clear that this specific issue does not bear on its wellfoundedness.
+Given that the two handles in this case must be from the same fsid
+(different fsid's having already been excluded, they must both
+support or not support fileid uniformly and this should be made
+clear.  It still may that non-unique handles are indeed a mess, but
+not because of this specific issue.
+
+Action: Pulled from 4.1
+Owner: Tom
+State: Finished
+Target: IETF 80
+Notes: Addressed in 4.1?
 
 
 =====
