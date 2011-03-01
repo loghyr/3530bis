@@ -223,7 +223,7 @@
 
       <t>
         In the event the client reboots or restarts, the failure to renew
-        leases will result in the revocation of record locks and share
+        leases will result in the revocation of byte-range locks and share
         reservations.  Delegations, however, may be treated a bit
         differently.
       </t>
@@ -265,7 +265,7 @@
       <t>
         When the server reboots or restarts, delegations are reclaimed (using
         the OPEN operation with CLAIM_PREVIOUS) in a similar fashion to
-        record locks and share reservations.  However, there is a slight
+        byte-range locks and share reservations.  However, there is a slight
         semantic difference.  In the normal case if the server decides that a
         delegation should not be granted, it performs the requested action
         (e.g., OPEN) without granting any delegation.  For reclaim, the
@@ -347,7 +347,7 @@
     </t>
 
     <t>
-      Share reservations and record locks are the facilities the NFS
+      Share reservations and byte-range locks are the facilities the NFS
       version 4 protocol provides to allow applications to coordinate
       access by providing mutual exclusion facilities.  The NFS version
       4 protocol's data caching must be implemented such that it does
@@ -488,7 +488,7 @@
 
       <t>
         A client implementation may choose to accommodate applications which
-        use record locking in non-standard ways (e.g., using a record lock as
+        use byte-range locking in non-standard ways (e.g., using a byte-range lock as
         a global semaphore) by flushing to the server more data upon a LOCKU
         than is covered by the locked range.  This may include modified data
         within files other than the one for which the unlocks are being done.
@@ -503,8 +503,8 @@
         an area that is not locked and might be locked by another client.
         Client implementations can avoid this problem by dividing files
         with modified data into those for which all modifications are done
-        to areas covered by an appropriate record lock and those for which
-        there are modifications not covered by a record lock.  Any writes
+        to areas covered by an appropriate byte-range lock and those for which
+        there are modifications not covered by a byte-range lock.  Any writes
         done for the former class of files must not include areas not locked
         and thus not modified on the client.
       </t>
@@ -1211,7 +1211,7 @@ if (modified) {
               <t>
                 The client has issued a RENEW operation and the server has
                 returned an NFS4ERR_CB_PATH_DOWN error.  The server MUST renew
-                the lease for any record locks and share reservations the
+                the lease for any byte-range locks and share reservations the
                 client has that the server has known about (as opposed to
                 those locks and share reservations the client has established
                 but not yet sent to the server, due to the delegation).
@@ -1567,7 +1567,7 @@ if (modified) {
     <t>
       Moreover, if mandatory locking is enabled on the file, then we have a
       different problem.  When clients A and B issue the STORE instructions,
-      the resulting page faults require a record lock on the entire page.
+      the resulting page faults require a byte-range lock on the entire page.
       Each client then tries to extend their locked range to the entire
       page, which results in a deadlock.
     </t>
@@ -1579,7 +1579,7 @@ if (modified) {
 
     <t>
       If a client is locking the entire memory mapped file, there is no
-      problem with advisory or mandatory record locking, at least until
+      problem with advisory or mandatory byte-range locking, at least until
       the client unlocks a region in the middle of the file.
     </t>
 
@@ -1589,11 +1589,11 @@ if (modified) {
       <list style='symbols'>
         <t>
           Clients and servers MAY deny memory mapping a file they know there
-          are record locks for.
+          are byte-range locks for.
         </t>
 
         <t>
-          Clients and servers MAY deny a record lock on a file they know is
+          Clients and servers MAY deny a byte-range lock on a file they know is
           memory mapped.
         </t>
 

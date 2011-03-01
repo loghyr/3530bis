@@ -263,18 +263,6 @@ Item #9...
 Low:
 =====
 
-3) There are places where "lock_owner" is used in sec. 8.n.n and I
-found it confusing. Maybe a statement near the beginning of that
-section, noting that "lock_owner" is used to refer to both open_owner4
-and lock_owner4s? Same goes for "lock" referring to an open share as
-well as a byte range lock.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-Note: And it appears 5661 is crisper in this regards.
-
 26) Confusion about Unique_handles and Fileid Attribute
 
 Section 9.3.4 (as of draft-08) contains the following statement:
@@ -1153,5 +1141,18 @@ Owner:
 State: Reject
 Target:
 Note: check 5661
+
+3) There are places where "lock_owner" is used in sec. 8.n.n and I
+found it confusing. Maybe a statement near the beginning of that
+section, noting that "lock_owner" is used to refer to both open_owner4
+and lock_owner4s? Same goes for "lock" referring to an open share as
+well as a byte range lock.
+
+Action:
+Owner:
+State: Accepted, Low
+Target:
+Note: And it appears 5661 is crisper in this regards.
+
 
 =====

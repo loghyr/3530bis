@@ -50,16 +50,16 @@
     locking to full mandatory locking.
   </t>
 
-  <section title="Locking">
-
+  <section title="Opens and Byte-Range Locks" >
     <t>
-      It is assumed that manipulating a lock is rare when compared
-      to READ and WRITE operations.  It is also assumed that crashes
-      and network partitions are relatively rare.  Therefore it is
-      important that the READ and WRITE operations have a lightweight
-      mechanism to indicate if they possess a held lock.  A lock request
-      contains the heavyweight information required to establish a lock
-      and uniquely define the lock owner.
+      It is assumed that manipulating a byte-range lock is rare when
+      compared to READ and WRITE operations.  It is also assumed that
+      server restarts and network
+      partitions are relatively rare.  Therefore it is important that the
+      READ and WRITE operations have a lightweight mechanism to indicate if
+      they possess a held lock.  A byte-range lock request contains the
+      heavyweight information required to establish a lock and uniquely
+      define the owner of the lock.
     </t>
 
     <t>
@@ -86,6 +86,26 @@
         all delegation state associated with same client with the same
         identity.  For discussion of delegation state recovery, see
         <xref target="ss:cc:deleg_recovery" />.
+      </t>
+
+      <t>
+        Owners of opens and owners of byte-range locks are separate
+        entities and remain separate even if the same opaque arrays
+        are used to designate owners of each.  The protocol distinguishes
+        between open-owners (represented by open_owner4 structures)
+        and lock-owners (represented by lock_owner4 structures).
+      </t>
+      <t>
+        Each open is associated with a specific open-owner while each
+        byte-range lock is associated with a lock-owner and an
+        open-owner, the latter being the open-owner associated with the
+        open file under which the LOCK operation was done.
+      </t>
+      <t>
+				Unlike the text in NFSv4.1 <xref target="RFC5661" />, this
+        text treats "lock_owner" as meaning both a open_owner4 and
+				a lock_owner4. Also, a "lock" can refer to both a byte-range
+				and share lock.
       </t>
 
       <t>
@@ -173,7 +193,7 @@
             For a user level NFS version 4 client, it should contain
             additional information to distinguish the client from other
             user level clients running on the same host, such as an universally
-	    unique identifier (UUID).
+	          unique identifier (UUID).
           </t>
 
           <t>
@@ -299,7 +319,7 @@
       </t>
 
     </section>
-    <section anchor="ss:fl:losd" title="lock_owner and stateid Definition">
+    <section anchor="ss:fl:losd" title="lock_owner and Stateid Definition">
 
       <t>
         When requesting a lock, the client must present to the server the
@@ -420,7 +440,10 @@
         size attribute of a file are treated as if they are writing the
         area between the old and new size (i.e., the range truncated or
         added to the file by means of the SETATTR), even where SETATTR
-        is not explicitly mentioned in the text.
+        is not explicitly mentioned in the text. The stateid passed to one of these operations must
+        be one that represents an open, a set of byte-range locks, or a
+        delegation, or it may be a special stateid representing anonymous
+        access or the special bypass stateid.
       </t>
 
       <t>
@@ -428,12 +451,12 @@
         it has established a lock or share reservation on the server (any
         OPEN constitutes a share reservation) the stateid (previously
         returned by the server) must be used to indicate what locks,
-        including both record locks and share reservations, are held by
+        including both byte-range locks and share reservations, are held by
         the lockowner.  If no state is established by the client, either
-        record lock or share reservation, a stateid of all bits 0 is used.
+        byte-range lock or share reservation, a stateid of all bits 0 is used.
         Regardless whether a stateid of all bits 0, or a stateid returned
         by the server is used, if there is a conflicting share reservation
-        or mandatory record lock held on the file, the server MUST refuse
+        or mandatory byte-range lock held on the file, the server MUST refuse
         to service the READ or WRITE operation.
       </t>
 
@@ -441,15 +464,15 @@
         Share reservations are established by OPEN operations and by
         their nature are mandatory in that when the OPEN denies READ
         or WRITE operations, that denial results in such operations
-        being rejected with error NFS4ERR_LOCKED.  Record locks may be
+        being rejected with error NFS4ERR_LOCKED.  Byte-range locks may be
         implemented by the server as either mandatory or advisory, or
         the choice of mandatory or advisory behavior may be determined by
         the server on the basis of the file being accessed (for example,
         some UNIX-based servers support a "mandatory lock bit" on the
-        mode attribute such that if set, record locks are required on the
-        file before I/O is possible).  When record locks are advisory,
+        mode attribute such that if set, byte-range locks are required on the
+        file before I/O is possible).  When byte-range locks are advisory,
         they only prevent the granting of conflicting lock requests and
-        have no effect on READs or WRITEs.  Mandatory record locks,
+        have no effect on READs or WRITEs.  Mandatory byte-range locks,
         however, prevent conflicting I/O operations.  When they are
         attempted, they are rejected with NFS4ERR_LOCKED.  When the
         client gets NFS4ERR_LOCKED on a file it knows it has the proper
@@ -463,7 +486,7 @@
         With NFS version 3, there was no notion of a stateid so there was
         no way to tell if the application process of the client sending
         the READ or WRITE operation had also acquired the appropriate
-        record lock on the file.  Thus there was no way to implement
+        byte-range lock on the file.  Thus there was no way to implement
         mandatory locking.  With the stateid construct, this barrier has
         been removed.
       </t>
@@ -471,11 +494,11 @@
       <t>
         Note that for UNIX environments that support mandatory file
         locking, the distinction between advisory and mandatory locking is
-        subtle.  In fact, advisory and mandatory record locks are exactly
+        subtle.  In fact, advisory and mandatory byte-range locks are exactly
         the same in so far as the APIs and requirements on implementation.
         If the mandatory lock attribute is set on the file, the server
         checks to see if the lockowner has an appropriate shared (read)
-        or exclusive (write) record lock on the region it wishes to read
+        or exclusive (write) byte-range lock on the region it wishes to read
         or write to.  If there is no appropriate lock, the server checks
         if there is a conflicting lock (which can be done by attempting
         to acquire the conflicting lock on the behalf of the lockowner,
@@ -484,13 +507,13 @@
       </t>
 
       <t>
-        For Windows environments, there are no advisory record locks,
-        so the server always checks for record locks during I/O requests.
+        For Windows environments, there are no advisory byte-range locks,
+        so the server always checks for byte-range locks during I/O requests.
       </t>
 
       <t>
         Thus, the NFS version 4 LOCK operation does not need to distinguish
-        between advisory and mandatory record locks.  It is the NFS
+        between advisory and mandatory byte-range locks.  It is the NFS
         version 4 server's processing of the READ and WRITE operations
         that introduces the distinction.
       </t>
@@ -1220,13 +1243,13 @@
             a boolean that indicates if the client's lease expired or
             if there was administrative intervention (see
             <xref target="ss:fl:srl" />)
-            to revoke a record lock, share
+            to revoke a byte-range lock, share
             reservation, or delegation
           </t>
 
           <t>
             a timestamp that is updated the first time after a server boot
-            or reboot the client acquires record locking, share reservation,
+            or reboot the client acquires byte-range locking, share reservation,
             or delegation state on the server.  The timestamp need not be
             updated on subsequent lock requests until the server reboots.
           </t>
@@ -1257,13 +1280,13 @@
       <t>
         Regardless of the level and approach to record keeping, the server
         MUST implement one of the following strategies (which apply to
-        reclaims of share reservations, record locks, and delegations):
+        reclaims of share reservations, byte-range locks, and delegations):
 
         <list style='numbers'>
           <t>
             Reject all reclaims with NFS4ERR_NO_GRACE.  This is
             superharsh, but necessary if the server does not want to
-            record lock state in stable storage.
+            byte-range lock state in stable storage.
           </t>
 
           <t>
@@ -1296,7 +1319,7 @@
         This is acceptable provided the client's operating environment
         allows it.  In otherwords, the client implementor is advised
         to document for his users the behavior.  The client could also
-        inform the application that its record lock or share reservations
+        inform the application that its byte-range lock or share reservations
         (whether they were delegated or not) have been lost, such as
         via a UNIX signal, a GUI pop-up window, etc.  See <xref target="ss:cc:cache_revoke" />,
         for a discussion of what the client
@@ -1417,7 +1440,7 @@
 
     <t>
       A share reservation is a mechanism to control access to a file.
-      It is a separate and independent mechanism from record locking.
+      It is a separate and independent mechanism from byte-range locking.
       When a client opens a file, it issues an OPEN operation to the
       server specifying the type of access required (READ, WRITE, or
       BOTH) and the type of access to deny others (OPEN4_SHARE_DENY_NONE,
@@ -1475,10 +1498,10 @@ else if ((request.access & file_state.deny)) ||
 
     <t>
       The CLOSE operation removes all share reservations held by the
-      lock_owner on that file.  If record locks are held, the client
+      lock_owner on that file.  If byte-range locks are held, the client
       SHOULD release all locks before issuing a CLOSE.  The server MAY
       free all outstanding locks on CLOSE but some servers may not
-      support the CLOSE of a file that still has record locks held.
+      support the CLOSE of a file that still has byte-range locks held.
       The server MUST return failure, NFS4ERR_LOCKS_HELD, if any locks
       would exist after the CLOSE.
     </t>

@@ -397,10 +397,10 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
       </t>
 
       <t>
-        If record locks are held, the client SHOULD release all locks
+        If byte-range locks are held, the client SHOULD release all locks
         before issuing a CLOSE.  The server MAY free all outstanding
         locks on CLOSE but some servers may not support the CLOSE
-        of a file that still has record locks held.  The server MUST
+        of a file that still has byte-range locks held.  The server MUST
         return failure if any locks would exist after the CLOSE.
       </t>
 
@@ -1009,7 +1009,7 @@ GETFH
     <section toc="exclude" anchor="OP_LOCK_DESCRIPTION" title="DESCRIPTION">
 
       <t>
-        The LOCK operation requests a record lock for the byte range
+        The LOCK operation requests a byte-range lock for the byte range
         specified by the offset and length parameters.  The lock type
         is also specified to be one of the nfs_lock_type4s.  If this
         is a reclaim request, the reclaim parameter will be TRUE;
@@ -1240,7 +1240,7 @@ owner}
     <section toc="exclude" anchor="OP_LOCKU_DESCRIPTION" title="DESCRIPTION">
 
       <t>
-        The LOCKU operation unlocks the record lock specified by
+        The LOCKU operation unlocks the byte-range lock specified by
         the parameters. The client may set the locktype field to any
         value that is legal for the nfs_lock_type4 enumerated type,
         and the server MUST accept any legal value for locktype. Any
@@ -2355,10 +2355,10 @@ void;
 
       <t>
         The stateid value for a READ request represents a value
-        returned from a previous record lock or share reservation
+        returned from a previous byte-range lock or share reservation
         request or the stateid associated with a delegation.
         The stateid is used by the server to verify that
-        the associated share reservation and any record locks are
+        the associated share reservation and any byte-range locks are
         still valid and to update lease timeouts for the client.
       </t>
 
@@ -2413,9 +2413,9 @@ void;
         corresponding to the data to be read from file is write locked
         by an owner not associated the stateid, the server will return
         the NFS4ERR_LOCKED error.  The client should try to get the
-        appropriate read record lock via the LOCK operation before
+        appropriate read byte-range lock via the LOCK operation before
         re-attempting the READ.  When the READ completes, the client
-        should release the record lock via LOCKU.
+        should release the byte-range lock via LOCKU.
       </t>
 
     </section>
@@ -2929,7 +2929,7 @@ clientid -> ()
         If the server determines the callback path is down, it
         returns NFS4ERR_CB_PATH_DOWN.  Even though it returns
         NFS4ERR_CB_PATH_DOWN, the server MUST renew the lease on
-        the record locks and share reservations that the client has
+        the byte-range locks and share reservations that the client has
         established on the server.  If for some reason the lock and
         share reservation lease cannot be renewed, then the server
         MUST return an error other than NFS4ERR_CB_PATH_DOWN, even
@@ -3267,8 +3267,8 @@ void;
         and the new end-of-file is considered to be modified just
         as would have been the case had the area in question been
         specified as the target of WRITE, for the purpose of checking
-        conflicts with record locks, for those cases in which a
-        server is implementing mandatory record locking behavior.
+        conflicts with byte-range locks, for those cases in which a
+        server is implementing mandatory byte-range locking behavior.
         A valid stateid SHOULD always be specified.  When the file
         size attribute is not set, the special stateid consisting of
         all bits zero MAY be passed.
@@ -3649,12 +3649,12 @@ clientid, verifier -> -
             use of SETCLIENTID_CONFIRM in this case also confirms
             the removal of any of the client's previous relevant
             leased state. Relevant leased client state includes
-            record locks, share reservations, and where the server
+            byte-range locks, share reservations, and where the server
             does not support the CLAIM_DELEGATE_PREV claim type,
             delegations.  If the server supports CLAIM_DELEGATE_PREV,
             then SETCLIENTID_CONFIRM MUST NOT remove delegations for
             this client; relevant leased client state would then just
-            include record locks and share reservations.
+            include byte-range locks and share reservations.
           </t>
 
           <t>
@@ -3950,10 +3950,10 @@ REMOVE (file name)
 
       <t>
         The stateid value for a WRITE request represents a value
-        returned from a previous record lock or share reservation
+        returned from a previous byte-range lock or share reservation
         request or the stateid associated with a delegation.
         The stateid is used by the server to verify that
-        the associated share reservation and any record locks are
+        the associated share reservation and any byte-range locks are
         still valid and to update lease timeouts for the client.
       </t>
 
@@ -4115,9 +4115,9 @@ REMOVE (file name)
         operation has a conflicting read lock that overlaps with
         the region that was to be written. If the stateid's owner
         has no conflicting read lock, then the client should try to
-        get the appropriate write record lock via the LOCK operation
+        get the appropriate write byte-range lock via the LOCK operation
         before re-attempting the WRITE. When the WRITE completes,
-        the client should release the record lock via LOCKU.
+        the client should release the byte-range lock via LOCKU.
       </t>
 
       <t>
