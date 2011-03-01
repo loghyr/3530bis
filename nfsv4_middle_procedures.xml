@@ -813,19 +813,28 @@ clientid ->
       </t>
 
       <t>
-        The server must return a value for each attribute that
+        The server MUST return a value for each attribute that
         the client requests if the attribute is supported by the
         server.  If the server does not support an attribute or
-        cannot approximate a useful value then it must not return
-        the attribute value and must not set the attribute bit in
-        the result bitmap.  The server must return an error if it
-        supports an attribute but cannot obtain its value.  In that
-        case no attribute values will be returned.
+        cannot approximate a useful value then it MUST NOT return
+        the attribute value and MUST NOT set the attribute bit in
+        the result bitmap.  The server MUST return an error if it
+        supports an attribute on the target but cannot obtain its
+        value.  In that case no attribute values will be returned.
       </t>
 
       <t>
-        All servers must support the mandatory attributes as specified
-        in the section "File Attributes".
+        File systems which are absent should be treated as having support for
+        a very small set of attributes as described in
+        <xref target="absent_getattr">GETATTR Within an Absent File System</xref>,
+        even if previously, when the file system was present, more attributes
+        were supported.
+      </t>
+
+      <t>
+        All servers MUST support the REQUIRED attributes as specified
+        in the section <xref target="file_attributes">File Attributes</xref>,
+        for all file systems, with the exception of absent file systems.
       </t>
 
       <t>

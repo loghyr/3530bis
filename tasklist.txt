@@ -275,21 +275,6 @@ State: Accepted, Low
 Target:
 Note: And it appears 5661 is crisper in this regards.
 
-21) Contradiction in 2nd Para of GETATTR Description
-
-The 2nd paragraph of the description for GETATTR contradicts itself.  It says
-you must return a value if you support an attribute and then talks about what
-you must do when you can't.  It isn't clear from the text what is or isn't
-allowed for such cases as GETATTRing the ACL attribute when there is no ACL.
-
-This needs to be clarified.
-
-Action:
-Owner:
-State: Accepted, Low
-Target:
-Note: Discuss at the BAT
-
 25) Problems in the Description of OPEN
 
 There are a number of problems with the description of OPEN that
@@ -1140,5 +1125,20 @@ State: Finished
 Target: IETF 80
 Note: Group with stateid issues - backport from 5661? No.
 5661: Yes.
+
+21) Contradiction in 2nd Para of GETATTR Description
+
+The 2nd paragraph of the description for GETATTR contradicts itself.  It says
+you must return a value if you support an attribute and then talks about what
+you must do when you can't.  It isn't clear from the text what is or isn't
+allowed for such cases as GETATTRing the ACL attribute when there is no ACL.
+
+This needs to be clarified.
+
+Action: None
+Owner: Tom
+State: Rejected
+Target:
+Note: Discuss at the BAT
 
 =====
