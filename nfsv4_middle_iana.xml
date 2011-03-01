@@ -2,25 +2,110 @@
 <!-- Copyright (C) The Internet Society (2010) -->
 <section anchor="sec:iana" title="IANA Considerations">
 
-  <section title="Named Attribute Definition">
+<t>
+This section uses terms that are defined in <xref target="RFC5226"/>.
+</t>
 
-    <t>
-      The NFS version 4 protocol provides for the association of named
-      attributes to files.  The name space identifiers for these attributes
-      are defined as string names.  The protocol does not define the
-      specific assignment of the name space for these file attributes.
-      Even though the name space is not specifically controlled to
-      prevent collisions, an IANA registry has been created for the
-      registration of NFS version 4 named attributes.  Registration will
-      be achieved through the publication of an Informational RFC and
-      will require not only the name of the attribute but the syntax and
-      semantics of the named attribute contents; the intent is to promote
-      interoperability where common interests exist.  While application
-      developers are allowed to define and use attributes as needed,
-      they are encouraged to register the attributes with IANA.
-    </t>
+ <section anchor="namedattributesiana" title="Named Attribute Definitions">
+   <t>
+     IANA will create a registry called the "NFSv4 Named Attribute Definitions Registry".
+   </t>
+   <t>
+     The NFSv4 protocol supports the association of a file with zero or
+     more named attributes.  The name space identifiers for these attributes
+     are defined as string names.  The protocol does not define the
+     specific assignment of the name space for these file attributes.
+     An IANA registry will promote interoperability
+     where common interests exist.  While application developers are
+     allowed to define and use attributes as needed, they are encouraged
+     to register the attributes with IANA.
+   </t>
+   <t>
+     Such registered named attributes are presumed to apply to all minor
+     versions of NFSv4, including those defined subsequently to the 
+     registration.  Where the named attribute is intended to be 
+     limited with regard to the minor versions for which they are not
+     be used, the assignment in registry will clearly state the applicable
+     limits.
+   </t>
+   <t>
+     All assignments to the registry are made on a First Come First Served basis,
+     per section 4.1 of <xref target="RFC5226"/>.
 
+     The policy for each assignment is Specification Required, 
+     per section 4.1 of <xref target="RFC5226"/>.
+   </t>
+   <t>
+     Under the NFSv4 specification, the name of a named
+     attribute can in theory be up to 2^32 - 1 bytes in
+     length, but in practice NFSv4 clients and servers
+     will be unable to a handle string that long. IANA
+     should reject any assignment request with a named
+     attribute that exceeds 128 UTF-8 characters. To give
+     IESG the flexibility to set up bases of assignment of
+     Experimental Use and Standards Action,
+     the prefixes of "EXPE" and "STDS" are Reserved.
+     The zero length named attribute name is Reserved.
+   </t>
+   <t>
+     The prefix "PRIV" is allocated for Private Use.  A
+     site that wants to make use of unregistered named
+     attributes without risk of conflicting with an
+     assignment in IANA's registry should use the prefix
+     "PRIV" in all of its named attributes.
+
+   </t>
+   <t>
+     Because some NFSv4 clients and servers have case insensitive
+     semantics, the fifteen additional lower case and mixed case
+     permutations of each of "EXPE", "PRIV", and "STDS", are Reserved (e.g.
+     "expe", "expE", "exPe", etc. are Reserved).
+     Similarly, IANA must not allow two assignments that would conflict
+     if both named attributes were converted to a common case.
+   </t>
+
+   <t>
+     The registry of named attributes is a list of assignments, each
+     containing three fields for each assignment.
+
+     <list style='numbers'>
+       <t>
+         A US-ASCII string name that is the actual name of
+         the attribute. This name must be unique.  This
+         string name can be 1 to 128 UTF-8 characters
+         long.
+       </t>
+
+       <t>
+         A reference to the specification of the named attribute.
+          The reference can consume up to 256 bytes (or more if IANA
+          permits).
+       </t>
+
+       <t>
+         The point of contact of the registrant. The point
+         of contact can consume up to 256 bytes (or more if IANA
+         permits).
+       </t>
+     </list>
+   </t>
+
+  <section title="Initial Registry">
+  <t>
+   There is no initial registry.
+  </t>
   </section>
+  
+  <section title="Updating Registrations">
+  <t>
+    The registrant is always permitted to update the point of contact
+    field. To make any other change will require Expert Review or IESG
+    Approval.
+  </t>
+  </section>
+ </section>
+
+
   <section title="ONC RPC Network Identifiers (netids)">
 
     <t>
@@ -113,12 +198,18 @@ x1:x2:x3:x4:x5:x6:x7:x8.p1.p2
       Section 2.2 of <xref target="RFC2373" /> are also acceptable.
     </t>
 
-    <t>
-      As mentioned, the registration of new Network Identifiers will
-      require the publication of an Information RFC with similar detail
-      as listed above for the Network Identifier itself and corresponding
-      Universal Address.
-    </t>
-
+  <section title="Initial Registry">
+  <t>
+   There is no initial registry.
+  </t>
   </section>
+  
+  <section title="Updating Registrations">
+  <t>
+    The registrant is always permitted to update the point of contact
+    field. To make any other change will require Expert Review or IESG
+    Approval.
+  </t>
+  </section>
+ </section>
 </section>

@@ -385,8 +385,15 @@ Clarification:
 New:
 =====
 
+57) How do we deal with open owners for which some stateids are
+migrated and some aren't?  Do the sequence numbers fork? 
 
-=====
+Action: Consensus must be reached
+Owner: Tom
+State: Accepted, Low
+Target: IETF 80
+5661: Yes
+
 Done:
 =====
 
@@ -1126,3 +1133,11 @@ Owner: Trond
 State: Accepted, Medium
 Target: IETF 80
 
+58) Update the IANA considerations section to reflect RFC5226
+
+Action: Text changes
+Owner: Tom
+State: Finished
+Target: IETF 80
+
+=====

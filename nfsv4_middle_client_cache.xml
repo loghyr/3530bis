@@ -894,9 +894,6 @@
         and is opaque to the client, the client and server need to agree on a
         method of communicating the modified state of the file.  For the size
         attribute, the client will report its current view of the file size.
-      </t>
-
-      <t>
         For the change attribute, the handling is more involved.
       </t>
 
@@ -989,56 +986,57 @@
             the constructed attribute values.  For reasons of reasonable
             performance, committing the constructed attribute values to stable
             storage is OPTIONAL.
-          <vspace blankLines='1' />
-            As discussed earlier in this section, the client MAY return the
-            same cc value on subsequent CB_GETATTR calls, even if the file was
-            modified in the client's cache yet again between successive
-            CB_GETATTR calls.  Therefore, the server must assume that the file
-            has been modified yet again, and MUST take care to ensure that the
-            new nsc it constructs and returns is greater than the previous
-            nsc it returned.  An example implementation's delegation record
-            would satisfy this mandate by including a boolean field (let us
-            call it "modified") that is set to false when the delegation is
-            granted, and an sc value set at the time of grant to the change
-            attribute value.  The modified field would be set to true the
-            first time cc != sc, and would stay true until the delegation
-            is returned or revoked.  The processing for constructing nsc,
-            time_modify, and time_metadata would use this pseudo code:
-          <vspace blankLines='1' />
+          </t>
+        </list>
+      </t>
 
-            <figure>
-              <artwork>
+      <t>
+        As discussed earlier in this section, the client MAY return the
+        same cc value on subsequent CB_GETATTR calls, even if the file was
+        modified in the client's cache yet again between successive
+        CB_GETATTR calls.  Therefore, the server must assume that the file
+        has been modified yet again, and MUST take care to ensure that the
+        new nsc it constructs and returns is greater than the previous
+        nsc it returned.  An example implementation's delegation record
+        would satisfy this mandate by including a boolean field (let us
+        call it "modified") that is set to false when the delegation is
+        granted, and an sc value set at the time of grant to the change
+        attribute value.  The modified field would be set to true the
+        first time cc != sc, and would stay true until the delegation
+        is returned or revoked.  The processing for constructing nsc,
+        time_modify, and time_metadata would use this pseudo code:
+
+        <figure>
+          <artwork>
 if (!modified) {
     do CB_GETATTR for change and size;
 
-       if (cc != sc)
-           modified = TRUE;
-   } else {
-           do CB_GETATTR for size;
-   }
+    if (cc != sc)
+        modified = TRUE;
+} else {
+    do CB_GETATTR for size;
+}
 
-   if (modified) {
-       sc = sc + 1;
+if (modified) {
+    sc = sc + 1;
     time_modify = time_metadata = current_time;
 
     update sc, time_modify, time_metadata into file's metadata;
 }
+          </artwork>
+        </figure>
 
-return to client (that sent GETATTR) the attributes
-   it requested, but make sure size comes from what
-   CB_GETATTR returned.  Do not update the file's metadata
-   with the client's modified size.
-              </artwork>
-            </figure>
-          </t>
+        This would return to the client (that sent GETATTR) the attributes
+        it requested, but make sure size comes from what
+        CB_GETATTR returned. The server would not update the file's
+        metadata with the client's modified size.
+      </t>
 
-          <t>
-            In the case that the file attribute size is different than the
-            server's current value, the server treats this as a modification
-            regardless of the value of the change attribute retrieved via
-            CB_GETATTR and responds to the second client as in the last step.
-          </t>
-        </list>
+      <t>
+        In the case that the file attribute size is different than the
+        server's current value, the server treats this as a modification
+        regardless of the value of the change attribute retrieved via
+        CB_GETATTR and responds to the second client as in the last step.
       </t>
 
       <t>
