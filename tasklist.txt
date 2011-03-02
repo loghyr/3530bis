@@ -62,25 +62,6 @@ implementations, but not captured in the spec?
 Medium:
 =======
 
-17) Description of Third Edge Condition
-
-The third edge condition needs to be described.  Basically,
-this is the situation in which a client thinks he has
-locks because he rebooted in the middle of reclaim without
-reclaiming those locks.  If the client comes back and
-those locks were taken by another client and then
-released before that final reboot, the client could
-reclaim the locks unaware that it had lost them in
-the interim and could not be guaranteed to continuous
-holding of the locks.
-
-Action:
-Owner:
-State: Accepted, Medium
-Target:
-Note: Dave track down the mail
-5661: Probably
-
 18) Issues With NFS4ERR_EXPIRED
 
 The major part of this issue refers to the following mail attached to the
@@ -1203,4 +1184,23 @@ Owner: Tom
 State: Finished
 Target: IETF 80
 Note: Sync with 4.1
+
+17) Description of Third Edge Condition
+
+The third edge condition needs to be described.  Basically,
+this is the situation in which a client thinks he has
+locks because he rebooted in the middle of reclaim without
+reclaiming those locks.  If the client comes back and
+those locks were taken by another client and then
+released before that final reboot, the client could
+reclaim the locks unaware that it had lost them in
+the interim and could not be guaranteed to continuous
+holding of the locks.
+
+Action: Describe
+Owner: Tom
+State: Finished
+Target: IETF 80
+Note: Dave track down the mail
+5661: Probably
 

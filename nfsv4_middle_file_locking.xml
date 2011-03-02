@@ -40,8 +40,8 @@
     In order to correctly implement share semantics, the previous
     NFS protocol mechanisms used when a file is opened or created
     (LOOKUP, CREATE, ACCESS) need to be replaced.  The NFSv4 protocol
-		has an OPEN operation that subsumes the NFSv3 methodology of
-		LOOKUP, CREATE, and ACCESS.  However, because
+    has an OPEN operation that subsumes the NFSv3 methodology of
+    LOOKUP, CREATE, and ACCESS.  However, because
     many operations require a filehandle, the traditional LOOKUP is
     preserved to map a file name to filehandle without establishing
     state on the server.  The policy of granting access or modifying
@@ -102,10 +102,10 @@
         open file under which the LOCK operation was done.
       </t>
       <t>
-				Unlike the text in NFSv4.1 <xref target="RFC5661" />, this
+        Unlike the text in NFSv4.1 <xref target="RFC5661" />, this
         text treats "lock_owner" as meaning both a open_owner4 and
-				a lock_owner4. Also, a "lock" can refer to both a byte-range
-				and share lock.
+        a lock_owner4. Also, a "lock" can refer to both a byte-range
+        and share lock.
       </t>
 
       <t>
@@ -193,7 +193,7 @@
             For a user level NFSv4 client, it should contain
             additional information to distinguish the client from other
             user level clients running on the same host, such as an universally
-	          unique identifier (UUID).
+            unique identifier (UUID).
           </t>
 
           <t>
@@ -232,7 +232,7 @@
 
       <t>
         As a security measure, the server MUST NOT cancel a client's
-        leased state if the principal established the state for a given
+        leased state if the principal that established the state for a given
         id string is not the same as the principal issuing the SETCLIENTID.
       </t>
 
@@ -311,7 +311,7 @@
       </t>
 
       <t>
-        In that event, when the server gets a SETCLIENTID for a client id
+        In that event, when the server gets a SETCLIENTID for a client ID
         that currently has no state, or it has state, but the lease has
         expired, rather than returning NFS4ERR_CLID_INUSE, the server MUST
         allow the SETCLIENTID, and confirm the new client ID if followed
@@ -1216,10 +1216,10 @@
       </t>
 
       <t>
-        Solving the first and second edge conditions requires that the
+        Solving these edge conditions requires that the
         server either assume after it reboots that edge condition occurs,
         and thus return NFS4ERR_NO_GRACE for all reclaim attempts, or that
-        the server record some information stable storage.  The amount
+        the server record some information in stable storage.  The amount
         of information the server records in stable storage is in inverse
         proportion to how harsh the server wants to be whenever the edge
         conditions occur.  The server that is completely tolerant of all
@@ -1286,7 +1286,7 @@
           <t>
             Reject all reclaims with NFS4ERR_NO_GRACE.  This is
             superharsh, but necessary if the server does not want to
-            byte-range lock state in stable storage.
+            record lock state in stable storage.
           </t>
 
           <t>
@@ -1304,6 +1304,84 @@
         </list>
       </t>
 
+      <t>
+        A third egde condition effects the client and not the server.
+        If the server reboots in the middle of the client reclaiming
+        some locks and then a network partitiion is established, the
+        client might be in the situation of having reclaimed some, but
+        not all locks. In that case, a conservative client would
+        assume that the non-reclaimed locks were revoked.
+      </t>
+
+      <t>
+        The third known edge condition follows:
+
+        <list style='numbers'>
+
+          <t>
+            Client A acquires a lock 1.
+          </t>
+
+          <t>
+            Client A acquires a lock 2.
+          </t>
+
+          <t>
+            Server reboots.
+          </t>
+
+          <t>
+            Client A issues a RENEW operation, and gets back a
+            NFS4ERR_STALE_CLIENTID.
+          </t>
+
+          <t>
+            Client A reclaims its lock 1 within the server's grace period.
+          </t>
+
+          <t>
+            Client A and server experience mutual network partition,
+            such that client A is unable to reclaim its remaining locks
+            within the grace period.
+          </t>
+
+          <t>
+            Server's reclaim grace period ends.  Client A has no locks
+            recorded on server.
+          </t>
+
+          <t>
+            Server reboots a second time.
+          </t>
+
+          <t>
+            Network partition between client A and server heals.
+          </t>
+
+          <t>
+            Client A issues a RENEW operation, and gets back a
+            NFS4ERR_STALE_CLIENTID.
+          </t>
+
+          <t>
+            Client A reclaims its lock 1 within the server's grace period.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        During the parition, client A decided that the server had revoked
+        lock 2. After the paritition, it was able to reclaim lock 1, but
+        made no attempt to reclaim lock 2. After the grace period, it is
+        free to try to reestablish lock 2 via LOCK operations.
+      </t>
+
+      <t>
+        Note that the other two edge conditions are able to interact with this
+        third edge condition. Another client B may have established a conflicting
+        lock during the partition, made some changes, and the released the
+        lock before the second server reboot.
+      </t>
       <t>
         A mandate for the client's handling of the NFS4ERR_NO_GRACE error
         is outside the scope of this specification, since the strategies
@@ -1802,29 +1880,29 @@ else if ((request.access & file_state.deny)) ||
       </t>
 
       <t>
-	Upon receiving the NFS4ERR_LEASE_MOVED error, a client that supports
-	filesystem migration MUST probe all filesystems from that server on
-	which it holds open state. Once the client has successfully probed all those
-	filesystems which are migrated, the server MUST resume normal
-	handling of stateful requests from that client.
+       Upon receiving the NFS4ERR_LEASE_MOVED error, a client that supports
+       filesystem migration MUST probe all filesystems from that server on
+       which it holds open state. Once the client has successfully probed all those
+       filesystems which are migrated, the server MUST resume normal
+       handling of stateful requests from that client.
       </t>
 
       <t>
-	In order to support legacy clients that do not handle the
-	NFS4ERR_LEASE_MOVED error correctly, the server SHOULD time out after a
-	wait of at least two lease periods, at which time it will resume normal
-	handling of stateful requests from all clients. If a client attempts to
-	access the migrated files, the server MUST reply NFS4ERR_MOVED.
+       In order to support legacy clients that do not handle the
+       NFS4ERR_LEASE_MOVED error correctly, the server SHOULD time out after a
+       wait of at least two lease periods, at which time it will resume normal
+       handling of stateful requests from all clients. If a client attempts to
+       access the migrated files, the server MUST reply NFS4ERR_MOVED.
       </t>
 
       <t>
-	When the client receives an NFS4ERR_MOVED error,
+        When the client receives an NFS4ERR_MOVED error,
         the client can follow the normal process to obtain the new server
         information (through the fs_locations attribute) and perform
         renewal of those leases on the new server.
         If the server has not had state transferred to it transparently,
-	the client will receive either NFS4ERR_STALE_CLIENTID or NFS4ERR_STALE_STATEID
-	from the new server, as described above. The client can then recover
+        the client will receive either NFS4ERR_STALE_CLIENTID or NFS4ERR_STALE_STATEID
+        from the new server, as described above. The client can then recover
         state information as it does in the event of server failure.
       </t>
 
