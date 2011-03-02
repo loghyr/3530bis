@@ -247,18 +247,6 @@ State: Accepted, Medium
 Target:
 Note: Summarize the issue.
 
-35) OPEN_DOWNGRADE and posix byte range
-
-Trond started this discussion here:
-http://www.ietf.org/mail-archive/web/nfsv4/current/msg08169.html
-
-Action: Add appropriate text
-Owner: Trond
-State: Accepted, medium
-Target:
-Note: Trond will produce a write up.
-Item #9...
-
 =====
 Low:
 =====
@@ -1153,6 +1141,61 @@ Owner: Tom
 State: Finished
 Target: IETF 80
 Notes: Addressed in 4.1?
+
+35) OPEN_DOWNGRADE and posix byte range
+
+Trond started this discussion here:
+http://www.ietf.org/mail-archive/web/nfsv4/current/msg08169.html
+
+  Neither RFC3530, nor RFC5661 appear to list NFS4ERR_LOCKS_HELD as a
+  valid response when the client calls OPEN_DOWNGRADE.
+
+  The question is: what should the server then do if the NFS client holds
+  a WRITE_LT lock, but then asks for an OPEN_DOWNGRADE to
+  OPEN4_SHARE_ACCESS_READ. I understand that this is sanctioned in Windows
+  server environments, but it should definitely be forbidden in a POSIX
+  environment, and NFS4ERR_LOCKS_HELD would appear to fit the bill...
+
+Dave's reply:
+
+  Makes sense to me.
+
+  18.10.4 of RFC 5661 says:
+
+     LOCK operations are subject to permission checks and to checks
+     against the access type of the associated file.  However, the
+     specific right and modes required for various types of locks reflect
+     the semantics of the server-exported file system, and are not
+     specified by the protocol. 
+
+  Given that LOCK may exclude locks for write on files not open for write,
+  it makes sense that downgrade whereby a file can become
+  not-open-for-write when it previously was, has to reject a request which
+  would violate the invariant.
+
+  Sounds like we need a paragraph in DOWNGRADE explaining the issue as
+  well as adding the error to the list.
+
+  I think there is a another potential issue here.  CLOSE is allowed to
+  (but not required to) release byte-range locks.  I think windows does
+  that.
+
+  The issue I'm wondering about is whether a server is allowed to release
+  locks for write as a valid response to DOWNGRADE.  This is separate from
+  the issue of LOCKS_HELD, which I agree it needs to be able to do.  I
+  think we also agree that a server may allow the write locks to stay.
+  The interesting question is whether there is a third choice: silently
+  getting rid of the locks that have become inappropriate to the new open
+  mode.  
+
+  When we fix this, we should be clear on what is and isn't allowed.
+
+
+Action: Add appropriate text
+Owner: Tom
+State: Finished
+Target: IETF 80
+Note: Investigating whether anyone wants to spin off Dave's CLOSE semantics.
 
 
 =====

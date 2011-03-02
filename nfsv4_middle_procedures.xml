@@ -2114,6 +2114,12 @@ READ 0 32767
       </t>
 
       <t>
+				As the OPEN_DOWNGRADE may change a file to be not-open-for-write
+				and a write byte-range lock might be held, the server may have to reject
+				the OPEN_DOWNGRADE with a NFS4ERR_LOCKS_HELD.
+			</t>
+
+      <t>
         On success, the current filehandle retains its value.
       </t>
 
