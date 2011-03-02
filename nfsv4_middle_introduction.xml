@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 <section anchor="sec:intro" title="Introduction" >
   <section anchor="changes_since3530" title="Changes since RFC 3530">
     <t>
@@ -58,7 +58,7 @@
   <section anchor="changes_since3010" title="Changes since RFC 3010">
 
     <t>
-      This definition of the NFS version 4 protocol replaces or
+      This definition of the NFSv4 protocol replaces or
       obsoletes the definition present in <xref target="RFC3010" />.
       While portions of the two documents have remained the same,
       there have been substantive changes in others.  The changes made
@@ -145,13 +145,13 @@
   <section anchor="v4_goals" title="NFS Version 4 Goals">
 
     <t>
-      The NFS version 4 protocol is a further revision of the NFS
+      The NFSv4 protocol is a further revision of the NFS
       protocol defined already by versions 2 <xref target="RFC1094" />
       and 3 <xref target="RFC1813" />.  It retains the essential
       characteristics of previous versions: design for easy recovery,
       independent of transport protocols, operating systems and
-      filesystems, simplicity, and good performance.  The NFS version
-      4 revision has the following goals:
+      filesystems, simplicity, and good performance.  The NFSv4
+      revision has the following goals:
 
       <list style='symbols'>
         <t>
@@ -207,11 +207,11 @@
     </t>
   </section>
 
-  <section anchor="feature_overview" title="Overview of NFS version 4 Features">
+  <section anchor="feature_overview" title="Overview of NFSv4 Features">
 
     <t>
       To provide a reasonable context for the reader, the major
-      features of NFS version 4 protocol will be reviewed in brief.
+      features of NFSv4 protocol will be reviewed in brief.
       This will be done to provide an appropriate context for both
       the reader who is familiar with the previous versions of the
       NFS protocol and the reader that is new to the NFS protocols.
@@ -228,7 +228,7 @@
       <t>
         As with previous versions of NFS, the External Data
         Representation (XDR) and Remote Procedure Call (RPC)
-        mechanisms used for the NFS version 4 protocol are those
+        mechanisms used for the NFSv4 protocol are those
         defined in <xref target="RFC1831" /> and
         <xref target="RFC1832" />.  To meet end to end
         security requirements, the RPCSEC_GSS framework
@@ -241,13 +241,13 @@
         framework.  The LIPKEY GSS-API mechanism described in
         <xref target="RFC2847" /> will be used to
         provide for the use of user password and server public key
-        by the NFS version 4 protocol.  With the use of RPCSEC_GSS,
+        by the NFSv4 protocol.  With the use of RPCSEC_GSS,
         other mechanisms may also be specified and used for NFS
         version 4 security.
       </t>
 
       <t>
-        To enable in-band security negotiation, the NFS version 4
+        To enable in-band security negotiation, the NFSv4
         protocol has added a new operation which provides the client
         a method of querying the server about its policies regarding
         which security mechanisms must be used for access to the
@@ -262,7 +262,7 @@
       <t>
         A significant departure from the previous versions of the
         NFS protocol is the introduction of the COMPOUND procedure.
-        For the NFS version 4 protocol, there are two RPC procedures,
+        For the NFSv4 protocol, there are two RPC procedures,
         NULL and COMPOUND.  The COMPOUND procedure is defined in
         terms of operations and these operations correspond more
         closely to the traditional NFS procedures.
@@ -289,7 +289,7 @@
       </t>
 
       <t>
-        The NFS version 4 protocol continues to have the client refer
+        The NFSv4 protocol continues to have the client refer
         to a file or directory at the server by a "filehandle".  The
         COMPOUND procedure has a method of passing a filehandle from
         one operation to another within the sequence of operations.
@@ -305,8 +305,8 @@
     <section anchor="intro_fs_model" title="Filesystem Model">
 
       <t>
-        The general filesystem model used for the NFS version
-        4 protocol is the same as previous versions.  The server
+        The general filesystem model used for the NFSv4
+        protocol is the same as previous versions.  The server
         filesystem is hierarchical with the regular files contained
         within being treated as opaque byte streams.  In a slight
         departure, file and directory names are encoded with UTF-8
@@ -314,7 +314,7 @@
       </t>
 
       <t>
-        The NFS version 4 protocol does not require a separate
+        The NFSv4 protocol does not require a separate
         protocol to provide for the initial mapping between path name
         and filehandle.  Instead of using the older MOUNT protocol
         for this mapping, the server provides a ROOT filehandle
@@ -333,7 +333,7 @@
           persistent for the lifetime of the filesystem object
           to which it referred.  For some server implementations,
           this persistence requirement has been difficult to meet.
-          For the NFS version 4 protocol, this requirement has been
+          For the NFSv4 protocol, this requirement has been
           relaxed by introducing another type of filehandle, volatile.
           With persistent and volatile filehandle types, the server
           implementation can match the abilities of the filesystem at
@@ -433,7 +433,7 @@
     <section anchor="intro_open_op" title="OPEN and CLOSE">
 
       <t>
-        The NFS version 4 protocol introduces OPEN and CLOSE
+        The NFSv4 protocol introduces OPEN and CLOSE
         operations.  The OPEN operation provides a single point where
         file lookup, creation, and share semantics can be combined.
         The CLOSE operation also provides for the release of state
@@ -444,7 +444,7 @@
     <section anchor="intro_locking" title="File Locking">
 
       <t>
-        With the NFS version 4 protocol, the support for byte range
+        With the NFSv4 protocol, the support for byte range
         file locking is part of the NFS protocol.  The file locking
         support is structured so that an RPC callback mechanism is
         not required.  This is a departure from the previous versions
@@ -463,8 +463,8 @@
     <section anchor="intro_delegs" title="Client Caching and Delegation">
 
       <t>
-        The file, attribute, and directory caching for the NFS version
-        4 protocol is similar to previous versions.  Attributes and
+        The file, attribute, and directory caching for the NFSv4
+        protocol is similar to previous versions.  Attributes and
         directory information are cached for a duration determined by
         the client.  At the end of a predefined timeout, the client
         will query the server to see if the related filesystem object
@@ -486,7 +486,7 @@
       </t>
 
       <t>
-        The major addition to NFS version 4 in the area of caching is
+        The major addition to NFSv4 in the area of caching is
         the ability of the server to delegate certain responsibilities
         to the client.  When the server grants a delegation for a
         file to a client, the client is guaranteed certain semantics
@@ -580,7 +580,7 @@
         </t>
 
         <t hangText="Stable Storage">
-          NFS version 4 servers must be able to recover without data
+          NFSv4 servers must be able to recover without data
           loss from multiple power failures (including cascading
           power failures, that is, several power failures in quick
           succession), operating system failures, and hardware failure

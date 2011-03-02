@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 <section anchor="sec:iana" title="IANA Considerations">
 
 <t>
@@ -111,7 +111,7 @@ This section uses terms that are defined in <xref target="RFC5226"/>.
     <t>
       <xref target="sec:sdts" /> discussed the r_netid field and
       the corresponding r_addr field of a clientaddr4 structure.
-      The NFS version 4 protocol depends on the syntax and semantics
+      The NFSv4 protocol depends on the syntax and semantics
       of these fields to effectively communicate callback information
       between client and server.  Therefore, an IANA registry has been
       created to include the values defined in this document and to

@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 
 <front>
     <title abbrev="NFSv4">
@@ -58,8 +58,7 @@
       </t>
       <t>
       This document, together with the companion XDR description 
-      document,
-      replaces RFC 3530 as the definition of the 
+      document, replaces RFC 3530 as the definition of the 
       NFS version 4 protocol.
       </t>
     </abstract>

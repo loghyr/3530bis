@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) The IETF Trust (2007-2010)
+# Copyright (C) The IETF Trust (2007-2011)
 
 for i in $* ;
 do

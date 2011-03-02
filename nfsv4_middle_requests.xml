@@ -1,21 +1,21 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
-<section anchor="sec:requests" title="NFS version 4 Requests">
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
+<section anchor="sec:requests" title="NFSv4 Requests">
 
   <t>
-    For the NFS version 4 RPC program, there are two traditional RPC
+    For the NFSv4 RPC program, there are two traditional RPC
     procedures: NULL and COMPOUND.  All other functionality is defined as
     a set of operations and these operations are defined in normal
     XDR/RPC syntax and semantics.  However, these operations are
     encapsulated within the COMPOUND procedure.  This requires that the
-    client combine one or more of the NFS version 4 operations into a
+    client combine one or more of the NFSv4 operations into a
     single request.
   </t>
 
   <t>
     The NFS4_CALLBACK program is used to provide server to client
-    signaling and is constructed in a similar fashion as the NFS version
-    4 program.  The procedures CB_NULL and CB_COMPOUND are defined in the
+    signaling and is constructed in a similar fashion as the NFSv4
+    program.  The procedures CB_NULL and CB_COMPOUND are defined in the
     same way as NULL and COMPOUND are within the NFS program.  The
     CB_COMPOUND request also encapsulates the remaining operations of the
     NFS4_CALLBACK program.  There is no predefined RPC program number for
@@ -127,7 +127,7 @@
   <section title="Synchronous Modifying Operations">
 
     <t>
-      NFS version 4 operations that modify the filesystem are synchronous.
+      NFSv4 operations that modify the filesystem are synchronous.
       When an operation is successfully completed at the server, the client
       can depend that any data associated with the request is now on stable
       storage (the one exception is in the case of the file data in a WRITE

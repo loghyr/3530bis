@@ -1,8 +1,8 @@
 /*
- *  Copyright (C) The IETF Trust (2009-2010)
+ *  Copyright (C) The IETF Trust (2009-2011)
  *  All Rights Reserved.
  *
- *  Copyright (C) The Internet Society (1998-2010).
+ *  Copyright (C) The Internet Society (1998-2011).
  *  All Rights Reserved.
  */
 

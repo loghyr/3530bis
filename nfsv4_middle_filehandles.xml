@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 <section anchor="sec:filehandles" title="Filehandles">
 
   <t>
@@ -15,8 +15,8 @@
     <t>
       The operations of the NFS protocol are defined in terms of one or
       more filehandles.  Therefore, the client needs a filehandle to
-      initiate communication with the server.  With the NFS version 2
-      protocol <xref target="RFC1094" /> and the NFS version 3 protocol <xref target="RFC1813" />, there
+      initiate communication with the server.  With the NFSv2
+      protocol <xref target="RFC1094" /> and the NFSv3 protocol <xref target="RFC1813" />, there
       exists an ancillary protocol to obtain this first filehandle.
       The MOUNT protocol, RPC program number 100005, provides the
       mechanism of translating a string based filesystem path name to
@@ -28,13 +28,13 @@
       and use via firewalls.  This is one reason that the use of the
       public filehandle was introduced in <xref target="RFC2054" /> and <xref target="RFC2055" />.
       With the use of the public filehandle in combination with the
-      LOOKUP operation in the NFS version 2 and 3 protocols, it has
+      LOOKUP operation in the NFSv2 and NFSv3 protocols, it has
       been demonstrated that the MOUNT protocol is unnecessary for
       viable interaction between NFS client and server.
     </t>
 
     <t>
-      Therefore, the NFS version 4 protocol will not use an ancillary
+      Therefore, the NFSv4 protocol will not use an ancillary
       protocol for translation from string based path names to a
       filehandle.  Two special filehandles will be used as starting
       points for the NFS client.
@@ -78,7 +78,7 @@
   <section title="Filehandle Types">
 
     <t>
-      In the NFS version 2 and 3 protocols, there was one type of
+      In the NFSv2 and NFSv3 protocols, there was one type of
       filehandle with a single set of semantics.  This type of filehandle
       is termed "persistent" in NFS Version 4.  The semantics of a
       persistent filehandle remain the same as before.  A new type of

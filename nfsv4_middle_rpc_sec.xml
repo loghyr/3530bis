@@ -1,20 +1,20 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 <section anchor="sec:rpc_flavors" title="RPC and Security Flavor">
    
   <t>
-    The NFS version 4 protocol is a Remote Procedure Call (RPC)
+    The NFSv4 protocol is a Remote Procedure Call (RPC)
     application that uses RPC version 2 and the corresponding eXternal
     Data Representation (XDR) as defined in <xref target="RFC1831" /> and <xref target="RFC1832" />.
     The RPCSEC_GSS security flavor as defined in <xref target="RFC2203" /> MUST be used
-    as the mechanism to deliver stronger security for the NFS version
-    4 protocol.
+    as the mechanism to deliver stronger security for the NFSv4
+    protocol.
   </t>
 
   <section title="Ports and Transports">
 
     <t>
-      Historically, NFS version 2 and version 3 servers have resided on
+      Historically, NFSv2 and NFSv3 servers have resided on
       port 2049.  The registered port 2049 <xref target="RFC3232" /> for the NFS protocol
       SHOULD be the default configuration.  Using the registered port
       for NFS services means the NFS client will not need to use the RPC
@@ -23,11 +23,11 @@
     </t>
 
     <t>
-      Where an NFS version 4 implementation supports operation over the IP
+      Where an NFSv4 implementation supports operation over the IP
       network protocol, the supported transports between NFS and IP MUST be
       among the IETF-approved congestion control transport protocols,
       which include TCP and SCTP.  To enhance the possibilities for
-      interoperability, an NFS version 4 implementation MUST support
+      interoperability, an NFSv4 implementation MUST support
       operation over the TCP transport protocol, at least until such time
       as a standards track RFC revises this requirement to use a different
       IETF-approved congestion control transport protocol.
@@ -43,7 +43,7 @@
 
     <t>
       As noted in <xref target="sec:security" />,
-      the authentication model for NFS version 4 has moved from
+      the authentication model for NFSv4 has moved from
       machine-based to principal-based.  However, this modification
       of the authentication model does not
       imply a technical requirement to move the TCP connection management
@@ -55,8 +55,8 @@
       any other flavor.  Similarly, NFS over TCP server implementations
       have assumed such a model and thus scale the implementation of TCP
       connection management in proportion to the number of expected client
-      machines.  It is intended that NFS version 4 will not modify this
-      connection management model.  NFS version 4 clients that violate
+      machines.  It is intended that NFSv4 will not modify this
+      connection management model.  NFSv4 clients that violate
       this assumption can expect scaling issues on the server and hence
       reduced service.
     </t>
@@ -71,9 +71,9 @@
 
       <t>
         When processing a request received over a reliable transport such as
-        TCP, the NFS version 4 server MUST NOT silently drop the request,
+        TCP, the NFSv4 server MUST NOT silently drop the request,
         except if the transport connection has been broken.  Given such a
-        contract between NFS version 4 clients and servers, clients MUST NOT
+        contract between NFSv4 clients and servers, clients MUST NOT
         retry a request unless one or both of the following are true:
 
         <list style='symbols'>
@@ -90,14 +90,14 @@
       <t>
         Since reliable transports, such as TCP, do not always synchronously
         inform a peer when the other peer has broken the connection (for
-        example, when an NFS server reboots), the NFS version 4 client may
+        example, when an NFS server reboots), the NFSv4 client may
         want to actively "probe" the connection to see if has been broken.
         Use of the NULL procedure is one recommended way to do so.  So, when
         a client experiences a remote procedure call timeout (of some
         arbitrary implementation specific amount), rather than retrying the
         remote procedure call, it could instead issue a NULL procedure call
         to the server.  If the server has died, the transport connection
-        break will eventually be indicated to the NFS version 4 client.
+        break will eventually be indicated to the NFSv4 client.
         The client can then reconnect, and then retry the original request.
         If the NULL procedure call gets a response, the connection has
         not broken.  The client can decide to wait longer for the original
@@ -123,12 +123,12 @@
       <xref target="RFC2743" />.  This allows for the
       use of various security mechanisms by the RPC layer without the
       additional implementation overhead of adding RPC security flavors.
-      For NFS version 4, the RPCSEC_GSS security flavor MUST be used to
+      For NFSv4, the RPCSEC_GSS security flavor MUST be used to
       enable the mandatory security mechanism.  Other flavors, such as,
       AUTH_NONE, AUTH_SYS, and AUTH_DH MAY be implemented as well.
     </t>
 
-    <section title="Security mechanisms for NFS version 4">
+    <section title="Security mechanisms for NFSv4">
 
       <t>
         The use of RPCSEC_GSS requires selection of: mechanism, quality
@@ -171,7 +171,7 @@ column descriptions:
           Note that the pseudo flavor is presented here as a mapping aid to the
           implementor.  Because this NFS protocol includes a method to negotiate
           security and it understands the GSS-API mechanism, the pseudo flavor
-          is not needed.  The pseudo flavor is needed for NFS version 3 since
+          is not needed.  The pseudo flavor is needed for NFSv3 since
           the security negotiation is done via the MOUNT protocol.
         </t>
 
@@ -286,7 +286,7 @@ column descriptions:
   <section title="Security Negotiation">
 
   <t>
-    With the NFS version 4 server potentially offering multiple security
+    With the NFSv4 server potentially offering multiple security
     mechanisms, the client needs a method to determine or negotiate
     which mechanism is to be used for its communication with the server.
     The NFS server may have multiple points within its filesystem name
@@ -319,7 +319,7 @@ column descriptions:
     <section title="Security Error">
 
       <t>
-        Based on the assumption that each NFS version 4 client and server
+        Based on the assumption that each NFSv4 client and server
         MUST support a minimum set of security (i.e., LIPKEY, SPKM-3, and
         Kerberos-V5 all under RPCSEC_GSS), the NFS client will start its
         communication with the server with one of the minimal security triples.

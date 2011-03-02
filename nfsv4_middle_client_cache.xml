@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 <section anchor="sec:client_caching" title="Client-Side Caching">
 
   <t>
@@ -15,16 +15,16 @@
   </t>
 
   <t>
-    The NFS version 4 protocol uses many techniques similar to those
-    that have been used in previous protocol versions.  The NFS version
-    4 protocol does not provide distributed cache coherence.  However,
+    The NFSv4 protocol uses many techniques similar to those
+    that have been used in previous protocol versions.  The NFSv4
+    protocol does not provide distributed cache coherence.  However,
     it defines a more limited set of caching guarantees to allow locks
     and share reservations to be used without destructive interference
     from client side caching.
   </t>
 
   <t>
-    In addition, the NFS version 4 protocol introduces a delegation
+    In addition, the NFSv4 protocol introduces a delegation
     mechanism which allows many decisions normally made by the server
     to be made locally by clients.  This mechanism provides efficient
     support of the common cases where sharing is infrequent or where
@@ -70,7 +70,7 @@
     </t>
 
     <t>
-      The NFS version 4 protocol provides more aggressive caching
+      The NFSv4 protocol provides more aggressive caching
       strategies with the following design goals:
 
       <list style='symbols'>
@@ -274,7 +274,7 @@
         but recalled by the server.  Because of this, the client has the
         duty to write all modified state to the server and then return the
         delegation.  This process of handling delegation reclaim reconciles
-        three principles of the NFS version 4 protocol:
+        three principles of the NFSv4 protocol:
 
         <list style='symbols'>
           <t>
@@ -349,8 +349,8 @@
     <t>
       Share reservations and byte-range locks are the facilities the NFS
       version 4 protocol provides to allow applications to coordinate
-      access by providing mutual exclusion facilities.  The NFS version
-      4 protocol's data caching must be implemented such that it does
+      access by providing mutual exclusion facilities.  The NFSv4
+			protocol's data caching must be implemented such that it does
       not invalidate the assumptions that those using these facilities
       depend upon.
     </t>
@@ -359,7 +359,7 @@
 
       <t>
         In order to avoid invalidating the sharing assumptions that
-        applications rely on, NFS version 4 clients should not provide cached
+        applications rely on, NFSv4 clients should not provide cached
         data to applications or modify it on behalf of an application when
         it would not be valid to obtain or modify that same data via a READ
         or WRITE operation.
@@ -369,7 +369,7 @@
         Furthermore, in the absence of open delegation (see <xref
         target="ss:cc:open_dele" />) two additional
         rules apply.  Note that these rules are obeyed in practice
-        by many NFS version 2 and version 3 clients.
+        by many NFSv2 and NFSv3 clients.
 
         <list style='symbols'>
           <t>
@@ -384,7 +384,7 @@
             thus terminating a period in which other clients may have had
             the opportunity to open the file with WRITE access.  Clients may
             choose to do the revalidation more often (i.e., at OPENs specifying
-            DENY=NONE) to parallel the NFS version 3 protocol's practice for
+            DENY=NONE) to parallel the NFSv3 protocol's practice for
             the benefit of users assuming this degree of cache revalidation.
 
             Since the change attribute is updated for data and metadata
@@ -433,7 +433,7 @@
         right to do READ and WRITE operations on the second region.  As long
         as all applications manipulating the file obey this convention, they
         will work on a local filesystem.  However, they may not work with
-        the NFS version 4 protocol unless clients refrain from data caching.
+        the NFSv4 protocol unless clients refrain from data caching.
       </t>
 
       <t>

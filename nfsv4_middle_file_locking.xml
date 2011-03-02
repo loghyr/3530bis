@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 <section anchor="sec:lock_share" title="File Locking and Share Reservations">
 
   <t>
@@ -39,9 +39,9 @@
     would not allow correct implementation of the Win32 OpenFile API.
     In order to correctly implement share semantics, the previous
     NFS protocol mechanisms used when a file is opened or created
-    (LOOKUP, CREATE, ACCESS) need to be replaced.  The NFS version
-    4 protocol has an OPEN operation that subsumes the NFS version
-    3 methodology of LOOKUP, CREATE, and ACCESS.  However, because
+    (LOOKUP, CREATE, ACCESS) need to be replaced.  The NFSv4 protocol
+		has an OPEN operation that subsumes the NFSv3 methodology of
+		LOOKUP, CREATE, and ACCESS.  However, because
     many operations require a filehandle, the traditional LOOKUP is
     preserved to map a file name to filehandle without establishing
     state on the server.  The policy of granting access or modifying
@@ -147,7 +147,7 @@
             approach that requires the string to be recorded in a local
             file because this precludes the use of the implementation
             in an environment where there is no local disk and all file
-            access is from an NFS version 4 server.
+            access is from an NFSv4 server.
           </t>
 
           <t>
@@ -190,7 +190,7 @@
           </t>
 
           <t>
-            For a user level NFS version 4 client, it should contain
+            For a user level NFSv4 client, it should contain
             additional information to distinguish the client from other
             user level clients running on the same host, such as an universally
 	          unique identifier (UUID).
@@ -212,11 +212,11 @@
               </t>
 
               <t>
-                The timestamp of when the NFS version 4 software was
+                The timestamp of when the NFSv4 software was
                 first installed on the client (though this is subject to
                 the previously mentioned caution about using information
                 that is stored in a file, because the file might only be
-                accessible over NFS version 4).
+                accessible over NFSv4).
               </t>
 
               <t>
@@ -483,7 +483,7 @@
       </t>
 
       <t>
-        With NFS version 3, there was no notion of a stateid so there was
+        With NFSv3, there was no notion of a stateid so there was
         no way to tell if the application process of the client sending
         the READ or WRITE operation had also acquired the appropriate
         byte-range lock on the file.  Thus there was no way to implement
@@ -512,7 +512,7 @@
       </t>
 
       <t>
-        Thus, the NFS version 4 LOCK operation does not need to distinguish
+        Thus, the NFSv4 LOCK operation does not need to distinguish
         between advisory and mandatory byte-range locks.  It is the NFS
         version 4 server's processing of the READ and WRITE operations
         that introduces the distinction.

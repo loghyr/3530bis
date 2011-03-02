@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 <section anchor="sec:security" title="Security Considerations">
 
   <t>
@@ -35,7 +35,7 @@
 
   <t>
     For reasons of reduced administration overhead, better performance
-    and/or reduction of CPU utilization, users of NFS version 4
+    and/or reduction of CPU utilization, users of NFSv4
     implementations may choose to not use security mechanisms that enable
     integrity protection on each remote procedure call and response. The
     use of mechanisms without integrity leaves the customer vulnerable to

@@ -1,6 +1,6 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
-<section anchor="sec:operations" title="NFS version 4 Procedures">
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
+<section anchor="sec:operations" title="NFSv4 Procedures">
 
   <section anchor="OP_NULL" title="Procedure 0: NULL - No Operation">
 
@@ -317,10 +317,10 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
       </t>
 
       <t>
-        In the NFS version 2 protocol, the only reliable way to
+        In the NFSv2 protocol, the only reliable way to
         determine whether an operation was allowed was to try it and
         see if it succeeded or failed.  Using the ACCESS operation in
-        the NFS version 4 protocol, the client can ask the server to
+        the NFSv4 protocol, the client can ask the server to
         indicate whether or not one or more classes of operations are
         permitted.  The ACCESS operation is provided to allow clients
         to check before doing a series of operations which will result
@@ -1345,7 +1345,7 @@ GETFH
       </figure>
 
       <t>
-        NFS version 4 servers depart from the semantics of previous
+        NFSv4 servers depart from the semantics of previous
         NFS versions in allowing LOOKUP requests to cross mountpoints
         on the server.  The client can detect a mountpoint crossing
         by comparing the fsid attribute of the directory with the
@@ -1368,7 +1368,7 @@ GETFH
 
       <t>
         Note: previous versions of the protocol assigned special
-        semantics to the names "." and "..".  NFS version 4 assigns
+        semantics to the names "." and "..".  NFSv4 assigns
         no special semantics to these names.  The LOOKUPP operator
         must be used to lookup a parent directory.
       </t>
@@ -1773,8 +1773,8 @@ READ 0 32767
 
       <t>
         The OPEN operation contains support for EXCLUSIVE4 create.
-        The mechanism is similar to the support in NFS version 3 <xref
-        target="RFC1813" />.  As in NFS version 3, this mechanism
+        The mechanism is similar to the support in NFSv3 <xref
+        target="RFC1813" />.  As in NFSv3, this mechanism
         provides reliable exclusive creation.  Exclusive create is
         invoked when the how parameter is EXCLUSIVE4.  In this case,
         the client provides a verifier that can reasonably be expected
@@ -1992,8 +1992,8 @@ READ 0 32767
         A given client might generate many open_owner4 data structures
         for a given client ID.  The client will periodically either
         dispose of its open_owner4s or stop using them for indefinite
-        periods of time.  The latter situation is why the NFS version
-        4 protocol does not have an explicit operation to exit an
+        periods of time.  The latter situation is why the NFSv4
+        protocol does not have an explicit operation to exit an
         open_owner4: such an operation is of no use in that situation.
         Instead, to avoid unbounded memory use, the server needs to
         implement a strategy for disposing of open_owner4s that have
@@ -2207,10 +2207,10 @@ void;
       <t>
         The public filehandle represents the concepts embodied in
         <xref target="RFC2054" />, <xref target="RFC2055" />, <xref
-        target="RFC2224" />.  The intent for NFS version 4 is that
+        target="RFC2224" />.  The intent for NFSv4 is that
         the public filehandle (represented by the PUTPUBFH operation)
         be used as a method of providing WebNFS server compatibility
-        with NFS versions 2 and 3.
+        with NFSv2 and NFSv3.
       </t>
 
       <t>
@@ -2229,15 +2229,15 @@ void;
       </t>
 
       <t>
-        With the NFS version 2 and 3 public filehandle, the client is
+        With the NFSv2 and 3 public filehandle, the client is
         able to specify whether the path name provided in the LOOKUP
         should be evaluated as either an absolute path relative
         to the server's root or relative to the public filehandle.
         <xref target="RFC2224" /> contains further discussion of the functionality.
-        With NFS version 4, that type of specification is not directly
+        With NFSv4, that type of specification is not directly
         available in the LOOKUP operation.  The reason for this is
         because the component separators needed to specify absolute
-        vs. relative are not allowed in NFS version 4.  Therefore, the
+        vs. relative are not allowed in NFSv4.  Therefore, the
         client is responsible for constructing its request such that
         the use of either PUTROOTFH or PUTPUBFH are used to signify
         absolute or relative evaluation of an NFS URL respectively.
@@ -2248,19 +2248,19 @@ void;
         respect to the use of absolute evaluation and the restrictions
         the server may place on that evaluation with respect to how
         much of its namespace has been made available.  These same
-        warnings apply to NFS version 4.  It is likely, therefore
-        that because of server implementation details, an NFS version
-        3 absolute public filehandle lookup may behave differently
-        than an NFS version 4 absolute resolution.
+        warnings apply to NFSv4.  It is likely, therefore
+        that because of server implementation details, an NFSv3
+        absolute public filehandle lookup may behave differently
+        than an NFSv4 absolute resolution.
       </t>
 
       <t>
         There is a form of security negotiation as described
         in <xref target="RFC2755" /> that uses the public filehandle a method of
-        employing SNEGO.  This method is not available with NFS version
-        4 as filehandles are not overloaded with special meaning and
-        therefore do not provide the same framework as NFS versions 2
-        and 3.  Clients should therefore use the security negotiation
+        employing SNEGO.  This method is not available with NFSv4
+				as filehandles are not overloaded with special meaning and
+        therefore do not provide the same framework as NFSv2
+        and NFSv3.  Clients should therefore use the security negotiation
         mechanisms described in this RFC.
       </t>
 
@@ -2732,9 +2732,9 @@ M        named by filename from the directory corresponding to the
         passed a non-directory delete system call (e.g., unlink() <xref target="unlink" />
         in POSIX) to remove a directory, as well as the converse
         (e.g., a rmdir() on a non-directory) because they knew the
-        server would check the file type.  NFS version 4 REMOVE can
+        server would check the file type.  NFSv4 REMOVE can
         be used to delete any directory entry independent of its file
-        type. The implementor of an NFS version 4 client's entry
+        type. The implementor of an NFSv4 client's entry
         points from the unlink() and rmdir() system calls should
         first check the file type against the types the system call
         is allowed to remove before issuing a REMOVE. Alternatively,
@@ -3992,8 +3992,8 @@ REMOVE (file name)
         determine whether the server has changed instance (boot) state
         between a call to WRITE and a subsequent call to either WRITE
         or COMMIT.  This cookie must be consistent during a single
-        instance of the NFS version 4 protocol service and must be
-        unique between instances of the NFS version 4 protocol server,
+        instance of the NFSv4 protocol service and must be
+        unique between instances of the NFSv4 protocol server,
         where uncommitted data may be lost.
       </t>
 
@@ -4071,7 +4071,7 @@ REMOVE (file name)
 
       <t>
         The verifier is defined to allow a client to detect different
-        instances of an NFS version 4 protocol server over which
+        instances of an NFSv4 protocol server over which
         cached, uncommitted data may be lost. In the most likely case,
         the verifier allows the client to detect server reboots.  This
         information is required so that the client can safely determine

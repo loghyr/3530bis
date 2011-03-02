@@ -1,16 +1,16 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 <section anchor="sec:i18n" title="Internationalization">
   <t>
     This chapter describes the string-handling aspects
-    of the NFS version 4 protocol, and how they address
+    of the NFSv4 protocol, and how they address
     issues related to internationalization, including 
     issues related to UTF-8, normalization, string
     preparation, case folding, and handling of  
     internationalization issues related to domains.
   </t>
   <t>
-    The NFS version 4 protocol needs to deal with 
+    The NFSv4 protocol needs to deal with 
     internationalization, or I18N, with respect to file 
     names and other strings as used within the protocol.  
     The choice of string representation must allow 
@@ -24,10 +24,10 @@
   </t>
   <t>
     In implementing such policies, it is important to understand 
-    and respect the nature of NFS version 4 as a means by which 
+    and respect the nature of NFSv4 as a means by which 
     client implementations may invoke operations on remote file 
     systems.  Server implementations act as a conduit to a range 
-    of file system implementations that the NFS version 4 server 
+    of file system implementations that the NFSv4 server 
     typically invokes through a virtual-file-system interface.
   </t>
   <t>      
@@ -37,7 +37,7 @@
     version 4.  Local access and its requirements will generally 
     be important and often access over other remote file access 
     protocols will be as well.  It is generally a functional
-    requirement in practice for the users of the NFS version 4
+    requirement in practice for the users of the NFSv4
     protocol (although it may be formally out 
     of scope for this document) for the implementation to 
     allow files created by other protocols and by local 
@@ -48,12 +48,12 @@
     It also needs to be understood that a considerable portion of 
     file name processing will occur within the implementation 
     of the file system rather than within the limits of 
-    the NFS version 4 server implementation per se.  As a
+    the NFSv4 server implementation per se.  As a
     result, cetain aspects of name processing may change as
     the locus of processing moves from file system to file
     system.  As a result of these factors, the protocol cannot 
-    enforce uniformity of name-related processing upon NFS version 
-    4 server requests on the server as a whole.  Because the
+    enforce uniformity of name-related processing upon NFSv4
+    server requests on the server as a whole.  Because the
     server interacts with existing file system implementations,
     the same server handling will produce different behavior
     when interacting with different file system
@@ -80,7 +80,7 @@
         users throughout the world."  A protocol conforming to
         this framework must define a profile of stringprep 
         "in order to fully specify the processing options."
-        NFS version 4, while it does make normative references
+        NFSv4, while it does make normative references
         to stringprep and uses elements of that framework,
         it does not, for reasons that are explained below,
         conform to that framework, for all of the strings
@@ -91,7 +91,7 @@
         stringprep to add confusion in handling certain
         characters for certain languages, there are a number
         of general reasons why stringprep profiles are not 
-        suitable for describing NFS version 4.
+        suitable for describing NFSv4.
         <list style='symbols'>
           <t>
             Restricting the character repertoire to Unicode 
@@ -134,7 +134,7 @@
         among the set of possible strings.  Understanding 
         the nature and purpose of these equivalence relations
         is important to understand the handling of Unicode
-        strings within NFS version 4.
+        strings within NFSv4.
       </t>
       <t>
         Some string pairs are thought as only differing
@@ -232,7 +232,7 @@
         defined by the chosen equivalence relation.
       </t>
       <t>
-        In the NFS version 4 protocol, handling of issues
+        In the NFSv4 protocol, handling of issues
         related to internationalization with regard to 
         normalization follows one of two basic patterns:
         <list style='symbols'>
@@ -306,7 +306,7 @@
         SMALL LETTER RHO (U+1D56, for good measure). 
       </t>
       <t>
-        NFS version 4, as it does with normalization,
+        NFSv4, as it does with normalization,
         takes a two-part approach to this issue:
         <list style='symbols'>
           <t>
@@ -330,12 +330,11 @@
             own set would add unacceptably to complexity,
             and make many files accessible locally and
             by other remote file access protocols,
-            inaccessible by NFS version 4.  This
+            inaccessible by NFSv4.  This
             specification defines how the protocol
             maximizes interoperability in the face of
-            different file system implementations
-.
-            NFS version 4 does allow file systems to map  
+            different file system implementations.
+            NFSv4 does allow file systems to map  
             and to reject characters, including those 
             likely to result in confusion, since file systems 
             may choose to do such things.  It defines what
@@ -352,7 +351,7 @@
   <section title="String Type Overview">
     <section title="Overall String Class Divisions">
       <t>
-        NFS version 4 has to deal with a large 
+        NFSv4 has to deal with a large 
         set of diffreent types of strings and 
         because of the different role of each,
         internationalization issues will be different
@@ -376,7 +375,7 @@
           </t>
           <t>
             There are also cases in which a string has a
-            small amount of NFS version 4 processing which
+            small amount of NFSv4 processing which
             results in one or more strings being referred
             to one of the other categories.
           </t>
@@ -426,7 +425,7 @@
     <section title="Divisions by Typedef Parent types">
       <t>
         There are a number of different string types within
-        NFS version 4 and internationalization handling will
+        NFSv4 and internationalization handling will
         be different for different types of strings.  Each
         the types will be in one of four groups based
         on the parent type that
@@ -750,7 +749,7 @@
   <section anchor='Type-INET'
            title="Types with Processing Defined by Other Internet Areas">
     <t>
-      There are two types of strings which NFS version 4 deals
+      There are two types of strings which NFSv4 deals
       with whose processing is defined by other Internet 
       standards, and where issues related to different
       handling choices by server operating systems or
@@ -825,7 +824,7 @@
       responsbibility for internationalization-related handling 
       is that of some entity other than the server itself (see 
       below for details).  In these situations, the primary 
-      responsibility of NFS version 4 is to provide a framework
+      responsibility of NFSv4 is to provide a framework
       in which that other entity (file system and server operating
       system principal naming framework) implements its own
       decisions while establishing rules to limit interoperability
@@ -839,7 +838,7 @@
           the server-side file
           system implementation (of which there may be more than 
           one for a particular server) deals with internationalization
-          issues, in a fashion that is appropriate to NFS version 4,
+          issues, in a fashion that is appropriate to NFSv4,
           other remote file access protocols, and local file 
           access methods.  See 
           "<xref target="Type-ncomp" format='title' />" 
@@ -875,14 +874,14 @@
         <list style="symbols"> 
           <t>
             On the client, file names may be processed as part 
-            of forming NFS version 4 requests.  Any such processing 
+            of forming NFSv4 requests.  Any such processing 
             will reflect specific needs of the client's environment 
             and will be treated as out-of-scope from the viewpoint 
             of this specification.
           </t>
           <t>
             On the server, file names are processed as part of 
-            processing NFS version 4 requests.  In practice, parts 
+            processing NFSv4 requests.  In practice, parts 
             of the processing will be implemented within the NFS 
             version 4 server while other parts will be implemented 
             within the file system.  This processing is described 
@@ -1008,7 +1007,7 @@
           can be administratively enforced, allowing a file 
           name to be treated as a string of bytes, rather than as 
           a string of characters.  Such an arrangement might
-          be necessary when NFS version 4 access to a file system 
+          be necessary when NFSv4 access to a file system 
           containing names which are not valid UTF-8 needs to be
           provided.
         </t>
@@ -1052,7 +1051,7 @@
         <t>
           Case-based mapping is not always a required part of 
           server processing of name components.  However, if 
-          the NFS version 4 file server supports the 
+          the NFSv4 file server supports the 
           case_insensitive file system attribute, and if 
           the case_insensitive attribute is true for a given
           file system, the NFS 
@@ -1064,7 +1063,7 @@
         </t>
         <t>
           If the case_preserving attribute is present and set 
-          to false, then the NFS version 4 server MUST use the
+          to false, then the NFSv4 server MUST use the
           corresponding Unicode case mapping table to map case 
           when processing component4 strings.  Whether the server 
           maps from lower to upper case or the upper to lower case 
@@ -1090,7 +1089,7 @@
       </section>
       <section title="Other Mapping Used for Component4 Strings">
         <t>
-          Other than for issues of case mapping, an NFS version 4 
+          Other than for issues of case mapping, an NFSv4 
           server SHOULD limit visible (i.e., those that change the 
           name of file to reflect those mappings to those from 
           from a subset of the stringprep table B.1.  Note particularly,
@@ -1107,7 +1106,7 @@
           file names 
           with this character removed, then using Table B.1 will 
           cause functional problems when clients attempt to
-          interact with that file system.  The NFS version 4 
+          interact with that file system.  The NFSv4 
           server implementation including the filesystem 
           MUST NOT silently remove characters not within Table B.1.     
         </t>
@@ -1162,7 +1161,7 @@
         </t>
         <section title="Server Normalization Issues for Component Strings">
           <t>
-            The NFS version 4 does not specify required use of 
+            The NFSv4 does not specify required use of 
             a particular normalization form for component4 strings.   
             Therefore, the server may receive unnormalized strings 
             or strings that reflect either normalization form within 
@@ -1429,7 +1428,7 @@
       </section>
       <section title='Prohibited Characters for Component Names'>
         <t>
-          The NFS version 4 protocol does not specify particular 
+          The NFSv4 protocol does not specify particular 
           characters that may not appear in component names.  File 
           systems may have their own set of prohibited characters 
           for which the error NFS4ERR_BADCHAR should be returned 
@@ -1462,7 +1461,7 @@
       </section>
       <section title="Bidirectional String Checking for Component Names">
         <t>
-          The NFS version 4 protocol does not require processing of 
+          The NFSv4 protocol does not require processing of 
           component names to check for and reject bidirectional 
           strings.  Such processing may be a part of the file 
           system implementation but if so, its particular form 
@@ -1495,7 +1494,7 @@
         is not valid UTF-8.  Note that file systems
         which treat names as strings of byte are an exception
         for which such validation need not be done.
-        One other situation in which an NFS version 4
+        One other situation in which an NFSv4
         might choose (or be configured) not to make 
         such a check is when links within file system
         reference names in another which is configured

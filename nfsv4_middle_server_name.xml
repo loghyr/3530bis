@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2010) -->
-<!-- Copyright (C) The Internet Society (2010) -->
+<!-- Copyright (C) The IETF Trust (2009-2011) -->
+<!-- Copyright (C) The Internet Society (2011) -->
 <section anchor="sec:name_space" title="NFS Server Name Space">
 
   <section title="Server Exports">
@@ -22,7 +22,7 @@
   <section title="Browsing Exports">
 
     <t>
-      The NFS version 4 protocol provides a root filehandle that clients
+      The NFSv4 protocol provides a root filehandle that clients
       can use to obtain filehandles for these exports via a multi-component
       LOOKUP.  A common user experience is to use a graphical user interface
       (perhaps a file "Open" dialog window) to find a file via progressive
@@ -32,8 +32,8 @@
     </t>
 
     <t>
-      This style of browsing is not well supported by the NFS version 2 and
-      3 protocols.  The client expects all LOOKUP operations to remain
+      This style of browsing is not well supported by the NFSv2 and
+      NFSv3 protocols.  The client expects all LOOKUP operations to remain
       within a single server filesystem.  For example, the device attribute
       will not change.  This prevents a client from taking name space
       paths that span exports.
@@ -55,9 +55,9 @@
   <section title="Server Pseudo Filesystem">
 
     <t>
-      NFS version 4 servers avoid this name space inconsistency by
+      NFSv4 servers avoid this name space inconsistency by
       presenting all the exports within the framework of a single server
-      name space.  An NFS version 4 client uses LOOKUP and READDIR
+      name space.  An NFSv4 client uses LOOKUP and READDIR
       operations to browse seamlessly from one export to another.  Portions
       of the server name space that are not exported are bridged via a
       "pseudo filesystem" that provides a view of exported directories only.
@@ -91,7 +91,7 @@
       The DOS and Windows operating environments are sometimes described
       as having "multiple roots".  Filesystems are commonly represented
       as disk letters.  MacOS represents filesystems as top level names.
-      NFS version 4 servers for these platforms can construct a pseudo
+      NFSv4 servers for these platforms can construct a pseudo
       file system above these root names so that disk letters or volume
       names are simply directory names in the pseudo root.
     </t>
