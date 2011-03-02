@@ -3263,13 +3263,13 @@ void;
       </t>
 
       <t>
-        The stateid argument for SETATTR is used to provide file
+        The stateid argument for SETATTR is used to provide byte-range
         locking context that is necessary for SETATTR requests that
         set the size attribute.  Since setting the size attribute
         modifies the file's data, it has the same locking requirements
         as a corresponding WRITE.  Any SETATTR that sets the size
         attribute is incompatible with a share reservation that
-        specifies DENY_WRITE.  The area between the old end-of-file
+        specifies OPEN4_SHARE_DENY_WRITE.  The area between the old end-of-file
         and the new end-of-file is considered to be modified just
         as would have been the case had the area in question been
         specified as the target of WRITE, for the purpose of checking
@@ -3278,18 +3278,6 @@ void;
         A valid stateid SHOULD always be specified.  When the file
         size attribute is not set, the special stateid consisting of
         all bits zero MAY be passed.
-      </t>
-
-      <t>
-        If a client holding a write delegation does a SETATTR for that file
-	for something other than set size and chooses to use a special
-	stateid to do the SETATTR, the delegation can be recalled by the
-	server. This is because there is no way for the server to know that
-	the SETATTR is coming from the client which is holding the delegation,
-	unless it looks at the client ID to figure this out. It would be
-	better if the client sends any such SETATTR with the delegation
-	stateid so that the server can avoid recalling the delegation for
-	such requests.
       </t>
 
       <t>
@@ -3309,19 +3297,19 @@ void;
 
       <t>
         If the request specifies the owner attribute to be set, the
-        server should allow the operation to succeed if the current
+        server SHOULD allow the operation to succeed if the current
         owner of the object matches the value specified in the request.
         Some servers may be implemented in a way as to prohibit
         the setting of the owner attribute unless the requester has
         privilege to do so.  If the server is lenient in this one
         case of matching owner values, the client implementation may
-        be simplified in cases of creation of an object followed by
-        a SETATTR.
+        be simplified in cases of creation of an object 
+				(e.g., an exclusive create via OPEN) followed by a SETATTR.
       </t>
 
       <t>
         The file size attribute is used to request changes to the
-        size of a file. A value of 0 (zero) causes the file to
+        size of a file. A value of zero causes the file to
         be truncated, a value less than the current size of the
         file causes data from new size to the end of the file to
         be discarded, and a size greater than the current size of
@@ -3330,18 +3318,31 @@ void;
         using holes or actual zero data bytes. Clients should not
         make any assumptions regarding a server's implementation of
         this feature, beyond that the bytes returned will be zeroed.
-        Servers must support extending the file size via SETATTR.
+        Servers MUST support extending the file size via SETATTR.
       </t>
 
       <t>
         SETATTR is not guaranteed atomic.  A failed SETATTR may
-        partially change a file's attributes.
+        partially change a file's attributes, hence the reason why
+				the reply always includes the status and the list of attributes
+				that were set.
+      </t>
+
+      <t>
+   			If the object whose attributes are being changed has a file
+   			delegation that is held by a client other than the one doing the
+   			SETATTR, the delegation(s) must be recalled, and the operation cannot
+   			proceed to actually change an attribute until each such delegation is
+   			returned or revoked.  In all cases in which delegations are recalled,
+   			the server is likely to return one or more NFS4ERR_DELAY errors while
+   			the delegation(s) remains outstanding, although it might not do that
+   			if the delegations are returned quickly.
       </t>
 
       <t>
         Changing the size of a file with SETATTR indirectly changes
-        the time_modify.  A client must account for this as size
-        changes can result in data deletion.
+        the time_modify and change attributes.  A client must account for
+				this as size changes can result in data deletion.
       </t>
 
       <t>
@@ -3365,12 +3366,12 @@ void;
         only the change attribute, immediately followed by a SETATTR,
         provides a means whereby a client may specify a request that
         emulates the functionality of the SETATTR guard mechanism of
-        NFS version 3.  Since the function of the guard mechanism
+        NFSv3.  Since the function of the guard mechanism
         is to avoid changes to the file attributes based on stale
         information, delays between checking of the guard condition
         and the setting of the attributes have the potential to
         compromise this function, as would the corresponding delay in
-        the NFS version 4 emulation.  Therefore, NFS version 4 servers
+        the NFSv4 emulation.  Therefore, NFSv4 servers
         should take care to avoid such delays, to the degree possible,
         when executing such a request.
       </t>
@@ -3382,10 +3383,9 @@ void;
 
       <t>
         A mask of the attributes actually set is returned by SETATTR
-        in all cases.  That mask must not include attributes bits not
-        requested to be set by the client, and must be equal to the
-        mask of attributes requested to be set only if the SETATTR
-        completes without error.
+        in all cases.  That mask MUST NOT include attribute bits not requested to be
+   			set by the client.  If the attribute masks in the request and reply
+   			are equal, the status field in the reply MUST be NFS4_OK.
       </t>
 
     </section>

@@ -59,23 +59,6 @@ implementations, but not captured in the spec?
 Medium:
 =======
 
-11) Clarify the use of the delegation vs lock vs open stateid in SETATTR.
-
-Action:
-Owner:
-State: Accepted, Medium
-Target:
-Note: Sync with 4.1
-
-12) Clarify the various scenarios that should result in a delegation recall
-(mainly SETATTR by self).
-
-Action:
-Owner:
-State: Accepted, Medium
-Target:
-Note: Merge with 11.
-
 17) Description of Third Edge Condition
 
 The third edge condition needs to be described.  Basically,
@@ -166,7 +149,7 @@ number of issues/confusion we should address:
 proceeds to talk about returning EXPIRED.  There is a disconnect
 between stateid state and errors.
 
-* EXPIRED is not described with the the *_STATEID errors but logically
+* EXPIRED is not described with the *_STATEID errors but logically
 it should be.
 
 * It doesn't discuss what a client should do about EXPIRED except
@@ -281,6 +264,7 @@ State: Accepted, Low
 Target: IETF 80
 5661: Yes
 
+=====
 Done:
 =====
 
@@ -1197,5 +1181,23 @@ State: Finished
 Target: IETF 80
 Note: Investigating whether anyone wants to spin off Dave's CLOSE semantics.
 
+12) Clarify the various scenarios that should result in a delegation recall
+(mainly SETATTR by self).
 
-=====
+Action:
+Owner:
+State: Merged with 11
+Target:
+Note: Merge with 11.
+
+11) Clarify the use of the delegation vs lock vs open stateid in SETATTR.
+
+Clarify the various scenarios that should result in a delegation recall
+(mainly SETATTR by self).
+
+Action: Pulled
+Owner: Tom
+State: Finished
+Target: IETF 80
+Note: Sync with 4.1
+
