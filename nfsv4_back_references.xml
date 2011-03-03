@@ -202,7 +202,7 @@
 	  <t>documents defining token formats, protocols, and
 	  procedures to be implemented in order to realize GSS-API
 	  services atop particular security mechanisms</t> <t>This
-	  memo obsoletesmaking specific, incremental changes in
+	  memo obsoletes making specific, incremental changes in
 	  response to implementation experience and liaison
 	  requests. It is intended, therefore, that this memo or a
 	  successor version thereto will become the basis for
@@ -643,7 +643,7 @@ document are to be interpreted as described in RFC
 <email>brent.callaghan@Eng.sun.com</email></address></author>
 <date year='2000' month='January' />
 <abstract>
-<t>This document describes a protocol for a WebNFS clientto negotiate the desired security mechanism with a WebNFS serverbefore the WebNFS client falls back to the MOUNT v3 protocol. This document is provided so that people can write compatible implementations.</t></abstract></front>
+<t>This document describes a protocol for a WebNFS client to negotiate the desired security mechanism with a WebNFS server before the WebNFS client falls back to the MOUNT v3 protocol. This document is provided so that people can write compatible implementations.</t></abstract></front>
 
 <seriesInfo name='RFC' value='2755' />
 <format type='TXT' octets='23493' target='ftp://ftp.isi.edu/in-notes/rfc2755.txt' />

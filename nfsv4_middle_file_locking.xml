@@ -1098,7 +1098,7 @@
 
         <t>
           If the server does not reboot before the network partition is healed,
-          when the orginal client tries to access a courtesy lock which
+          when the original client tries to access a courtesy lock which
           was freed, the server SHOULD send back a NFS4ERR_BAD_STATEID
           to the client. If the client tries to access a courtesy lock
           which was not freed, then the server should mark all of the
@@ -1296,7 +1296,7 @@
             <list style='numbers'>
               <t>
                 Reject all reclaims with NFS4ERR_NO_GRACE.  This is
-                superharsh, but necessary if the server does not want to
+                super harsh, but necessary if the server does not want to
                 record lock state in stable storage.
               </t>
 
@@ -1318,9 +1318,9 @@
 
         <section title="Client Edge Condition">
           <t>
-            A third egde condition effects the client and not the server.
+            A third edge condition effects the client and not the server.
             If the server reboots in the middle of the client reclaiming
-            some locks and then a network partitiion is established, the
+            some locks and then a network partition is established, the
             client might be in the situation of having reclaimed some, but
             not all locks. In that case, a conservative client would
             assume that the non-reclaimed locks were revoked.
@@ -1383,8 +1383,8 @@
           </t>
 
           <t>
-            During the parition, client A decided that the server had revoked
-            lock 2. After the paritition, it was able to reclaim lock 1, but
+            During the partition, client A decided that the server had revoked
+            lock 2. After the partition, it was able to reclaim lock 1, but
             made no attempt to reclaim lock 2. After the grace period, it is
             free to try to reestablish lock 2 via LOCK operations.
           </t>
@@ -1412,7 +1412,7 @@
             to reclaim state for, and use that to determine whether
             to re-establish the state via normal OPEN or LOCK requests.
             This is acceptable provided the client's operating environment
-            allows it.  In otherwords, the client implementor is advised
+            allows it.  In other words, the client implementor is advised
             to document for his users the behavior.  The client could also
             inform the application that its byte-range lock or share reservations
             (whether they were delegated or not) have been lost, such as

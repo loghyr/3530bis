@@ -512,7 +512,7 @@
       scenarios that clients may deal with.  The intent here is not to
       define or limit server implementations but rather to illustrate
       the range of issues that clients may face. Again, as the NFSv4.0
-      protocol does not have an explict means of communicating these
+      protocol does not have an explicit means of communicating these
       issues to the client, the intent is to document the problems that
       can be faced in a multi-server name space and allow the client to
       use the inferred transitions available via fs_locations and other
@@ -562,7 +562,7 @@
 	  represents an alternate path to the same data and metadata.
         </t>
         <t>
-	  Acesses one instance (or set of instances) and then
+	  Accesses one instance (or set of instances) and then
 	  transition to an alternative instance (or set of instances)
           as a result of network issues, server unresponsiveness, or
           server-directed migration.

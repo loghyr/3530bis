@@ -119,7 +119,7 @@
         the general structure of
         stringprep profiles, consisting of sections 
         which deal with the applicability of the 
-        description, the character repertoire, charcter
+        description, the character repertoire, character
         mapping, normalization, prohibited characters,
         and issues of the handling (i.e., possible
         prohibition) of bidirectional strings, is a 
@@ -163,7 +163,7 @@
             consisting of LATIN SMALL LETTER Q,
             COMBINING ACUTE ACCENT, COMBINING
             GRAVE ACCENT (U+0071, U+0301, U+0300)
-            is canonically quivalent to the string 
+            is canonically equivalent to the string 
             consisting of LATIN SMALL LETTER Q,
             COMBINING GRAVE ACCENT, COMBINING
             ACUTE ACCENT (U+0071, U+0300, U+0301)
@@ -212,7 +212,7 @@
         appearance while other compatibility
         equivalent strings are not.  Another example
         would be "x2" and the two character string
-        denoting x-squared which are clearly differnt
+        denoting x-squared which are clearly different
         in appearance although compatibility equivalent
         and not canonically equivalent.  These have 
         Unicode encodings  
@@ -223,12 +223,12 @@
       <t>
         One way to deal with these equivalence relations is
         via normalization.  A normalization form maps all 
-        strings to a correspondig normalized string in such 
+        strings to a corresponding normalized string in such 
         a fashion that all strings that are equivalent 
         (canonically or compatibly, depending on the form)
         are mapped to the same value.  Thus the image of
         the mapping is a subset of Unicode strings conceived
-        as the representives of the equivalence classes 
+        as the representatives of the equivalence classes 
         defined by the chosen equivalence relation.
       </t>
       <t>
@@ -252,7 +252,7 @@
             of the file system and the job of this 
             specification is not to specify a particular
             form but to make sure that interoperability
-            is maximmized, even when clients and 
+            is maximized, even when clients and 
             server-based file systems have different
             preferences.
           </t> 
@@ -260,7 +260,7 @@
       </t> 
       <t>
         A related but distinct issue concerns string confusability.  
-        This can occur when two strings (including single-charcter
+        This can occur when two strings (including single-character
         strings) having a similar appearance.  There have 
         been attempts to define uniform processing in
         an attempt to avoid such confusion 
@@ -293,7 +293,7 @@
         </list>
       </t>
       <t>
-        In addition, character pairs which apprear very 
+        In addition, character pairs which appear very 
         similar and could and often do result in confusion.  
         In addition to what Unicode defines as "compatibility
         equivalence", there are a considerable number of 
@@ -352,7 +352,7 @@
     <section title="Overall String Class Divisions">
       <t>
         NFSv4 has to deal with a large 
-        set of diffreent types of strings and 
+        set of different types of strings and 
         because of the different role of each,
         internationalization issues will be different
         for each:
@@ -369,7 +369,7 @@
           <t>
             In other cases, the fundamental internationalization
             issues are the responsibility of other IETF 
-            groups and our jobis simply to reference those
+            groups and our job is simply to reference those
             and perhaps make a few choices as to how they 
             are to be used (e.g., U-labels vs. A-labels).
           </t>
@@ -388,7 +388,7 @@
           <t hangText="MIX">
             indicating that there is small amount of
             preparatory processing that either picks
-            an internationalization hadling mode or
+            an internationalization handling mode or
             divides the string into a
             set of (two) strings with a different mode
             internationalization handling for each.
@@ -405,7 +405,7 @@
           </t>
           <t hangText="INET">
             indicating that the string needs to be
-            processed in a fashion goverened by
+            processed in a fashion governed by
             non-NFS-specific internet specifications.
             The details are discussed in the section
             "<xref target="Type-INET" format='title' />".
@@ -684,7 +684,7 @@
          as an attribute value presented to VERIFY and
          NVERIFY.  With that exception,
          they are not subject to server 
-         validation and posible rejection.  It is 
+         validation and possible rejection.  It is 
          not expected that clients will typically
          do such validation on receipt of responses
          but they may
@@ -731,7 +731,7 @@
         <t hangText='fattr4_mimetype'>
            strings need to be validated by matching against
            a list of valid mime types.  Since these are all
-           ASCII, no processing specific to internationaliztion
+           ASCII, no processing specific to internationalization
            is required since anything that does not match
            is invalid and anything which does not obey the
            rules of UTF-8 will not be ASCII and consequently
@@ -821,7 +821,7 @@
            title="String Types with NFS-specific Processing">
     <t>
       For a number of data types within NFSv4, the primary 
-      responsbibility for internationalization-related handling 
+      responsibility for internationalization-related handling 
       is that of some entity other than the server itself (see 
       below for details).  In these situations, the primary 
       responsibility of NFSv4 is to provide a framework
@@ -849,7 +849,7 @@
           the issues are similar, but file systems are restricted
           in the set of acceptable internationalization-related
           processing that they may do, principally because symbolic
-          links may contain name componetns that, when used, are 
+          links may contain name components that, when used, are 
           presented to other file systems and/or other servers.
           See "<xref target="Type-ltext" format='title' />"
           for the detailed treatment.	
@@ -1093,7 +1093,7 @@
           server SHOULD limit visible (i.e., those that change the 
           name of file to reflect those mappings to those from 
           from a subset of the stringprep table B.1.  Note particularly,
-          the mapings from U+200C and U+200D to the empty
+          the mappings from U+200C and U+200D to the empty
           string should be avoided, due to their undesirable effect 
           on some strings in Farsi.
         </t>
@@ -1126,7 +1126,7 @@
               matching processing, while retaining it when
               a file is created.  This would be analogous 
               to file systems that are both case-insensitive
-              and case-preserving,as dicussed above, or 
+              and case-preserving,as discussed above, or 
               those which are both normalization-insensitive
               and normalization-preserving, as discussed
               below.  The handling will be insensitive to
@@ -1244,7 +1244,7 @@
             not read-only and security allows it), attempting
             to create multiple files with
             canonically equivalent names and looking 
-            at success paaaters and the names assigned by the 
+            at success patterns and the names assigned by the 
             server to these files can serve as a way to 
             determine the relevant information.
           </t>
@@ -1295,7 +1295,7 @@
               <vspace blankLines='1' />
                 When the client sees multiple names that are 
                 canonically equivalent, it is clear you
-                have a file systen which is normalization
+                have a file system which is normalization
                 sensitive.  Clients should generally 
                 replace each canonically equivalent name
                 with one that appends some distinguishing 
@@ -1324,9 +1324,9 @@
               <t>
                 In the case in which normalization-unaware
                 clients are involved in the mix, LOOKUP can
-                fail and then the second lOOKUP, described
+                fail and then the second LOOKUP, described
                 above can also fail, even though there may 
-                well be a oanonically equivalent name in
+                well be a canonically equivalent name in
                 the directory.  One possible approach in
                 that case is to use a READDIR to find the
                 equivalent name and lookup that, although this
@@ -1345,7 +1345,7 @@
                 though, the directory contains a canonically 
                 equivalent name.  Similar issues can occur with
                 LINK and RENAME.  The client can't really do 
-                much about such sitautions, except be aware that
+                much about such situations, except be aware that
                 they may occur.  That's one of the reasons 
                 normalization-sensitive server file system
                 implementations can be problematic to use when
@@ -1370,7 +1370,7 @@
           <t>
             Note that although the client
             implementation itself and the kernel implementation
-            may be normalization-unware, treating name components
+            may be normalization-unaware, treating name components
             as strings not subject to normalization, the environment
             as a whole may be normalization-aware if commonly
             used libraries result in an application environment
@@ -1380,7 +1380,7 @@
           </t>
           <t>
             The following suggestions may be helpful in handling
-            interoperability issues for truely normalization-unaware
+            interoperability issues for truly normalization-unaware
             client environments, when they interact with file
             systems other than those which are 
             normalization-sensitive.  The issues tend to be the
@@ -1408,7 +1408,7 @@
                 an object of name already exists or simply
                 open a file of that other name. 
               <vspace blankLines='1' />
-                If it desired to have those two obects in
+                If it desired to have those two objects in
                 the same directory, the names must be made
                 not canonically equivalent.  It is possible
                 to append some distinguishing character to
@@ -1523,7 +1523,7 @@
             Limitation of the character repertoire 
             MUST NOT be done.  This includes 
             limitations to reflect a particular version 
-            of unicode, or the inability of any particualr 
+            of Unicode, or the inability of any particularly 
             file system to store characters beyond UCS-2.
           </t>
           <t>
@@ -1541,7 +1541,7 @@
             be done.
           </t>
           <t>
-            Checks for bidrectional strings MUST NOT
+            Checks for bidirectional strings MUST NOT
             be done.
           </t>
         </list>
@@ -1585,10 +1585,10 @@
             cannot assume that the server preserves
             normalization so a user set to one string
             value may be returned as a string which
-            differs in nomralization and the client 
+            differs in normalization and the client 
             must be prepared to deal with that, by,
             for example, normalizing the string to the
-            client's prferred form.
+            client's preferred form.
           </t>
           <t>
             There are no checks for specific invalid 
@@ -1599,14 +1599,14 @@
             invalid.
           </t>
           <t>
-            Specific checks for bidrectional strings 
+            Specific checks for bidirectional strings 
             are not done but servers may limit the
             principal prefix strings to those which 
             are unidirectional or are of a certain
             direction, with the result that any
             principal presented by the client which
             done not meet that criterion will be
-            treated as invaid.         
+            treated as invalid.         
           </t>
         </list>
       </t>

@@ -131,7 +131,7 @@
         <t>
           Remove use of the pathname4 data type from LOOKUP and OPEN
           in favor of having the client construct a sequence of LOOKUP
-          operations to achieive the same effect.
+          operations to achieve the same effect.
         </t>
 
         <t>

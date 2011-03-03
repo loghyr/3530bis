@@ -207,7 +207,7 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
       </t>
 
       <t>
-        The client SHOULD NOT contstruct a COMPOUND which mixes operations
+        The client SHOULD NOT construct a COMPOUND which mixes operations
         for different client IDs.
       </t>
 
@@ -340,7 +340,7 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
         The information returned by the server in response to an ACCESS
         call is not permanent.  It was correct at the exact time
         that the server performed the checks, but not necessarily
-        afterwards.  The server can revoke access permission at
+        afterward.  The server can revoke access permission at
         any time.
       </t>
 
@@ -1931,9 +1931,9 @@ READ 0 32767
         the GETATTR to be for the same client ID and avoid
         querying the client, which will not be able to respond.
         This sequence of OPEN, GETATTR SHOULD be understood
-        as an atomic retrievel of the initial size and
+        as an atomic retrieval of the initial size and
         change attribute. Further, the client SHOULD
-        NOT contstruct a COMPOUND which mixes operations
+        NOT construct a COMPOUND which mixes operations
         for different client IDs.
       </t>
 

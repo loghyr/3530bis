@@ -854,7 +854,7 @@
        </t>
        <t>
          The server can specify a root path by setting an array of
-	 zero path compenents. Other than this special case, the
+	 zero path components. Other than this special case, the
 	 server MUST not present empty path components to the
 	 client.
        </t>

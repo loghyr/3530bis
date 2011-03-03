@@ -39,7 +39,7 @@
       scalability challenges can arise when those techniques are used
       with very large numbers of clients.  This is particularly true when
       clients are geographically distributed which classically increases
-      the latency for cache revalidation requests.
+      the latency for cache re-validation requests.
     </t>
 
     <t>
@@ -1158,13 +1158,13 @@
       </t>
     </section>
 
-    <section title="OPEN delegatiion race with CB_RECALL">
+    <section title="OPEN Delegation Race with CB_RECALL">
       <t>
         The server informs the client of recall via a CB_RECALL. A race
         case which may develop is when the delegation is immediately
         recalled before the COMPOUND which established the delegation
         is returned to the client. As the CB_RECALL provides both a
-        stateid and a file handle for which the client has no mapping,
+        stateid and a filehandle for which the client has no mapping,
         it cannot honor the recall attempt. At this point, the client has two
         choices, either do not respond or respond with NFS4ERR_BADHANDLE. 
         If it does not respond, then it runs the risk of the server
@@ -1174,9 +1174,9 @@
       <t>
         If instead it does reply with NFS4ERR_BADHANDLE, then both the
         client and the server might be able to  detect that a race condition
-        is occuring.  The client can keep a list of pending delegations.
+        is occurring.  The client can keep a list of pending delegations.
         When it receives a CB_RECALL for an unknown delegation, it can cache
-        the stateid and file handle on a list of pending recalls. When it
+        the stateid and filehandle on a list of pending recalls. When it
         is provided with a delegation, it would only use it if it was not
         on the pending recall list. Upon the next CB_RECALL, it could
         immediately return the delegation.
@@ -1398,7 +1398,7 @@
       The typical filesystem application programming interfaces do not
       provide means to atomically modify or interrogate attributes for
       multiple files at the same time.  The following rules provide an
-      environment where the potential incoherences mentioned above can be
+      environment where the potential incoherency mentioned above can be
       reasonably managed.  These rules are derived from the practice of
       previous NFS protocols.
 

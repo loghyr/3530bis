@@ -758,8 +758,8 @@
       <t>
          This error should not be returned due a normalization issue
          in a string.  When a file system keeps names in a particular
-         normalization form, it is the server's responsiblity to 
-         do the approproriate normalization, rather than rejecting 
+         normalization form, it is the server's responsibility to 
+         do the appropriate normalization, rather than rejecting 
          the name.
       </t>
     </section>
