@@ -377,7 +377,7 @@
             operations has occurred).  The error NFS4ERR_OLD_STATEID should
             be returned.
           <vspace blankLines='1' />
-            This error condition will only occur when the client issues a
+            This error condition SHOULD only occur when the client issues a
             locking request which changes a stateid while an I/O request
             that uses that stateid is outstanding.
           </t>
@@ -387,10 +387,6 @@
             the stateid does not designate a locking state for any active
             lockowner-file pair.  The error NFS4ERR_BAD_STATEID should
             be returned.
-          <vspace blankLines='1' />
-            This error condition will occur when there has been a logic
-            error on the part of the client or server.  This should
-            not happen.
           </t>
         </list>
       </t>
@@ -1090,324 +1086,383 @@
         application that held the lock.
       </t>
 
-      <t>
-        As a courtesy to the client or as an optimization, the server
-        may continue to hold locks on behalf of a client for which recent
-        communication has extended beyond the lease period.  If the server
-        receives a lock or I/O request that conflicts with one of these
-        courtesy locks, the server must free the courtesy lock and grant
-        the new request.
-      </t>
+      <section anchor="ss:fl:cl" title="Courtesy Locks">
+        <t>
+          As a courtesy to the client or as an optimization, the server
+          may continue to hold locks on behalf of a client for which recent
+          communication has extended beyond the lease period.  If the server
+          receives a lock or I/O request that conflicts with one of these
+          courtesy locks, the server must free the courtesy lock and grant
+          the new request.
+        </t>
 
-      <t>
-        When a network partition is combined with a server reboot, there
-        are edge conditions that place requirements on the server in
-        order to avoid silent data corruption following the server reboot.
-        Two of these edge conditions are known, and are discussed below.
-      </t>
+        <t>
+          If the server does not reboot before the network partition is healed,
+          when the orginal client tries to access a courtesy lock which
+          was freed, the server SHOULD send back a NFS4ERR_BAD_STATEID
+          to the client. If the client tries to access a courtesy lock
+          which was not freed, then the server should mark all of the
+          courtesy locks as implicitly being renewed.
+        </t>
 
-      <t>
-        The first edge condition has the following scenario:
+        <t>
+          When a network partition is combined with a server reboot, there
+          are edge conditions that place requirements on the server in
+          order to avoid silent data corruption following the server reboot.
+          Two of these edge conditions are known, and are discussed below.
+        </t>
 
-        <list style='numbers'>
+        <section title="First Server Edge Condition">
           <t>
-            Client A acquires a lock.
+            The first edge condition has the following scenario:
+
+            <list style='numbers'>
+              <t>
+                Client A acquires a lock.
+              </t>
+
+              <t>
+                Client A and server experience mutual network partition,
+                such that client A is unable to renew its lease.
+              </t>
+
+              <t>
+                Client A's lease expires, so server releases lock.
+              </t>
+
+              <t>
+                Client B acquires a lock that would have conflicted with
+                that of Client A.
+              </t>
+
+              <t>
+                Client B releases the lock
+              </t>
+
+              <t>
+                Server reboots
+              </t>
+
+              <t>
+                Network partition between client A and server heals.
+              </t>
+
+              <t>
+                Client A issues a RENEW operation, and gets back a
+                NFS4ERR_STALE_CLIENTID.
+              </t>
+
+              <t>
+                Client A reclaims its lock within the server's grace period.
+              </t>
+            </list>
           </t>
 
           <t>
-            Client A and server experience mutual network partition,
-            such that client A is unable to renew its lease.
+            Thus, at the final step, the server has erroneously granted client
+            A's lock reclaim.  If client B modified the object the lock was
+            protecting, client A will experience object corruption.
+          </t>
+        </section>
+
+        <section title="Second Server Edge Condition">
+          <t>
+            The second known edge condition follows:
+
+            <list style='numbers'>
+
+              <t>
+                Client A acquires a lock.
+              </t>
+
+              <t>
+                Server reboots.
+              </t>
+
+              <t>
+                Client A and server experience mutual network partition,
+                such that client A is unable to reclaim its lock within
+                the grace period.
+              </t>
+
+              <t>
+                Server's reclaim grace period ends.  Client A has no locks
+                recorded on server.
+              </t>
+
+              <t>
+                Client B acquires a lock that would have conflicted with
+                that of Client A.
+              </t>
+
+              <t>
+                Client B releases the lock.
+              </t>
+
+              <t>
+                Server reboots a second time.
+              </t>
+
+              <t>
+                Network partition between client A and server heals.
+              </t>
+
+              <t>
+                Client A issues a RENEW operation, and gets back a
+                NFS4ERR_STALE_CLIENTID.
+              </t>
+
+              <t>
+                Client A reclaims its lock within the server's grace period.
+              </t>
+            </list>
           </t>
 
           <t>
-            Client A's lease expires, so server releases lock.
+            As with the first edge condition, the final step of the scenario
+            of the second edge condition has the server erroneously granting
+            client A's lock reclaim.
+          </t>
+        </section>
+
+        <section title="Handling Server Edge Conditions">
+          <t>
+            Solving these edge conditions requires that the
+            server either assume after it reboots that edge condition occurs,
+            and thus return NFS4ERR_NO_GRACE for all reclaim attempts, or that
+            the server record some information in stable storage.  The amount
+            of information the server records in stable storage is in inverse
+            proportion to how harsh the server wants to be whenever the edge
+            conditions occur.  The server that is completely tolerant of all
+            edge conditions will record in stable storage every lock that
+            is acquired, removing the lock record from stable storage only
+            when the lock is unlocked by the client and the lock's lockowner
+            advances the sequence number such that the lock release is not
+            the last stateful event for the lockowner's sequence.  For the two
+            aforementioned edge conditions, the harshest a server can be, and
+            still support a grace period for reclaims, requires that the server
+            record in stable storage information some minimal information.
+            For example, a server implementation could, for each client,
+            save in stable storage a record containing:
+
+            <list style='symbols'>
+              <t>
+                the client's id string
+              </t>
+
+              <t>
+                a boolean that indicates if the client's lease expired or
+                if there was administrative intervention (see
+                <xref target="ss:fl:srl" />)
+                to revoke a byte-range lock, share
+                reservation, or delegation
+              </t>
+
+              <t>
+                a timestamp that is updated the first time after a server boot
+                or reboot the client acquires byte-range locking, share reservation,
+                or delegation state on the server.  The timestamp need not be
+                updated on subsequent lock requests until the server reboots.
+              </t>
+            </list>
           </t>
 
           <t>
-            Client B acquires a lock that would have conflicted with
-            that of Client A.
+            The server implementation would also record in the stable storage
+            the timestamps from the two most recent server reboots.
           </t>
 
           <t>
-            Client B releases the lock
+            Assuming the above record keeping, for the first edge condition,
+            after the server reboots, the record that client A's lease expired
+            means that another client could have acquired a conflicting record
+            lock, share reservation, or delegation.  Hence the server must
+            reject a reclaim from client A with the error NFS4ERR_NO_GRACE.
           </t>
 
           <t>
-            Server reboots
+            For the second edge condition, after the server reboots for a
+            second time, the record that the client had an unexpired record
+            lock, share reservation, or delegation established before the
+            server's previous incarnation means that the server must reject
+            a reclaim from client A with the error NFS4ERR_NO_GRACE.
           </t>
 
           <t>
-            Network partition between client A and server heals.
+            Regardless of the level and approach to record keeping, the server
+            MUST implement one of the following strategies (which apply to
+            reclaims of share reservations, byte-range locks, and delegations):
+
+            <list style='numbers'>
+              <t>
+                Reject all reclaims with NFS4ERR_NO_GRACE.  This is
+                superharsh, but necessary if the server does not want to
+                record lock state in stable storage.
+              </t>
+
+              <t>
+                Record sufficient state in stable storage such that all
+                known edge conditions involving server reboot, including the
+                two noted in this section, are detected.  False positives
+                are acceptable.  Note that at this time, it is not known
+                if there are other edge conditions.
+
+                In the event, after a server reboot, the server determines
+                that there is unrecoverable damage or corruption to the the
+                stable storage, then for all clients and/or locks affected,
+                the server MUST return NFS4ERR_NO_GRACE.
+              </t>
+            </list>
+          </t>
+        </section>
+
+        <section title="Client Edge Condition">
+          <t>
+            A third egde condition effects the client and not the server.
+            If the server reboots in the middle of the client reclaiming
+            some locks and then a network partitiion is established, the
+            client might be in the situation of having reclaimed some, but
+            not all locks. In that case, a conservative client would
+            assume that the non-reclaimed locks were revoked.
           </t>
 
           <t>
-            Client A issues a RENEW operation, and gets back a
-            NFS4ERR_STALE_CLIENTID.
+            The third known edge condition follows:
+
+            <list style='numbers'>
+  
+              <t>
+                Client A acquires a lock 1.
+              </t>
+
+              <t>
+                Client A acquires a lock 2.
+              </t>
+
+              <t>
+                Server reboots.
+              </t>
+
+              <t>
+                Client A issues a RENEW operation, and gets back a
+                NFS4ERR_STALE_CLIENTID.
+              </t>
+
+              <t>
+                Client A reclaims its lock 1 within the server's grace period.
+              </t>
+
+              <t>
+                Client A and server experience mutual network partition,
+                such that client A is unable to reclaim its remaining locks
+                within the grace period.
+              </t>
+
+              <t>
+                Server's reclaim grace period ends.  Client A has no locks
+                recorded on server.
+              </t>
+
+              <t>
+                Server reboots a second time.
+              </t>
+
+              <t>
+                Network partition between client A and server heals.
+              </t>
+
+              <t>
+                Client A issues a RENEW operation, and gets back a
+                NFS4ERR_STALE_CLIENTID.
+              </t>
+
+              <t>
+                Client A reclaims its lock 1 within the server's grace period.
+              </t>
+            </list>
           </t>
 
           <t>
-            Client A reclaims its lock within the server's grace period.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        Thus, at the final step, the server has erroneously granted client
-        A's lock reclaim.  If client B modified the object the lock was
-        protecting, client A will experience object corruption.
-      </t>
-
-      <t>
-        The second known edge condition follows:
-
-        <list style='numbers'>
-
-          <t>
-            Client A acquires a lock.
+            During the parition, client A decided that the server had revoked
+            lock 2. After the paritition, it was able to reclaim lock 1, but
+            made no attempt to reclaim lock 2. After the grace period, it is
+            free to try to reestablish lock 2 via LOCK operations.
           </t>
 
           <t>
-            Server reboots.
+            Note that the other two edge conditions are able to interact with this
+            third edge condition. Another client B may have established a conflicting
+            lock during the partition, made some changes, and the released the
+            lock before the second server reboot.
+          </t>
+        </section>
+
+        <section title="Client's Handling of NFS4ERR_NO_GRACE">
+
+          <t>
+            A mandate for the client's handling of the NFS4ERR_NO_GRACE error
+            is outside the scope of this specification, since the strategies
+            for such handling are very dependent on the client's operating
+            environment.  However, one potential approach is described below.
           </t>
 
           <t>
-            Client A and server experience mutual network partition,
-            such that client A is unable to reclaim its lock within
-            the grace period.
+            When the client receives NFS4ERR_NO_GRACE, it could examine
+            the change attribute of the objects the client is trying
+            to reclaim state for, and use that to determine whether
+            to re-establish the state via normal OPEN or LOCK requests.
+            This is acceptable provided the client's operating environment
+            allows it.  In otherwords, the client implementor is advised
+            to document for his users the behavior.  The client could also
+            inform the application that its byte-range lock or share reservations
+            (whether they were delegated or not) have been lost, such as
+            via a UNIX signal, a GUI pop-up window, etc.  See <xref target="ss:cc:cache_revoke" />,
+            for a discussion of what the client
+            should do for dealing with unreclaimed delegations on client state.
           </t>
 
           <t>
-            Server's reclaim grace period ends.  Client A has no locks
-            recorded on server.
+            For further discussion of revocation of locks see <xref target="ss:fl:srl" />.
           </t>
+        </section>
+      </section>
 
-          <t>
-            Client B acquires a lock that would have conflicted with
-            that of Client A.
-          </t>
+      <section title="Client's Reaction to a Freed Lock">
+        <t>
+          There is no way for a client to predetermine how a given server
+          is going to behave during a network partition. When the
+          partition heals, either the client still has all of its locks,
+          it has some of its locks, or it has none of them. The
+          client will be able to examine the various error return
+          values to determine its response.
 
-          <t>
-            Client B releases the lock.
-          </t>
-
-          <t>
-            Server reboots a second time.
-          </t>
-
-          <t>
-            Network partition between client A and server heals.
-          </t>
-
-          <t>
-            Client A issues a RENEW operation, and gets back a
-            NFS4ERR_STALE_CLIENTID.
-          </t>
-
-          <t>
-            Client A reclaims its lock within the server's grace period.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        As with the first edge condition, the final step of the scenario
-        of the second edge condition has the server erroneously granting
-        client A's lock reclaim.
-      </t>
-
-      <t>
-        Solving these edge conditions requires that the
-        server either assume after it reboots that edge condition occurs,
-        and thus return NFS4ERR_NO_GRACE for all reclaim attempts, or that
-        the server record some information in stable storage.  The amount
-        of information the server records in stable storage is in inverse
-        proportion to how harsh the server wants to be whenever the edge
-        conditions occur.  The server that is completely tolerant of all
-        edge conditions will record in stable storage every lock that
-        is acquired, removing the lock record from stable storage only
-        when the lock is unlocked by the client and the lock's lockowner
-        advances the sequence number such that the lock release is not
-        the last stateful event for the lockowner's sequence.  For the two
-        aforementioned edge conditions, the harshest a server can be, and
-        still support a grace period for reclaims, requires that the server
-        record in stable storage information some minimal information.
-        For example, a server implementation could, for each client,
-        save in stable storage a record containing:
-
-        <list style='symbols'>
-          <t>
-            the client's id string
-          </t>
-
-          <t>
-            a boolean that indicates if the client's lease expired or
-            if there was administrative intervention (see
-            <xref target="ss:fl:srl" />)
-            to revoke a byte-range lock, share
-            reservation, or delegation
-          </t>
-
-          <t>
-            a timestamp that is updated the first time after a server boot
-            or reboot the client acquires byte-range locking, share reservation,
-            or delegation state on the server.  The timestamp need not be
-            updated on subsequent lock requests until the server reboots.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        The server implementation would also record in the stable storage
-        the timestamps from the two most recent server reboots.
-      </t>
-
-      <t>
-        Assuming the above record keeping, for the first edge condition,
-        after the server reboots, the record that client A's lease expired
-        means that another client could have acquired a conflicting record
-        lock, share reservation, or delegation.  Hence the server must
-        reject a reclaim from client A with the error NFS4ERR_NO_GRACE.
-      </t>
-
-      <t>
-        For the second edge condition, after the server reboots for a
-        second time, the record that the client had an unexpired record
-        lock, share reservation, or delegation established before the
-        server's previous incarnation means that the server must reject
-        a reclaim from client A with the error NFS4ERR_NO_GRACE.
-      </t>
-
-      <t>
-        Regardless of the level and approach to record keeping, the server
-        MUST implement one of the following strategies (which apply to
-        reclaims of share reservations, byte-range locks, and delegations):
-
-        <list style='numbers'>
-          <t>
-            Reject all reclaims with NFS4ERR_NO_GRACE.  This is
-            superharsh, but necessary if the server does not want to
-            record lock state in stable storage.
-          </t>
-
-          <t>
-            Record sufficient state in stable storage such that all
-            known edge conditions involving server reboot, including the
-            two noted in this section, are detected.  False positives
-            are acceptable.  Note that at this time, it is not known
-            if there are other edge conditions.
-
-            In the event, after a server reboot, the server determines
-            that there is unrecoverable damage or corruption to the the
-            stable storage, then for all clients and/or locks affected,
-            the server MUST return NFS4ERR_NO_GRACE.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        A third egde condition effects the client and not the server.
-        If the server reboots in the middle of the client reclaiming
-        some locks and then a network partitiion is established, the
-        client might be in the situation of having reclaimed some, but
-        not all locks. In that case, a conservative client would
-        assume that the non-reclaimed locks were revoked.
-      </t>
-
-      <t>
-        The third known edge condition follows:
-
-        <list style='numbers'>
-
-          <t>
-            Client A acquires a lock 1.
-          </t>
-
-          <t>
-            Client A acquires a lock 2.
-          </t>
-
-          <t>
-            Server reboots.
-          </t>
-
-          <t>
-            Client A issues a RENEW operation, and gets back a
-            NFS4ERR_STALE_CLIENTID.
-          </t>
-
-          <t>
-            Client A reclaims its lock 1 within the server's grace period.
-          </t>
-
-          <t>
-            Client A and server experience mutual network partition,
-            such that client A is unable to reclaim its remaining locks
-            within the grace period.
-          </t>
-
-          <t>
-            Server's reclaim grace period ends.  Client A has no locks
-            recorded on server.
-          </t>
-
-          <t>
-            Server reboots a second time.
-          </t>
-
-          <t>
-            Network partition between client A and server heals.
-          </t>
-
-          <t>
-            Client A issues a RENEW operation, and gets back a
-            NFS4ERR_STALE_CLIENTID.
-          </t>
-
-          <t>
-            Client A reclaims its lock 1 within the server's grace period.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        During the parition, client A decided that the server had revoked
-        lock 2. After the paritition, it was able to reclaim lock 1, but
-        made no attempt to reclaim lock 2. After the grace period, it is
-        free to try to reestablish lock 2 via LOCK operations.
-      </t>
-
-      <t>
-        Note that the other two edge conditions are able to interact with this
-        third edge condition. Another client B may have established a conflicting
-        lock during the partition, made some changes, and the released the
-        lock before the second server reboot.
-      </t>
-      <t>
-        A mandate for the client's handling of the NFS4ERR_NO_GRACE error
-        is outside the scope of this specification, since the strategies
-        for such handling are very dependent on the client's operating
-        environment.  However, one potential approach is described below.
-      </t>
-
-      <t>
-        When the client receives NFS4ERR_NO_GRACE, it could examine
-        the change attribute of the objects the client is trying
-        to reclaim state for, and use that to determine whether
-        to re-establish the state via normal OPEN or LOCK requests.
-        This is acceptable provided the client's operating environment
-        allows it.  In otherwords, the client implementor is advised
-        to document for his users the behavior.  The client could also
-        inform the application that its byte-range lock or share reservations
-        (whether they were delegated or not) have been lost, such as
-        via a UNIX signal, a GUI pop-up window, etc.  See <xref target="ss:cc:cache_revoke" />,
-        for a discussion of what the client
-        should do for dealing with unreclaimed delegations on client state.
-      </t>
-
-      <t>
-        For further discussion of revocation of locks see <xref target="ss:fl:srl" />.
-      </t>
-
+            <list style="hanging">
+              <t hangText="NFS4ERR_EXPIRED:"> <vspace blankLines='1' />
+                All locks has been revoked during the partition. The client
+                should use a SETCLIENTID to recover.
+              </t>
+              <t hangText="NFS4ERR_ADMIN_REVOKED:"> <vspace blankLines='1' />
+                The current lock has been revoked during the partition and
+                there is no clue as to whether the server rebooted.
+              </t>
+              <t hangText="NFS4ERR_BAD_STATEID:"> <vspace blankLines='1' />
+                The current lock has been revoked during the partition and
+                the server did not reboot. Other locks MAY still be renewed.
+                The client MAY NOT want to do a SETCLIENTID and instead
+                SHOULD probe via a RENEW call.
+              </t>
+              <t hangText="NFS4ERR_NO_GRACE:"> <vspace blankLines='1' />
+                The current lock has been revoked during the partition and
+                the server rebooted. The server might have no information
+                on the other locks. They may still be renewable.
+              </t>
+              <t hangText="NFS4ERR_OLD_STATEID:"> <vspace blankLines='1' />
+                The server has not rebooted. The client SHOULD handle
+                this error as it normally would.
+              </t>
+            </list>
+				</t>
+      </section>
     </section>
   </section>
   <section title="Recovery from a Lock Request Timeout or Abort">

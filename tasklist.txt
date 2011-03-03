@@ -1205,10 +1205,7 @@ it should be.
 for the stuff about returning error.  In light of our discussion,
 I think there needs to be more.
 
-Action: DUP of 4, mainly deals with a server that DOES NOT do courtesy locks
-Owner:
-State: Accepted, Medium
-Target:
+Some notes:
 
     http://www.ietf.org/mail-archive/web/nfsv4/current/msg02713.html
 
@@ -1224,4 +1221,16 @@ Target:
     At Connectathon06, some servers returned NFS4ERR_EXPIRED and others
     returned NFS4ERR_BAD_STATEID. Can either error be used for this case?
     (If so, I need to tweak my client to handle both.)
+
+According to the spec, it is very clear that the server must return NFS4ERR_EXPIRED
+and not NFS4ERR_BAD_STATEID.
+
+Now, if the server is doing courtesy locks, then the server must return
+NFS4ERR_STALE_CLIENTID and when the client tries to reclaim, it
+must get NFS4ERR_NO_GRACE.
+
+Action: Explain what happens in a network partition when the server does not reboot
+Owner: Tom
+State: Finished
+Target: IETF 80
 
