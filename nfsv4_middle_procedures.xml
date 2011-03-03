@@ -206,6 +206,11 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
         type of complexity in recovery.
       </t>
 
+      <t>
+        The client SHOULD NOT contstruct a COMPOUND which mixes operations
+        for different client IDs.
+      </t>
+
     </section>
   </section>
   <section anchor="OP_ACCESS" title="Operation 3: ACCESS - Check Access Rights">
@@ -1944,6 +1949,20 @@ READ 0 32767
         the error NFS4ERR_SYMLINK will be returned to the client.
         If the current filehandle is not a directory, the error
         NFS4ERR_NOTDIR will be returned.
+      </t>
+
+      <t>
+        If a COMPOUND contains an OPEN which establishes a
+        OPEN_DELEGATE_WRITE delegation, then a subsequent
+        GETATTR inside that COMPOUND SHOULD not result in a
+        CB_GETATTR to the client. The server SHOULD understand
+        the GETATTR to be for the same client ID and avoid
+        querying the client, which will not be able to respond.
+        This sequence of OPEN, GETATTR SHOULD be understood
+        as an atomic retrievel of the initial size and
+        change attribute. Further, the client SHOULD
+        NOT contstruct a COMPOUND which mixes operations
+        for different client IDs.
       </t>
 
     </section>

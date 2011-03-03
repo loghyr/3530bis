@@ -145,61 +145,6 @@ Owner:
 State: Accepted, Medium
 Target:
 
-19) Clarify Use of CB_GETATTR and "Implied" Clientid
-
-Spencer Shepler wrote:
-
-In a thread of discussion about OPEN and CB_GETATTR passing each
-other in the night, I pointed to a similar thread and Rick Macklem
-followed up with this.  This needs to be captured in the I-D.
-
-  I will refer to the previous thread on this topic. Specifically
-  this message from Dave Noveck:
-  [http://www.nfsv4.org/nfsv4-wg-archive-feb-03-feb-05/0143.html]:
-
-Dave makes a good argument for not doing CBGetattr when the Write
-Delegation  does not allow the file to grow (which is what my server
-is doing at this  point). However, I would have assumed such a Write
-Delegation would  still allow the client to truncate the file
-locally, if it wished to do so. I suspect that current ones do a
-Setattr with Size or Open/Create right away, but couldn't a client
-delay doing this until Delegreturn?
-
-If clients always do Truncation to the server without delay, then
-I'd agree that the CBGetattr is not required for the Write Delegations
-that don't allow files to grow. (I'd also like to see Write Delegations
-that allow files to grow work properly, since I think they could
-be a big performance win, if clients use them properly.)
-
-If course, as Dave also notes, since this isn't in the RFC, it's
-hard to argue that an nfsv4.0 server shouldn't do CBGetattrs for
-this case, just that the server doesn't have to.
-
-tmt wrote:
-
-I think the "implied clientid" is mentioned in this message:
-[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg02787.html]
-
-I will point out that when a session is in place, all operations
-within a single COMPOUND explicitly belong to the sessionid, and
-therefore clientid, referenced in the initial SEQUENCE or CB_SEQUENCE
-operation.
-
-Further, it is my opinion that we should disallow mixing operations
-belonging to distinct clientid's in any COMPOUND, for all NFSv4
-versions. The ramifications are just too onerous otherwise.
-[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg02781.html]
-
-dnoveck wrote:
-
-This doesn't apply to sessions.  May be an issue for 3530bis.
-
-Action:
-Owner:
-State: Accepted, Medium
-Target:
-Notes: Dave does not swear.
-
 20) Explanatory Text on Stateid Contradicts Self and Rest of Protocol
 
 See the thread beginning
@@ -1203,4 +1148,59 @@ State: Finished
 Target: IETF 80
 Note: Dave track down the mail
 5661: Probably
+
+19) Clarify Use of CB_GETATTR and "Implied" Clientid
+
+Spencer Shepler wrote:
+
+In a thread of discussion about OPEN and CB_GETATTR passing each
+other in the night, I pointed to a similar thread and Rick Macklem
+followed up with this.  This needs to be captured in the I-D.
+
+  I will refer to the previous thread on this topic. Specifically
+  this message from Dave Noveck:
+  [http://www.nfsv4.org/nfsv4-wg-archive-feb-03-feb-05/0143.html]:
+
+Dave makes a good argument for not doing CBGetattr when the Write
+Delegation  does not allow the file to grow (which is what my server
+is doing at this  point). However, I would have assumed such a Write
+Delegation would  still allow the client to truncate the file
+locally, if it wished to do so. I suspect that current ones do a
+Setattr with Size or Open/Create right away, but couldn't a client
+delay doing this until Delegreturn?
+
+If clients always do Truncation to the server without delay, then
+I'd agree that the CBGetattr is not required for the Write Delegations
+that don't allow files to grow. (I'd also like to see Write Delegations
+that allow files to grow work properly, since I think they could
+be a big performance win, if clients use them properly.)
+
+If course, as Dave also notes, since this isn't in the RFC, it's
+hard to argue that an nfsv4.0 server shouldn't do CBGetattrs for
+this case, just that the server doesn't have to.
+
+tmt wrote:
+
+I think the "implied clientid" is mentioned in this message:
+[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg02787.html]
+
+I will point out that when a session is in place, all operations
+within a single COMPOUND explicitly belong to the sessionid, and
+therefore clientid, referenced in the initial SEQUENCE or CB_SEQUENCE
+operation.
+
+Further, it is my opinion that we should disallow mixing operations
+belonging to distinct clientid's in any COMPOUND, for all NFSv4
+versions. The ramifications are just too onerous otherwise.
+[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg02781.html]
+
+dnoveck wrote:
+
+This doesn't apply to sessions.  May be an issue for 3530bis.
+
+Action: Add text denying changing client ID
+Owner: Tome
+State: Finished
+Target: IETF 80
+Notes: Dave does not swear.
 
