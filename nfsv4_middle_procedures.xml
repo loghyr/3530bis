@@ -844,6 +844,36 @@ clientid ->
     </section>
     <section toc="exclude" anchor="OP_GETATTR_IMPLEMENTATION" title="IMPLEMENTATION">
 
+    <t>
+      Suppose there is a OPEN_DELEGATE_WRITE delegation held by another client for file
+      in question and size and/or change are among the set of attributes being interrogated. The server has two choices.
+      First, the server can obtain the actual
+      current value of these attributes from the client holding the delegation
+      by using the CB_GETATTR callback.  Second, the server, particularly when the
+      delegated client is unresponsive, can recall the
+      delegation in question.  The GETATTR MUST NOT proceed
+      until one of the following occurs:
+      <list style="symbols">
+        <t>
+          The requested attribute values are returned in the response to
+          CB_GETATTR.
+        </t>
+        <t>
+          The OPEN_DELEGATE_WRITE delegation is returned.
+        </t>
+        <t>
+          The OPEN_DELEGATE_WRITE delegation is revoked.
+        </t>
+      </list>
+    </t>
+    <t>
+      Unless one of the above happens very quickly,
+      one or more NFS4ERR_DELAY errors will be returned if
+      while a delegation is outstanding.
+
+    </t>
+
+
     </section>
   </section>
   <section anchor="OP_GETFH" title="Operation 10: GETFH - Get Current Filehandle">
@@ -1090,6 +1120,26 @@ GETFH
       </t>
 
       <t>
+        When a client holds an OPEN_DELEGATE_WRITE delegation, the client
+        holding that delegation is assured that there are no opens by other
+        clients.  Thus, there can be no conflicting LOCK operations from such
+        clients.  Therefore, the client may be handling locking requests
+        locally, without doing LOCK operations on the server.  If it does
+        that, it must be prepared to update the lock status on the server, by
+        sending appropriate LOCK and LOCKU operations before returning the
+        delegation.
+      </t>
+
+      <t>
+        When one or more clients hold OPEN_DELEGATE_READ delegations, any
+        LOCK operation where the server is implementing mandatory locking
+        semantics MUST result in the recall of all such delegations.  The
+        LOCK operation may not be granted until all such delegations are
+        returned or revoked.  Except where this happens very quickly, one or
+        more NFS4ERR_DELAY errors will be returned to requests made while the
+        delegation remains outstanding.
+      </t>
+      <t>
         The locker argument specifies the lock-owner that is associated with
         the LOCK request.  The locker4 structure is a switched union that
         indicates whether the client has already created byte-range locking
@@ -1203,7 +1253,7 @@ owner}
       </t>
 
       <t>
-        The test for conflicting locks should exclude locks for
+        The test for conflicting locks SHOULD exclude locks for
         the current lockowner.  Note that since such locks are
         not examined the possible existence of overlapping ranges
         may not affect the results of LOCKT.  If the server does
@@ -1212,6 +1262,12 @@ owner}
         In the event that it returns NFS4_OK, clients may do a LOCK
         and receive NFS4ERR_LOCK_RANGE on the LOCK request because
         of the flexibility provided to the server.
+      </t>
+
+      <t>
+        When a client holds an OPEN_DELEGATE_WRITE delegation, it may choose
+        (see <xref target="OP_LOCK_IMPLEMENTATION" />)) to handle LOCK requests locally.  In such a
+        case, LOCKT requests will similarly be handled locally.
       </t>
 
     </section>
@@ -1274,6 +1330,12 @@ owner}
         the operation using LOCKU on ranges corresponding to locks
         it actually holds, possibly followed by LOCK requests for
         the sub-ranges not being unlocked.
+      </t>
+
+      <t>
+        When a client holds an OPEN_DELEGATE_WRITE delegation, it may choose
+        (see <xref target="OP_LOCK_IMPLEMENTATION" />)) to handle LOCK requests locally.  In such a
+        case, LOCKU requests will similarly be handled locally.
       </t>
 
     </section>
@@ -1885,6 +1947,27 @@ READ 0 32767
       </t>
 
     </section>
+    <section toc="exclude" title="Warning to Client Implementors">
+      <t>
+        OPEN resembles LOOKUP in that it generates a filehandle for the
+        client to use.  Unlike LOOKUP though, OPEN creates server state on
+        the filehandle.  In normal circumstances, the client can only release
+        this state with a CLOSE operation.  CLOSE uses the current filehandle
+        to determine which file to close.  Therefore, the client MUST follow
+        every OPEN operation with a GETFH operation in the same COMPOUND
+        procedure.  This will supply the client with the filehandle such that
+        CLOSE can be used appropriately.
+      </t>
+
+      <t>
+        Simply waiting for the lease on the file to expire is insufficient
+        because the server may maintain the state indefinitely as long as
+        another client does not attempt to make a conflicting access to the
+        same file.
+      </t>
+
+    </section>
+
   </section>
   <section anchor="OP_OPENATTR" title="Operation 19: OPENATTR - Open Named Attribute Directory">
 
@@ -2400,29 +2483,41 @@ void;
     <section toc="exclude" anchor="OP_READ_IMPLEMENTATION" title="IMPLEMENTATION">
 
       <t>
-        It is possible for the server to return fewer than count bytes
-        of data.  If the server returns less than the count requested
-        and eof is set to FALSE, the client should issue another READ
-        to get the remaining data.  A server may return less data than
-        requested under several circumstances.  The file may have been
-        truncated by another client or perhaps on the server itself,
-        changing the file size from what the requesting client believes
-        to be the case.  This would reduce the actual amount of data
-        available to the client.  It is possible that the server may
-        back off the transfer size and reduce the read request return.
-        Server resource exhaustion may also occur necessitating a
-        smaller read return.
+        If the server returns a "short read" (i.e., fewer data than requested
+        and eof is set to FALSE), the client should send another READ to get
+        the remaining data.  A server may return less data than requested
+        under several circumstances.  The file may have been truncated by
+        another client or perhaps on the server itself, changing the file
+        size from what the requesting client believes to be the case.  This
+        would reduce the actual amount of data available to the client.  It
+        is possible that the server reduce the transfer size and so return a
+        short read result.  Server resource exhaustion may also occur in a
+        short read.
       </t>
 
       <t>
-        If mandatory file locking is on for the file, and if the region
-        corresponding to the data to be read from file is write locked
-        by an owner not associated the stateid, the server will return
-        the NFS4ERR_LOCKED error.  The client should try to get the
-        appropriate read byte-range lock via the LOCK operation before
-        re-attempting the READ.  When the READ completes, the client
-        should release the byte-range lock via LOCKU.
+        If mandatory byte-range locking is in effect for the file, and if the
+        byte-range corresponding to the data to be read from the file is
+        WRITE_LT locked by an owner not associated with the stateid, the
+        server will return the NFS4ERR_LOCKED error.  The client should try
+        to get the appropriate READ_LT via the LOCK operation before reattempting
+        the READ.  When the READ completes, the client should
+        release the byte-range lock via LOCKU.
       </t>
+
+      <t>
+        If another client has an OPEN_DELEGATE_WRITE delegation for the file
+        being read, the delegation must be recalled, and the operation cannot
+        proceed until that delegation is returned or revoked.  Except where
+        this happens very quickly, one or more NFS4ERR_DELAY errors will be
+        returned to requests made while the delegation remains outstanding.
+        Normally, delegations will not be recalled as a result of a READ
+        operation since the recall will occur as a result of an earlier OPEN.
+        However, since it is possible for a READ to be done with a special
+        stateid, the server needs to check for this case even though the
+        client should have done an OPEN previously.
+      </t>
+
 
     </section>
   </section>

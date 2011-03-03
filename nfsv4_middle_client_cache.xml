@@ -322,7 +322,7 @@
         receives the error NFS4ERR_EXPIRED.  It also may find out
         about delegation revocation after a client reboot when it
         attempts to reclaim a delegation and receives that same error.
-        Note that in the case of a revoked write open delegation, there
+        Note that in the case of a revoked OPEN_DELEGATE_WRITE delegation, there
         are issues because data may have been modified by the client
         whose delegation is revoked and separately by other clients.
         See <xref target="ss:cc:rrwod" /> for a discussion of such issues.
@@ -330,8 +330,8 @@
         the revoked delegation will be written by the server to stable
         storage (as described in <xref target="ss:fl:crash_recov" />).
         This is done to deal with the case in which a server reboots
-	after revoking a delegation but before the client holding the
-	revoked delegation is notified about the revocation.
+        after revoking a delegation but before the client holding the
+        revoked delegation is notified about the revocation.
       </t>
 
     </section>
@@ -350,7 +350,7 @@
       Share reservations and byte-range locks are the facilities the NFS
       version 4 protocol provides to allow applications to coordinate
       access by providing mutual exclusion facilities.  The NFSv4
-			protocol's data caching must be implemented such that it does
+      protocol's data caching must be implemented such that it does
       not invalidate the assumptions that those using these facilities
       depend upon.
     </t>
@@ -655,22 +655,23 @@
     </t>
 
     <t>
-      There are two types of open delegations, read and write.  A read
-      open delegation allows a client to handle, on its own, requests to
+      There are two types of open delegations, OPEN_DELEGATE_READ and
+      OPEN_DELEGATE_WRITE.  A OPEN_DELEGATE_READ delegation allows a
+      client to handle, on its own, requests to
       open a file for reading that do not deny read access to others.
-      Multiple read open delegations may be outstanding simultaneously
-      and do not conflict.  A write open delegation allows the client to
-      handle, on its own, all opens.  Only one write open delegation may
+      Multiple OPEN_DELEGATE_READ delegations may be outstanding simultaneously
+      and do not conflict.  A OPEN_DELEGATE_WRITE delegation allows the client to
+      handle, on its own, all opens.  Only one OPEN_DELEGATE_WRITE delegation may
       exist for a given file at a given time and it is inconsistent with
-      any read open delegations.
+      any OPEN_DELEGATE_READ delegations.
     </t>
 
     <t>
-      When a client has a read open delegation, it may not make any changes
+      When a client has a OPEN_DELEGATE_READ delegation, it may not make any changes
       to the contents or attributes of the file but it is assured that no
-      other client may do so.  When a client has a write open delegation,
+      other client may do so.  When a client has a OPEN_DELEGATE_WRITE delegation,
       it may modify the file data since no other client will be accessing
-      the file's data.  The client holding a write delegation may only
+      the file's data.  The client holding a OPEN_DELEGATE_WRITE delegation may only
       affect file attributes which are intimately connected with the file
       data:  size, time_modify, change.
     </t>
@@ -678,7 +679,7 @@
     <t>
       When a client has an open delegation, it does not send OPENs or
       CLOSEs to the server but updates the appropriate status internally.
-      For a read open delegation, opens that cannot be handled locally
+      For a OPEN_DELEGATE_READ delegation, opens that cannot be handled locally
       (opens for write or that deny read access) must be sent to the
       server.
     </t>
@@ -694,7 +695,7 @@
 
         <t>
           space limitation information to control flushing of data on close
-          (write open delegation only, see <xref target="ss:cc:oddc" />)
+          (OPEN_DELEGATE_WRITE delegation only, see <xref target="ss:cc:oddc" />)
         </t>
 
         <t>
@@ -779,10 +780,10 @@
         OPEN delegation allows much of the message overhead associated with
         the opening and closing files to be eliminated.  An open when an open
         delegation is in effect does not require that a validation message be
-        sent to the server.  The continued endurance of the "read open
+        sent to the server.  The continued endurance of the "OPEN_DELEGATE_READ
         delegation" provides a guarantee that no OPEN for write and thus no
         write has occurred.  Similarly, when closing a file opened for write
-        and if write open delegation is in effect, the data written does
+        and if OPEN_DELEGATE_WRITE delegation is in effect, the data written does
         not have to be flushed to the server until the open delegation is
         recalled.  The continued endurance of the open delegation provides
         a guarantee that no open and thus no read or write has been done by
@@ -795,9 +796,9 @@
         type of OPEN.  This refers to the READs and WRITEs that use the
         special stateids consisting of all zero bits or all one bits.
         Therefore, READs or WRITEs with a special stateid done by another
-        client will force the server to recall a write open delegation.
+        client will force the server to recall a OPEN_DELEGATE_WRITE delegation.
         A WRITE with a special stateid done by another client will force a
-        recall of read open delegations.
+        recall of OPEN_DELEGATE_READ delegations.
       </t>
 
       <t>
@@ -831,7 +832,7 @@
 
       <t>
         Based on server conditions, quotas or available filesystem space, the
-        server may grant write open delegations with very restrictive space
+        server may grant OPEN_DELEGATE_WRITE delegations with very restrictive space
         limitations.  The limitations may be defined in a way that will
         always force modified data to be flushed to the server on close.
       </t>
@@ -852,7 +853,7 @@
     <section title="Open Delegation and File Locks">
 
       <t>
-        When a client holds a write open delegation, lock operations may be
+        When a client holds a OPEN_DELEGATE_WRITE delegation, lock operations may be
         performed locally.  This includes those required for mandatory file
         locking.  This can be done since the delegation implies that there can
         be no conflicting locks.  Similarly, all of the revalidations that
@@ -861,7 +862,7 @@
       </t>
 
       <t>
-        When a client holds a read open delegation, lock operations are not
+        When a client holds a OPEN_DELEGATE_READ delegation, lock operations are not
         performed locally.  All lock operations, including those requesting
         non-exclusive locks, are sent to the server for resolution.
       </t>
@@ -871,15 +872,14 @@
 
       <t>
         The server needs to employ special handling for a GETATTR where the
-        target is a file that has a write open delegation in effect.  The
-        reason for this is that the client holding the write delegation may
+        target is a file that has a OPEN_DELEGATE_WRITE delegation in effect.  The
+        reason for this is that the client holding the OPEN_DELEGATE_WRITE delegation may
         have modified the data and the server needs to reflect this change to
         the second client that submitted the GETATTR.  Therefore, the client
-        holding the write delegation needs to be interrogated.  The server
+        holding the OPEN_DELEGATE_WRITE delegation needs to be interrogated.  The server
         will use the CB_GETATTR operation.  The only attributes that the
         server can reliably query via CB_GETATTR are size and change.
       </t>
-
       <t>
         Since CB_GETATTR is being used to satisfy another client's GETATTR
         request, the server only needs to know if the client holding the
@@ -891,168 +891,145 @@
         file is currently modified, it will respond to the second client's
         GETATTR as if the file had been modified locally at the server.
       </t>
-
       <t>
-        Since the form of the change attribute is determined by the server
-        and is opaque to the client, the client and server need to agree on a
+        Since the form of the change attribute is determined by the server and
+        is opaque to the client, the client and server need to agree on a
         method of communicating the modified state of the file.  For the size
         attribute, the client will report its current view of the file size.
         For the change attribute, the handling is more involved.
       </t>
-
       <t>
         For the client, the following steps will be taken when receiving a
-        write delegation:
-
-        <list style='symbols'>
+        OPEN_DELEGATE_WRITE delegation:
+        <list style="symbols">
           <t>
-            The value of the change attribute will be obtained from the server
-            and cached.  Let this value be represented by c.
+            The value of the change attribute will be obtained from the server and
+            cached.  Let this value be represented by c.
           </t>
-
           <t>
-            The client will create a value greater than c that will be used
-            for communicating modified data is held at the client.  Let this
-            value be represented by d.
+            The client will create a value greater than c that will be used for
+            communicating modified data is held at the client.  Let this value be
+            represented by d.
           </t>
-
           <t>
-            When the client is queried via CB_GETATTR for the change
-            attribute, it checks to see if it holds modified data.  If the
-            file is modified, the value d is returned for the change attribute
-            value.  If this file is not currently modified, the client returns
-            the value c for the change attribute.
+            When the client is queried via CB_GETATTR for the change attribute, it
+            checks to see if it holds modified data.  If the file is modified, the
+            value d is returned for the change attribute value.  If this file is
+            not currently modified, the client returns the value c for the change
+            attribute.
           </t>
         </list>
-      </t>
-
-      <t>
         For simplicity of implementation, the client MAY for each CB_GETATTR
         return the same value d.  This is true even if, between successive
         CB_GETATTR operations, the client again modifies in the file's data or
         metadata in its cache.  The client can return the same value because
         the only requirement is that the client be able to indicate to the
-        server that the client holds modified data.  Therefore, the value
-        of d may always be c + 1.
+        server that the client holds modified data.  Therefore, the value of d
+        may always be c + 1.
       </t>
-
       <t>
         While the change attribute is opaque to the client in the sense that
         it has no idea what units of time, if any, the server is counting
         change with, it is not opaque in that the client has to treat it as an
-        unsigned integer, and the server has to be able to see the results
-        of the client's changes to that integer.  Therefore, the server
-        MUST encode the change attribute in network order when sending it
-        to the client.  The client MUST decode it from network order to its
-        native order when receiving it and the client MUST encode it network
-        order when sending it to the server.  For this reason, change is
-        defined as an unsigned integer rather than an opaque array of octets.
+        unsigned integer, and the server has to be able to see the results of
+        the client's changes to that integer.  Therefore, the server MUST
+        encode the change attribute in network order when sending it to the
+        client.  The client MUST decode it from network order to its native
+        order when receiving it and the client MUST encode it network order
+        when sending it to the server.  For this reason, change is defined as
+        an unsigned integer rather than an opaque array of bytes.
       </t>
-
       <t>
         For the server, the following steps will be taken when providing a
-        write delegation:
-
-        <list style='symbols'>
+        OPEN_DELEGATE_WRITE delegation:
+        <list style="symbols">
           <t>
-            Upon providing a write delegation, the server will cache a copy of
-            the change attribute in the data structure it uses to record the
+            Upon providing a OPEN_DELEGATE_WRITE delegation, the server will cache a copy of the
+            change attribute in the data structure it uses to record the
             delegation.  Let this value be represented by sc.
           </t>
-
           <t>
-            When a second client sends a GETATTR operation on the same file to
-            the server, the server obtains the change attribute from the first
-            client.  Let this value be cc.
+            When a second client sends a GETATTR operation on the same file to the
+            server, the server obtains the change attribute from the first client.
+            Let this value be cc.
           </t>
-
           <t>
             If the value cc is equal to sc, the file is not modified and the
             server returns the current values for change, time_metadata, and
             time_modify (for example) to the second client.
           </t>
-
           <t>
-            If the value cc is NOT equal to sc, the file is currently modified
-            at the first client and most likely will be modified at the server
-            at a future time.  The server then uses its current time to
-            construct attribute values for time_metadata and time_modify.  A
-            new value of sc, which we will call nsc, is computed by the
-            server, such that nsc >= sc + 1.  The server then returns the
-            constructed time_metadata, time_modify, and nsc values to the
-            requester.  The server replaces sc in the delegation record with
-            nsc.  To prevent the possibility of time_modify, time_metadata,
-            and change from appearing to go backward (which would happen if
-            the client holding the delegation fails to write its modified data
-            to the server before the delegation is revoked or returned),
-            the server SHOULD update the file's metadata record with
+            If the value cc is NOT equal to sc, the file is currently modified at
+            the first client and most likely will be modified at the server at a
+            future time.  The server then uses its current time to construct
+            attribute values for time_metadata and time_modify.  A new value of
+            sc, which we will call nsc, is computed by the server, such that nsc
+            >= sc + 1.  The server then returns the constructed time_metadata,
+            time_modify, and nsc values to the requester.  The server replaces sc
+            in the delegation record with nsc.  To prevent the possibility of
+            time_modify, time_metadata, and change from appearing to go backward
+            (which would happen if the client holding the delegation fails to
+            write its modified data to the server before the delegation is revoked
+            or returned), the server SHOULD update the file's metadata record with
             the constructed attribute values.  For reasons of reasonable
             performance, committing the constructed attribute values to stable
             storage is OPTIONAL.
           </t>
         </list>
       </t>
-
       <t>
-        As discussed earlier in this section, the client MAY return the
-        same cc value on subsequent CB_GETATTR calls, even if the file was
-        modified in the client's cache yet again between successive
-        CB_GETATTR calls.  Therefore, the server must assume that the file
-        has been modified yet again, and MUST take care to ensure that the
-        new nsc it constructs and returns is greater than the previous
-        nsc it returned.  An example implementation's delegation record
-        would satisfy this mandate by including a boolean field (let us
-        call it "modified") that is set to false when the delegation is
-        granted, and an sc value set at the time of grant to the change
-        attribute value.  The modified field would be set to true the
-        first time cc != sc, and would stay true until the delegation
-        is returned or revoked.  The processing for constructing nsc,
-        time_modify, and time_metadata would use this pseudo code:
-
+        As discussed earlier in this section, the client MAY return the same
+        cc value on subsequent CB_GETATTR calls, even if the file was modified
+        in the client's cache yet again between successive CB_GETATTR calls.
+        Therefore, the server must assume that the file has been modified yet
+        again, and MUST take care to ensure that the new nsc it constructs and
+        returns is greater than the previous nsc it returned.  An example
+        implementation's delegation record would satisfy this mandate by
+        including a boolean field (let us call it "modified") that is set to
+        FALSE when the delegation is granted, and an sc value set at the time
+        of grant to the change attribute value. The modified field would be
+        set to TRUE the first time cc != sc, and would stay TRUE until the
+        delegation is returned or revoked.  The processing for constructing
+        nsc, time_modify, and time_metadata would use this pseudo code:
         <figure>
           <artwork>
-if (!modified) {
-    do CB_GETATTR for change and size;
+    if (!modified) {
+        do CB_GETATTR for change and size;
 
-    if (cc != sc)
-        modified = TRUE;
-} else {
-    do CB_GETATTR for size;
-}
+        if (cc != sc)
+            modified = TRUE;
+    } else {
+        do CB_GETATTR for size;
+    }
 
-if (modified) {
-    sc = sc + 1;
-    time_modify = time_metadata = current_time;
+    if (modified) {
+        sc = sc + 1;
+        time_modify = time_metadata = current_time;
+        update sc, time_modify, time_metadata into file's metadata;
+    }
 
-    update sc, time_modify, time_metadata into file's metadata;
-}
-          </artwork>
-        </figure>
-
-        This would return to the client (that sent GETATTR) the attributes
+      </artwork>
+    </figure>
+    This would return to the client (that sent GETATTR) the attributes
         it requested, but make sure size comes from what
         CB_GETATTR returned. The server would not update the file's
         metadata with the client's modified size.
       </t>
-
       <t>
         In the case that the file attribute size is different than the
         server's current value, the server treats this as a modification
         regardless of the value of the change attribute retrieved via
         CB_GETATTR and responds to the second client as in the last step.
       </t>
-
       <t>
         This methodology resolves issues of clock differences between client
         and server and other scenarios where the use of CB_GETATTR break down.
       </t>
-
       <t>
         It should be noted that the server is under no obligation to use
         CB_GETATTR and therefore the server MAY simply recall the delegation
         to avoid its use.
       </t>
-
     </section>
     <section title="Recall of Open Delegation">
 
@@ -1122,25 +1099,25 @@ if (modified) {
 
           <t>
             If there are granted file locks, the corresponding LOCK operations
-            need to be performed.  This applies to the write open delegation
+            need to be performed.  This applies to the OPEN_DELEGATE_WRITE delegation
             case only.
           </t>
 
           <t>
-            For a write open delegation, if at the time of recall the file is
+            For a OPEN_DELEGATE_WRITE delegation, if at the time of recall the file is
             not open for write, all modified data for the file must be flushed
             to the server.  If the delegation had not existed, the client
             would have done this data flush before the CLOSE operation.
           </t>
 
           <t>
-            For a write open delegation when a file is still open at the time
+            For a OPEN_DELEGATE_WRITE delegation when a file is still open at the time
             of recall, any modified data for the file needs to be flushed to
             the server.
           </t>
 
           <t>
-            With the write open delegation in place, it is possible that the
+            With the OPEN_DELEGATE_WRITE delegation in place, it is possible that the
             file was truncated during the duration of the delegation.  For
             example, the truncation could have occurred as a result of an
             OPEN UNCHECKED4 with a size attribute value of zero.  Therefore,
@@ -1152,14 +1129,14 @@ if (modified) {
       </t>
 
       <t>
-        In the case of write open delegation, file locking imposes some
+        In the case of OPEN_DELEGATE_WRITE delegation, file locking imposes some
         additional requirements.  To precisely maintain the associated
         invariant, it is required to flush any modified data in any region
-        for which a write lock was released while the write delegation was in
-        effect.  However, because the write open delegation implies no other
+        for which a write lock was released while the OPEN_DELEGATE_WRITE delegation was in
+        effect.  However, because the OPEN_DELEGATE_WRITE delegation implies no other
         locking by other clients, a simpler implementation is to flush all
         modified data for the file (as described just above) if any write
-        lock has been released while the write open delegation was in effect.
+        lock has been released while the OPEN_DELEGATE_WRITE delegation was in effect.
       </t>
 
       <t>
@@ -1190,7 +1167,7 @@ if (modified) {
         awareness could result in the client finding out long after the
         failure that its delegation has been revoked, and another client has
         modified the data for which the client had a delegation.  This is
-        especially a problem for the client that held a write delegation.
+        especially a problem for the client that held a OPEN_DELEGATE_WRITE delegation.
       </t>
 
       <t>
@@ -1300,7 +1277,7 @@ if (modified) {
     <section anchor="ss:cc:rrwod" title="Revocation Recovery for Write Open Delegation">
 
       <t>
-        Revocation recovery for a write open delegation poses the special
+        Revocation recovery for a OPEN_DELEGATE_WRITE delegation poses the special
         issue of modified data in the client cache while the file is not
         open.  In this situation, any client which does not flush modified
         data to the server on each close must ensure that the user receives
@@ -1504,7 +1481,7 @@ if (modified) {
 
         <t>
           If there is another client that is memory mapping the file, and if
-          that client is holding a write delegation, the same set of issues
+          that client is holding a OPEN_DELEGATE_WRITE delegation, the same set of issues
           as discussed in the previous two bullet items apply.  So, when a
           server does a CB_GETATTR to a file that the client has modified in
           its cache, the response from CB_GETATTR will not necessarily be

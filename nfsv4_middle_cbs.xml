@@ -160,7 +160,7 @@ fh, attr_request -> attrmask, attr_vals
 
         <t>
           The CB_GETATTR operation is used by the server to obtain the
-          current modified state of a file that has been write delegated.
+          current modified state of a file that has been OPEN_DELEGATE_WRITE delegated.
           The attributes size and change are the only ones guaranteed
           to be serviced by the client.  See <xref target="ss:cc:handle_cb_getattr" />
           for a full description of how the client and
@@ -169,7 +169,7 @@ fh, attr_request -> attrmask, attr_vals
 
         <t>
           If the filehandle specified is not one for which the client
-          holds a write open delegation, an NFS4ERR_BADHANDLE error
+          holds a OPEN_DELEGATE_WRITE delegation, an NFS4ERR_BADHANDLE error
           is returned.
         </t>
 

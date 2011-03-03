@@ -491,11 +491,11 @@
         to the client.  When the server grants a delegation for a
         file to a client, the client is guaranteed certain semantics
         with respect to the sharing of that file with other clients.
-        At OPEN, the server may provide the client either a read or
-        write delegation for the file.  If the client is granted
-        a read delegation, it is assured that no other client has
+        At OPEN, the server may provide the client either a OPEN_DELEGATE_READ or
+        OPEN_DELEGATE_WRITE delegation for the file.  If the client is granted
+        a OPEN_DELEGATE_READ delegation, it is assured that no other client has
         the ability to write to the file for the duration of the
-        delegation.  If the client is granted a write delegation,
+        delegation.  If the client is granted a OPEN_DELEGATE_WRITE delegation,
         the client is assured that no other client has read or write
         access to the file.
       </t>
