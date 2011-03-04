@@ -31,40 +31,11 @@ Dave:
 Action:
 Owner: Dave
 State: Accepted, High
-Target:
-
-9) We should clarify the passage on NFS4ERR_LOCKS_HELD. Since lock owners
-and open owners are different things, we need to clarify which locks may
-trigger an NFS4ERR_LOCKS_HELD error on a CLOSE for a given open_stateid.
-In the same vein, which locks does section 9.8 allow the server to free
-when the client does a CLOSE? This all harks back to the mailing list
-discussions about lock_stateids being
-<per-file,per-open_owner,per-lock_owner> vs. just being
-<per-file,per-lock_owner>
-
-Action:
-Owner:
-State: Accepted, High
-Target:
-Notes: Add DOWNGRADE here?? Dave
+Note: Summarize the issue.
 
 =======
 Medium:
 =======
-
-20) Explanatory Text on Stateid Contradicts Self and Rest of Protocol
-
-See the thread beginning
-[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg03159.html]
-and particularly the message:
-[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg03193.html]
-for details.
-
-Action:
-Owner:
-State: Accepted, Medium
-Target:
-Note: Summarize the issue.
 
 =====
 Low:
@@ -1234,3 +1205,32 @@ Target: IETF 80
 Notes: May be hashed out on mailing list - i.e., resolved by existing
 implementations, but not captured in the spec?
 
+Target:
+
+9) We should clarify the passage on NFS4ERR_LOCKS_HELD. Since lock owners
+and open owners are different things, we need to clarify which locks may
+trigger an NFS4ERR_LOCKS_HELD error on a CLOSE for a given open_stateid.
+In the same vein, which locks does section 9.8 allow the server to free
+when the client does a CLOSE? This all harks back to the mailing list
+discussions about lock_stateids being
+<per-file,per-open_owner,per-lock_owner> vs. just being
+<per-file,per-lock_owner>
+
+Action: Pulled back from 5661
+Owner: Tom
+State: Accepted, High
+Target: IETF 80
+Notes: Add DOWNGRADE here?? Dave
+
+20) Explanatory Text on Stateid Contradicts Self and Rest of Protocol
+
+See the thread beginning
+[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg03159.html]
+and particularly the message:
+[http://www1.ietf.org/mail-archive/web/nfsv4/current/msg03193.html]
+for details.
+
+Action: Pulled back from 5661
+Owner: Tom
+State: Finished
+Target: IETF 80

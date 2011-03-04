@@ -172,9 +172,6 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
         contains an operation that is less than the first legal
         operation (OP_ACCESS) or greater than the last legal operation
         (OP_RELEASE_LOCKOWNER).
-      </t>
-
-      <t>
         In this case, the server's response will encode the opcode
         OP_ILLEGAL rather than the illegal opcode of the request. The
         status field in the ILLEGAL return results will set to
@@ -191,6 +188,170 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
         the request.  This applies to the tag field of the CB_COMPOUND
         procedure as well.
       </t>
+
+      <section toc="exclude" anchor="current_filehandle" title="Current Filehandle">
+        <t>
+          The current and saved filehandle are used throughout
+          the protocol.  Most operations implicitly use
+          the current filehandle as a argument and many set
+          the current filehandle as part of the results.
+          The combination of client specified sequences
+          of operations and current and saved filehandle
+          arguments and results allows for greater protocol
+          flexibility.  The best or easiest example of current
+          filehandle usage is a sequence like the following:
+        </t>
+
+        <t>
+          <figure anchor='curfh_example'>
+            <artwork>
+PUTFH fh1              {fh1}
+LOOKUP "compA"         {fh2}
+GETATTR                {fh2}
+LOOKUP "compB"         {fh3}
+GETATTR                {fh3}
+LOOKUP "compC"         {fh4}
+GETATTR                {fh4}
+GETFH
+            </artwork>
+          </figure>
+        </t>
+        <t>
+          In this example, the PUTFH (<xref target="OP_PUTFH"/>) operation explicitly sets the current
+          filehandle value while the result of each LOOKUP operation sets
+          the current filehandle value to the resultant file system
+          object.  Also, the client is able to insert GETATTR operations
+          using the current filehandle as an argument.
+        </t>
+        <t>
+          The PUTROOTFH (<xref target="OP_PUTROOTFH"/>) and
+          PUTPUBFH (<xref target="OP_PUTROOTFH"/>) operations also set the
+          current filehandle. The above example would replace "PUTFH fh1" with
+          PUTROOTFH or PUTPUBFH with no filehandle argument in order to 
+          achieve the same effect (on the assumption that "compA" is directly
+          below the root of the namespace).
+        </t>
+        <t>
+          Along with the current filehandle, there is a saved filehandle.  While the current filehandle
+          is set as the result of
+          operations like LOOKUP, the saved filehandle must be set
+          directly with the use of the SAVEFH operation.  The SAVEFH
+          operations copies the current filehandle value to the saved
+          value.  The saved filehandle value is used in combination with
+          the current filehandle value for the LINK and RENAME
+          operations.  The RESTOREFH operation will copy the saved filehandle value to
+          the current filehandle value; as a result, the
+          saved filehandle value may be used a sort of "scratch" area for
+          the client's series of operations.
+        </t>
+      </section>
+  
+      <section toc="exclude" anchor="current_stateid" title="Current Stateid">
+        <t>
+          The COMPOUND processing environment also have a current stateid and
+          a saved stateid, which allows for the passing of stateids between operations.
+        </t>
+        <t>
+          A "current stateid" is the stateid that is associated
+          with the current filehandle.  The current stateid
+          may only be changed by an operation that modifies
+          the current filehandle or returns a stateid.  If an
+          operation returns a stateid it MUST set the current
+          stateid to the returned value. If an operation sets
+          the current filehandle but does not return a stateid,
+          the current stateid MUST be set to the all-zeros
+          special stateid, i.e. (seqid, other) = (0, 0).
+          If an operation uses a stateid as an argument but does
+          not return a stateid, the current stateid MUST NOT be
+          changed.  E.g., PUTFH, PUTROOTFH, and PUTPUBFH
+          will change the current server state from {ocfh,
+          (osid)} to {cfh, (0, 0)} while LOCK will change the current
+          state from {cfh, (osid} to {cfh, (nsid)}. Operations like
+          LOOKUP that transform a current filehandle and
+          component name into a new current filehandle will also
+          change the current stateid to {0, 0}.  The SAVEFH
+          and RESTOREFH operations will save and restore both
+          the current filehandle and the current stateid as a set.
+        </t>
+
+        <t>
+          The following example is the common case of a simple READ
+          operation with a supplied stateid showing that the PUTFH
+          initializes the current stateid to (0, 0). The subsequent READ
+          with stateid (sid1) leaves the current stateid unchanged, but does
+          evaluate the
+          the operation.
+        </t>
+        <figure anchor='csid_example1'>
+          <artwork>
+PUTFH fh1                             - -> {fh1, (0, 0)}
+READ (sid1), 0, 1024      {fh1, (0, 0)} -> {fh1, (0, 0)}
+          </artwork>
+        </figure>
+
+        <t>
+          This next example performs an OPEN with the root
+          filehandle and as a result generates stateid (sid1). The next
+          operation specifies the READ with the argument stateid set such
+          that (seqid, other) are equal to (1, 0),
+          but the current stateid set by the previous operation is
+          actually used when the operation is evaluated. This allows correct
+          interaction with any existing, potentially conflicting,
+          locks.
+        </t>
+        <figure anchor='csid_example2'>
+          <artwork>
+PUTROOTFH                             - -> {fh1, (0, 0)}
+OPEN "compA"              {fh1, (0, 0)} -> {fh2, (sid1)}
+READ (1, 0), 0, 1024      {fh2, (sid1)} -> {fh2, (sid1)}
+CLOSE (1, 0)              {fh2, (sid1)} -> {fh2, (sid2)}
+          </artwork>
+        </figure>
+
+        <t>
+          This next example is similar to the second in how
+          it passes the stateid sid2 generated by the LOCK
+          operation to the next READ operation.  This allows
+          the client to explicitly surround a single I/O
+          operation with a lock and its appropriate stateid to
+          guarantee correctness with other client locks. The
+          example also shows how SAVEFH and RESTOREFH can
+          save and later re-use a filehandle and stateid, passing them as the
+          current filehandle and stateid to a READ operation.
+
+        </t>
+        <figure anchor='csid_example3'>
+          <artwork>
+PUTFH fh1                             - -> {fh1, (0, 0)}
+LOCK 0, 1024, (sid1)      {fh1, (sid1)} -> {fh1, (sid2)}
+READ (1, 0), 0, 1024      {fh1, (sid2)} -> {fh1, (sid2)}
+LOCKU 0, 1024, (1, 0)     {fh1, (sid2)} -> {fh1, (sid3)}
+SAVEFH                    {fh1, (sid3)} -> {fh1, (sid3)}
+
+PUTFH fh2                 {fh1, (sid3)} -> {fh2, (0, 0)}
+WRITE (1, 0), 0, 1024     {fh2, (0, 0)} -> {fh2, (0, 0)}
+
+RESTOREFH                 {fh2, (0, 0)} -> {fh1, (sid3)}
+READ (1, 0), 1024, 1024   {fh1, (sid3)} -> {fh1, (sid3)}
+          </artwork>
+        </figure>
+
+        <t>
+          The final example shows a disallowed use of
+          the current stateid. The client is attempting
+          to implicitly pass anonymous special stateid, (0,0) to
+          the READ operation. The server MUST return NFS4ERR_BAD_STATEID
+          in the reply to the READ operation.
+
+        </t>
+        <figure anchor='csid_example4'>
+          <artwork>
+PUTFH fh1                             - -> {fh1, (0, 0)}
+READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
+          </artwork>
+        </figure>
+
+    </section>
 
     </section>
     <section toc="exclude" anchor="OP_COMPOUND_IMPLEMENTATION" title="IMPLEMENTATION">
@@ -2224,7 +2385,7 @@ filehandle -> (cfh)
 
       <t>
         Replaces the current filehandle with the filehandle provided
-        as an argument.
+        as an argument. Clears the current stateid.
       </t>
 
       <t>
@@ -2232,7 +2393,14 @@ filehandle -> (cfh)
         the requirements of the filehandle provided to this operation,
         the server MUST return NFS4ERR_WRONGSEC.
       </t>
-
+      <t>
+        See <xref target="current_filehandle"/> for more details on the
+        current filehandle.
+      </t>
+      <t>
+        See <xref target="current_stateid"/> for more details on the current
+        stateid.
+      </t>
     </section>
     <section toc="exclude" anchor="OP_PUTFH_IMPLEMENTATION" title="IMPLEMENTATION">
 
@@ -2375,7 +2543,17 @@ void;
         "public" filehandle which may be associated with some other
         directory on the server.
       </t>
-
+      <t>
+        PUTROOTFH also clears the current stateid.
+      </t>
+      <t>
+        See <xref target="current_filehandle"/> for more details on the
+        current filehandle.
+      </t>
+      <t>
+        See <xref target="current_stateid"/> for more details on the current
+        stateid. 
+      </t>
     </section>
     <section toc="exclude" anchor="OP_PUTROOTFH_IMPLEMENTATION" title="IMPLEMENTATION">
 

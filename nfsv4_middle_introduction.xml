@@ -51,6 +51,15 @@
 	        Some clarification on a client re-establishing callback
 	        information to the new server if state has been migrated.
 	      </t>
+	      <t>
+	        A third edge case was added for Courtesy locks and network
+          partitions.
+	      </t>
+	      <t>
+          The definintion of stateid was strengthened, which had the
+          side effect of introducing a semantic change in a COMPOUND
+          structure having a current stateid and a saved stateid.
+	      </t>
       </list>
     </t>
   </section>
@@ -616,12 +625,10 @@
         </t>
 
         <t hangText="Stateid">
-          A 128-bit quantity returned by a server that uniquely
-          defines the open and locking state provided by the server
-          for a specific open or lock owner for a specific file.
-        <vspace blankLines='1' />
-          Stateids composed of all bits 0 or all bits 1 have special
-          meaning and are reserved values.
+          A stateid is a 128-bit quantity returned by a server that
+          uniquely defines the open and locking states provided by the
+          server for a specific open-owner or lock-owner/open-owner pair for
+          a specific file and type of lock.
         </t>
 
         <t hangText="Verifier">

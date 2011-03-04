@@ -28,9 +28,27 @@
 
   <t>
     In this model, the server owns the state information.  The client
-    communicates its view of this state to the server as needed.
-    The client is also able to detect inconsistent state before
-    modifying a file.
+    requests changes in locks and the server responds with the changes
+    made.  Non-client-initiated changes in locking state are infrequent.
+    The client receives prompt notification of such changes and can
+    adjust its view of the locking state to reflect the server's changes.
+  </t>
+
+  <t>
+    Individual pieces of state created by the server and passed to the
+    client at its request are represented by 128-bit stateids.  These
+    stateids may represent a particular open file, a set of byte-range
+    locks held by a particular owner, or a recallable delegation of
+    privileges to access a file in particular ways or at a particular
+    location.
+  </t>
+
+  <t>
+    In all cases, there is a transition from the most general information
+    that represents a client as a whole to the eventual lightweight
+    stateid used for most client and server locking interactions.  The
+    details of this transition will vary with the type of object but it
+    always starts with a client ID.
   </t>
 
   <t>
@@ -317,9 +335,500 @@
         allow the SETCLIENTID, and confirm the new client ID if followed
         by the appropriate SETCLIENTID_CONFIRM.
       </t>
+    </section>
+
+    <section anchor="ss:fl:stateids" title="Stateid Definition">
+
+      <t>
+        When the server grants a lock of any type (including opens, byte-
+        range locks, and delegations), it responds with a unique
+        stateid that represents a set of locks (often a single lock) for the
+        same file, of the same type, and sharing the same ownership
+        characteristics.  Thus, opens of the same file by different open-
+        owners each have an identifying stateid.  Similarly, each set of
+        byte-range locks on a file owned by a specific lock-owner has its own
+        identifying stateid.  Delegations also have associated
+        stateids by which they may be referenced.  The stateid is used as a
+        shorthand reference to a lock or set of locks, and given a stateid,
+        the server can determine the associated state-owner or state-owners
+        (in the case of an open-owner/lock-owner pair) and the associated
+        filehandle.  When stateids are used, the current filehandle must be
+        the one associated with that stateid.
+      </t>
+
+      <t>
+        All stateids associated with a given client ID are associated with a
+        common lease that represents the claim of those stateids and the
+        objects they represent to be maintained by the server.  See
+        <xref target="ss:fl:leaseren" /> for a discussion of the lease.
+      </t>
+
+      <t>
+        The server may assign stateids independently for different clients.
+        A stateid with the same bit pattern for one client may designate an
+        entirely different set of locks for a different client.  The stateid
+        is always interpreted with respect to the client ID associated with
+        the current session.
+      </t>
+
+      <section anchor="stateid_types" title="Stateid Types">
+        <t>
+          With the exception of special stateids (see <xref target="ss:fl:special" />),
+          each stateid represents locking objects of one of a set of types defined
+          by the NFSv4 protocol.  Note that in all these cases, where
+          we speak of guarantee, it is understood there are
+          situations such as a client restart, or lock revocation,
+          that allow the guarantee to be voided.
+          <list style='symbols'>
+            <t>
+              Stateids may represent opens of files.
+              <vspace blankLines="1" />
+              Each stateid in this case represents the OPEN state for a
+              given client ID/open-owner/filehandle triple.  Such
+              stateids are subject to change (with consequent
+              incrementing of the stateid's seqid) in response to OPENs that
+              result in upgrade and OPEN_DOWNGRADE operations.
+            </t>
+            <t>
+              Stateids may represent sets of byte-range locks.
+              <vspace blankLines="1" />
+              All locks held on a particular file by a particular owner and all
+              gotten under the aegis of a particular open file
+              are associated with a single stateid with the seqid
+              being incremented whenever LOCK and LOCKU operations affect that
+              set of locks.
+            </t>
+            <t>
+              Stateids may represent file delegations, which are
+              recallable guarantees by the server to the client,
+              that other clients will not reference, or will not
+              modify a particular file, until the delegation
+              is returned.  
+              <vspace blankLines="1" />
+              A stateid represents a single delegation held by
+              a client for a particular filehandle.
+            </t>
+          </list>
+        </t>
+      </section>
+
+      <section anchor="ss:fl:ss" title="Stateid Structure">
+        <t>
+          Stateids are divided into two fields, a 96-bit "other" field
+          identifying the specific set of locks and a 32-bit "seqid" sequence
+          value.  Except in the case of special stateids (see <xref target="ss:fl:special" />), a
+          particular value of the "other" field denotes a set of locks of the
+          same type (for example, byte-range locks, opens, delegations, or
+          layouts), for a specific file or directory, and sharing the same
+          ownership characteristics.  The seqid designates a specific instance
+          of such a set of locks, and is incremented to indicate changes in
+          such a set of locks, either by the addition or deletion of locks from
+          the set, a change in the byte-range they apply to, or an upgrade or
+          downgrade in the type of one or more locks.
+        </t>
+
+        <t>
+          When such a set of locks is first created, the server returns a
+          stateid with seqid value of one.  On subsequent operations that
+          modify the set of locks, the server is required to increment the
+          "seqid" field by one whenever it returns a stateid for the same
+          state-owner/file/type combination and there is some change in the set
+          of locks actually designated.  In this case, the server will return a
+          stateid with an "other" field the same as previously used for that
+          state-owner/file/type combination, with an incremented "seqid" field.
+          This pattern continues until the seqid is incremented past
+          NFS4_UINT32_MAX, and one (not zero) is the next seqid value.
+          The purpose of the incrementing of the seqid is to allow the server
+          to communicate to the client the order in which operations that
+          modified locking state associated with a stateid have been processed
+          and to make it possible for the client to send requests that are
+          conditional on the set of locks not having changed since the stateid
+          in question was returned.
+        </t>
+
+        <t>
+          When a client sends a
+          stateid to the server, it has two choices with regard to the seqid
+          sent.  It may set the seqid to zero to indicate to the server that it
+          wishes the most up-to-date seqid for that stateid's "other" field to
+          be used.  This would be the common choice in the case of a stateid
+          sent with a READ or WRITE operation.  It also may set a non-zero
+          value, in which case the server checks if that seqid is the correct
+          one.  In that case, the server is required to return
+          NFS4ERR_OLD_STATEID if the seqid is lower than the most current value
+          and NFS4ERR_BAD_STATEID if the seqid is greater than the most current
+          value.  This would be the common choice in the case of stateids sent
+          with a CLOSE or OPEN_DOWNGRADE.  Because OPENs may be sent in
+          parallel for the same owner, a client might close a file without
+          knowing that an OPEN upgrade had been done by the server, changing
+          the lock in question.  If CLOSE were sent with a zero seqid, the OPEN
+          upgrade would be cancelled before the client even received an
+          indication that an upgrade had happened.
+        </t>
+
+        <t>
+          When a stateid is sent by the server to the client as part of a
+          callback operation, it is not subject to checking for a current seqid
+          and returning NFS4ERR_OLD_STATEID.  This is because the client is not
+          in a position to know the most up-to-date seqid and thus cannot
+          verify it.  Unless specially noted, the seqid value for a stateid
+          sent by the server to the client as part of a callback is required to
+          be zero with NFS4ERR_BAD_STATEID returned if it is not.
+        </t>
+
+        <t>
+          In making comparisons between seqids, both by the client in
+          determining the order of operations and by the server in determining
+          whether the NFS4ERR_OLD_STATEID is to be returned, the possibility of
+          the seqid being swapped around past the NFS4_UINT32_MAX value needs
+          to be taken into account.  When two seqid values are being compared,
+          the total count of slots for all sessions associated with the current
+          client is used to do this.  When one seqid value is less than this
+          total slot count and another seqid value is greater than
+          NFS4_UINT32_MAX minus the total slot count, the former is to be
+          treated as lower than the latter, despite the fact that it is
+          numerically greater.
+        </t>
+      </section>
+
+      <section anchor="ss:fl:special" title="Special Stateids">
+        <t>
+          Stateid values whose "other" field is either all zeros or all
+          ones are reserved.  They may not be assigned by the server but
+          have special meanings defined by the protocol.  The particular
+          meaning depends on whether the "other" field is all zeros or
+          all ones and the specific value of the "seqid" field.
+        </t>
+
+        <t>
+          The following combinations of "other" and "seqid" are defined
+          in NFSv4:
+
+          <list style='symbols'>
+            <t>
+              When "other" and "seqid" are both zero, the
+              stateid is treated as a special anonymous
+              stateid, which can be used in READ, WRITE,
+              and SETATTR requests to indicate the absence
+              of any open state associated with the
+              request.  When an anonymous stateid value is
+              used, and an existing open denies the form of
+              access requested, then access will be denied
+              to the request.
+            </t>
+
+            <t>
+              When "other" and "seqid" are both all ones,
+              the stateid is a special READ bypass stateid.
+              When this value is used in WRITE or SETATTR,
+              it is treated like the anonymous value.
+              When used in READ, the server MAY grant
+              access, even if access would normally be
+              denied to READ requests.
+            </t>
+
+            <t>
+              When "other" is zero and "seqid" is one,
+              the stateid represents the current stateid,
+              which is whatever value is the last stateid
+              returned by an operation within the COMPOUND.
+              In the case of an OPEN, the stateid returned
+              for the open file, and not the delegation is
+              used.  The stateid passed to the operation in
+              place of the special value has its "seqid"
+              value set to zero, except when the current
+              stateid is used by the operation CLOSE or
+              OPEN_DOWNGRADE.  If there is no operation
+              in the COMPOUND which has returned a stateid
+              value, the server MUST return the error
+              NFS4ERR_BAD_STATEID. As illustrated  in <xref
+              target="csid_example4"/>, if the value of a
+              current stateid is a special stateid, and the
+              stateid of an operation's arguments has
+              "other" set to zero, and "seqid" set to one,
+              then the server MUST return the error
+              NFS4ERR_BAD_STATEID.
+            </t>
+
+            <t>
+              When "other" is zero and "seqid" is NFS4_UINT32_MAX,
+              the stateid represents a reserved stateid
+              value defined to be invalid.  When this
+              stateid is used, the server MUST return the error
+              NFS4ERR_BAD_STATEID.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          If a stateid value is used which has all zero or all ones in the
+          "other" field, but does not match one of the cases above, the server
+          MUST return the error NFS4ERR_BAD_STATEID.
+        </t>
+
+        <t>
+          Special stateids, unlike other stateids, are not associated with
+          individual client IDs or filehandles and can be used with all valid
+          client IDs and filehandles.  In the case of a special
+          stateid designating the current stateid, the current stateid
+          value substituted for the special stateid is associated with a
+          particular client ID and filehandle, and so, if it is used where
+          current filehandle does not match that associated with the current
+          stateid, the operation to which the stateid is passed will return
+          NFS4ERR_BAD_STATEID.
+        </t>
+      </section>
+
+      <section anchor="stateid_lifetime" title="Stateid Lifetime and Validation">
+        <t>
+          Stateids must remain valid until either a client restart or a
+          server restart or until the client returns all of the locks
+          associated with the stateid by means of an operation such as
+          CLOSE or DELEGRETURN.  If the locks are lost due to revocation
+          as long as the client ID is valid, the stateid remains a
+          valid designation of that revoked state. Stateids associated
+          with byte-range locks are an exception.  They remain valid even if a
+          LOCKU frees all remaining locks, so long as the open file with which
+          they are associated remains open.
+        </t>
+        <t>
+          It should be noted that there are situations in which the
+          client's locks become invalid, without the client requesting
+          they be returned.  These include lease expiration and a number
+          of forms of lock revocation within the lease period.  It is
+          important to note that in these situations, the stateid remains
+          valid and the client can use it to determine the disposition of
+          the associated lost locks.
+        </t>
+        <t>
+          An "other" value must never be reused for a different purpose
+          (i.e. different filehandle, owner, or type of locks) within the
+          context of a single client ID.  A server may retain the "other"
+          value for the same purpose beyond the point where it may otherwise
+          be freed but if it does so, it must maintain "seqid" continuity
+          with previous values.
+        </t>
+        <t>
+          One mechanism that may be used to satisfy the requirement that the
+          server recognize invalid and out-of-date stateids is for
+          the server to divide the "other" field of the stateid into two
+          fields.
+          <list style='symbols'>
+            <t>
+              An index into a table of locking-state structures.
+            </t>
+            <t>
+              A generation number which is incremented on each allocation
+              of a table entry for a particular use.
+            </t>
+          </list>
+        </t>
+        <t>
+          And then store in each table entry,
+          <list style='symbols'>
+             <t>
+               The client ID with which the stateid is associated.
+             </t>
+             <t>
+               The current generation number for the (at most one)
+               valid stateid sharing this index value.
+             </t>
+             <t>
+               The filehandle of the file on which the locks are taken.
+             </t>
+             <t>
+               An indication of the type of stateid (open, byte-range lock,
+               file delegation).
+             </t>
+             <t>
+               The last "seqid" value returned corresponding to the current
+               "other" value.
+             </t>
+             <t>
+               An indication of the current status of the locks
+               associated with this stateid.  In particular,
+               whether these have been revoked and if so, for what reason.
+             </t>
+          </list>
+        </t>
+        <t>
+          With this information, an incoming stateid can be validated and
+          the appropriate error returned when necessary.  Special and
+          non-special stateids are handled separately. (See
+          <xref target='ss:fl:special' /> for a discussion of special
+          stateids.)
+        </t>
+        <t>
+          When a stateid is being tested,
+          and the "other" field is all zeros or all ones, a check that
+          the "other" and "seqid" fields match a defined combination for
+          a special stateid is done and the results determined as follows:
+          <list style='symbols'>
+            <t>
+              If the "other" and "seqid" fields do not match a defined
+              combination associated with a special stateid, the error
+              NFS4ERR_BAD_STATEID is returned.
+            </t>
+            <t>
+              If the special stateid is one designating the current
+              stateid, and there is a current stateid, then the current
+              stateid is substituted for the special stateid and the
+              checks appropriate to non-special stateids in performed.
+            </t>
+            <t>
+              If the combination is valid in general but is not
+              appropriate to the context in which the stateid is used
+              (e.g. an all-zero stateid is used when an open stateid
+              is required in a LOCK operation), the error
+              NFS4ERR_BAD_STATEID is also returned.
+            </t>
+            <t>
+              Otherwise, the check is completed and the special stateid
+              is accepted as valid.
+            </t>
+          </list>
+        </t>
+        <t>
+          When a stateid is being tested,
+          and the "other" field is neither all zeros or all ones, the
+          following procedure could be used to
+          validate an incoming stateid and return an appropriate error,
+          when necessary, assuming that the "other" field would be divided
+          into a table index and an entry generation.
+          <list style='symbols'>
+            <t>
+              If the table index field is outside the range of the
+              associated table, return NFS4ERR_BAD_STATEID.
+            </t>
+            <t>
+              If the selected table entry is of a different generation than
+              that specified in the incoming stateid, return
+              NFS4ERR_BAD_STATEID.
+            </t>
+            <t>
+              If the selected table entry does not match the current
+              filehandle, return NFS4ERR_BAD_STATEID.
+            </t>
+            <t>
+              If the client ID in the table entry does not match the
+              client ID associated with the current session,
+              return NFS4ERR_BAD_STATEID.
+            </t>
+            <t>
+              If the stateid represents revoked state, then return
+              NFS4ERR_EXPIRED, NFS4ERR_ADMIN_REVOKED, or
+              NFS4ERR_DELEG_REVOKED, as appropriate.
+            </t>
+            <t>
+              If the stateid type is not valid for the context in which the
+              stateid appears, return NFS4ERR_BAD_STATEID.
+              Note that a stateid may be valid in general, but be invalid for
+              a particular operation, as, for example, when a stateid
+              which doesn't represent byte-range locks is passed to
+              the non-from_open case of LOCK or to LOCKU, or when a stateid
+              which does not represent an open is passed to CLOSE or
+              OPEN_DOWNGRADE.  In such cases, the server MUST return
+              NFS4ERR_BAD_STATEID.
+            </t>
+            <t>
+              If the "seqid" field is not zero, and it is greater
+              than the current sequence value corresponding the
+              current "other" field, return NFS4ERR_BAD_STATEID.
+            </t>
+            <t>
+              If the "seqid" field is not zero, and it is less
+              than the current sequence value corresponding the
+              current "other" field, return NFS4ERR_OLD_STATEID.
+            </t>
+            <t>
+              Otherwise, the stateid is valid and the table entry
+              should contain any additional information about the
+              type of stateid and information associated with that
+              particular type of stateid, such as the associated
+              set of locks, such as open-owner and
+              lock-owner information, as well as information on the
+              specific locks, such as open modes and byte ranges.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section anchor="ss:fl:sufioo" title="Stateid Use for I/O Operations">
+
+        <t>
+          Clients performing I/O operations need to select an appropriate
+          stateid based on the locks (including opens and delegations) held by
+          the client and the various types of state-owners sending the I/O
+          requests.  SETATTR operations that change the file size are treated
+          like I/O operations in this regard.
+        </t>
+
+        <t>
+          The following rules, applied in order of decreasing priority, govern
+          the selection of the appropriate stateid.  In following these rules,
+          the client will only consider locks of which it has actually received
+          notification by an appropriate operation response or callback.
+
+          <list style='symbols'>
+            <t>
+              If the client holds a delegation for the file in question, the
+              delegation stateid SHOULD be used.
+            </t>
+
+            <t>
+              Otherwise, if the entity corresponding to the lock-owner (e.g., a
+              process) sending the I/O has a byte-range lock stateid for the
+              associated open file, then the byte-range lock stateid for that
+              lock-owner and open file SHOULD be used.
+            </t>
+
+            <t>
+              If there is no byte-range lock stateid, then the OPEN stateid for
+              the open file in question SHOULD be used.
+            </t>
+
+            <t>
+              Finally, if none of the above apply, then a special stateid SHOULD
+              be used.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Ignoring these rules may result in situations in which the server
+          does not have information necessary to properly process the request.
+          For example, when mandatory byte-range locks are in effect, if the
+          stateid does not indicate the proper lock-owner, via a lock stateid,
+          a request might be avoidably rejected.
+        </t>
+
+        <t>
+          The server however should not try to enforce these ordering rules and
+          should use whatever information is available to properly process I/O
+          requests.  In particular, when a client has a delegation for a given
+          file, it SHOULD take note of this fact in processing a request, even
+          if it is sent with a special stateid.
+        </t>
+      </section>
+
+      <section anchor="ss:fl:sufso" title="Stateid Use for SETATTR Operations">
+
+        <t>
+          In the case of SETATTR operations, a stateid is present.  In cases
+          other than those that set the file size, the client may send either a
+          special stateid or, when a delegation is held for the file in
+          question, a delegation stateid.  While the server SHOULD validate the
+          stateid and may use the stateid to optimize the determination as to
+          whether a delegation is held, it SHOULD note the presence of a
+          delegation even when a special stateid is sent, and MUST accept a
+          valid delegation stateid when sent.
+        </t>
+      </section>
 
     </section>
-    <section anchor="ss:fl:losd" title="lock_owner and Stateid Definition">
+
+    <section anchor="ss:fl:losd" title="lock_owner">
 
       <t>
         When requesting a lock, the client must present to the server the
@@ -348,85 +857,6 @@
         since the server will be maintaining the correspondence between
         them.
       </t>
-
-      <t>
-        The server is free to form the stateid in any manner that it
-        chooses as long as it is able to recognize invalid and out-of-date
-        stateids.  This requirement includes those stateids generated by
-        earlier instances of the server.  From this, the client can be
-        properly notified of a server restart.  This notification will
-        occur when the client presents a stateid to the server from a
-        previous instantiation.
-      </t>
-
-      <t>
-        The server must be able to distinguish the following situations
-        and return the error as specified:
-
-        <list style='symbols'>
-          <t>
-            The stateid was generated by an earlier server instance (i.e.,
-            before a server reboot).  The error NFS4ERR_STALE_STATEID
-            should be returned.
-          </t>
-
-          <t>
-            The stateid was generated by the current server instance but
-            the stateid no longer designates the current locking state for
-            the lockowner-file pair in question (i.e., one or more locking
-            operations has occurred).  The error NFS4ERR_OLD_STATEID should
-            be returned.
-          <vspace blankLines='1' />
-            This error condition SHOULD only occur when the client issues a
-            locking request which changes a stateid while an I/O request
-            that uses that stateid is outstanding.
-          </t>
-
-          <t>
-            The stateid was generated by the current server instance but
-            the stateid does not designate a locking state for any active
-            lockowner-file pair.  The error NFS4ERR_BAD_STATEID should
-            be returned.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        One mechanism that may be used to satisfy these requirements is
-        for the server to,
-
-        <list style='symbols'>
-          <t>
-            divide the "other" field of each stateid into two fields:
-
-            <list style='symbols'>
-              <t>
-                A server verifier which uniquely designates a particular
-                server instantiation.
-              </t>
-
-              <t>
-                An index into a table of locking-state structures.
-              </t>
-            </list>
-          </t>
-
-          <t>
-            utilize the "seqid" field of each stateid, such that seqid is
-            monotonically incremented for each stateid that is associated
-            with the same index into the locking-state table.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        By matching the incoming stateid and its field values with the
-        state held at the server, the server is able to easily determine
-        if a stateid is valid for its current instantiation and state.
-        If the stateid is not valid, the appropriate error can be supplied
-        to the client.
-      </t>
-
     </section>
     <section title="Use of the Stateid and Locking">
 
@@ -436,8 +866,9 @@
         size attribute of a file are treated as if they are writing the
         area between the old and new size (i.e., the range truncated or
         added to the file by means of the SETATTR), even where SETATTR
-        is not explicitly mentioned in the text. The stateid passed to one of these operations must
-        be one that represents an open, a set of byte-range locks, or a
+        is not explicitly mentioned in the text. The stateid passed to
+        one of these operations must
+        be one that represents an OPEN, a set of byte-range locks, or a
         delegation, or it may be a special stateid representing anonymous
         access or the special bypass stateid.
       </t>
@@ -587,7 +1018,7 @@
       </t>
 
       <t>
-        If a request (r) with a previous sequence number (r <
+        If a request (r) with a previous sequence number (r &lt;
         L) is received, it is rejected with the return of error
         NFS4ERR_BAD_SEQID.  Given a properly-functioning client, the
         response to (r) must have been received before the last request (L)
@@ -850,7 +1281,7 @@
     </t>
 
   </section>
-  <section title="Lease Renewal">
+  <section anchor="ss:fl:leaseren" title="Lease Renewal">
 
     <t>
       The purpose of a lease is to allow a server to remove stale
