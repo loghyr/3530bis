@@ -328,14 +328,6 @@
            </t>
          </list>
        </t>
-       <t>
-        In such cases, the error NFS4ERR_DELAY allows
-        these preparatory operations to proceed without
-        holding up client resources such as a session slot.
-        After delaying for period of time, the client can
-        then re-send the operation in question.
-
-      </t>
     </section>
     <section title="NFS4ERR_INVAL (Error Code 22)" 
              anchor="err_INVAL">

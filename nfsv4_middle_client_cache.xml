@@ -1156,8 +1156,53 @@
         either in previous requests or in previous operations in the same
         COMPOUND request.
       </t>
+    </section>
+
+    <section title="OPEN race with CB_RECALL">
+      <t>
+        The server informs the client of recall via a CB_RECALL. A race
+        case which may develop is when the delegation is immediately
+        recalled before the COMPOUND which established the delegation
+        is returned to the client. As the CB_RECALL provides both a
+        stateid and a file handle for which the client has no mapping,
+        it cannot honor the recall attempt. At this point, the client has two
+        choices, either do not respond or respond with NFS4ERR_BADHANDLE. 
+        If it does not respond, then it runs the risk of the server
+        deciding to not grant it further delegations.
+      </t>
+
+      <t>
+        If instead it does reply with NFS4ERR_BADHANDLE, then both the
+        client and the server might be able to  detect that a race condition
+        is occuring.  The client can keep a list of pending delegations.
+        When it receives a CB_RECALL for an unknown delegation, it can cache
+        the stateid and file handle on a list of pending recalls. When it
+        is provided with a delegation, it would only use it if it was not
+        on the pending recall list. Upon the next CB_RECALL, it could
+        immediately return the delegation.
+      </t>
+
+      <t>
+        In turn, the server can keep track of when it issues a delegation
+        and assume that if a client responds to the CB_RECALL with a
+        NFS4ERR_BADHANDLE, then the client has yet to receive the
+        delegation.  The server SHOULD give the client a reasonable time
+        both to get this delegation and to return it before revoking the
+        delegation. Unlike a failed callback path, the server should
+        periodically probe the client with CB_RECALL to see if it has
+        received the delegation and is ready to return it.
+      </t>
+
+      <t>
+        When the server finally determines that enough time has lapsed,
+        it SHOULD revoke the delegation and it SHOULD NOT revoke the lease.
+        During this extended recall process, the server SHOULD be
+        renewing the client lease. The intent here is that the client
+        not pay too onerous a burden for a condition caused by the server.
+      </t>
 
     </section>
+
     <section title="Clients that Fail to Honor Delegation Recalls">
 
       <t>

@@ -48,16 +48,6 @@ State: Accepted, High
 Target:
 Notes: Add DOWNGRADE here?? Dave
 
-10) Recommendations/workarounds for dealing with the OPEN and CB_RECALL
-race.
-
-Action:
-Owner:
-State: Accepted, High
-Target:
-Notes: May be hashed out on mailing list - i.e., resolved by existing
-implementations, but not captured in the spec?
-
 =======
 Medium:
 =======
@@ -1233,4 +1223,14 @@ Action: Explain what happens in a network partition when the server does not reb
 Owner: Tom
 State: Finished
 Target: IETF 80
+
+10) Recommendations/workarounds for dealing with the OPEN and CB_RECALL
+race.
+
+Action: Add suggested implementation support
+Owner: Tom
+State: Finished
+Target: IETF 80
+Notes: May be hashed out on mailing list - i.e., resolved by existing
+implementations, but not captured in the spec?
 
