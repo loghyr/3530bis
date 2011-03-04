@@ -462,7 +462,7 @@
           parallel for the same owner, a client might close a file without
           knowing that an OPEN upgrade had been done by the server, changing
           the lock in question.  If CLOSE were sent with a zero seqid, the OPEN
-          upgrade would be cancelled before the client even received an
+          upgrade would be canceled before the client even received an
           indication that an upgrade had happened.
         </t>
 
