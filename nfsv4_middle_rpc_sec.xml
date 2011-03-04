@@ -5,7 +5,7 @@
   <t>
     The NFSv4 protocol is a Remote Procedure Call (RPC)
     application that uses RPC version 2 and the corresponding eXternal
-    Data Representation (XDR) as defined in <xref target="RFC1831" /> and <xref target="RFC1832" />.
+    Data Representation (XDR) as defined in <xref target="RFC1831" /> and <xref target="RFC4506" />.
     The RPCSEC_GSS security flavor as defined in <xref target="RFC2203" /> MUST be used
     as the mechanism to deliver stronger security for the NFSv4
     protocol.

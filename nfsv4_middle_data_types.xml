@@ -4,7 +4,7 @@
 
    <t>
      The syntax and semantics to describe the data types of the NFS
-     version 4 protocol are defined in the XDR <xref target="RFC1832" /> and RPC
+     version 4 protocol are defined in the XDR <xref target="RFC4506" /> and RPC
      <xref target="RFC1831" /> documents.  The next sections build upon the XDR data
      types to define types and structures specific to this protocol.
    </t>

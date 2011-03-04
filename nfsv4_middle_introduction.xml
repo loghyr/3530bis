@@ -44,13 +44,13 @@
           Restructuring of string types to more appropriately reflect
           the reality of required string processing.
         </t>
-	<t>
-	  LIPKEY SPKM/3 has been moved from being REQUIRED to OPTIONAL.
-	</t>
-	<t>
-	  Some clarification on a client re-establishing callback
-	  information to the new server if state has been migrated.
-	</t>
+	      <t>
+	        LIPKEY SPKM/3 has been moved from being REQUIRED to OPTIONAL.
+	      </t>
+	      <t>
+	        Some clarification on a client re-establishing callback
+	        information to the new server if state has been migrated.
+	      </t>
       </list>
     </t>
   </section>
@@ -218,7 +218,7 @@
       For the reader new to the NFS protocols, there is still a
       fundamental knowledge that is expected.  The reader should
       be familiar with the XDR and RPC protocols as described in
-      <xref target="RFC1831" /> and <xref target="RFC1832" />.
+      <xref target="RFC1831" /> and <xref target="RFC4506" />.
       A basic knowledge of filesystems and distributed filesystems
       is expected as well.
     </t>
@@ -230,7 +230,7 @@
         Representation (XDR) and Remote Procedure Call (RPC)
         mechanisms used for the NFSv4 protocol are those
         defined in <xref target="RFC1831" /> and
-        <xref target="RFC1832" />.  To meet end to end
+        <xref target="RFC4506" />.  To meet end to end
         security requirements, the RPCSEC_GSS framework
         <xref target="RFC2203" />
         will be used to extend the basic RPC security.  With the

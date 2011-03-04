@@ -667,18 +667,18 @@ document are to be interpreted as described in RFC
       <format type='TXT' octets='3849' target='ftp://ftp.isi.edu/in-notes/rfc3232.txt' />
     </reference>
 
-    <reference anchor='RFC1832'>
-      <front>
-	<title>XDR: External Data Representation Standard</title>
-	<author initials="R." surname="Srinivasan" fullname="R. Srinivasan">
-	  <organization>Sun Microsystems, Inc.</organization>
-	</author>
-	<date year="1995" month="August"/>
-      </front>
-      <seriesInfo name="RFC" value="1832"/>
-      <format type="TXT" octets="600988" 
-	      target="ftp://ftp.isi.edu/in-notes/rfc1832.txt"/>
-    </reference>
+  <reference anchor='RFC4506'>
+    <front>
+      <title>XDR: External Data Representation Standard</title>
+      <author initials='M.' surname='Eisler' fullname='Michael Eisler'>
+        <organization>NetApp</organization>
+      </author>
+      <date year="2006" month="May" />
+    </front>
+    <seriesInfo name="RFC" value="4506" />
+    <format type="TXT"
+      target="ftp://ftp.isi.edu/in-notes/rfc4506.txt"/>
+  </reference>
 
     <reference anchor='RFC1964'>
       <front>
