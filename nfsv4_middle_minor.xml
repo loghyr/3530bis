@@ -14,7 +14,7 @@
    documented in a standards track RFC.  Therefore, each minor version
    number will correspond to an RFC.  Minor version zero of the NFS
    version 4 protocol is represented by this RFC.  The COMPOUND
-   procedure will support the encoding of the minor version being
+   and CB_COMPOUND procedures support the encoding of the minor version being
    requested by the client.
   </t>
 
@@ -41,8 +41,9 @@
 
         <list style='numbers'>
           <t>
-            Minor versions may append attributes to GETATTR4args, bitmap4,
-            and GETATTR4res.
+            Minor versions may append attributes to the bitmap4 that
+            represents sets of attributes and to the fattr4 that
+            represents sets of attribute values.
           <vspace blankLines='1' />
             This allows for the expansion of the attribute model to allow
             for future growth or adaptation.
@@ -54,7 +55,7 @@
           <vspace blankLines='1' />
             Since attribute results are specified as an opaque array of
             per-attribute XDR encoded results, the complexity of adding new
-            attributes in the midst of the current definitions will be too
+            attributes in the midst of the current definitions would be too
             burdensome.
           </t>
         </list>
@@ -64,7 +65,7 @@
         Minor versions must not modify the structure of an existing
         operation's arguments or results.
       <vspace blankLines='1' />
-        Again the complexity of handling multiple structure definitions
+        Again, the complexity of handling multiple structure definitions
         for a single operation is too burdensome.  New operations should
         be added instead of modifying existing structures for a minor
         version.
@@ -74,8 +75,10 @@
 
         <list style='symbols'>
           <t>
-            adding bits to flag fields such as new attributes to GETATTR's
-            bitmap4 data type
+            adding bits to flag fields, such as new attributes to
+            GETATTR's bitmap4 data type, and providing corresponding
+            variants of opaque arrays, such as a notify4 used together
+            with such bitmaps
           </t>
 
           <t>
@@ -159,8 +162,9 @@
         This rule allows for the introduction of new functionality and forces
         the use of implementation experience before designating a feature as
         REQUIRED. On the other hand, some classes of features are
-        infrastructural and have broad effects. Allowing such features
-        to not be REQUIRED complicates implementation of the minor version.
+        infrastructural and have broad effects. Allowing
+        infrastructural features to be RECOMMENDED or OPTIONAL
+        complicates implementation of the minor version.
       </t>
 
       <t>
