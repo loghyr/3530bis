@@ -1158,7 +1158,7 @@
       </t>
     </section>
 
-    <section title="OPEN race with CB_RECALL">
+    <section title="OPEN delegatiion race with CB_RECALL">
       <t>
         The server informs the client of recall via a CB_RECALL. A race
         case which may develop is when the delegation is immediately
