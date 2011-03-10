@@ -284,7 +284,7 @@
         The client must also employ the SETCLIENTID operation when it
         receives a NFS4ERR_STALE_STATEID error using a stateid derived
         from its current client ID, since this also indicates a server
-        reboot which has invalidated the existing client ID (see 
+        reboot which has invalidated the existing client ID (see
         <xref target="ss:fl:losd" /> for details).
       </t>
 
@@ -403,7 +403,7 @@
               recallable guarantees by the server to the client,
               that other clients will not reference, or will not
               modify a particular file, until the delegation
-              is returned.  
+              is returned.
               <vspace blankLines="1" />
               A stateid represents a single delegation held by
               a client for a particular filehandle.
@@ -1523,8 +1523,10 @@
           may continue to hold locks on behalf of a client for which recent
           communication has extended beyond the lease period.  If the server
           receives a lock or I/O request that conflicts with one of these
-          courtesy locks, the server must free the courtesy lock and grant
-          the new request.
+          courtesy locks, the server MUST free the courtesy lock and grant
+          the new request. If the server runs out of resources, it MAY
+          free all courtesy locks. I.e., the client MUST not make an
+          assumption that the server has issued courtesy locks.
         </t>
 
         <t>
@@ -1532,7 +1534,7 @@
           when the original client tries to access a courtesy lock which
           was freed, the server SHOULD send back a NFS4ERR_BAD_STATEID
           to the client. If the client tries to access a courtesy lock
-          which was not freed, then the server should mark all of the
+          which was not freed, then the server SHOULD mark all of the
           courtesy locks as implicitly being renewed.
         </t>
 
@@ -1761,7 +1763,7 @@
             The third known edge condition follows:
 
             <list style='numbers'>
-  
+
               <t>
                 Client A acquires a lock 1.
               </t>
@@ -1790,8 +1792,16 @@
               </t>
 
               <t>
-                Server's reclaim grace period ends.  Client A has no locks
-                recorded on server.
+                Server's reclaim grace period ends.
+              </t>
+
+              <t>
+                Client B acquires a lock that would have
+                conflicted with Client A's lock 2.
+              </t>
+
+              <t>
+                Client B releases the lock.
               </t>
 
               <t>
@@ -1808,23 +1818,32 @@
               </t>
 
               <t>
-                Client A reclaims its lock 1 within the server's grace period.
+                Client A reclaims both lock 1 and lock 2 within the server's
+                grace period.
               </t>
             </list>
           </t>
 
           <t>
-            During the partition, client A decided that the server had revoked
-            lock 2. After the partition, it was able to reclaim lock 1, but
-            made no attempt to reclaim lock 2. After the grace period, it is
-            free to try to reestablish lock 2 via LOCK operations.
+            At the last step, the client reclaims lock 2 as if it had
+            held that lock continuously, when in fact a conflicting lock
+            was granted to client B.
           </t>
 
           <t>
-            Note that the other two edge conditions are able to interact with this
-            third edge condition. Another client B may have established a conflicting
-            lock during the partition, made some changes, and the released the
-            lock before the second server reboot.
+            A server could avoid this situation by rejecting the reclaim
+            of lock 2.  However, to do so accurately it would have to
+            ensure that additional information about individual locks
+            held survives reboot.  Server implementations are not
+            required to do that, so the client must not assume that the
+            server will.
+          </t>
+
+          <t>
+            Instead, a client MUST reclaim only those locks which it
+            succesfully acquired from the previous server instance, omitting any
+            that it failed to reclaim before a new reboot.  Thus, in the
+            last step above, client A should reclaim only lock 1.
           </t>
         </section>
 
@@ -1892,7 +1911,7 @@
                 this error as it normally would.
               </t>
             </list>
-				</t>
+          </t>
       </section>
     </section>
   </section>
@@ -2051,7 +2070,7 @@ else if ((request.access & file_state.deny)) ||
       operation so the appropriate share semantics can be applied.
       Clients that do not have a deny mode built into their programming
       interfaces for opening a file should request a deny mode of
-      OPEN4_SHARE_DENY_NONE.  
+      OPEN4_SHARE_DENY_NONE.
     </t>
 
     <t>
@@ -2176,7 +2195,7 @@ else if ((request.access & file_state.deny)) ||
       returned has the same "other" field as that passed to the server.
       The "seqid" value in the returned stateid MUST be incremented,
       even in situations in which there is no change to the access and
-      deny bits for the file.  
+      deny bits for the file.
     </t>
 
   </section>
@@ -2309,11 +2328,11 @@ else if ((request.access & file_state.deny)) ||
 
       <t>
         A client SHOULD re-establish new callback information
-        with the new server as soon as possible, according to 
+        with the new server as soon as possible, according to
         sequences described in <xref target="OP_SETCLIENTID" />
         and <xref target="OP_SETCLIENTID_CONFIRM" />.
         This ensures that server operations are not blocked by
-        the inability to recall delegations. 
+        the inability to recall delegations.
       </t>
 
     </section>
