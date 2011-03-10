@@ -466,6 +466,18 @@
       should periodically purge this data for referral points in order to
       detect changes in location information.
     </t>
+    <t>
+      A problem exists if a client allows an open owner to have state
+      on multiple filesystems on a server. If one of those filesystems
+      is migrated, what happens to the sequence numbers? A client can
+      avoid such a situation with the stipulation that any client
+      which supports migration MUST ensure that any open owner is
+      confined to a single filesystem. If the server finds itself
+      migrating open owners that span multiple filesystems, then it
+      MUST not migrate the state for the conflicting open owners
+      on the non-migrated filesystems; instead it MUST return
+      NFS4ERR_STALE_STATEID if the client tries to use those stateids.
+    </t>
   </section>
   <section anchor="effecting_transitions"
            title="Effecting File System Transitions">
