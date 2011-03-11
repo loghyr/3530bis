@@ -1539,7 +1539,7 @@
         </t>
 
         <t>
-          When a network partition is combined with a server reboot, there
+          When a network partition is combined with a server reboot, then
           both the server and client have responsibilities to ensure that
           the client does not reclaim a lock which it should no longer
           be able to access. The next sections illustrate examples of
