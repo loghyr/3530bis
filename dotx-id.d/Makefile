@@ -28,7 +28,7 @@ clean:
 	rm -rf draft-$(VERS)
 	rm -f draft-$(VERS).tar.gz
 	rm -rf testx.d
-	rm -f tmp.out tmp.sh tmp.x tmp.txt
+	rm -f tmp.out tmp.sh tmp.x tmp.txt tmp.filelist
 	cd ../dotx.d ; make clean
 
 # Parallel All
