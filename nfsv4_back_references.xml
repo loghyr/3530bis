@@ -39,32 +39,18 @@
       <seriesInfo name="ISO" value="Standard 10646-1" />
     </reference>
 
-    <reference anchor='RFC1831'>
+    <reference anchor='RFC5531'>
       <front>
 	<title abbrev='Remote Procedure Call Protocol Version 2'>RPC:
 	Remote Procedure Call Protocol Specification Version 2</title>
-	<author initials='R.' surname='Srinivasan' fullname='Raj Srinivasan'>
-	  <organization>Sun Microsystems, Inc., ONC Technologies</organization>
-	  <address>
-	    <postal>
-	      <street>2550 Garcia Avenue</street>
-	      <street>M/S MTV-5-40</street>
-	      <city>Mountain View</city>
-	      <region>CA</region>
-	      <code>94043</code>
-	    <country>US</country></postal>
-	    <phone>+1 415 336 2478</phone>
-	    <facsimile>+1 415 336 6015</facsimile>
-	<email>raj@eng.sun.com</email></address></author>
-	<date year='1995' month='August' />
-	<abstract>
-      <t>This document describes the ONC Remote Procedure Call (ONC
-      RPC Version 2) protocol as it is currently deployed and
-      accepted.  "ONC" stands for "Open Network
-      Computing".</t></abstract></front>
+	<author initials='R.' surname='Thurlow' fullname='R. Thurlow'>
+	  <organization>Sun Microsystems, Inc.</organization>
+	</author>
+	<date year='2009' month='May' />
+      </front>
 
-      <seriesInfo name='RFC' value='1831' />
-      <format type='TXT' octets='37798' target='ftp://ftp.isi.edu/in-notes/rfc1831.txt' />
+      <seriesInfo name='RFC' value='5531' />
+      <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc5531.txt' />
     </reference>
 
     <reference anchor='RFC2119'>

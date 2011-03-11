@@ -3,7 +3,7 @@
 
 <front>
     <title abbrev="NFSv4">
-    NFS Version 4 Protocol
+      Network File System (NFS) Version 4 Protocol
     </title>
 
     <author fullname="Thomas Haynes" 

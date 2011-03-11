@@ -3386,7 +3386,7 @@ void;
         order the first one it supports.  The array entries are
         represented by the secinfo4 structure.  The field 'flavor'
         will contain a value of AUTH_NONE, AUTH_SYS (as defined in
-        <xref target="RFC1831" />), or RPCSEC_GSS (as defined in <xref target="RFC2203" />).
+        <xref target="RFC5531" />), or RPCSEC_GSS (as defined in <xref target="RFC2203" />).
       </t>
 
       <t>
