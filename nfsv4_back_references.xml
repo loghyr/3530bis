@@ -1,6 +1,7 @@
 <!-- Copyright (C) The IETF Trust (2009-2011) -->
 <!-- Copyright (C) The Internet Society (2010-2011) -->
   <references title="Normative References">
+  <?rfc sortrefs="yes"?>
 
     <reference anchor='I-D.ietf-nfsv4-rfc3530bis-dot-x'>
       <front>

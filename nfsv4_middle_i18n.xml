@@ -385,7 +385,7 @@
         We will divide strings to be dealt with into the 
         following classes:
         <list style='hanging'>
-          <t hangText="MIX">
+          <t hangText="MIX:">
             indicating that there is small amount of
             preparatory processing that either picks
             an internationalization handling mode or
@@ -395,7 +395,7 @@
             The details are discussed in the section
             "<xref target="Type-MIX" format='title' />".          
           </t>
-          <t hangText="NIP">
+          <t hangText="NIP:">
             indicating that, for various reasons, there
             is no need for internationalization-specific
             processing to be performed.  The specifics
@@ -403,14 +403,14 @@
             way are described in the section 
             "<xref target="Type-NIP" format='title' />".
           </t>
-          <t hangText="INET">
+          <t hangText="INET:">
             indicating that the string needs to be
             processed in a fashion governed by
             non-NFS-specific internet specifications.
             The details are discussed in the section
             "<xref target="Type-INET" format='title' />".
           </t>
-          <t hangText="NFS">
+          <t hangText="NFS:">
             indicating that the string needs to be
             processed in a fashion governed by
             NFSv4-specific considerations.  The primary
@@ -718,7 +718,7 @@
     <t>
       The following are the specific types:
       <list style='hanging'>
-        <t hangText='comptag4'>
+        <t hangText='comptag4:'>
            strings are an aid to debugging and the sender 
            should avoid confusion by not using anything but 
            valid UTF-8.  But any work validating the string or 
@@ -728,7 +728,7 @@
            and having data maximally available 
            to be looked at in a network trace.
         </t>
-        <t hangText='fattr4_mimetype'>
+        <t hangText='fattr4_mimetype:'>
            strings need to be validated by matching against
            a list of valid mime types.  Since these are all
            ASCII, no processing specific to internationalization
@@ -737,7 +737,7 @@
            rules of UTF-8 will not be ASCII and consequently
            will not match, and will be invalid.
         </t>
-        <t hangText='svraddr4'>
+        <t hangText='svraddr4:'>
            strings, in order to be valid, need to be ASCII,
            but if you check them for validity, you have
            inherently checked that that they are ASCII and

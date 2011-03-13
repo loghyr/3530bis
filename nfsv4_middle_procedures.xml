@@ -434,29 +434,29 @@ READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
 
         <list style='hanging'>
 
-          <t hangText="ACCESS4_READ">
+          <t hangText="ACCESS4_READ:">
             Read data from file or read a directory.
           </t>
 
-          <t hangText="ACCESS4_LOOKUP">
+          <t hangText="ACCESS4_LOOKUP:">
             Look up a name in a directory (no meaning for
             non-directory objects).
           </t>
 
-          <t hangText="ACCESS4_MODIFY">
+          <t hangText="ACCESS4_MODIFY:">
             Rewrite existing file data or modify existing directory
             entries.
           </t>
 
-          <t hangText="ACCESS4_EXTEND">
+          <t hangText="ACCESS4_EXTEND:">
             Write new data or add directory entries.
           </t>
 
-          <t hangText="ACCESS4_DELETE">
+          <t hangText="ACCESS4_DELETE:">
             Delete an existing directory entry.
           </t>
 
-          <t hangText="ACCESS4_EXECUTE">
+          <t hangText="ACCESS4_EXECUTE:">
             Execute file (no meaning for a directory).
           </t>
 
@@ -1853,25 +1853,25 @@ READ 0 32767
 
         <list style='hanging'>
 
-          <t hangText="CLAIM_NULL">
+          <t hangText="CLAIM_NULL:">
             For the client, this is a new OPEN request and there is
             no previous state associate with the file for the client.
           </t>
 
-          <t hangText="CLAIM_PREVIOUS">
+          <t hangText="CLAIM_PREVIOUS:">
             The client is claiming basic OPEN state for a file that
             was held previous to a server reboot.  Generally used
             when a server is returning persistent filehandles; the
             client may not have the file name to reclaim the OPEN.
           </t>
 
-          <t hangText="CLAIM_DELEGATE_CUR">
+          <t hangText="CLAIM_DELEGATE_CUR:">
             The client is claiming a delegation for OPEN as granted by
             the server.  Generally this is done as part of recalling
             a delegation.
           </t>
 
-          <t hangText="CLAIM_DELEGATE_PREV">
+          <t hangText="CLAIM_DELEGATE_PREV:">
             The client is claiming a delegation granted to a previous
             client instance; used after the client reboots. The server
             MAY support CLAIM_DELEGATE_PREV.  If it does support

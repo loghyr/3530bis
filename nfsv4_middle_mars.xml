@@ -136,8 +136,8 @@
         </t>
         <t hangText="mounted_on_fileid:">
           For objects at the top of an absent
-	  file system, this attribute needs to be available.  Since
-	  the fileid is within the present parent file
+          file system, this attribute needs to be available.  Since
+          the fileid is within the present parent file
           system, there should be no need to reference the absent file
           system to provide this information.
         </t>
@@ -1194,10 +1194,10 @@
           examples, we might not have this kind of information to rely
           on (e.g., /this/is/the might be a non-pseudo file system
           separate from /this/is/the/path), so we need to have
-	  other reliable source information on the boundary of the file system
-	  that is moved.  If, for example, the file system /this/is
-	  had moved, we would have a case of migration rather than
-	  referral, and once the boundaries of the migrated file system
+          other reliable source information on the boundary of the file system
+          that is moved.  If, for example, the file system /this/is
+          had moved, we would have a case of migration rather than
+          referral, and once the boundaries of the migrated file system
           was clear we could fetch fs_locations.
         </t>
         <t hangText='- '>

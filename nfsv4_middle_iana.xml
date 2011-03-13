@@ -132,19 +132,19 @@ This section uses terms that are defined in <xref target="RFC5226"/>.
       The initial definitions for r_netid are:
 
       <list style='hanging'>
-        <t hangText='"tcp"'>
+        <t hangText='"tcp":'>
           TCP over IP version 4
         </t>
 
-        <t hangText='"udp"'>
+        <t hangText='"udp":'>
           UDP over IP version 4
         </t>
 
-        <t hangText='"tcp6"'>
+        <t hangText='"tcp6":'>
           TCP over IP version 6
         </t>
 
-        <t hangText='"udp6"'>
+        <t hangText='"udp6":'>
           UDP over IP version 6
         </t>
       </list>
