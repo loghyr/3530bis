@@ -1542,9 +1542,37 @@
           When a network partition is combined with a server reboot, then
           both the server and client have responsibilities to ensure that
           the client does not reclaim a lock which it should no longer
-          be able to access. The next sections illustrate examples of
-          these edge conditions and the steps necessary to be undertaken
-          to ensure proper lock semantics.
+          be able to access. Briefly those are:
+
+          <list style='symbols'>
+            <t>
+              Client's responsibility: A client MUST NOT attempt to
+              reclaim any locks which it did not hold at the end of
+              its most recent successfully established client lease.
+            </t>
+            
+            <t>
+              Server's responsibility: A server MUST NOT allow a
+              client to reclaim a lock unless it knows that it could
+              not have since granted a conflicting lock.  However, in
+              deciding whether a conflicting lock could have been
+              granted, it is permitted to assume its clients are
+              responsible, as above.
+            </t>
+          </list>
+        </t>
+        
+        <t>
+          A server may consider a client's lease "successfully
+          established" once it has received an open operation from that
+          client.
+        </t>
+        
+        <t>
+          The next sections give examples showing what can go wrong if
+          these responsibilites are neglected, and provides examples of
+          server implementation strategies that could meet a server's
+          responsibilities.
         </t>
 
         <section title="First Server Edge Condition">
@@ -1662,6 +1690,19 @@
 
         <section title="Handling Server Edge Conditions">
           <t>
+            In both of the above examples, the client attempts reclaim
+            of a lock that it held at the end of its most recent
+            successfully established lease; thus, it has fulfilled its
+            responsibility.
+          </t>
+
+          <t>
+            The server, however, has failed, by granting a reclaim,
+            despite having granted a conflicting lock since the
+            reclaimed lock was last held.
+          </t>
+
+          <t>
             Solving these edge conditions requires that the
             server either assume after it reboots that edge condition occurs,
             and thus return NFS4ERR_NO_GRACE for all reclaim attempts, or that
@@ -1736,13 +1777,11 @@
               </t>
 
               <t>
-                Record sufficient state in stable storage such that all
-                known edge conditions involving server reboot, including the
-                two noted in this section, are detected.  False positives
-                are acceptable.  Note that at this time, it is not known
-                if there are other edge conditions.
-
-                In the event, after a server reboot, the server determines
+                Record sufficient state in stable storage to meet its
+                responsibilities.  In doubt, the server should err on
+                the side of being harsh.
+                <vspace blankLines="1"/>
+                In the event that, after a server reboot, the server determines
                 that there is unrecoverable damage or corruption to the the
                 stable storage, then for all clients and/or locks affected,
                 the server MUST return NFS4ERR_NO_GRACE.
@@ -1833,6 +1872,15 @@
           </t>
 
           <t>
+            This occurs because the client failed its responsibility, by
+            attempting to reclaim lock 2 even though it had not held
+            that lock at the end of the lease that was established by
+            the SETCLIENTID after the first server reboot.  (The client
+            did hold lock 2 on a previous lease.  But it is only the most
+            recent lease that matters.)
+          </t>
+
+          <t>
             A server could avoid this situation by rejecting the reclaim
             of lock 2.  However, to do so accurately it would have to
             ensure that additional information about individual locks
@@ -1843,8 +1891,8 @@
 
           <t>
             Instead, a client MUST reclaim only those locks which it
-            succesfully acquired from the previous server instance, omitting any
-            that it failed to reclaim before a new reboot.  Thus, in the
+            successfully acquired from the previous server instance, omitting
+            any that it failed to reclaim before a new reboot.  Thus, in the
             last step above, client A should reclaim only lock 1.
           </t>
         </section>
