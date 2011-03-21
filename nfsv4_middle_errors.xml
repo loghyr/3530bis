@@ -350,7 +350,7 @@
              anchor="err_SERVERFAULT">
       <t>
         An error occurred on the server which does not map to any of
-        the specific legal NFSv4.1 protocol error values.  The client
+        the specific legal NFSv4 protocol error values.  The client
         should translate this into an appropriate error.  UNIX clients
         may choose to translate this to EIO.
      </t>
@@ -694,7 +694,7 @@
 
   <section title="Security Errors" anchor="errors_sec">
     <t>
-      These are the various permission-related errors in NFSv4.1.
+      These are the various permission-related errors in NFSv4.
     </t>
     <section title="NFS4ERR_ACCESS (Error Code 13)" 
              anchor="err_ACCESS">
