@@ -481,13 +481,7 @@
           determining the order of operations and by the server in determining
           whether the NFS4ERR_OLD_STATEID is to be returned, the possibility of
           the seqid being swapped around past the NFS4_UINT32_MAX value needs
-          to be taken into account.  When two seqid values are being compared,
-          the total count of slots for all sessions associated with the current
-          client is used to do this.  When one seqid value is less than this
-          total slot count and another seqid value is greater than
-          NFS4_UINT32_MAX minus the total slot count, the former is to be
-          treated as lower than the latter, despite the fact that it is
-          numerically greater.
+          to be taken into account.
         </t>
       </section>
 
