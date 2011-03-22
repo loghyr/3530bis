@@ -191,7 +191,7 @@
         following values:
 
         <list style='hanging'>
-          <t hangText="FH4_PERSISTENT">
+          <t hangText="FH4_PERSISTENT:">
              The value of FH4_PERSISTENT is used to indicate a
              persistent filehandle, which is valid until the object is
              removed from the filesystem.  The server will not return
@@ -200,24 +200,24 @@
              below are set.
           </t>
 
-          <t hangText="FH4_VOLATILE_ANY">
+          <t hangText="FH4_VOLATILE_ANY:">
              The filehandle may expire at any time, except as
              specifically excluded (i.e., FH4_NOEXPIRE_WITH_OPEN).
           </t>
 
-          <t hangText="FH4_NOEXPIRE_WITH_OPEN">
+          <t hangText="FH4_NOEXPIRE_WITH_OPEN:">
              May only be set when FH4_VOLATILE_ANY is set.  If this bit
              is set, then the meaning of FH4_VOLATILE_ANY is qualified
              to exclude any expiration of the filehandle when it is
              open.
           </t>
 
-          <t hangText="FH4_VOL_MIGRATION">
+          <t hangText="FH4_VOL_MIGRATION:">
              The filehandle will expire as a result of migration.  If
              FH4_VOLATILE_ANY is set, FH4_VOL_MIGRATION is redundant.
           </t>
 
-          <t hangText="FH4_VOL_RENAME">
+          <t hangText="FH4_VOL_RENAME:">
              The filehandle will expire during rename.  This includes a
              rename by the requesting client or a rename by any other
              client.  If FH4_VOLATILE_ANY is set, FH4_VOL_RENAME is

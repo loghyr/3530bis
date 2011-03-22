@@ -3,13 +3,14 @@
 
 <front>
     <title abbrev="NFSv4">
-    NFS Version 4 Protocol
+      Network File System (NFS) Version 4 Protocol
     </title>
 
     <author fullname="Thomas Haynes" 
             initials="T." 
-            surname="Haynes">
-        <organization abbrev="Editors">NetApp</organization>
+            surname="Haynes"
+            role="editor">
+        <organization abbrev="NetApp">NetApp</organization>
         <address>
             <postal>
                 <street>9110 E 66th St</street>
@@ -20,11 +21,12 @@
             </postal>
             <phone>+1 918 307 1415</phone>
             <email>thomas@netapp.com</email>
+            <uri>http://www.tulsalabs.com</uri>
         </address>
     </author>
   <author initials='D.' surname='Noveck'
-          fullname = 'David Noveck'>
-    <organization abbrev='Editors'>EMC</organization>
+          fullname = 'David Noveck' role='editor'>
+    <organization abbrev='EMC'>EMC Corporation</organization>
     <address>
        <postal>
          <street>32 Coslin Drive</street>

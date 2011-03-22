@@ -4,8 +4,8 @@
 YEAR=`date +%Y`
 MONTH=`date +%B`
 DAY=`date +%d`
-PREVVERS=03
-VERS=04
+PREVVERS=05
+VERS=06
 VPATH = ../../dotx.d
 
 all: txt filelist
@@ -28,7 +28,7 @@ clean:
 	rm -rf draft-$(VERS)
 	rm -f draft-$(VERS).tar.gz
 	rm -rf testx.d
-	rm -f tmp.out tmp.sh tmp.x tmp.txt
+	rm -f tmp.out tmp.sh tmp.x tmp.txt tmp.filelist
 	cd ../dotx.d ; make clean
 
 # Parallel All

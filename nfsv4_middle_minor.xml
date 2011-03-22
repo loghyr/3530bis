@@ -12,7 +12,7 @@
    The base assumption with respect to minor versioning is that any
    future accepted minor version must follow the IETF process and be
    documented in a standards track RFC.  Therefore, each minor version
-   number will correspond to an RFC.  Minor version zero of the NFS
+   number will correspond to an RFC.  Minor version 0 of the NFS
    version 4 protocol is represented by this RFC.  The COMPOUND
    and CB_COMPOUND procedures support the encoding of the minor version being
    requested by the client.
@@ -150,7 +150,7 @@
 
       <t>
         A client and server that support minor version X SHOULD support
-        minor versions 0 (zero) through X-1 as well.
+        minor versions 0 through X-1 as well.
       </t>
 
       <t>
