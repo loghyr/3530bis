@@ -156,7 +156,7 @@ EOF
 
 cat << EOF > $i
 struct fs_location4 {
-	utf8must	server<>;
+	utf8val_must	server<>;
 	pathname4	rootpath;
 };
 EOF
@@ -328,7 +328,7 @@ struct nfsace4 {
 	acetype4	type;
 	aceflag4	flag;
 	acemask4	access_mask;
-	utf8_must	who;
+	utf8val_must	who;
 };
 EOF
 	;;
