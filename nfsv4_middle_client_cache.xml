@@ -117,7 +117,7 @@
       depend on the delegation.  This stateid is similar to those
       associated with locks and share reservations but differs in that the
       stateid for a delegation is associated with a client ID and may be used
-      on behalf of all the open_owners for the given client.  A delegation
+      on behalf of all the open-owners for the given client.  A delegation
       is made to the client as a whole and not to any specific process or
       thread of control within it.
     </t>
@@ -711,7 +711,7 @@
     <t>
       The delegation stateid is separate and distinct from the stateid for
       the OPEN proper.  The standard stateid, unlike the delegation
-      stateid, is associated with a particular lock_owner and will continue
+      stateid, is associated with a particular lock-owner and will continue
       to be valid after the delegation is recalled and the file remains
       open.
     </t>

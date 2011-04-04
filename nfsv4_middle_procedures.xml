@@ -581,7 +581,7 @@ READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
         Even though CLOSE returns a stateid, this stateid is not
         useful to the client and should be treated as deprecated.
         CLOSE "shuts down" the state associated with all OPENs for
-        the file by a single open_owner.  As noted above, CLOSE will
+        the file by a single open-owner.  As noted above, CLOSE will
         either release all file locking state or return an error.
         Therefore, the stateid returned by CLOSE is not useful for
         operations that follow.
@@ -1274,7 +1274,7 @@ GETFH
         NFS4ERR_LOCK_RANGE.  In that case, the client may return an
         error, or it may emulate the required operations, using only
         LOCK for ranges that do not include any bytes already locked
-        by that lock_owner and LOCKU of locks held by that lock_owner
+        by that lock-owner and LOCKU of locks held by that lock-owner
         (specifying an exactly-matching range and type).  Similarly,
         when the client makes a lock request that amounts to upgrading
         (changing from a read lock to a write lock) or downgrading
@@ -1930,7 +1930,7 @@ READ 0 32767
       </t>
 
       <t>
-        When an OPEN is done and the specified open_owner already
+        When an OPEN is done and the specified open-owner already
         has the resulting filehandle open, the result is to "OR"
         together the new share and deny status together with the
         existing status.  In this case, only a single CLOSE need be
@@ -2204,10 +2204,10 @@ READ 0 32767
 
       <t>
         This operation is used to confirm the sequence id usage
-        for the first time that a open_owner is used by a client.
+        for the first time that a open-owner is used by a client.
         The stateid returned from the OPEN operation is used as the
         argument for this operation along with the next sequence id for
-        the open_owner.  The sequence id passed to the OPEN_CONFIRM
+        the open-owner.  The sequence id passed to the OPEN_CONFIRM
         must be 1 (one) greater than the seqid passed to the OPEN
         operation.
         If the server receives an unexpected sequence id with respect
@@ -4432,10 +4432,10 @@ lockowner -> ()
     <section toc="exclude" anchor="OP_RELEASE_LOCKOWNER_DESCRIPTION" title="DESCRIPTION">
 
       <t>
-        This operation is used to notify the server that the lock_owner
+        This operation is used to notify the server that the lock-owner
         is no longer in use by the client.  This allows the server
-        to release cached state related to the specified lock_owner.
-        If file locks, associated with the lock_owner, are held at
+        to release cached state related to the specified lock-owner.
+        If file locks, associated with the lock-owner, are held at
         the server, the error NFS4ERR_LOCKS_HELD will be returned
         and no further action will be taken.
       </t>
@@ -4448,9 +4448,9 @@ lockowner -> ()
         amount of server state that is held.  Depending on behavior of
         applications at the client, it may be important for the client
         to use this operation since the server has certain obligations
-        with respect to holding a reference to a lock_owner as long
+        with respect to holding a reference to a lock-owner as long
         as the associated file is open.  Therefore, if the client
-        knows for certain that the lock_owner will no longer be used
+        knows for certain that the lock-owner will no longer be used
         under the context of the associated open_owner4, it should
         use RELEASE_LOCKOWNER.
       </t>

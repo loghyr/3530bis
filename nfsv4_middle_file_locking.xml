@@ -121,8 +121,8 @@
       </t>
       <t>
         Unlike the text in NFSv4.1 <xref target="RFC5661" />, this
-        text treats "lock_owner" as meaning both a open_owner4 and
-        a lock_owner4. Also, a "lock" can refer to both a byte-range
+        text treats "lock-owner" as meaning both a open-owner and
+        a lock-owner. Also, a "lock" can refer to both a byte-range
         and share lock.
       </t>
 
@@ -822,12 +822,12 @@
 
     </section>
 
-    <section anchor="ss:fl:losd" title="lock_owner">
+    <section anchor="ss:fl:losd" title="lock-owner">
 
       <t>
         When requesting a lock, the client must present to the server the
         client ID and an identifier for the owner of the requested lock.
-        These two fields are referred to as the lock_owner and the
+        These two fields are referred to as the lock-owner and the
         definition of those fields are:
 
         <list style='symbols'>
@@ -847,7 +847,7 @@
 
       <t>
         When the server grants the lock, it responds with a unique stateid.
-        The stateid is used as a shorthand reference to the lock_owner,
+        The stateid is used as a shorthand reference to the lock-owner,
         since the server will be maintaining the correspondence between
         them.
       </t>
@@ -868,7 +868,7 @@
       </t>
 
       <t>
-        If the lock_owner performs a READ or WRITE in a situation in which
+        If the lock-owner performs a READ or WRITE in a situation in which
         it has established a lock or share reservation on the server (any
         OPEN constitutes a share reservation) the stateid (previously
         returned by the server) must be used to indicate what locks,
@@ -999,16 +999,16 @@
         In the face of retransmission or reordering, lock or unlock
         requests must have a well defined and consistent behavior.
         To accomplish this, each lock request contains a sequence number
-        that is a consecutively increasing integer.  Different lock_owners
+        that is a consecutively increasing integer.  Different lock-owners
         have different sequences.  The server maintains the last sequence
         number (L) received and the response that was returned.  The server
         is free to assign any value for the first request issued for any
-        given lock_owner.
+        given lock-owner.
       </t>
 
       <t>
         Note that for requests that contain a sequence number, for each
-        lock_owner, there should be no more than one outstanding request.
+        lock-owner, there should be no more than one outstanding request.
       </t>
 
       <t>
@@ -1037,7 +1037,7 @@
         requests than that of the traditional cache described in
         <xref target="Chet" />.  The traditional duplicate request cache uses a least
         recently used algorithm for removing unneeded requests.  However,
-        the last lock request and response on a given lock_owner must be
+        the last lock request and response on a given lock-owner must be
         cached as long as the lock state exists on the server.
       </t>
 
@@ -1057,11 +1057,11 @@
     <section title="Recovery from Replayed Requests">
 
       <t>
-        As described above, the sequence number is per lock_owner.
+        As described above, the sequence number is per lock-owner.
         As long as the server maintains the last sequence number received
         and follows the methods described above, there are no risks of a
         Byzantine router re-sending old requests.  The server need only
-        maintain the (lock_owner, sequence number) state as long as there
+        maintain the (lock-owner, sequence number) state as long as there
         are open files or closed files with locks outstanding.
       </t>
 
@@ -1069,21 +1069,21 @@
         LOCK, LOCKU, OPEN, OPEN_DOWNGRADE, and CLOSE each contain a
         sequence number and therefore the risk of the replay of these
         operations resulting in undesired effects is non-existent while
-        the server maintains the lock_owner state.
+        the server maintains the lock-owner state.
       </t>
 
     </section>
-    <section title="Releasing lock_owner State">
+    <section title="Releasing lock-owner State">
 
       <t>
-        When a particular lock_owner no longer holds open or file
+        When a particular lock-owner no longer holds open or file
         locking state at the server, the server may choose to release
-        the sequence number state associated with the lock_owner.
+        the sequence number state associated with the lock-owner.
         The server may make this choice based on lease expiration,
         for the reclamation of server memory, or other implementation
         specific details.  In any event, the server is able to do this
-        safely only when the lock_owner no longer is being utilized by
-        the client.  The server may choose to hold the lock_owner state
+        safely only when the lock-owner no longer is being utilized by
+        the client.  The server may choose to hold the lock-owner state
         in the event that retransmitted requests are received.  However,
         the period to hold this state is implementation specific.
       </t>
@@ -1091,9 +1091,9 @@
       <t>
         In the case that a LOCK, LOCKU, OPEN_DOWNGRADE, or CLOSE is
         retransmitted after the server has previously released the
-        lock_owner state, the server will find that the lock_owner has no
+        lock-owner state, the server will find that the lock-owner has no
         files open and an error will be returned to the client.  If the
-        lock_owner does have a file open, the stateid will not match and
+        lock-owner does have a file open, the stateid will not match and
         again an error is returned to the client.
       </t>
 
@@ -1101,16 +1101,16 @@
     <section anchor="ss:fl:open_conf" title="Use of Open Confirmation">
 
       <t>
-        In the case that an OPEN is retransmitted and the lock_owner is
-        being used for the first time or the lock_owner state has been
+        In the case that an OPEN is retransmitted and the lock-owner is
+        being used for the first time or the lock-owner state has been
         previously released by the server, the use of the OPEN_CONFIRM
         operation will prevent incorrect behavior.  When the server
-        observes the use of the lock_owner for the first time, it
+        observes the use of the lock-owner for the first time, it
         will direct the client to perform the OPEN_CONFIRM for the
         corresponding OPEN.  This sequence establishes the use of a
-        lock_owner and associated sequence number.  Since the OPEN_CONFIRM
-        sequence connects a new open_owner on the server with an existing
-        open_owner on a client, the sequence number may have any value.
+        lock-owner and associated sequence number.  Since the OPEN_CONFIRM
+        sequence connects a new open-owner on the server with an existing
+        open-owner on a client, the sequence number may have any value.
         The OPEN_CONFIRM step assures the server that the value received
         is the correct one.  (see <xref target="OP_OPEN_CONFIRM" />
         for further details.)
@@ -1970,22 +1970,22 @@
       state on the server without the client being aware of the change.
       It is paramount that the client re-synchronize state with server
       before it attempts any other operation that takes a seqid and/or
-      a stateid with the same lock_owner.  This is straightforward to
+      a stateid with the same lock-owner.  This is straightforward to
       do without a special re-synchronize operation.
     </t>
 
     <t>
       Since the server maintains the last lock request and response
-      received on the lock_owner, for each lock_owner, the client should
+      received on the lock-owner, for each lock-owner, the client should
       cache the last lock request it sent such that the lock request did
       not receive a response.  From this, the next time the client does a
-      lock operation for the lock_owner, it can send the cached request,
+      lock operation for the lock-owner, it can send the cached request,
       if there is one, and if the request was one that established state
       (e.g., a LOCK or OPEN operation), the server will return the cached
       result or if never saw the request, perform it.  The client can
       follow up with a request to remove the state (e.g., a LOCKU or
       CLOSE operation).  With this approach, the sequencing and stateid
-      information on the client and server for the given lock_owner
+      information on the client and server for the given lock-owner
       will re-synchronize and in turn the lock state will re-synchronize.
     </t>
 
@@ -2032,7 +2032,7 @@
       administrator has decided to release or revoke a particular lock
       held by the client.  As a result of revocation, the client will
       receive an error of NFS4ERR_ADMIN_REVOKED.  In this instance the
-      client may assume that only the lock_owner's locks have been lost.
+      client may assume that only the lock-owner's locks have been lost.
       The client notifies the lock holder appropriately.  The client
       may not assume the lease period has been renewed as a result of
       a failed operation.
@@ -2092,7 +2092,7 @@ else if ((request.access & file_state.deny)) ||
 
     <t>
       This checking of share reservations on OPEN is done with no
-      exception for an existing OPEN for the same open_owner.
+      exception for an existing OPEN for the same open-owner.
     </t>
 
     <t>
@@ -2125,7 +2125,7 @@ else if ((request.access & file_state.deny)) ||
 
     <t>
       The CLOSE operation removes all share reservations held by the
-      lock_owner on that file.  If byte-range locks are held, the client
+      lock-owner on that file.  If byte-range locks are held, the client
       SHOULD release all locks before issuing a CLOSE.  The server MAY
       free all outstanding locks on CLOSE but some servers may not
       support the CLOSE of a file that still has byte-range locks held.
