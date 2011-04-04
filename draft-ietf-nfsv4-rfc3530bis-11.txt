@@ -34,21 +34,21 @@ Requirements Language
 
 Status of this Memo
 
-   This Internet-Draft is submitted to IETF in full conformance with the
+   This Internet-Draft is submitted in full conformance with the
    provisions of BCP 78 and BCP 79.
 
    Internet-Drafts are working documents of the Internet Engineering
-   Task Force (IETF), its areas, and its working groups.  Note that
-   other groups may also distribute working documents as Internet-
-   Drafts.
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   The list of current Internet-Drafts can be accessed at
-   http://www.ietf.org/ietf/1id-abstracts.txt.
+   This Internet-Draft will expire on October 6, 2011.
+
 
 
 
@@ -56,11 +56,6 @@ Haynes & Noveck          Expires October 6, 2011                [Page 1]
 
 Internet-Draft                    NFSv4                       April 2011
 
-
-   The list of Internet-Draft Shadow Directories can be accessed at
-   http://www.ietf.org/shadow.html.
-
-   This Internet-Draft will expire on October 6, 2011.
 
 Copyright Notice
 
@@ -75,7 +70,7 @@ Copyright Notice
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
-   described in the BSD License.
+   described in the Simplified BSD License.
 
    This document may contain material from IETF Documents or IETF
    Contributions published or made publicly available before November
@@ -108,6 +103,11 @@ Copyright Notice
 
 
 
+
+
+
+
+
 Haynes & Noveck          Expires October 6, 2011                [Page 2]
 
 Internet-Draft                    NFSv4                       April 2011
@@ -115,52 +115,52 @@ Internet-Draft                    NFSv4                       April 2011
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   8
-     1.1.   Changes since RFC 3530 . . . . . . . . . . . . . . . . .   8
-     1.2.   Changes since RFC 3010 . . . . . . . . . . . . . . . . .   9
-     1.3.   NFS Version 4 Goals  . . . . . . . . . . . . . . . . . .  10
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   9
+     1.1.   Changes since RFC 3530 . . . . . . . . . . . . . . . . .   9
+     1.2.   Changes since RFC 3010 . . . . . . . . . . . . . . . . .  10
+     1.3.   NFS Version 4 Goals  . . . . . . . . . . . . . . . . . .  11
      1.4.   Inconsistencies of this Document with the companion
-            document NFS Version 4 Protocol  . . . . . . . . . . . .  10
-     1.5.   Overview of NFSv4 Features . . . . . . . . . . . . . . .  11
-       1.5.1.   RPC and Security . . . . . . . . . . . . . . . . . .  11
-       1.5.2.   Procedure and Operation Structure  . . . . . . . . .  11
-       1.5.3.   Filesystem Model . . . . . . . . . . . . . . . . . .  12
-       1.5.4.   OPEN and CLOSE . . . . . . . . . . . . . . . . . . .  14
-       1.5.5.   File Locking . . . . . . . . . . . . . . . . . . . .  14
-       1.5.6.   Client Caching and Delegation  . . . . . . . . . . .  14
-     1.6.   General Definitions  . . . . . . . . . . . . . . . . . .  15
-   2.  Protocol Data Types . . . . . . . . . . . . . . . . . . . . .  17
-     2.1.   Basic Data Types . . . . . . . . . . . . . . . . . . . .  17
-     2.2.   Structured Data Types  . . . . . . . . . . . . . . . . .  19
-   3.  RPC and Security Flavor . . . . . . . . . . . . . . . . . . .  24
-     3.1.   Ports and Transports . . . . . . . . . . . . . . . . . .  24
-       3.1.1.   Client Retransmission Behavior . . . . . . . . . . .  25
-     3.2.   Security Flavors . . . . . . . . . . . . . . . . . . . .  26
-       3.2.1.   Security mechanisms for NFSv4  . . . . . . . . . . .  26
-     3.3.   Security Negotiation . . . . . . . . . . . . . . . . . .  28
-       3.3.1.   SECINFO  . . . . . . . . . . . . . . . . . . . . . .  29
-       3.3.2.   Security Error . . . . . . . . . . . . . . . . . . .  29
-       3.3.3.   Callback RPC Authentication  . . . . . . . . . . . .  29
-   4.  Filehandles . . . . . . . . . . . . . . . . . . . . . . . . .  31
-     4.1.   Obtaining the First Filehandle . . . . . . . . . . . . .  31
-       4.1.1.   Root Filehandle  . . . . . . . . . . . . . . . . . .  32
-       4.1.2.   Public Filehandle  . . . . . . . . . . . . . . . . .  32
-     4.2.   Filehandle Types . . . . . . . . . . . . . . . . . . . .  32
-       4.2.1.   General Properties of a Filehandle . . . . . . . . .  33
-       4.2.2.   Persistent Filehandle  . . . . . . . . . . . . . . .  33
-       4.2.3.   Volatile Filehandle  . . . . . . . . . . . . . . . .  34
-       4.2.4.   One Method of Constructing a Volatile Filehandle . .  35
-     4.3.   Client Recovery from Filehandle Expiration . . . . . . .  35
-   5.  File Attributes . . . . . . . . . . . . . . . . . . . . . . .  36
-     5.1.   REQUIRED Attributes  . . . . . . . . . . . . . . . . . .  37
-     5.2.   RECOMMENDED Attributes . . . . . . . . . . . . . . . . .  38
-     5.3.   Named Attributes . . . . . . . . . . . . . . . . . . . .  38
-     5.4.   Classification of Attributes . . . . . . . . . . . . . .  40
-     5.5.   Set-Only and Get-Only Attributes . . . . . . . . . . . .  40
-     5.6.   REQUIRED Attributes - List and Definition References . .  41
+            document NFS Version 4 Protocol  . . . . . . . . . . . .  11
+     1.5.   Overview of NFSv4 Features . . . . . . . . . . . . . . .  12
+       1.5.1.   RPC and Security . . . . . . . . . . . . . . . . . .  12
+       1.5.2.   Procedure and Operation Structure  . . . . . . . . .  12
+       1.5.3.   Filesystem Model . . . . . . . . . . . . . . . . . .  13
+       1.5.4.   OPEN and CLOSE . . . . . . . . . . . . . . . . . . .  15
+       1.5.5.   File Locking . . . . . . . . . . . . . . . . . . . .  15
+       1.5.6.   Client Caching and Delegation  . . . . . . . . . . .  15
+     1.6.   General Definitions  . . . . . . . . . . . . . . . . . .  16
+   2.  Protocol Data Types . . . . . . . . . . . . . . . . . . . . .  18
+     2.1.   Basic Data Types . . . . . . . . . . . . . . . . . . . .  18
+     2.2.   Structured Data Types  . . . . . . . . . . . . . . . . .  20
+   3.  RPC and Security Flavor . . . . . . . . . . . . . . . . . . .  25
+     3.1.   Ports and Transports . . . . . . . . . . . . . . . . . .  25
+       3.1.1.   Client Retransmission Behavior . . . . . . . . . . .  26
+     3.2.   Security Flavors . . . . . . . . . . . . . . . . . . . .  27
+       3.2.1.   Security mechanisms for NFSv4  . . . . . . . . . . .  27
+     3.3.   Security Negotiation . . . . . . . . . . . . . . . . . .  29
+       3.3.1.   SECINFO  . . . . . . . . . . . . . . . . . . . . . .  30
+       3.3.2.   Security Error . . . . . . . . . . . . . . . . . . .  30
+       3.3.3.   Callback RPC Authentication  . . . . . . . . . . . .  30
+   4.  Filehandles . . . . . . . . . . . . . . . . . . . . . . . . .  32
+     4.1.   Obtaining the First Filehandle . . . . . . . . . . . . .  32
+       4.1.1.   Root Filehandle  . . . . . . . . . . . . . . . . . .  33
+       4.1.2.   Public Filehandle  . . . . . . . . . . . . . . . . .  33
+     4.2.   Filehandle Types . . . . . . . . . . . . . . . . . . . .  33
+       4.2.1.   General Properties of a Filehandle . . . . . . . . .  34
+       4.2.2.   Persistent Filehandle  . . . . . . . . . . . . . . .  34
+       4.2.3.   Volatile Filehandle  . . . . . . . . . . . . . . . .  35
+       4.2.4.   One Method of Constructing a Volatile Filehandle . .  36
+     4.3.   Client Recovery from Filehandle Expiration . . . . . . .  36
+   5.  File Attributes . . . . . . . . . . . . . . . . . . . . . . .  37
+     5.1.   REQUIRED Attributes  . . . . . . . . . . . . . . . . . .  38
+     5.2.   RECOMMENDED Attributes . . . . . . . . . . . . . . . . .  39
+     5.3.   Named Attributes . . . . . . . . . . . . . . . . . . . .  39
+     5.4.   Classification of Attributes . . . . . . . . . . . . . .  41
+     5.5.   Set-Only and Get-Only Attributes . . . . . . . . . . . .  41
+     5.6.   REQUIRED Attributes - List and Definition References . .  42
      5.7.   RECOMMENDED Attributes - List and Definition
-            References . . . . . . . . . . . . . . . . . . . . . . .  42
-     5.8.   Attribute Definitions  . . . . . . . . . . . . . . . . .  43
+            References . . . . . . . . . . . . . . . . . . . . . . .  43
+     5.8.   Attribute Definitions  . . . . . . . . . . . . . . . . .  44
 
 
 
@@ -169,54 +169,54 @@ Haynes & Noveck          Expires October 6, 2011                [Page 3]
 Internet-Draft                    NFSv4                       April 2011
 
 
-       5.8.1.   Definitions of REQUIRED Attributes . . . . . . . . .  43
+       5.8.1.   Definitions of REQUIRED Attributes . . . . . . . . .  44
        5.8.2.   Definitions of Uncategorized RECOMMENDED
-                Attributes . . . . . . . . . . . . . . . . . . . . .  45
-     5.9.   Interpreting owner and owner_group . . . . . . . . . . .  51
-     5.10.  Character Case Attributes  . . . . . . . . . . . . . . .  54
-   6.  Access Control Attributes . . . . . . . . . . . . . . . . . .  54
-     6.1.   Goals  . . . . . . . . . . . . . . . . . . . . . . . . .  54
-     6.2.   File Attributes Discussion . . . . . . . . . . . . . . .  55
-       6.2.1.   Attribute 12: acl  . . . . . . . . . . . . . . . . .  55
-       6.2.2.   Attribute 33: mode . . . . . . . . . . . . . . . . .  69
-     6.3.   Common Methods . . . . . . . . . . . . . . . . . . . . .  70
-       6.3.1.   Interpreting an ACL  . . . . . . . . . . . . . . . .  70
-       6.3.2.   Computing a Mode Attribute from an ACL . . . . . . .  71
-     6.4.   Requirements . . . . . . . . . . . . . . . . . . . . . .  72
-       6.4.1.   Setting the mode and/or ACL Attributes . . . . . . .  72
-       6.4.2.   Retrieving the mode and/or ACL Attributes  . . . . .  74
-       6.4.3.   Creating New Objects . . . . . . . . . . . . . . . .  74
-   7.  Multi-Server Namespace  . . . . . . . . . . . . . . . . . . .  76
-     7.1.   Location Attributes  . . . . . . . . . . . . . . . . . .  76
-     7.2.   File System Presence or Absence  . . . . . . . . . . . .  76
-     7.3.   Getting Attributes for an Absent File System . . . . . .  77
-       7.3.1.   GETATTR Within an Absent File System . . . . . . . .  78
-       7.3.2.   READDIR and Absent File Systems  . . . . . . . . . .  79
-     7.4.   Uses of Location Information . . . . . . . . . . . . . .  79
-       7.4.1.   File System Replication  . . . . . . . . . . . . . .  80
-       7.4.2.   File System Migration  . . . . . . . . . . . . . . .  81
-       7.4.3.   Referrals  . . . . . . . . . . . . . . . . . . . . .  81
-     7.5.   Location Entries and Server Identity . . . . . . . . . .  82
-     7.6.   Additional Client-Side Considerations  . . . . . . . . .  83
-     7.7.   Effecting File System Transitions  . . . . . . . . . . .  84
-       7.7.1.   File System Transitions and Simultaneous Access  . .  85
-       7.7.2.   Filehandles and File System Transitions  . . . . . .  85
-       7.7.3.   Fileids and File System Transitions  . . . . . . . .  86
-       7.7.4.   Fsids and File System Transitions  . . . . . . . . .  87
-       7.7.5.   The Change Attribute and File System Transitions . .  87
-       7.7.6.   Lock State and File System Transitions . . . . . . .  88
-       7.7.7.   Write Verifiers and File System Transitions  . . . .  90
+                Attributes . . . . . . . . . . . . . . . . . . . . .  46
+     5.9.   Interpreting owner and owner_group . . . . . . . . . . .  52
+     5.10.  Character Case Attributes  . . . . . . . . . . . . . . .  55
+   6.  Access Control Attributes . . . . . . . . . . . . . . . . . .  55
+     6.1.   Goals  . . . . . . . . . . . . . . . . . . . . . . . . .  55
+     6.2.   File Attributes Discussion . . . . . . . . . . . . . . .  56
+       6.2.1.   Attribute 12: acl  . . . . . . . . . . . . . . . . .  56
+       6.2.2.   Attribute 33: mode . . . . . . . . . . . . . . . . .  70
+     6.3.   Common Methods . . . . . . . . . . . . . . . . . . . . .  71
+       6.3.1.   Interpreting an ACL  . . . . . . . . . . . . . . . .  71
+       6.3.2.   Computing a Mode Attribute from an ACL . . . . . . .  72
+     6.4.   Requirements . . . . . . . . . . . . . . . . . . . . . .  73
+       6.4.1.   Setting the mode and/or ACL Attributes . . . . . . .  73
+       6.4.2.   Retrieving the mode and/or ACL Attributes  . . . . .  75
+       6.4.3.   Creating New Objects . . . . . . . . . . . . . . . .  75
+   7.  Multi-Server Namespace  . . . . . . . . . . . . . . . . . . .  77
+     7.1.   Location Attributes  . . . . . . . . . . . . . . . . . .  77
+     7.2.   File System Presence or Absence  . . . . . . . . . . . .  77
+     7.3.   Getting Attributes for an Absent File System . . . . . .  78
+       7.3.1.   GETATTR Within an Absent File System . . . . . . . .  79
+       7.3.2.   READDIR and Absent File Systems  . . . . . . . . . .  80
+     7.4.   Uses of Location Information . . . . . . . . . . . . . .  80
+       7.4.1.   File System Replication  . . . . . . . . . . . . . .  81
+       7.4.2.   File System Migration  . . . . . . . . . . . . . . .  82
+       7.4.3.   Referrals  . . . . . . . . . . . . . . . . . . . . .  82
+     7.5.   Location Entries and Server Identity . . . . . . . . . .  83
+     7.6.   Additional Client-Side Considerations  . . . . . . . . .  84
+     7.7.   Effecting File System Transitions  . . . . . . . . . . .  85
+       7.7.1.   File System Transitions and Simultaneous Access  . .  86
+       7.7.2.   Filehandles and File System Transitions  . . . . . .  86
+       7.7.3.   Fileids and File System Transitions  . . . . . . . .  87
+       7.7.4.   Fsids and File System Transitions  . . . . . . . . .  88
+       7.7.5.   The Change Attribute and File System Transitions . .  88
+       7.7.6.   Lock State and File System Transitions . . . . . . .  89
+       7.7.7.   Write Verifiers and File System Transitions  . . . .  91
        7.7.8.   Readdir Cookies and Verifiers and File System
-                Transitions  . . . . . . . . . . . . . . . . . . . .  90
-       7.7.9.   File System Data and File System Transitions . . . .  90
-     7.8.   Effecting File System Referrals  . . . . . . . . . . . .  92
-       7.8.1.   Referral Example (LOOKUP)  . . . . . . . . . . . . .  92
-       7.8.2.   Referral Example (READDIR) . . . . . . . . . . . . .  96
-     7.9.   The Attribute fs_locations . . . . . . . . . . . . . . .  98
-       7.9.1.   Inferring Transition Modes . . . . . . . . . . . . . 100
-   8.  NFS Server Name Space . . . . . . . . . . . . . . . . . . . . 101
-     8.1.   Server Exports . . . . . . . . . . . . . . . . . . . . . 102
-     8.2.   Browsing Exports . . . . . . . . . . . . . . . . . . . . 102
+                Transitions  . . . . . . . . . . . . . . . . . . . .  91
+       7.7.9.   File System Data and File System Transitions . . . .  91
+     7.8.   Effecting File System Referrals  . . . . . . . . . . . .  93
+       7.8.1.   Referral Example (LOOKUP)  . . . . . . . . . . . . .  93
+       7.8.2.   Referral Example (READDIR) . . . . . . . . . . . . .  97
+     7.9.   The Attribute fs_locations . . . . . . . . . . . . . . .  99
+       7.9.1.   Inferring Transition Modes . . . . . . . . . . . . . 101
+   8.  NFS Server Name Space . . . . . . . . . . . . . . . . . . . . 102
+     8.1.   Server Exports . . . . . . . . . . . . . . . . . . . . . 103
+     8.2.   Browsing Exports . . . . . . . . . . . . . . . . . . . . 103
 
 
 
@@ -225,54 +225,54 @@ Haynes & Noveck          Expires October 6, 2011                [Page 4]
 Internet-Draft                    NFSv4                       April 2011
 
 
-     8.3.   Server Pseudo Filesystem . . . . . . . . . . . . . . . . 102
-     8.4.   Multiple Roots . . . . . . . . . . . . . . . . . . . . . 103
-     8.5.   Filehandle Volatility  . . . . . . . . . . . . . . . . . 103
-     8.6.   Exported Root  . . . . . . . . . . . . . . . . . . . . . 103
-     8.7.   Mount Point Crossing . . . . . . . . . . . . . . . . . . 104
-     8.8.   Security Policy and Name Space Presentation  . . . . . . 104
-   9.  File Locking and Share Reservations . . . . . . . . . . . . . 105
-     9.1.   Opens and Byte-Range Locks . . . . . . . . . . . . . . . 106
-       9.1.1.   Client ID  . . . . . . . . . . . . . . . . . . . . . 106
-       9.1.2.   Server Release of Client ID  . . . . . . . . . . . . 109
-       9.1.3.   Stateid Definition . . . . . . . . . . . . . . . . . 110
-       9.1.4.   lock-owner . . . . . . . . . . . . . . . . . . . . . 117
-       9.1.5.   Use of the Stateid and Locking . . . . . . . . . . . 118
-       9.1.6.   Sequencing of Lock Requests  . . . . . . . . . . . . 120
-       9.1.7.   Recovery from Replayed Requests  . . . . . . . . . . 121
-       9.1.8.   Releasing lock-owner State . . . . . . . . . . . . . 121
-       9.1.9.   Use of Open Confirmation . . . . . . . . . . . . . . 122
-     9.2.   Lock Ranges  . . . . . . . . . . . . . . . . . . . . . . 123
-     9.3.   Upgrading and Downgrading Locks  . . . . . . . . . . . . 123
-     9.4.   Blocking Locks . . . . . . . . . . . . . . . . . . . . . 124
-     9.5.   Lease Renewal  . . . . . . . . . . . . . . . . . . . . . 125
-     9.6.   Crash Recovery . . . . . . . . . . . . . . . . . . . . . 125
-       9.6.1.   Client Failure and Recovery  . . . . . . . . . . . . 126
-       9.6.2.   Server Failure and Recovery  . . . . . . . . . . . . 126
-       9.6.3.   Network Partitions and Recovery  . . . . . . . . . . 128
-     9.7.   Recovery from a Lock Request Timeout or Abort  . . . . . 135
-     9.8.   Server Revocation of Locks . . . . . . . . . . . . . . . 135
-     9.9.   Share Reservations . . . . . . . . . . . . . . . . . . . 136
-     9.10.  OPEN/CLOSE Operations  . . . . . . . . . . . . . . . . . 137
-       9.10.1.  Close and Retention of State Information . . . . . . 138
-     9.11.  Open Upgrade and Downgrade . . . . . . . . . . . . . . . 138
-     9.12.  Short and Long Leases  . . . . . . . . . . . . . . . . . 139
+     8.3.   Server Pseudo Filesystem . . . . . . . . . . . . . . . . 103
+     8.4.   Multiple Roots . . . . . . . . . . . . . . . . . . . . . 104
+     8.5.   Filehandle Volatility  . . . . . . . . . . . . . . . . . 104
+     8.6.   Exported Root  . . . . . . . . . . . . . . . . . . . . . 104
+     8.7.   Mount Point Crossing . . . . . . . . . . . . . . . . . . 105
+     8.8.   Security Policy and Name Space Presentation  . . . . . . 105
+   9.  File Locking and Share Reservations . . . . . . . . . . . . . 106
+     9.1.   Opens and Byte-Range Locks . . . . . . . . . . . . . . . 107
+       9.1.1.   Client ID  . . . . . . . . . . . . . . . . . . . . . 107
+       9.1.2.   Server Release of Client ID  . . . . . . . . . . . . 110
+       9.1.3.   Stateid Definition . . . . . . . . . . . . . . . . . 111
+       9.1.4.   lock-owner . . . . . . . . . . . . . . . . . . . . . 118
+       9.1.5.   Use of the Stateid and Locking . . . . . . . . . . . 119
+       9.1.6.   Sequencing of Lock Requests  . . . . . . . . . . . . 121
+       9.1.7.   Recovery from Replayed Requests  . . . . . . . . . . 122
+       9.1.8.   Releasing lock-owner State . . . . . . . . . . . . . 122
+       9.1.9.   Use of Open Confirmation . . . . . . . . . . . . . . 123
+     9.2.   Lock Ranges  . . . . . . . . . . . . . . . . . . . . . . 124
+     9.3.   Upgrading and Downgrading Locks  . . . . . . . . . . . . 124
+     9.4.   Blocking Locks . . . . . . . . . . . . . . . . . . . . . 125
+     9.5.   Lease Renewal  . . . . . . . . . . . . . . . . . . . . . 126
+     9.6.   Crash Recovery . . . . . . . . . . . . . . . . . . . . . 126
+       9.6.1.   Client Failure and Recovery  . . . . . . . . . . . . 127
+       9.6.2.   Server Failure and Recovery  . . . . . . . . . . . . 127
+       9.6.3.   Network Partitions and Recovery  . . . . . . . . . . 129
+     9.7.   Recovery from a Lock Request Timeout or Abort  . . . . . 136
+     9.8.   Server Revocation of Locks . . . . . . . . . . . . . . . 136
+     9.9.   Share Reservations . . . . . . . . . . . . . . . . . . . 137
+     9.10.  OPEN/CLOSE Operations  . . . . . . . . . . . . . . . . . 138
+       9.10.1.  Close and Retention of State Information . . . . . . 139
+     9.11.  Open Upgrade and Downgrade . . . . . . . . . . . . . . . 139
+     9.12.  Short and Long Leases  . . . . . . . . . . . . . . . . . 140
      9.13.  Clocks, Propagation Delay, and Calculating Lease
-            Expiration . . . . . . . . . . . . . . . . . . . . . . . 140
-     9.14.  Migration, Replication and State . . . . . . . . . . . . 140
-       9.14.1.  Migration and State  . . . . . . . . . . . . . . . . 141
-       9.14.2.  Replication and State  . . . . . . . . . . . . . . . 141
-       9.14.3.  Notification of Migrated Lease . . . . . . . . . . . 142
-       9.14.4.  Migration and the Lease_time Attribute . . . . . . . 143
-   10. Client-Side Caching . . . . . . . . . . . . . . . . . . . . . 143
-     10.1.  Performance Challenges for Client-Side Caching . . . . . 144
-     10.2.  Delegation and Callbacks . . . . . . . . . . . . . . . . 145
-       10.2.1.  Delegation Recovery  . . . . . . . . . . . . . . . . 146
-     10.3.  Data Caching . . . . . . . . . . . . . . . . . . . . . . 148
-       10.3.1.  Data Caching and OPENs . . . . . . . . . . . . . . . 149
-       10.3.2.  Data Caching and File Locking  . . . . . . . . . . . 150
-       10.3.3.  Data Caching and Mandatory File Locking  . . . . . . 151
-       10.3.4.  Data Caching and File Identity . . . . . . . . . . . 152
+            Expiration . . . . . . . . . . . . . . . . . . . . . . . 141
+     9.14.  Migration, Replication and State . . . . . . . . . . . . 141
+       9.14.1.  Migration and State  . . . . . . . . . . . . . . . . 142
+       9.14.2.  Replication and State  . . . . . . . . . . . . . . . 142
+       9.14.3.  Notification of Migrated Lease . . . . . . . . . . . 143
+       9.14.4.  Migration and the Lease_time Attribute . . . . . . . 144
+   10. Client-Side Caching . . . . . . . . . . . . . . . . . . . . . 144
+     10.1.  Performance Challenges for Client-Side Caching . . . . . 145
+     10.2.  Delegation and Callbacks . . . . . . . . . . . . . . . . 146
+       10.2.1.  Delegation Recovery  . . . . . . . . . . . . . . . . 147
+     10.3.  Data Caching . . . . . . . . . . . . . . . . . . . . . . 149
+       10.3.1.  Data Caching and OPENs . . . . . . . . . . . . . . . 150
+       10.3.2.  Data Caching and File Locking  . . . . . . . . . . . 151
+       10.3.3.  Data Caching and Mandatory File Locking  . . . . . . 152
+       10.3.4.  Data Caching and File Identity . . . . . . . . . . . 153
 
 
 
@@ -281,54 +281,54 @@ Haynes & Noveck          Expires October 6, 2011                [Page 5]
 Internet-Draft                    NFSv4                       April 2011
 
 
-     10.4.  Open Delegation  . . . . . . . . . . . . . . . . . . . . 153
-       10.4.1.  Open Delegation and Data Caching . . . . . . . . . . 155
-       10.4.2.  Open Delegation and File Locks . . . . . . . . . . . 157
-       10.4.3.  Handling of CB_GETATTR . . . . . . . . . . . . . . . 157
-       10.4.4.  Recall of Open Delegation  . . . . . . . . . . . . . 160
-       10.4.5.  OPEN Delegation Race with CB_RECALL  . . . . . . . . 162
-       10.4.6.  Clients that Fail to Honor Delegation Recalls  . . . 163
-       10.4.7.  Delegation Revocation  . . . . . . . . . . . . . . . 164
-     10.5.  Data Caching and Revocation  . . . . . . . . . . . . . . 164
-       10.5.1.  Revocation Recovery for Write Open Delegation  . . . 165
-     10.6.  Attribute Caching  . . . . . . . . . . . . . . . . . . . 165
-     10.7.  Data and Metadata Caching and Memory Mapped Files  . . . 167
-     10.8.  Name Caching . . . . . . . . . . . . . . . . . . . . . . 169
-     10.9.  Directory Caching  . . . . . . . . . . . . . . . . . . . 170
-   11. Minor Versioning  . . . . . . . . . . . . . . . . . . . . . . 171
-   12. Internationalization  . . . . . . . . . . . . . . . . . . . . 174
-     12.1.  Use of UTF-8 . . . . . . . . . . . . . . . . . . . . . . 175
-       12.1.1.  Relation to Stringprep . . . . . . . . . . . . . . . 175
-       12.1.2.  Normalization, Equivalence, and Confusability  . . . 176
-     12.2.  String Type Overview . . . . . . . . . . . . . . . . . . 179
-       12.2.1.  Overall String Class Divisions . . . . . . . . . . . 179
-       12.2.2.  Divisions by Typedef Parent types  . . . . . . . . . 180
-       12.2.3.  Individual Types and Their Handling  . . . . . . . . 181
-     12.3.  Errors Related to Strings  . . . . . . . . . . . . . . . 182
-     12.4.  Types with Pre-processing to Resolve Mixture Issues  . . 183
-       12.4.1.  Processing of Principal Strings  . . . . . . . . . . 183
-       12.4.2.  Processing of Server Id Strings  . . . . . . . . . . 183
-     12.5.  String Types without Internationalization Processing . . 184
-     12.6.  Types with Processing Defined by Other Internet Areas  . 184
-     12.7.  String Types with NFS-specific Processing  . . . . . . . 185
-       12.7.1.  Handling of File Name Components . . . . . . . . . . 186
-       12.7.2.  Processing of Link Text  . . . . . . . . . . . . . . 195
-       12.7.3.  Processing of Principal Prefixes . . . . . . . . . . 196
-   13. Error Values  . . . . . . . . . . . . . . . . . . . . . . . . 197
-     13.1.  Error Definitions  . . . . . . . . . . . . . . . . . . . 197
-       13.1.1.  General Errors . . . . . . . . . . . . . . . . . . . 199
-       13.1.2.  Filehandle Errors  . . . . . . . . . . . . . . . . . 200
-       13.1.3.  Compound Structure Errors  . . . . . . . . . . . . . 201
-       13.1.4.  File System Errors . . . . . . . . . . . . . . . . . 202
-       13.1.5.  State Management Errors  . . . . . . . . . . . . . . 204
-       13.1.6.  Security Errors  . . . . . . . . . . . . . . . . . . 205
-       13.1.7.  Name Errors  . . . . . . . . . . . . . . . . . . . . 205
-       13.1.8.  Locking Errors . . . . . . . . . . . . . . . . . . . 206
-       13.1.9.  Reclaim Errors . . . . . . . . . . . . . . . . . . . 207
-       13.1.10. Client Management Errors . . . . . . . . . . . . . . 208
-       13.1.11. Attribute Handling Errors  . . . . . . . . . . . . . 208
-     13.2.  Operations and their valid errors  . . . . . . . . . . . 209
-     13.3.  Callback operations and their valid errors . . . . . . . 216
+     10.4.  Open Delegation  . . . . . . . . . . . . . . . . . . . . 154
+       10.4.1.  Open Delegation and Data Caching . . . . . . . . . . 156
+       10.4.2.  Open Delegation and File Locks . . . . . . . . . . . 158
+       10.4.3.  Handling of CB_GETATTR . . . . . . . . . . . . . . . 158
+       10.4.4.  Recall of Open Delegation  . . . . . . . . . . . . . 161
+       10.4.5.  OPEN Delegation Race with CB_RECALL  . . . . . . . . 163
+       10.4.6.  Clients that Fail to Honor Delegation Recalls  . . . 164
+       10.4.7.  Delegation Revocation  . . . . . . . . . . . . . . . 165
+     10.5.  Data Caching and Revocation  . . . . . . . . . . . . . . 165
+       10.5.1.  Revocation Recovery for Write Open Delegation  . . . 166
+     10.6.  Attribute Caching  . . . . . . . . . . . . . . . . . . . 166
+     10.7.  Data and Metadata Caching and Memory Mapped Files  . . . 168
+     10.8.  Name Caching . . . . . . . . . . . . . . . . . . . . . . 170
+     10.9.  Directory Caching  . . . . . . . . . . . . . . . . . . . 171
+   11. Minor Versioning  . . . . . . . . . . . . . . . . . . . . . . 172
+   12. Internationalization  . . . . . . . . . . . . . . . . . . . . 175
+     12.1.  Use of UTF-8 . . . . . . . . . . . . . . . . . . . . . . 176
+       12.1.1.  Relation to Stringprep . . . . . . . . . . . . . . . 176
+       12.1.2.  Normalization, Equivalence, and Confusability  . . . 177
+     12.2.  String Type Overview . . . . . . . . . . . . . . . . . . 180
+       12.2.1.  Overall String Class Divisions . . . . . . . . . . . 180
+       12.2.2.  Divisions by Typedef Parent types  . . . . . . . . . 181
+       12.2.3.  Individual Types and Their Handling  . . . . . . . . 182
+     12.3.  Errors Related to Strings  . . . . . . . . . . . . . . . 183
+     12.4.  Types with Pre-processing to Resolve Mixture Issues  . . 184
+       12.4.1.  Processing of Principal Strings  . . . . . . . . . . 184
+       12.4.2.  Processing of Server Id Strings  . . . . . . . . . . 184
+     12.5.  String Types without Internationalization Processing . . 185
+     12.6.  Types with Processing Defined by Other Internet Areas  . 185
+     12.7.  String Types with NFS-specific Processing  . . . . . . . 186
+       12.7.1.  Handling of File Name Components . . . . . . . . . . 187
+       12.7.2.  Processing of Link Text  . . . . . . . . . . . . . . 196
+       12.7.3.  Processing of Principal Prefixes . . . . . . . . . . 197
+   13. Error Values  . . . . . . . . . . . . . . . . . . . . . . . . 198
+     13.1.  Error Definitions  . . . . . . . . . . . . . . . . . . . 198
+       13.1.1.  General Errors . . . . . . . . . . . . . . . . . . . 200
+       13.1.2.  Filehandle Errors  . . . . . . . . . . . . . . . . . 201
+       13.1.3.  Compound Structure Errors  . . . . . . . . . . . . . 202
+       13.1.4.  File System Errors . . . . . . . . . . . . . . . . . 203
+       13.1.5.  State Management Errors  . . . . . . . . . . . . . . 205
+       13.1.6.  Security Errors  . . . . . . . . . . . . . . . . . . 206
+       13.1.7.  Name Errors  . . . . . . . . . . . . . . . . . . . . 206
+       13.1.8.  Locking Errors . . . . . . . . . . . . . . . . . . . 207
+       13.1.9.  Reclaim Errors . . . . . . . . . . . . . . . . . . . 208
+       13.1.10. Client Management Errors . . . . . . . . . . . . . . 209
+       13.1.11. Attribute Handling Errors  . . . . . . . . . . . . . 209
+     13.2.  Operations and their valid errors  . . . . . . . . . . . 210
+     13.3.  Callback operations and their valid errors . . . . . . . 217
 
 
 
@@ -337,54 +337,54 @@ Haynes & Noveck          Expires October 6, 2011                [Page 6]
 Internet-Draft                    NFSv4                       April 2011
 
 
-     13.4.  Errors and the operations that use them  . . . . . . . . 216
-   14. NFSv4 Requests  . . . . . . . . . . . . . . . . . . . . . . . 221
-     14.1.  Compound Procedure . . . . . . . . . . . . . . . . . . . 221
-     14.2.  Evaluation of a Compound Request . . . . . . . . . . . . 222
-     14.3.  Synchronous Modifying Operations . . . . . . . . . . . . 223
-     14.4.  Operation Values . . . . . . . . . . . . . . . . . . . . 223
-   15. NFSv4 Procedures  . . . . . . . . . . . . . . . . . . . . . . 223
-     15.1.  Procedure 0: NULL - No Operation . . . . . . . . . . . . 223
-     15.2.  Procedure 1: COMPOUND - Compound Operations  . . . . . . 224
-     15.3.  Operation 3: ACCESS - Check Access Rights  . . . . . . . 229
-     15.4.  Operation 4: CLOSE - Close File  . . . . . . . . . . . . 232
-     15.5.  Operation 5: COMMIT - Commit Cached Data . . . . . . . . 233
-     15.6.  Operation 6: CREATE - Create a Non-Regular File Object . 235
+     13.4.  Errors and the operations that use them  . . . . . . . . 217
+   14. NFSv4 Requests  . . . . . . . . . . . . . . . . . . . . . . . 222
+     14.1.  Compound Procedure . . . . . . . . . . . . . . . . . . . 222
+     14.2.  Evaluation of a Compound Request . . . . . . . . . . . . 223
+     14.3.  Synchronous Modifying Operations . . . . . . . . . . . . 224
+     14.4.  Operation Values . . . . . . . . . . . . . . . . . . . . 224
+   15. NFSv4 Procedures  . . . . . . . . . . . . . . . . . . . . . . 224
+     15.1.  Procedure 0: NULL - No Operation . . . . . . . . . . . . 224
+     15.2.  Procedure 1: COMPOUND - Compound Operations  . . . . . . 225
+     15.3.  Operation 3: ACCESS - Check Access Rights  . . . . . . . 230
+     15.4.  Operation 4: CLOSE - Close File  . . . . . . . . . . . . 233
+     15.5.  Operation 5: COMMIT - Commit Cached Data . . . . . . . . 234
+     15.6.  Operation 6: CREATE - Create a Non-Regular File Object . 236
      15.7.  Operation 7: DELEGPURGE - Purge Delegations Awaiting
-            Recovery . . . . . . . . . . . . . . . . . . . . . . . . 238
-     15.8.  Operation 8: DELEGRETURN - Return Delegation . . . . . . 239
-     15.9.  Operation 9: GETATTR - Get Attributes  . . . . . . . . . 239
-     15.10. Operation 10: GETFH - Get Current Filehandle . . . . . . 241
-     15.11. Operation 11: LINK - Create Link to a File . . . . . . . 242
-     15.12. Operation 12: LOCK - Create Lock . . . . . . . . . . . . 243
-     15.13. Operation 13: LOCKT - Test For Lock  . . . . . . . . . . 247
-     15.14. Operation 14: LOCKU - Unlock File  . . . . . . . . . . . 249
-     15.15. Operation 15: LOOKUP - Lookup Filename . . . . . . . . . 250
-     15.16. Operation 16: LOOKUPP - Lookup Parent Directory  . . . . 252
+            Recovery . . . . . . . . . . . . . . . . . . . . . . . . 239
+     15.8.  Operation 8: DELEGRETURN - Return Delegation . . . . . . 240
+     15.9.  Operation 9: GETATTR - Get Attributes  . . . . . . . . . 240
+     15.10. Operation 10: GETFH - Get Current Filehandle . . . . . . 242
+     15.11. Operation 11: LINK - Create Link to a File . . . . . . . 243
+     15.12. Operation 12: LOCK - Create Lock . . . . . . . . . . . . 244
+     15.13. Operation 13: LOCKT - Test For Lock  . . . . . . . . . . 248
+     15.14. Operation 14: LOCKU - Unlock File  . . . . . . . . . . . 250
+     15.15. Operation 15: LOOKUP - Lookup Filename . . . . . . . . . 251
+     15.16. Operation 16: LOOKUPP - Lookup Parent Directory  . . . . 253
      15.17. Operation 17: NVERIFY - Verify Difference in
-            Attributes . . . . . . . . . . . . . . . . . . . . . . . 252
-     15.18. Operation 18: OPEN - Open a Regular File . . . . . . . . 254
+            Attributes . . . . . . . . . . . . . . . . . . . . . . . 253
+     15.18. Operation 18: OPEN - Open a Regular File . . . . . . . . 255
      15.19. Operation 19: OPENATTR - Open Named Attribute
-            Directory  . . . . . . . . . . . . . . . . . . . . . . . 264
-     15.20. Operation 20: OPEN_CONFIRM - Confirm Open  . . . . . . . 265
-     15.21. Operation 21: OPEN_DOWNGRADE - Reduce Open File Access . 267
-     15.22. Operation 22: PUTFH - Set Current Filehandle . . . . . . 268
-     15.23. Operation 23: PUTPUBFH - Set Public Filehandle . . . . . 269
-     15.24. Operation 24: PUTROOTFH - Set Root Filehandle  . . . . . 270
-     15.25. Operation 25: READ - Read from File  . . . . . . . . . . 271
-     15.26. Operation 26: READDIR - Read Directory . . . . . . . . . 273
-     15.27. Operation 27: READLINK - Read Symbolic Link  . . . . . . 277
-     15.28. Operation 28: REMOVE - Remove Filesystem Object  . . . . 278
-     15.29. Operation 29: RENAME - Rename Directory Entry  . . . . . 280
-     15.30. Operation 30: RENEW - Renew a Lease  . . . . . . . . . . 282
-     15.31. Operation 31: RESTOREFH - Restore Saved Filehandle . . . 283
-     15.32. Operation 32: SAVEFH - Save Current Filehandle . . . . . 284
-     15.33. Operation 33: SECINFO - Obtain Available Security  . . . 284
-     15.34. Operation 34: SETATTR - Set Attributes . . . . . . . . . 287
-     15.35. Operation 35: SETCLIENTID - Negotiate Client ID  . . . . 290
-     15.36. Operation 36: SETCLIENTID_CONFIRM - Confirm Client ID  . 294
-     15.37. Operation 37: VERIFY - Verify Same Attributes  . . . . . 297
-     15.38. Operation 38: WRITE - Write to File  . . . . . . . . . . 299
+            Directory  . . . . . . . . . . . . . . . . . . . . . . . 265
+     15.20. Operation 20: OPEN_CONFIRM - Confirm Open  . . . . . . . 266
+     15.21. Operation 21: OPEN_DOWNGRADE - Reduce Open File Access . 268
+     15.22. Operation 22: PUTFH - Set Current Filehandle . . . . . . 269
+     15.23. Operation 23: PUTPUBFH - Set Public Filehandle . . . . . 270
+     15.24. Operation 24: PUTROOTFH - Set Root Filehandle  . . . . . 271
+     15.25. Operation 25: READ - Read from File  . . . . . . . . . . 272
+     15.26. Operation 26: READDIR - Read Directory . . . . . . . . . 274
+     15.27. Operation 27: READLINK - Read Symbolic Link  . . . . . . 278
+     15.28. Operation 28: REMOVE - Remove Filesystem Object  . . . . 279
+     15.29. Operation 29: RENAME - Rename Directory Entry  . . . . . 281
+     15.30. Operation 30: RENEW - Renew a Lease  . . . . . . . . . . 283
+     15.31. Operation 31: RESTOREFH - Restore Saved Filehandle . . . 284
+     15.32. Operation 32: SAVEFH - Save Current Filehandle . . . . . 285
+     15.33. Operation 33: SECINFO - Obtain Available Security  . . . 285
+     15.34. Operation 34: SETATTR - Set Attributes . . . . . . . . . 288
+     15.35. Operation 35: SETCLIENTID - Negotiate Client ID  . . . . 291
+     15.36. Operation 36: SETCLIENTID_CONFIRM - Confirm Client ID  . 295
+     15.37. Operation 37: VERIFY - Verify Same Attributes  . . . . . 298
+     15.38. Operation 38: WRITE - Write to File  . . . . . . . . . . 300
 
 
 
@@ -394,29 +394,29 @@ Internet-Draft                    NFSv4                       April 2011
 
 
      15.39. Operation 39: RELEASE_LOCKOWNER - Release Lockowner
-            State  . . . . . . . . . . . . . . . . . . . . . . . . . 303
-     15.40. Operation 10044: ILLEGAL - Illegal operation . . . . . . 304
-   16. NFSv4 Callback Procedures . . . . . . . . . . . . . . . . . . 304
-     16.1.  Procedure 0: CB_NULL - No Operation  . . . . . . . . . . 305
-     16.2.  Procedure 1: CB_COMPOUND - Compound Operations . . . . . 305
-       16.2.6.  Operation 3: CB_GETATTR - Get Attributes . . . . . . 307
-       16.2.7.  Operation 4: CB_RECALL - Recall an Open Delegation . 308
+            State  . . . . . . . . . . . . . . . . . . . . . . . . . 304
+     15.40. Operation 10044: ILLEGAL - Illegal operation . . . . . . 305
+   16. NFSv4 Callback Procedures . . . . . . . . . . . . . . . . . . 305
+     16.1.  Procedure 0: CB_NULL - No Operation  . . . . . . . . . . 306
+     16.2.  Procedure 1: CB_COMPOUND - Compound Operations . . . . . 306
+       16.2.6.  Operation 3: CB_GETATTR - Get Attributes . . . . . . 308
+       16.2.7.  Operation 4: CB_RECALL - Recall an Open Delegation . 309
        16.2.8.  Operation 10044: CB_ILLEGAL - Illegal Callback
-                Operation  . . . . . . . . . . . . . . . . . . . . . 309
-   17. Security Considerations . . . . . . . . . . . . . . . . . . . 310
-   18. IANA Considerations . . . . . . . . . . . . . . . . . . . . . 311
-     18.1.  Named Attribute Definitions  . . . . . . . . . . . . . . 311
-       18.1.1.  Initial Registry . . . . . . . . . . . . . . . . . . 312
-       18.1.2.  Updating Registrations . . . . . . . . . . . . . . . 312
-     18.2.  ONC RPC Network Identifiers (netids) . . . . . . . . . . 312
-       18.2.1.  Initial Registry . . . . . . . . . . . . . . . . . . 314
-       18.2.2.  Updating Registrations . . . . . . . . . . . . . . . 314
-   19. References  . . . . . . . . . . . . . . . . . . . . . . . . . 314
-     19.1.  Normative References . . . . . . . . . . . . . . . . . . 314
-     19.2.  Informative References . . . . . . . . . . . . . . . . . 315
-   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . . 317
-   Appendix B.  RFC Editor Notes . . . . . . . . . . . . . . . . . . 318
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 318
+                Operation  . . . . . . . . . . . . . . . . . . . . . 310
+   17. Security Considerations . . . . . . . . . . . . . . . . . . . 311
+   18. IANA Considerations . . . . . . . . . . . . . . . . . . . . . 312
+     18.1.  Named Attribute Definitions  . . . . . . . . . . . . . . 312
+       18.1.1.  Initial Registry . . . . . . . . . . . . . . . . . . 313
+       18.1.2.  Updating Registrations . . . . . . . . . . . . . . . 313
+     18.2.  ONC RPC Network Identifiers (netids) . . . . . . . . . . 313
+       18.2.1.  Initial Registry . . . . . . . . . . . . . . . . . . 315
+       18.2.2.  Updating Registrations . . . . . . . . . . . . . . . 315
+   19. References  . . . . . . . . . . . . . . . . . . . . . . . . . 315
+     19.1.  Normative References . . . . . . . . . . . . . . . . . . 315
+     19.2.  Informative References . . . . . . . . . . . . . . . . . 316
+   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . . 318
+   Appendix B.  RFC Editor Notes . . . . . . . . . . . . . . . . . . 319
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 319
 
 
 

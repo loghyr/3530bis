@@ -1,5 +1,4 @@
 #!/bin/sh
-# $Id: xml2rfc_wrapper.sh,v 1.2 2008/05/23 23:57:37 mre Exp $	 
 
 # The point of this rigamorole is that not all tclsh
 # versions are equal. If your IT department has the wrong
@@ -14,4 +13,4 @@ then
 	export PATH
 fi
 
-exec ${XML2RFCDOT}./xml2rfc-1.34/xml2rfc.tcl $*
+exec ${XML2RFCDOT}./xml2rfc-1.36/xml2rfc.tcl $*
