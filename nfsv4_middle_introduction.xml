@@ -123,7 +123,7 @@
         </t>
 
         <t>
-          Added a new operation LOCKOWNER_RELEASE to enable notifying
+          Added a new operation RELEASE_LOCKOWNER to enable notifying
           the server that a lock_owner4 will no longer be used by
           the client.
         </t>

@@ -340,12 +340,12 @@
     <section anchor="ss:fl:stateids" title="Stateid Definition">
 
       <t>
-        When the server grants a lock of any type (including opens, byte-
-        range locks, and delegations), it responds with a unique
+        When the server grants a lock of any type (including opens,
+        byte-range locks, and delegations), it responds with a unique
         stateid that represents a set of locks (often a single lock) for the
         same file, of the same type, and sharing the same ownership
-        characteristics.  Thus, opens of the same file by different open-
-        owners each have an identifying stateid.  Similarly, each set of
+        characteristics.  Thus, opens of the same file by different
+        open-owners each have an identifying stateid.  Similarly, each set of
         byte-range locks on a file owned by a specific lock-owner has its own
         identifying stateid.  Delegations also have associated
         stateids by which they may be referenced.  The stateid is used as a
@@ -779,7 +779,8 @@
 
             <t>
               If there is no byte-range lock stateid, then the OPEN stateid for
-              the open file in question SHOULD be used.
+              the current open-owner, and that OPEN stateid for the open
+              file in question SHOULD be used.
             </t>
 
             <t>
@@ -873,7 +874,7 @@
         OPEN constitutes a share reservation) the stateid (previously
         returned by the server) must be used to indicate what locks,
         including both byte-range locks and share reservations, are held by
-        the lockowner.  If no state is established by the client, either
+        the lock-owner.  If no state is established by the client, either
         byte-range lock or share reservation, a stateid of all bits 0 is used.
         Regardless whether a stateid of all bits 0, or a stateid returned
         by the server is used, if there is a conflicting share reservation

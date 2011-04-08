@@ -4432,10 +4432,10 @@ lockowner -> ()
     <section toc="exclude" anchor="OP_RELEASE_LOCKOWNER_DESCRIPTION" title="DESCRIPTION">
 
       <t>
-        This operation is used to notify the server that the lock-owner
+        This operation is used to notify the server that the lock_owner
         is no longer in use by the client.  This allows the server
-        to release cached state related to the specified lock-owner.
-        If file locks, associated with the lock-owner, are held at
+        to release cached state related to the specified lock_owner.
+        If file locks, associated with the lock_owner, are held at
         the server, the error NFS4ERR_LOCKS_HELD will be returned
         and no further action will be taken.
       </t>
@@ -4448,9 +4448,9 @@ lockowner -> ()
         amount of server state that is held.  Depending on behavior of
         applications at the client, it may be important for the client
         to use this operation since the server has certain obligations
-        with respect to holding a reference to a lock-owner as long
+        with respect to holding a reference to a lock_owner as long
         as the associated file is open.  Therefore, if the client
-        knows for certain that the lock-owner will no longer be used
+        knows for certain that the lock_owner will no longer be used
         under the context of the associated open_owner4, it should
         use RELEASE_LOCKOWNER.
       </t>
