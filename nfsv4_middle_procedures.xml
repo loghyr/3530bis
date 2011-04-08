@@ -1265,10 +1265,10 @@ GETFH
 
       <t>
         When the client makes a lock request that corresponds to a
-        range that the lockowner has locked already (with the same
+        range that the lock-owner has locked already (with the same
         or different lock type), or to a sub-region of such a range,
         or to a region which includes multiple locks already granted
-        to that lockowner, in whole or in part, and the server does
+        to that lock-owner, in whole or in part, and the server does
         not support such locking operations (i.e., does not support
         POSIX locking semantics), the server will return the error
         NFS4ERR_LOCK_RANGE.  In that case, the client may return an
@@ -1392,11 +1392,11 @@ owner}
 
       <t>
         The test for conflicting locks SHOULD exclude locks for
-        the current lockowner.  Note that since such locks are
+        the current lock-owner.  Note that since such locks are
         not examined the possible existence of overlapping ranges
         may not affect the results of LOCKT.  If the server does
-        examine locks that match the lockowner for the purpose
-        of range checking, NFS4ERR_LOCK_RANGE may be returned..
+        examine locks that match the lock-owner for the purpose
+        of range checking, NFS4ERR_LOCK_RANGE may be returned.
         In the event that it returns NFS4_OK, clients may do a LOCK
         and receive NFS4ERR_LOCK_RANGE on the LOCK request because
         of the flexibility provided to the server.
@@ -1457,12 +1457,12 @@ owner}
 
       <t>
         If the area to be unlocked does not correspond exactly to a
-        lock actually held by the lockowner the server may return the
+        lock actually held by the lock-owner the server may return the
         error NFS4ERR_LOCK_RANGE.  This includes the case in which
         the area is not locked, where the area is a sub-range of
         the area locked, where it overlaps the area locked without
         matching exactly or the area specified includes multiple
-        locks held by the lockowner.  In all of these cases, allowed
+        locks held by the lock-owner.  In all of these cases, allowed
         by POSIX locking <xref target="fcntl" /> semantics, a client receiving this error,
         should if it desires support for such operations, simulate
         the operation using LOCKU on ranges corresponding to locks
@@ -2185,7 +2185,7 @@ READ 0 32767
 
       <figure>
         <artwork>
-(cfh), seqid, stateid-> stateid
+(cfh), seqid, stateid -> stateid
         </artwork>
       </figure>
 
@@ -4414,7 +4414,7 @@ REMOVE (file name)
 
       <figure>
         <artwork>
-lockowner -> ()
+lock-owner -> ()
         </artwork>
       </figure>
 

@@ -629,6 +629,20 @@
           uniquely defines the open and locking states provided by the
           server for a specific open-owner or lock-owner/open-owner pair for
           a specific file and type of lock.
+
+          <list style='hanging'>
+            <t hangText='lock-owner:'>
+              An owner of a byte-range lock.
+            </t>
+
+            <t hangText='open-owner:'>
+              An owner of an open.
+            </t>
+
+            <t hangText='state-owner:'>
+              Either a lock-owner or an open-owner.
+            </t>
+          </list>
         </t>
 
         <t hangText="Verifier:">

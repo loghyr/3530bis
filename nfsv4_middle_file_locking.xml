@@ -113,17 +113,12 @@
         between open-owners (represented by open_owner4 structures)
         and lock-owners (represented by lock_owner4 structures).
       </t>
+
       <t>
         Each open is associated with a specific open-owner while each
         byte-range lock is associated with a lock-owner and an
         open-owner, the latter being the open-owner associated with the
         open file under which the LOCK operation was done.
-      </t>
-      <t>
-        Unlike the text in NFSv4.1 <xref target="RFC5661" />, this
-        text treats "lock-owner" as meaning both a open-owner and
-        a lock-owner. Also, a "lock" can refer to both a byte-range
-        and share lock.
       </t>
 
       <t>
@@ -862,19 +857,19 @@
         area between the old and new size (i.e., the range truncated or
         added to the file by means of the SETATTR), even where SETATTR
         is not explicitly mentioned in the text. The stateid passed to
-        one of these operations must
-        be one that represents an OPEN, a set of byte-range locks, or a
+        one of these operations must be one that represents an OPEN (e.g.,
+        via the open-owner), a set of byte-range locks, or a
         delegation, or it may be a special stateid representing anonymous
         access or the special bypass stateid.
       </t>
 
       <t>
-        If the lock-owner performs a READ or WRITE in a situation in which
+        If the state-owner performs a READ or WRITE in a situation in which
         it has established a lock or share reservation on the server (any
         OPEN constitutes a share reservation) the stateid (previously
         returned by the server) must be used to indicate what locks,
         including both byte-range locks and share reservations, are held by
-        the lock-owner.  If no state is established by the client, either
+        the state-owner.  If no state is established by the client, either
         byte-range lock or share reservation, a stateid of all bits 0 is used.
         Regardless whether a stateid of all bits 0, or a stateid returned
         by the server is used, if there is a conflicting share reservation
@@ -1000,16 +995,16 @@
         In the face of retransmission or reordering, lock or unlock
         requests must have a well defined and consistent behavior.
         To accomplish this, each lock request contains a sequence number
-        that is a consecutively increasing integer.  Different lock-owners
+        that is a consecutively increasing integer.  Different state-owners
         have different sequences.  The server maintains the last sequence
         number (L) received and the response that was returned.  The server
         is free to assign any value for the first request issued for any
-        given lock-owner.
+        given state-owner.
       </t>
 
       <t>
         Note that for requests that contain a sequence number, for each
-        lock-owner, there should be no more than one outstanding request.
+        state-owner, there should be no more than one outstanding request.
       </t>
 
       <t>
@@ -1038,7 +1033,7 @@
         requests than that of the traditional cache described in
         <xref target="Chet" />.  The traditional duplicate request cache uses a least
         recently used algorithm for removing unneeded requests.  However,
-        the last lock request and response on a given lock-owner must be
+        the last lock request and response on a given state-owner must be
         cached as long as the lock state exists on the server.
       </t>
 
@@ -1058,11 +1053,11 @@
     <section title="Recovery from Replayed Requests">
 
       <t>
-        As described above, the sequence number is per lock-owner.
+        As described above, the sequence number is per state-owner.
         As long as the server maintains the last sequence number received
         and follows the methods described above, there are no risks of a
         Byzantine router re-sending old requests.  The server need only
-        maintain the (lock-owner, sequence number) state as long as there
+        maintain the (state-owner, sequence number) state as long as there
         are open files or closed files with locks outstanding.
       </t>
 
@@ -1070,21 +1065,21 @@
         LOCK, LOCKU, OPEN, OPEN_DOWNGRADE, and CLOSE each contain a
         sequence number and therefore the risk of the replay of these
         operations resulting in undesired effects is non-existent while
-        the server maintains the lock-owner state.
+        the server maintains the state-owner state.
       </t>
 
     </section>
-    <section title="Releasing lock-owner State">
+    <section title="Releasing state-owner State">
 
       <t>
-        When a particular lock-owner no longer holds open or file
+        When a particular state-owner no longer holds open or file
         locking state at the server, the server may choose to release
-        the sequence number state associated with the lock-owner.
+        the sequence number state associated with the state-owner.
         The server may make this choice based on lease expiration,
         for the reclamation of server memory, or other implementation
         specific details.  In any event, the server is able to do this
-        safely only when the lock-owner no longer is being utilized by
-        the client.  The server may choose to hold the lock-owner state
+        safely only when the state-owner no longer is being utilized by
+        the client.  The server may choose to hold the state-owner state
         in the event that retransmitted requests are received.  However,
         the period to hold this state is implementation specific.
       </t>
@@ -1092,9 +1087,9 @@
       <t>
         In the case that a LOCK, LOCKU, OPEN_DOWNGRADE, or CLOSE is
         retransmitted after the server has previously released the
-        lock-owner state, the server will find that the lock-owner has no
+        state-owner state, the server will find that the state-owner has no
         files open and an error will be returned to the client.  If the
-        lock-owner does have a file open, the stateid will not match and
+        state-owner does have a file open, the stateid will not match and
         again an error is returned to the client.
       </t>
 
@@ -1102,14 +1097,14 @@
     <section anchor="ss:fl:open_conf" title="Use of Open Confirmation">
 
       <t>
-        In the case that an OPEN is retransmitted and the lock-owner is
-        being used for the first time or the lock-owner state has been
+        In the case that an OPEN is retransmitted and the open-owner is
+        being used for the first time or the open-owner state has been
         previously released by the server, the use of the OPEN_CONFIRM
         operation will prevent incorrect behavior.  When the server
-        observes the use of the lock-owner for the first time, it
+        observes the use of the open-owner for the first time, it
         will direct the client to perform the OPEN_CONFIRM for the
         corresponding OPEN.  This sequence establishes the use of a
-        lock-owner and associated sequence number.  Since the OPEN_CONFIRM
+        open-owner and associated sequence number.  Since the OPEN_CONFIRM
         sequence connects a new open-owner on the server with an existing
         open-owner on a client, the sequence number may have any value.
         The OPEN_CONFIRM step assures the server that the value received
@@ -1971,22 +1966,22 @@
       state on the server without the client being aware of the change.
       It is paramount that the client re-synchronize state with server
       before it attempts any other operation that takes a seqid and/or
-      a stateid with the same lock-owner.  This is straightforward to
+      a stateid with the same state-owner.  This is straightforward to
       do without a special re-synchronize operation.
     </t>
 
     <t>
       Since the server maintains the last lock request and response
-      received on the lock-owner, for each lock-owner, the client should
+      received on the state-owner, for each state-owner, the client should
       cache the last lock request it sent such that the lock request did
       not receive a response.  From this, the next time the client does a
-      lock operation for the lock-owner, it can send the cached request,
+      lock operation for the state-owner, it can send the cached request,
       if there is one, and if the request was one that established state
       (e.g., a LOCK or OPEN operation), the server will return the cached
       result or if never saw the request, perform it.  The client can
       follow up with a request to remove the state (e.g., a LOCKU or
       CLOSE operation).  With this approach, the sequencing and stateid
-      information on the client and server for the given lock-owner
+      information on the client and server for the given state-owner
       will re-synchronize and in turn the lock state will re-synchronize.
     </t>
 
@@ -2033,7 +2028,7 @@
       administrator has decided to release or revoke a particular lock
       held by the client.  As a result of revocation, the client will
       receive an error of NFS4ERR_ADMIN_REVOKED.  In this instance the
-      client may assume that only the lock-owner's locks have been lost.
+      client may assume that only the state-owner's locks have been lost.
       The client notifies the lock holder appropriately.  The client
       may not assume the lease period has been renewed as a result of
       a failed operation.
@@ -2126,7 +2121,7 @@ else if ((request.access & file_state.deny)) ||
 
     <t>
       The CLOSE operation removes all share reservations held by the
-      lock-owner on that file.  If byte-range locks are held, the client
+      open-owner on that file.  If byte-range locks are held, the client
       SHOULD release all locks before issuing a CLOSE.  The server MAY
       free all outstanding locks on CLOSE but some servers may not
       support the CLOSE of a file that still has byte-range locks held.
