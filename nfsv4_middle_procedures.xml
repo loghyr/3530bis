@@ -1309,19 +1309,44 @@ GETFH
         The locker argument specifies the lock-owner that is associated with
         the LOCK request.  The locker4 structure is a switched union that
         indicates whether the client has already created byte-range locking
-        state associated with the current open file and lock-owner.  In the
-        case in which it has, the argument is just a stateid representing
-        the set of locks associated with that open file and lock-owner,
-	      together with a lock_seqid value that MAY be any value and MUST
-	      be ignored by the server.  In the case where no byte-range locking
-	      state has been established, or the client does not have the stateid
-	      available, the argument contains the
-        stateid of the open file with which this lock is to be associated,
-        together with the lock-owner with which the lock is to be associated.
-        The open_to_lock_owner case covers the very first lock done by a
-        lock-owner for a given open file and offers a method to use the 
-        established state of the open_stateid to transition to the use of 
-        a lock stateid.
+        state associated with the current open file and lock-owner.  There
+        are multiple cases to be considered, corresponding to possible 
+        combinations of whether locking state has been created for the current 
+        open file and lock-owner, and whether the boolean new_lock_owner is set.
+        In all of the cases, there is a lock_seqid specified, whether the 
+        lock-owner is specified explicitly or implicitly.  This seqid value 
+        is used 
+        for checking lockowner sequencing/replay issues.  When the given 
+        lockowner is not known to the server, this establishes an initial 
+        sequence value for the new lockowner.
+        <list style='symbols'>
+          <t> 
+            In the case in which the state has been created and the boolean is
+            false, the only part of the argument 
+            other than lock_seqid is just a stateid representing
+            the set of locks associated with that open file and lock-owner. 
+          </t> 
+          <t> 
+            In the case in which the state has been created and the boolean is
+            true, the server rejects the request with the error 
+            NFS4ERR_BADSEQ.  The only exception is where there is a 
+            retransmission of a previous request in which the boolean was true.
+            In this case, the lock_seqid will match the original request and 
+            the response will reflect the final case, below. 
+          </t> 
+          <t> 
+            In the case where no byte-range locking
+	          state has been established and the boolean is true, the argument
+            contains an open_to_lock_owner structure which specifies the 
+            stateid of the open file and the lock-owner to be used for 
+            the lock.  Note
+            that although the open-owner is not given explicitly, the 
+            open_seqid associated with it is used to check for 
+            open-owner sequencing issues. This case provides a method to 
+            use the established state of the 
+            open_stateid to transition to the use of a lock stateid. 
+          </t> 
+        </list> 
       </t>
 
     </section>
@@ -4433,7 +4458,8 @@ lock-owner -> ()
 
       <t>
         This operation is used to notify the server that the lock_owner
-        is no longer in use by the client.  This allows the server
+        is no longer in use by the client and that future client requests
+        will not reference this lock_owner. This allows the server
         to release cached state related to the specified lock_owner.
         If file locks, associated with the lock_owner, are held at
         the server, the error NFS4ERR_LOCKS_HELD will be returned
@@ -4445,13 +4471,22 @@ lock-owner -> ()
 
       <t>
         The client may choose to use this operation to ease the
-        amount of server state that is held.  Depending on behavior of
+        amount of server state that is held.  Information that
+        can be released when a RELEASE_LOCKOWNER is done includes
+        the specified lock-owner string, the seqid associated with the 
+        lock-owner, any saved reply for the lock-owner, and any lock stateids
+        associated with that lock-owner.  
+      </t>
+      <t>
+        Depending on the behavior of
         applications at the client, it may be important for the client
         to use this operation since the server has certain obligations
-        with respect to holding a reference to a lock_owner as long
-        as the associated file is open.  Therefore, if the client
-        knows for certain that the lock_owner will no longer be used
-        under the context of the associated open_owner4, it should
+        with respect to holding a reference to lock-owner-associated 
+        state as long
+        as an associated file is open.  Therefore, if the client
+        knows for certain that the lock_owner will no longer be used,
+        either to reference existing lock stateids associated with the 
+        lock-owner to create new ones, it should
         use RELEASE_LOCKOWNER.
       </t>
 

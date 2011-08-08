@@ -113,6 +113,12 @@
         between open-owners (represented by open_owner4 structures)
         and lock-owners (represented by lock_owner4 structures).
       </t>
+      <t>
+        Both sorts of owners consist of a clientid and an opaque
+        owner string.  For each client, the set of distinct owner values
+        used with that client constitutes the set of owners of that type,
+        for the given client.  
+      </t>
 
       <t>
         Each open is associated with a specific open-owner while each
@@ -1069,6 +1075,66 @@
       </t>
 
     </section>
+    <section title="Interactions of multiple sequence values">
+      <t>
+        Some Operations may have multiple sources of data for request
+        sequence checking and retrannsmision determination.  Some Operations
+        have multiple sequence values associated with multiple types of
+        state-owners.  In addition, such Operations may also have a stateid
+        with its own seqid value, that will be checked for validity.    
+      </t>
+      <t>
+        As noted above, there may be multiple sequence values to check 
+        The following rules should be followed by the server
+        in processing these multiple sequence values 
+        within a single operation. 
+      <list style='symbols'>
+        <t>
+          When a sequence value associated with a state-owner is unavailable 
+          for checking because the state-owner is unknown to the
+          server, it take no part in the comparison.  Similarly, when the 
+          stateid seqid is given as zero, the stateid seqid takes no part in
+          the checking.
+        </t>
+        <t>
+          When any of the state-owner sequence values are invalid, 
+          NFS4ERR_BADSEQ is returned.  When a stateid sequence is checked,
+          NFSS4ERR_BAD_STATEID, or NFS4ERR_OLDSTATEID is returned as 
+          appropriate, but NFS4ERR_BADSEQ has priority.
+        </t>
+        <t>
+          When any one of the sequence values matches a previous request,
+          for a state-owner, it is treated a retransmission and not
+          re-executed.  When the type of the operation doe not match that
+          originally used, 
+          NFS4ERR_BADSEQ is returned.  When the server can determine that
+          the request differs from the original it may return NFS4ERR_BADSEQ.   
+        </t>
+        <t>
+          When multiple of the sequence values match previous operations,
+          but the operations are not the same, NFS4ERR_BADSEQ is returned.
+        </t>
+        <t>
+          When there are no available sequence values available for comparison
+          and the operation is an OPEN, the server indicates
+          to the client that an OPEN_CONFRIM is required, unless it can 
+          conclusively determine that confirmation is not required (e.g.,
+          by knowing that no open-owner state has ever been released for the 
+          current clientid). 
+          <vspace blankLines="1" />
+          For other operations, lack of available sequence values for checking
+          can only result from specification of a stateid with a sequence value 
+          of zero.
+        </t>
+      </list>
+      </t>
+      <t>
+        Because specification of stateids with a sequence value of zero 
+        can result in no sequence checking under certain conditions, clients
+        should avoid using them in connection with operations in which 
+        state-owners are used together with state-owner sequence values.
+      </t>
+    </section>
     <section title="Releasing state-owner State">
 
       <t>
@@ -1077,13 +1143,34 @@
         the sequence number state associated with the state-owner.
         The server may make this choice based on lease expiration,
         for the reclamation of server memory, or other implementation
-        specific details.  In any event, the server is able to do this
-        safely only when the state-owner no longer is being utilized by
-        the client.  The server may choose to hold the state-owner state
-        in the event that retransmitted requests are received.  However,
-        the period to hold this state is implementation specific.
+        specific details.  Note that when this is done, a retransmitted
+        request, normally identified by a matching state-owner sequence
+        may not be correctly recognized, so that the client will not receive
+        the original response that it would have if the state-owner
+        state was not released.
       </t>
-
+      <t>
+        If the server were able to be sure that a given state-owner would 
+        never again be used by a client, such an issue could not arise. 
+        Even when the state-owner state is released and the client 
+        subsequently uses that state-owner, retransmitted requests will be detected
+        as invalid and the request not executed, although the client may 
+        have a recovery
+        path that is more complicated than simply getting the original 
+        response back transparently.          
+      </t>
+      <t>
+        In any event, the server is able to safely release state-owner 
+        state (in the sense that retransmitted requests will not be erroneously 
+        acted upon) when the state-owner no currently  being utilized by
+        the client (i.e., there are no open files associated with an 
+        open-owner and no lock stateids associated with a lock-owner).  
+        The server may choose 
+        to hold the state-owner state in order to simplify the recovery
+        path, in the case in which retransmissions of currently active
+        requests are received.  However, the period it chooses to hold this 
+        state is implementation specific.
+      </t>
       <t>
         In the case that a LOCK, LOCKU, OPEN_DOWNGRADE, or CLOSE is
         retransmitted after the server has previously released the
@@ -1560,7 +1647,7 @@
         
         <t>
           The next sections give examples showing what can go wrong if
-          these responsibilites are neglected, and provides examples of
+          these responsibilities are neglected, and provides examples of
           server implementation strategies that could meet a server's
           responsibilities.
         </t>
