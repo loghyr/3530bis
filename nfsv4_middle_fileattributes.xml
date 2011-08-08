@@ -134,12 +134,9 @@
       file system.
     </t>
     <t>
-      Named attributes and the named attribute directory might be the
-      target of delegations (in the case of the named attribute directory
-      these will be directory delegations).  However, since granting of
-      delegations is at the server's discretion, a server
-      need not support delegations on named attributes or the named
-      attribute directory.
+      Named attributes might be the target of delegations.  However, since
+      granting of delegations is at the server's discretion, a server
+      need not support delegations on named attributes.
     </t>
     <t>
       It is RECOMMENDED that servers support arbitrary named attributes.  A
@@ -668,7 +665,7 @@
               type attribute is NF4BLK, NF4CHR, NF4SOCK, or NF4FIFO. 
             </t>
             <t>
-              The phrase "is an ordinary file" means that the object's
+              The phrase "is an regular file" means that the object's
               type attribute is NF4REG or NF4NAMEDATTR.
             </t>
           </list>

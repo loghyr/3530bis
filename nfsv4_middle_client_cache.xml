@@ -1366,7 +1366,7 @@
       The attributes discussed in this section do not include named
       attributes.  Individual named attributes are analogous to files and
       caching of the data for these needs to be handled just as data
-      caching is for ordinary files.  Similarly, LOOKUP results from an
+      caching is for regular files.  Similarly, LOOKUP results from an
       OPENATTR directory are to be cached on the same basis as any other
       pathnames and similarly for directory contents.
     </t>

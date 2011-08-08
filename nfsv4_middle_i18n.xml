@@ -806,7 +806,7 @@
       which are not U-labels into a U-label, which it MAY do,
       it MUST NOT modify the domain and the domain returned
       on a GETATTR of the userid MUST be the same as that 
-      used when setting the userid by the SETATTTR.
+      used when setting the userid by the SETATTR.
     </t>  
     <t>
       The server MAY implement VERIFY and NVERIFY

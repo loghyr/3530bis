@@ -742,7 +742,7 @@ READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
 
       <figure>
         <artwork>
-(cfh), name, type, attrs -> (cfh), change_info, attrs_set
+(cfh), name, type, attrs -> (cfh), cinfo, attrset
         </artwork>
       </figure>
 
@@ -1106,7 +1106,7 @@ GETFH
 
       <figure>
         <artwork>
-(sfh), (cfh), newname -> (cfh), change_info
+(sfh), (cfh), newname -> (cfh), cinfo
         </artwork>
       </figure>
 
@@ -3075,8 +3075,7 @@ M        named by filename from the directory corresponding to the
 
       <figure>
         <artwork>
-(sfh), oldname, (cfh), newname -> source_change_info,
-target_change_info
+(sfh), oldname, (cfh), newname -> source_cinfo, target_cinfo
         </artwork>
       </figure>
 
