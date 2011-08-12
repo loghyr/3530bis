@@ -71,10 +71,10 @@
 
       <figure>
         <artwork>
-/a         pseudo filesystem
-/a/b       real filesystem
-/a/b/c     pseudo filesystem
-/a/b/c/d   real filesystem
+  /a         pseudo filesystem
+  /a/b       real filesystem
+  /a/b/c     pseudo filesystem
+  /a/b/c/d   real filesystem
         </artwork>
       </figure>
     </t>
@@ -125,9 +125,9 @@
 
       <figure>
         <artwork>
-/       disk1  (exported)
-/a      disk2  (not exported)
-/a/b    disk3  (exported)
+  /       disk1  (exported)
+  /a      disk2  (not exported)
+  /a/b    disk3  (exported)
         </artwork>
       </figure>
     </t>
@@ -147,8 +147,8 @@
 
       <figure>
         <artwork>
-/a/b            (filesystem 1)
-/a/b/c/d        (filesystem 2)
+  /a/b            (filesystem 1)
+  /a/b/c/d        (filesystem 2)
         </artwork>
       </figure>
     </t>
@@ -158,9 +158,9 @@
 
       <figure>
         <artwork>
-/               (place holder/not exported)
-/a/b            (filesystem 1)
-/a/b/c/d        (filesystem 2)
+  /               (place holder/not exported)
+  /a/b            (filesystem 1)
+  /a/b/c/d        (filesystem 2)
         </artwork>
       </figure>
     </t>
@@ -203,9 +203,9 @@
 
       <figure>
         <artwork>
-/
-/a/b
-/a/b/c
+  /
+  /a/b
+  /a/b/c
         </artwork>
       </figure>
     </t>

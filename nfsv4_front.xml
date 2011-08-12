@@ -62,6 +62,7 @@
       This document, together with the companion XDR description 
       document, replaces RFC 3530 as the definition of the 
       NFS version 4 protocol.
+<cref anchor="RE1" source="TH">Need to add in a reference to the other doc.</cref>
       </t>
     </abstract>
 

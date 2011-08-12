@@ -5,10 +5,11 @@
   <t>
     The NFSv4 protocol is a Remote Procedure Call (RPC)
     application that uses RPC version 2 and the corresponding eXternal
-    Data Representation (XDR) as defined in <xref target="RFC5531" /> and <xref target="RFC4506" />.
-    The RPCSEC_GSS security flavor as defined in <xref target="RFC2203" /> MUST be used
+    Data Representation (XDR) as defined in <xref target="RFC5531" />
+    and <xref target="RFC4506" />.  The RPCSEC_GSS security flavor as
+    defined in <xref target="RFC2203" /> MUST be implemented
     as the mechanism to deliver stronger security for the NFSv4
-    protocol.
+    protocol.  However, deployment of RPCSEC_GSS is optional.
   </t>
 
   <section title="Ports and Transports">
@@ -147,22 +148,22 @@
         <t>
           <figure>
             <artwork>
-column descriptions:
+  column descriptions:
 
-1 == number of pseudo flavor
-2 == name of pseudo flavor
-3 == mechanism's OID
-4 == mechanism's algorithm(s)
-5 == RPCSEC_GSS service
+  1 == number of pseudo flavor
+  2 == name of pseudo flavor
+  3 == mechanism's OID
+  4 == mechanism's algorithm(s)
+  5 == RPCSEC_GSS service
 
-1      2     3                    4             5
---------------------------------------------------------------------
-390003 krb5  1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_none
-390004 krb5i 1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_integrity
-390005 krb5p 1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_privacy
-                                  for integrity,
-                                  and 56 bit DES
-                                  for privacy.
+  1      2     3                    4             5
+  --------------------------------------------------------------------
+  390003 krb5  1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_none
+  390004 krb5i 1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_integrity
+  390005 krb5p 1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_privacy
+                                    for integrity,
+                                    and 56 bit DES
+                                    for privacy.
             </artwork>
           </figure>
         </t>
@@ -187,97 +188,6 @@ column descriptions:
           for AES, implementors are urged to incorporate AES into their NFSv4
           over Kerberos V5 protocol stacks, and users are similarly urged to
           migrate to the use of AES.
-        </t>
-      </section>
-
-      <section anchor="ss:rpc:lst" title="LIPKEY as a security triple">
-
-        <t>
-          The LIPKEY GSS-API mechanism as described in <xref target="RFC2847" /> MAY be
-          implemented and provide the following security triples.  The definition
-          of the columns matches those in <xref target="krb5:sectrip" />.
-        </t>
-
-        <t>
-          <figure>
-            <artwork>
-1      2        3                   4              5
---------------------------------------------------------------------
-390006 lipkey   1.3.6.1.5.5.9       negotiated  rpc_gss_svc_none
-390007 lipkey-i 1.3.6.1.5.5.9       negotiated  rpc_gss_svc_integrity
-390008 lipkey-p 1.3.6.1.5.5.9       negotiated  rpc_gss_svc_privacy
-            </artwork>
-          </figure>
-        </t>
-
-        <t>
-          The mechanism algorithm is listed as "negotiated".  This is
-          because LIPKEY is layered on SPKM-3 and in SPKM-3 <xref target="RFC2847" /> the
-          confidentiality and integrity algorithms are negotiated.  Since SPKM-3
-          specifies HMAC-MD5 for integrity as MANDATORY, 128 bit cast5CBC for
-          confidentiality for privacy as MANDATORY, and further specifies that
-          HMAC-MD5 and cast5CBC MUST be listed first before weaker algorithms,
-          specifying "negotiated" in column 4 does not impair interoperability.
-          In the event an SPKM-3 peer does not support the mandatory algorithms,
-          the other peer is free to accept or reject the GSS-API context
-          creation.
-        </t>
-
-        <t>
-          Because SPKM-3 negotiates the algorithms, subsequent calls to LIPKEY's
-          GSS_Wrap() and GSS_GetMIC() by RPCSEC_GSS will use a quality of
-          protection value of 0 (zero).  See section 5.2 of <xref target="RFC2025" /> for
-          an explanation.
-        </t>
-
-        <t>
-          LIPKEY uses SPKM-3 to create a secure channel in which to pass a
-          user name and password from the client to the server.  Once the user
-          name and password have been accepted by the server, calls to the
-          LIPKEY context are redirected to the SPKM-3 context.  See <xref target="RFC2847" />
-          for more details.
-        </t>
-      </section>
-
-      <section title="SPKM-3 as a security triple">
-
-        <t>
-          The SPKM-3 GSS-API mechanism as described in <xref target="RFC2847" /> MAY be
-          implemented and provide the following security triples.  The definition
-          of the columns matches those in <xref target="krb5:sectrip" />.
-        </t>
-
-        <t>
-          <figure>
-            <artwork>
-1      2        3                   4              5
---------------------------------------------------------------------
-390009 spkm3    1.3.6.1.5.5.1.3     negotiated  rpc_gss_svc_none
-390010 spkm3i   1.3.6.1.5.5.1.3     negotiated  rpc_gss_svc_integrity
-390011 spkm3p   1.3.6.1.5.5.1.3     negotiated  rpc_gss_svc_privacy
-            </artwork>
-          </figure>
-        </t>
-
-        <t>
-          For a discussion as to why the mechanism algorithm is listed as
-          "negotiated", see <xref target="ss:rpc:lst" />.
-        </t>
-
-        <t>
-          Because SPKM-3 negotiates the algorithms, subsequent calls to
-          SPKM-3's GSS_Wrap() and GSS_GetMIC() by RPCSEC_GSS will use a quality
-          of protection value of 0 (zero).  See section 5.2 of <xref target="RFC2025" /> for
-          an explanation.
-        </t>
-
-        <t>
-          Even though LIPKEY is layered over SPKM-3, SPKM-3 is specified
-          as a mandatory set of triples to handle the situations where the
-          initiator (the client) is anonymous or where the initiator has its
-          own certificate.  If the initiator is anonymous, there will not be
-          a user name and password to send to the target (the server).  If the
-          initiator has its own certificate, then using passwords is superfluous.
         </t>
       </section>
     </section>
@@ -320,8 +230,8 @@ column descriptions:
 
       <t>
         Based on the assumption that each NFSv4 client and server
-        MUST support a minimum set of security (i.e., LIPKEY, SPKM-3, and
-        Kerberos-V5 all under RPCSEC_GSS), the NFS client will start its
+        MUST support a minimum set of security (i.e.,
+        Kerberos-V5 under RPCSEC_GSS), the NFS client will start its
         communication with the server with one of the minimal security triples.
         During communication with the server, the client may receive an NFS
         error of NFS4ERR_WRONGSEC.  This error allows the server to notify the
@@ -359,19 +269,13 @@ column descriptions:
 
         <figure>
           <artwork>
-unix.host@domain
+  unix.host@domain
           </artwork>
         </figure>
 
         where host and domain are variables corresponding to the name of
         server host and directory services domain in which it lives such as
         a Network Information System domain or a DNS domain.
-      </t>
-
-      <t>
-        Because LIPKEY is layered over SPKM-3, it is permissible for the
-        server to use SPKM-3 and not LIPKEY for the callback even if the
-        client used LIPKEY for SETCLIENTID.
       </t>
 
       <t>
@@ -382,7 +286,7 @@ unix.host@domain
 
         <figure>
           <artwork>
-service@hostname
+  service@hostname
           </artwork>
         </figure>
       </t>
@@ -392,12 +296,12 @@ service@hostname
 
         <figure>
           <artwork>
-nfs
+  nfs
           </artwork>
         </figure>
 
         Implementations of security mechanisms will convert nfs@hostname to
-        various different forms.  For Kerberos V5 and LIPKEY, the following
+        various different forms.  For Kerberos V5, the following
         form is RECOMMENDED:
 
         <figure>
@@ -416,54 +320,6 @@ nfs/hostname
         the SETCLIENTID.
       </t>
 
-      <t>
-        For LIPKEY, this would be the username passed to the target (the NFS
-        version 4 client that receives the callback).
-      </t>
-
-      <t>
-        It should be noted that LIPKEY may not work for callbacks, since the
-        LIPKEY client uses a user id/password.  If the NFS client receiving
-        the callback can authenticate the NFS server's user name/password
-        pair, and if the user that the NFS server is authenticating to has
-        a public key certificate, then it works.
-      </t>
-
-      <t>
-        In situations where the NFS client uses LIPKEY and uses a per-host
-        principal for the SETCLIENTID operation, instead of using LIPKEY for
-        SETCLIENTID, it is RECOMMENDED that SPKM-3 with mutual authentication
-        be used.  This effectively means that the client will use a certificate
-        to authenticate and identify the initiator to the target on the
-        NFS server.  Using SPKM-3 and not LIPKEY has the following advantages:
-
-        <list style='symbols'>
-          <t>
-            When the server does a callback, it must authenticate to the
-            principal used in the SETCLIENTID.  Even if LIPKEY is used,
-            because LIPKEY is layered over SPKM-3, the NFS client will need
-            to have a certificate that corresponds to the principal used in
-            the SETCLIENTID operation.  From an administrative perspective,
-            having a user name, password, and certificate for both the client
-            and server is redundant.
-          </t>
-
-          <t>
-            LIPKEY was intended to minimize additional infrastructure
-            requirements beyond a certificate for the target, and the
-            expectation is that existing password infrastructure can be
-            leveraged for the initiator.  In some environments, a per-host
-            password does not exist yet.  If certificates are used for any
-            per-host principals, then additional password infrastructure is
-            not needed.
-          </t>
-
-          <t>
-            In cases when a host is both an NFS client and server, it can
-            share the same per-host certificate.
-          </t>
-        </list>
-      </t>
     </section>
   </section>
 </section>

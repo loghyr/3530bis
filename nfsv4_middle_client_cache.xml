@@ -991,6 +991,8 @@
         set to TRUE the first time cc != sc, and would stay TRUE until the
         delegation is returned or revoked.  The processing for constructing
         nsc, time_modify, and time_metadata would use this pseudo code:
+      </t>
+
         <figure>
           <artwork>
     if (!modified) {
@@ -1007,10 +1009,11 @@
         time_modify = time_metadata = current_time;
         update sc, time_modify, time_metadata into file's metadata;
     }
-
       </artwork>
     </figure>
-    This would return to the client (that sent GETATTR) the attributes
+
+      <t>
+        This would return to the client (that sent GETATTR) the attributes
         it requested, but make sure size comes from what
         CB_GETATTR returned. The server would not update the file's
         metadata with the client's modified size.

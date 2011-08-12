@@ -259,7 +259,7 @@
 
         <figure>
           <artwork>
-[volatile bit = 1 | server boot time | slot | generation number]
+  [volatile bit = 1 | server boot time | slot | generation number]
           </artwork>
         </figure>
 
@@ -335,9 +335,9 @@
 
       <figure>
         <artwork>
-RENAME A B
-LOOKUP B
-GETFH
+  RENAME A B
+  LOOKUP B
+  GETFH
         </artwork>
       </figure>
     </t>

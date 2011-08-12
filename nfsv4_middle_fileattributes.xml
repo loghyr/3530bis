@@ -1298,7 +1298,7 @@
         <t>
           The user or group may be returned in a different
           form, due to normalization issues, although it will
-          always be a canonically equivalent string.  See
+          always be a canonically equivalent string.
           See <xref target="Type-prinp" /> for details.
         </t>
       </list>
@@ -1319,7 +1319,7 @@
       To provide a greater degree of compatibility with NFSv3,
       which identified users and groups by 32-bit unsigned user
       identifiers and group identifiers, owner and group
-      strings that consist of decimal numeric values with no leading
+      strings that consist of ASCII-encoded decimal numeric values with no leading
       zeros can be given a special interpretation by clients and
       servers that choose to provide such support.  The receiver
       may treat such a user or group string as representing the same
@@ -1344,12 +1344,11 @@
     </t>
     <t>
       The client MUST always accept numeric values if the security
-      mechanism is not kerberized.  A client can determine if a
-      server supports such a mechanism by first attempting to
-      provide a numeric value and only if it is rejected with
-      an NFS4ERR_BADOWNER error, then providing a name value.
-      After the first detection of such an error, the client
-      should only use the special form.
+      mechanism is not RPCSEC_GSS.  A client can determine if a server
+      supports numeric identifiers by first attempting to provide a numeric
+      identifier. If this attempt rejected with an NFS4ERR_BADOWNER error,
+      the the client should only use named identifiers of the form
+      "user@dns_domain".
     </t>
     <t>
       The owner string "nobody" may be used to designate an
@@ -1379,5 +1378,4 @@
       <xref target="sec:i18n:case" format="title" />.
     </t>
   </section>
-
 </section>

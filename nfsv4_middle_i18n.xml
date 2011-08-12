@@ -432,12 +432,12 @@
         specifies the nature of its relationship to utf8 and
         ascii.
         <list style='hanging'>
-          <t hangText="utf8_should/USHOULD:">
+          <t hangText="utf8_expected/USHOULD:">
             indicating that strings of this type SHOULD be
             UTF-8 but clients and servers will not
             check for valid UTF-8 encoding. 
           </t>
-          <t hangText="utf8val_should/UVSHOULD:">
+          <t hangText="utf8val_RECOMMENDED4/UVSHOULD:">
             indicating that strings of this type SHOULD be
             and generally will be in the form of the UTF-8
             encoding of Unicode.  Strings in most cases
@@ -445,16 +445,17 @@
             but for certain file systems, such checking 
             may be inhibited.  
           </t>
-          <t hangText="utf8val_must/UVMUST:">
+          <t hangText="utf8val_REQUIRED4/UVMUST:">
             indicating that strings of this type MUST be
             in the form of the UTF-8 encoding of Unicode.
             Strings will be checked by the server for 
             valid UTF-8 and the server SHOULD ensure that
             when sent to the client, they are valid UTF-8.
           </t>
-          <t hangText="ascii_must/ASCII:">
+          <t hangText="ascii_REQUIRED4/ASCII:">
             indicating that strings of this type MUST be
-            pure ASCII, and thus automatically UTF-8.
+            sent and validated as ASCII, and thus are
+            automatically UTF-8.
             The processing of these string must ensure
             that they are only have ASCII characters but 
             this need not be a separate step if any
@@ -487,7 +488,7 @@
           <c>USHOULD</c>
           <c>NIP</c>
           <c>
-            Should be utf8 but no validation by server or
+            Tag expected to be UTF-8but no validation by server or
             client is to be done.
           </c>
         <c>component4</c>
@@ -593,13 +594,13 @@
       context in which UTF-8 is REQUIRED, the server MUST 
       return an NFS4ERR_INVAL error.  Within the framework
       of the previous section, this applies to strings whose
-      type is defined as utf8val_must or ascii_must.    
+      type is defined as utf8val_REQUIRED4 or ascii_REQUIRED4.    
       When the client sends  an invalid UTF-8 string in a 
       context in which UTF-8 is RECOMMENDED and the server
       should test for UTF-8, the server SHOULD return an 
       NFS4ERR_INVAL error.  Within the framework
       of the previous section, this applies to strings whose
-      type is defined as utf8val_should.    These situations 
+      type is defined as utf8val_RECOMMENDED4.  These situations 
       apply to cases in which 
       inappropriate prefixes are detected and where the 
       count includes trailing bytes that do not constitute 
@@ -1488,7 +1489,7 @@
     <section anchor='Type-ltext'
              title="Processing of Link Text">
       <t>
-        Symbolic link text is defined as utf8val_should and 
+        Symbolic link text is defined as utf8val_RECOMMENDED4 and 
         therefore the server SHOULD validate link text
         on a CREATE and return NFS4ERR_INVAL if it is
         is not valid UTF-8.  Note that file systems

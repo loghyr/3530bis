@@ -38,14 +38,14 @@
           entity.
         </t>
         <t>
-          Updating handling of domain names to reflect IDNA.
+          Updating handling of domain names to reflect IDNA <xref target='I-D.draft-ietf-idna' />.
         </t>
         <t>
           Restructuring of string types to more appropriately reflect
           the reality of required string processing.
         </t>
 	      <t>
-	        LIPKEY SPKM/3 has been moved from being REQUIRED to OPTIONAL.
+	        LIPKEY SPKM/3 has been moved from being REQUIRED to being removed.
 	      </t>
 	      <t>
 	        Some clarification on a client re-establishing callback
@@ -247,10 +247,8 @@
         offer authentication, integrity, and privacy to the NFS
         version 4 protocol.  Kerberos V5 will be used as described
         in <xref target="RFC1964" /> to provide one security
-        framework.  The LIPKEY GSS-API mechanism described in
-        <xref target="RFC2847" /> will be used to
-        provide for the use of user password and server public key
-        by the NFSv4 protocol.  With the use of RPCSEC_GSS,
+        framework.
+        With the use of RPCSEC_GSS,
         other mechanisms may also be specified and used for NFS
         version 4 security.
       </t>
@@ -374,11 +372,11 @@
 	  target="mandatory_attributes_intro"/>.
         </t>
         <t>
-	  An example of three RECOMMENDED attributes are
-	  acl, sacl, and dacl.  These attributes define an
+	  An example of the RECOMMENDED attributes is
+	  an acl.  This attribute defines an
 	  Access Control List (ACL) on a file object
 	  ((<xref target="acl"/>).  An ACL provides
-	  directory and file access control beyond the
+	  file access control beyond the
 	  model used in NFSv3.   The ACL definition allows
 	  for specification of specific sets of permissions
 	  for individual users and groups.  In addition,
@@ -389,8 +387,7 @@
 	  target="recommended_attributes_intro"/>.
         </t>
         <t>
-          A
-          named attribute is an opaque byte stream that is associated 
+          A named attribute is an opaque byte stream that is associated 
           with a directory or file and referred to by a string name.  
           Named attributes are meant to be used by client applications 
           as a method to associate application-specific data with a 

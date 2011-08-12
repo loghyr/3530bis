@@ -8,7 +8,7 @@
 
       <figure>
         <artwork>
-&lt;null&gt;
+  &lt;null&gt;
         </artwork>
       </figure>
 
@@ -17,7 +17,7 @@
 
       <figure>
         <artwork>
-void;
+  void;
         </artwork>
       </figure>
 
@@ -26,7 +26,7 @@ void;
 
       <figure>
         <artwork>
-void;
+  void;
         </artwork>
       </figure>
 
@@ -50,7 +50,7 @@ void;
 
       <figure>
         <artwork>
-compoundargs -> compoundres
+  compoundargs -> compoundres
         </artwork>
       </figure>
 
@@ -59,10 +59,10 @@ compoundargs -> compoundres
 
       <figure>
         <artwork>
-union nfs_argop4 switch (nfs_opnum4 argop) {
-        case &lt;OPCODE&gt;: &lt;argument&gt;;
-        ...
-};
+  union nfs_argop4 switch (nfs_opnum4 argop) {
+          case &lt;OPCODE&gt;: &lt;argument&gt;;
+          ...
+  };
         </artwork>
       </figure>
 
@@ -73,10 +73,10 @@ union nfs_argop4 switch (nfs_opnum4 argop) {
 
       <figure>
         <artwork>
-union nfs_resop4 switch (nfs_opnum4 resop) {
-        case &lt;OPCODE&gt;: &lt;argument&gt;;
-        ...
-};
+  union nfs_resop4 switch (nfs_opnum4 resop) {
+          case &lt;OPCODE&gt;: &lt;argument&gt;;
+          ...
+  };
         </artwork>
       </figure>
 
@@ -205,14 +205,14 @@ union nfs_resop4 switch (nfs_opnum4 resop) {
         <t>
           <figure anchor='curfh_example'>
             <artwork>
-PUTFH fh1              {fh1}
-LOOKUP "compA"         {fh2}
-GETATTR                {fh2}
-LOOKUP "compB"         {fh3}
-GETATTR                {fh3}
-LOOKUP "compC"         {fh4}
-GETATTR                {fh4}
-GETFH
+  PUTFH fh1              {fh1}
+  LOOKUP "compA"         {fh2}
+  GETATTR                {fh2}
+  LOOKUP "compB"         {fh3}
+  GETATTR                {fh3}
+  LOOKUP "compC"         {fh4}
+  GETATTR                {fh4}
+  GETFH
             </artwork>
           </figure>
         </t>
@@ -284,8 +284,8 @@ GETFH
         </t>
         <figure anchor='csid_example1'>
           <artwork>
-PUTFH fh1                             - -> {fh1, (0, 0)}
-READ (sid1), 0, 1024      {fh1, (0, 0)} -> {fh1, (0, 0)}
+  PUTFH fh1                             - -> {fh1, (0, 0)}
+  READ (sid1), 0, 1024      {fh1, (0, 0)} -> {fh1, (0, 0)}
           </artwork>
         </figure>
 
@@ -301,10 +301,10 @@ READ (sid1), 0, 1024      {fh1, (0, 0)} -> {fh1, (0, 0)}
         </t>
         <figure anchor='csid_example2'>
           <artwork>
-PUTROOTFH                             - -> {fh1, (0, 0)}
-OPEN "compA"              {fh1, (0, 0)} -> {fh2, (sid1)}
-READ (1, 0), 0, 1024      {fh2, (sid1)} -> {fh2, (sid1)}
-CLOSE (1, 0)              {fh2, (sid1)} -> {fh2, (sid2)}
+  PUTROOTFH                             - -> {fh1, (0, 0)}
+  OPEN "compA"              {fh1, (0, 0)} -> {fh2, (sid1)}
+  READ (1, 0), 0, 1024      {fh2, (sid1)} -> {fh2, (sid1)}
+  CLOSE (1, 0)              {fh2, (sid1)} -> {fh2, (sid2)}
           </artwork>
         </figure>
 
@@ -322,17 +322,17 @@ CLOSE (1, 0)              {fh2, (sid1)} -> {fh2, (sid2)}
         </t>
         <figure anchor='csid_example3'>
           <artwork>
-PUTFH fh1                             - -> {fh1, (0, 0)}
-LOCK 0, 1024, (sid1)      {fh1, (sid1)} -> {fh1, (sid2)}
-READ (1, 0), 0, 1024      {fh1, (sid2)} -> {fh1, (sid2)}
-LOCKU 0, 1024, (1, 0)     {fh1, (sid2)} -> {fh1, (sid3)}
-SAVEFH                    {fh1, (sid3)} -> {fh1, (sid3)}
+  PUTFH fh1                             - -> {fh1, (0, 0)}
+  LOCK 0, 1024, (sid1)      {fh1, (sid1)} -> {fh1, (sid2)}
+  READ (1, 0), 0, 1024      {fh1, (sid2)} -> {fh1, (sid2)}
+  LOCKU 0, 1024, (1, 0)     {fh1, (sid2)} -> {fh1, (sid3)}
+  SAVEFH                    {fh1, (sid3)} -> {fh1, (sid3)}
 
-PUTFH fh2                 {fh1, (sid3)} -> {fh2, (0, 0)}
-WRITE (1, 0), 0, 1024     {fh2, (0, 0)} -> {fh2, (0, 0)}
+  PUTFH fh2                 {fh1, (sid3)} -> {fh2, (0, 0)}
+  WRITE (1, 0), 0, 1024     {fh2, (0, 0)} -> {fh2, (0, 0)}
 
-RESTOREFH                 {fh2, (0, 0)} -> {fh1, (sid3)}
-READ (1, 0), 1024, 1024   {fh1, (sid3)} -> {fh1, (sid3)}
+  RESTOREFH                 {fh2, (0, 0)} -> {fh1, (sid3)}
+  READ (1, 0), 1024, 1024   {fh1, (sid3)} -> {fh1, (sid3)}
           </artwork>
         </figure>
 
@@ -346,8 +346,8 @@ READ (1, 0), 1024, 1024   {fh1, (sid3)} -> {fh1, (sid3)}
         </t>
         <figure anchor='csid_example4'>
           <artwork>
-PUTFH fh1                             - -> {fh1, (0, 0)}
-READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
+  PUTFH fh1                             - -> {fh1, (0, 0)}
+  READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
           </artwork>
         </figure>
 
@@ -380,7 +380,7 @@ READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
 
       <figure>
         <artwork>
-(cfh), accessreq -> supported, accessrights
+  (cfh), accessreq -> supported, accessrights
         </artwork>
       </figure>
 
@@ -536,7 +536,7 @@ READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
 
       <figure>
         <artwork>
-(cfh), seqid, open_stateid -> open_stateid
+  (cfh), seqid, open_stateid -> open_stateid
         </artwork>
       </figure>
 
@@ -595,7 +595,7 @@ READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
 
       <figure>
         <artwork>
-(cfh), offset, count -> verifier
+  (cfh), offset, count -> verifier
         </artwork>
       </figure>
 
@@ -742,7 +742,7 @@ READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
 
       <figure>
         <artwork>
-(cfh), name, type, attrs -> (cfh), cinfo, attrset
+  (cfh), name, type, attrs -> (cfh), cinfo, attrset
         </artwork>
       </figure>
 
@@ -860,7 +860,7 @@ READ (1, 0), 0, 1024      {fh1, (0, 0)} -> NFS4ERR_BAD_STATEID
 
       <figure>
         <artwork>
-clientid ->
+  clientid ->
         </artwork>
       </figure>
 
@@ -913,7 +913,7 @@ clientid ->
 
       <figure>
         <artwork>
-(cfh), stateid ->
+  (cfh), stateid ->
         </artwork>
       </figure>
 
@@ -951,7 +951,7 @@ clientid ->
 
       <figure>
         <artwork>
-(cfh), attrbits -> attrbits, attrvals
+  (cfh), attrbits -> attrbits, attrvals
         </artwork>
       </figure>
 
@@ -1048,7 +1048,7 @@ clientid ->
 
       <figure>
         <artwork>
-(cfh) -> filehandle
+  (cfh) -> filehandle
         </artwork>
       </figure>
 
@@ -1057,8 +1057,8 @@ clientid ->
 
       <figure>
         <artwork>
-/* CURRENT_FH: */
-void;
+  /* CURRENT_FH: */
+  void;
         </artwork>
       </figure>
 
@@ -1092,9 +1092,9 @@ void;
 
       <figure>
         <artwork>
-PUTFH  (directory filehandle)
-LOOKUP (entry name)
-GETFH
+  PUTFH  (directory filehandle)
+  LOOKUP (entry name)
+  GETFH
         </artwork>
       </figure>
 
@@ -1106,7 +1106,7 @@ GETFH
 
       <figure>
         <artwork>
-(sfh), (cfh), newname -> (cfh), cinfo
+  (sfh), (cfh), newname -> (cfh), cinfo
         </artwork>
       </figure>
 
@@ -1186,7 +1186,7 @@ GETFH
 
       <figure>
         <artwork>
-(cfh) locktype, reclaim, offset, length, locker -> stateid
+  (cfh) locktype, reclaim, offset, length, locker -> stateid
         </artwork>
       </figure>
 
@@ -1357,8 +1357,8 @@ GETFH
 
       <figure>
         <artwork>
-(cfh) locktype, offset, length, owner -> {void, NFS4ERR_DENIED ->
-owner}
+  (cfh) locktype, offset, length, owner -> {void, NFS4ERR_DENIED ->
+  owner}
         </artwork>
       </figure>
 
@@ -1441,7 +1441,7 @@ owner}
 
       <figure>
         <artwork>
-(cfh) type, seqid, stateid, offset, length -> stateid
+  (cfh) type, seqid, stateid, offset, length -> stateid
         </artwork>
       </figure>
 
@@ -1509,7 +1509,7 @@ owner}
 
       <figure>
         <artwork>
-(cfh), component -> (cfh)
+  (cfh), component -> (cfh)
         </artwork>
       </figure>
 
@@ -1559,13 +1559,13 @@ owner}
 
       <figure>
         <artwork>
-PUTFH  (directory filehandle)
-LOOKUP "pub"
-GETFH
-LOOKUP "foo"
-GETFH
-LOOKUP "bar"
-GETFH
+  PUTFH  (directory filehandle)
+  LOOKUP "pub"
+  GETFH
+  LOOKUP "foo"
+  GETFH
+  LOOKUP "bar"
+  GETFH
         </artwork>
       </figure>
 
@@ -1620,7 +1620,7 @@ GETFH
 
       <figure>
         <artwork>
-(cfh) -> (cfh)
+  (cfh) -> (cfh)
         </artwork>
       </figure>
 
@@ -1629,8 +1629,8 @@ GETFH
 
       <figure>
         <artwork>
-/* CURRENT_FH: object */
-void;
+  /* CURRENT_FH: object */
+  void;
         </artwork>
       </figure>
 
@@ -1672,7 +1672,7 @@ void;
 
       <figure>
         <artwork>
-(cfh), fattr -> -
+  (cfh), fattr -> -
         </artwork>
       </figure>
 
@@ -1713,10 +1713,10 @@ void;
 
       <figure>
         <artwork>
-PUTFH  (public)
-LOOKUP "foobar"
-NVERIFY attrbits attrs
-READ 0 32767
+  PUTFH  (public)
+  LOOKUP "foobar"
+  NVERIFY attrbits attrs
+  READ 0 32767
         </artwork>
       </figure>
 
@@ -1741,8 +1741,8 @@ READ 0 32767
 
       <figure>
         <artwork>
-(cfh), seqid, share_access, share_deny, owner, openhow, claim ->
-(cfh), stateid, cinfo, rflags, attrset, delegation
+  (cfh), seqid, share_access, share_deny, owner, openhow, claim ->
+  (cfh), stateid, cinfo, rflags, attrset, delegation
         </artwork>
       </figure>
 
@@ -2152,7 +2152,7 @@ READ 0 32767
 
       <figure>
         <artwork>
-(cfh) createdir -> (cfh)
+  (cfh) createdir -> (cfh)
         </artwork>
       </figure>
 
@@ -2210,7 +2210,7 @@ READ 0 32767
 
       <figure>
         <artwork>
-(cfh), seqid, stateid -> stateid
+  (cfh), seqid, stateid -> stateid
         </artwork>
       </figure>
 
@@ -2304,7 +2304,7 @@ READ 0 32767
         an OPEN_CONFIRM is needed.  The process then repeats itself.
         While there is a potential for a denial of service attack on
         the client, it is mitigated if the client and server require
-        the use of a security flavor based on Kerberos V5, LIPKEY,
+        the use of a security flavor based on Kerberos V5
         or some other flavor that uses cryptography.
       </t>
 
@@ -2333,7 +2333,7 @@ READ 0 32767
 
       <figure>
         <artwork>
-(cfh), stateid, seqid, access, deny -> stateid
+  (cfh), stateid, seqid, access, deny -> stateid
         </artwork>
       </figure>
 
@@ -2391,7 +2391,7 @@ READ 0 32767
 
       <figure>
         <artwork>
-filehandle -> (cfh)
+  filehandle -> (cfh)
         </artwork>
       </figure>
 
@@ -2442,7 +2442,7 @@ filehandle -> (cfh)
 
       <figure>
         <artwork>
-- -> (cfh)
+  - -> (cfh)
         </artwork>
       </figure>
 
@@ -2451,7 +2451,7 @@ filehandle -> (cfh)
 
       <figure>
         <artwork>
-void;
+  void;
         </artwork>
       </figure>
 
@@ -2539,7 +2539,7 @@ void;
 
       <figure>
         <artwork>
-- -> (cfh)
+  - -> (cfh)
         </artwork>
       </figure>
 
@@ -2548,7 +2548,7 @@ void;
 
       <figure>
         <artwork>
-void;
+  void;
         </artwork>
       </figure>
 
@@ -2595,7 +2595,7 @@ void;
 
       <figure>
         <artwork>
-(cfh), stateid, offset, count -> eof, data
+  (cfh), stateid, offset, count -> eof, data
         </artwork>
       </figure>
 
@@ -2721,8 +2721,8 @@ void;
 
       <figure>
         <artwork>
-(cfh), cookie, cookieverf, dircount, maxcount, attr_request ->
-cookieverf { cookie, name, attrs }
+  (cfh), cookie, cookieverf, dircount, maxcount, attr_request ->
+  cookieverf { cookie, name, attrs }
         </artwork>
       </figure>
 
@@ -2903,7 +2903,7 @@ cookieverf { cookie, name, attrs }
 
       <figure>
         <artwork>
-(cfh) -> linktext
+  (cfh) -> linktext
         </artwork>
       </figure>
 
@@ -2912,8 +2912,8 @@ cookieverf { cookie, name, attrs }
 
       <figure>
         <artwork>
-/* CURRENT_FH: symlink */
-void;
+  /* CURRENT_FH: symlink */
+  void;
         </artwork>
       </figure>
 
@@ -2966,7 +2966,7 @@ void;
 
       <figure>
         <artwork>
-(cfh), filename -> change_info
+  (cfh), filename -> change_info
         </artwork>
       </figure>
 
@@ -3075,7 +3075,7 @@ M        named by filename from the directory corresponding to the
 
       <figure>
         <artwork>
-(sfh), oldname, (cfh), newname -> source_cinfo, target_cinfo
+  (sfh), oldname, (cfh), newname -> source_cinfo, target_cinfo
         </artwork>
       </figure>
 
@@ -3187,7 +3187,7 @@ M        named by filename from the directory corresponding to the
 
       <figure>
         <artwork>
-clientid -> ()
+  clientid -> ()
         </artwork>
       </figure>
 
@@ -3270,7 +3270,7 @@ clientid -> ()
 
       <figure>
         <artwork>
-(sfh) -> (cfh)
+  (sfh) -> (cfh)
         </artwork>
       </figure>
 
@@ -3279,8 +3279,8 @@ clientid -> ()
 
       <figure>
         <artwork>
-/* SAVED_FH: */
-void;
+  /* SAVED_FH: */
+  void;
         </artwork>
       </figure>
 
@@ -3312,13 +3312,13 @@ void;
 
       <figure>
         <artwork>
-PUTFH (directory filehandle)
-SAVEFH
-GETATTR attrbits     (pre-op dir attrs)
-CREATE optbits "foo" attrs
-GETATTR attrbits     (file attributes)
-RESTOREFH
-GETATTR attrbits     (post-op dir attrs)
+  PUTFH (directory filehandle)
+  SAVEFH
+  GETATTR attrbits     (pre-op dir attrs)
+  CREATE optbits "foo" attrs
+  GETATTR attrbits     (file attributes)
+  RESTOREFH
+  GETATTR attrbits     (post-op dir attrs)
         </artwork>
       </figure>
 
@@ -3330,7 +3330,7 @@ GETATTR attrbits     (post-op dir attrs)
 
       <figure>
         <artwork>
-(cfh) -> (sfh)
+  (cfh) -> (sfh)
         </artwork>
       </figure>
 
@@ -3339,8 +3339,8 @@ GETATTR attrbits     (post-op dir attrs)
 
       <figure>
         <artwork>
-/* CURRENT_FH: */
-void;
+  /* CURRENT_FH: */
+  void;
         </artwork>
       </figure>
 
@@ -3374,7 +3374,7 @@ void;
 
       <figure>
         <artwork>
-(cfh), name -> { secinfo }
+  (cfh), name -> { secinfo }
         </artwork>
       </figure>
 
@@ -3527,7 +3527,7 @@ void;
 
       <figure>
         <artwork>
-(cfh), stateid, attrmask, attr_vals -> attrsset
+  (cfh), stateid, attrmask, attr_vals -> attrsset
         </artwork>
       </figure>
 
@@ -3684,7 +3684,7 @@ void;
 
       <figure>
         <artwork>
-client, callback, callback_ident -> clientid, setclientid_confirm
+  client, callback, callback_ident -> clientid, setclientid_confirm
         </artwork>
       </figure>
 
@@ -3902,7 +3902,7 @@ client, callback, callback_ident -> clientid, setclientid_confirm
 
       <figure>
         <artwork>
-clientid, verifier -> -
+  clientid, verifier -> -
         </artwork>
       </figure>
 
@@ -4115,7 +4115,7 @@ clientid, verifier -> -
 
       <figure>
         <artwork>
-(cfh), fattr -> -
+  (cfh), fattr -> -
         </artwork>
       </figure>
 
@@ -4154,11 +4154,11 @@ clientid, verifier -> -
 
       <figure>
         <artwork>
-PUTFH (directory filehandle)
-LOOKUP (file name)
-VERIFY (filehandle == fh)
-PUTFH (directory filehandle)
-REMOVE (file name)
+  PUTFH (directory filehandle)
+  LOOKUP (file name)
+  VERIFY (filehandle == fh)
+  PUTFH (directory filehandle)
+  REMOVE (file name)
         </artwork>
       </figure>
 
@@ -4189,7 +4189,7 @@ REMOVE (file name)
 
       <figure>
         <artwork>
-(cfh), stateid, offset, stable, data -> count, committed, writeverf
+  (cfh), stateid, offset, stable, data -> count, committed, writeverf
         </artwork>
       </figure>
 
@@ -4438,7 +4438,7 @@ REMOVE (file name)
 
       <figure>
         <artwork>
-lock-owner -> ()
+  lock-owner -> ()
         </artwork>
       </figure>
 
@@ -4497,7 +4497,7 @@ lock-owner -> ()
 
       <figure>
         <artwork>
-&lt;null&gt; -> ()
+  &lt;null&gt; -> ()
         </artwork>
       </figure>
 
@@ -4506,7 +4506,7 @@ lock-owner -> ()
 
       <figure>
         <artwork>
-void;
+  void;
         </artwork>
       </figure>
 
