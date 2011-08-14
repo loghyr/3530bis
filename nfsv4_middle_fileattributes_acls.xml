@@ -607,11 +607,29 @@
 			<t hangText="NONE" />
 		      </list>
 		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to access file locally at the server with
-		      synchronized reads and writes.
-		    </t>
+                    <t hangText='Discussion:'><vspace blankLines="1"/>
+                      Permission to use the file object as a synchronization
+                      primitive for interprocess communication.  This permission is
+                      not enforced or interpreted by the NFSv4.0 server on behalf of
+                      the client.
+                      <vspace blankLines="1"/>
+                      Typically, the ACE4_SYNCHRONIZE permission is only meaningful
+                      on local file systems, i.e., file systems not accessed via
+                      NFSv4.0.  The reason that the permission bit exists is that
+                      some operating environments, such as Windows, use
+                      ACE4_SYNCHRONIZE.
+                      <vspace blankLines="1"/>
+                      For example, if a client copies a file that has
+                      ACE4_SYNCHRONIZE set from a local file system to an NFSv4.0
+                      server, and then later copies the file from the NFSv4.0 server
+                      to a local file system, it is likely that if ACE4_SYNCHRONIZE
+                      was set in the original file, the client will want it set in
+                      the second copy.  The first copy will not have the permission
+                      set unless the NFSv4.0 server has the means to set the
+                      ACE4_SYNCHRONIZE bit.  The second copy will not have the
+                      permission set unless the NFSv4.0 server has the means to
+                      retrieve the ACE4_SYNCHRONIZE bit.
+                    </t>
 		  </list>
 		</t>
 
