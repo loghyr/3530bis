@@ -230,9 +230,11 @@
             are as follows:
           </t>
 
-        <?rfc include='autogen/const_acemask4.xml'?>
           <t>
+        <?rfc include='autogen/const_acemask4.xml'?>
+          </t>
 
+          <t>
 	   Note that some masks have coincident values, for
 	   example, ACE4_READ_DATA and ACE4_LIST_DIRECTORY.
 	   The mask entries ACE4_LIST_DIRECTORY,
@@ -241,8 +243,8 @@
 	   while ACE4_READ_DATA, ACE4_WRITE_DATA, and
 	   ACE4_APPEND_DATA are intended to be used with
 	   non-directory objects.
-
           </t>
+
           <section title="Discussion of Mask Attributes">
 	    <t>
 	      <list style="hanging">
