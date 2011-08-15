@@ -411,11 +411,6 @@
 		    <t hangText="Operation(s) affected:">
 		      <list style="hanging">
 			<t hangText="READ" />
-			<t hangText="OPEN" />
-			<t hangText="REMOVE" />
-			<t hangText="RENAME" />
-			<t hangText="LINK" />
-			<t hangText="CREATE" />
 		      </list>
 		    </t>
 		    <t hangText="Discussion:">
@@ -459,6 +454,11 @@
 		    <t hangText="Operation(s) affected:">
 		      <list style="hanging">
 			<t hangText="LOOKUP" />
+			<t hangText="OPEN" />
+			<t hangText="REMOVE" />
+			<t hangText="RENAME" />
+			<t hangText="LINK" />
+			<t hangText="CREATE" />
 		      </list>
 		    </t>
 		    <t hangText="Discussion:">
