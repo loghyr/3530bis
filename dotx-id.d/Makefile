@@ -4,7 +4,7 @@
 YEAR=`date +%Y`
 MONTH=`date +%B`
 DAY=`date +%d`
-PREVVERS=07
+PREVVERS=08
 VERS=08
 VPATH = ../../dotx.d
 
