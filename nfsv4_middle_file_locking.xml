@@ -365,11 +365,9 @@
       </t>
 
       <t>
-        The server may assign stateids independently for different clients.
-        A stateid with the same bit pattern for one client may designate an
-        entirely different set of locks for a different client.  The stateid
-        is always interpreted with respect to the client ID associated with
-        the current session.
+        Each stateid must be unique to the server.  Many operations take
+	a stateid as an argument but not a clientid, so the server must
+	be able to infer the client from the stateid.
       </t>
 
       <section anchor="stateid_types" title="Stateid Types">
