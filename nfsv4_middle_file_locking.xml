@@ -627,11 +627,6 @@
               filehandle, return NFS4ERR_BAD_STATEID.
             </t>
             <t>
-              If the client ID in the table entry does not match the
-              client ID associated with the current session,
-              return NFS4ERR_BAD_STATEID.
-            </t>
-            <t>
               If the stateid represents revoked state, then return
               NFS4ERR_EXPIRED, NFS4ERR_ADMIN_REVOKED, or
               NFS4ERR_DELEG_REVOKED, as appropriate.
