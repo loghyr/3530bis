@@ -486,37 +486,6 @@
               access, even if access would normally be
               denied to READ requests.
             </t>
-
-            <t>
-              When "other" is zero and "seqid" is one,
-              the stateid represents the current stateid,
-              which is whatever value is the last stateid
-              returned by an operation within the COMPOUND.
-              In the case of an OPEN, the stateid returned
-              for the open file, and not the delegation is
-              used.  The stateid passed to the operation in
-              place of the special value has its "seqid"
-              value set to zero, except when the current
-              stateid is used by the operation CLOSE or
-              OPEN_DOWNGRADE.  If there is no operation
-              in the COMPOUND which has returned a stateid
-              value, the server MUST return the error
-              NFS4ERR_BAD_STATEID. As illustrated  in <xref
-              target="csid_example4"/>, if the value of a
-              current stateid is a special stateid, and the
-              stateid of an operation's arguments has
-              "other" set to zero, and "seqid" set to one,
-              then the server MUST return the error
-              NFS4ERR_BAD_STATEID.
-            </t>
-
-            <t>
-              When "other" is zero and "seqid" is NFS4_UINT32_MAX,
-              the stateid represents a reserved stateid
-              value defined to be invalid.  When this
-              stateid is used, the server MUST return the error
-              NFS4ERR_BAD_STATEID.
-            </t>
           </list>
         </t>
 
@@ -529,13 +498,7 @@
         <t>
           Special stateids, unlike other stateids, are not associated with
           individual client IDs or filehandles and can be used with all valid
-          client IDs and filehandles.  In the case of a special
-          stateid designating the current stateid, the current stateid
-          value substituted for the special stateid is associated with a
-          particular client ID and filehandle, and so, if it is used where
-          current filehandle does not match that associated with the current
-          stateid, the operation to which the stateid is passed will return
-          NFS4ERR_BAD_STATEID.
+          client IDs and filehandles.
         </t>
       </section>
 
@@ -630,15 +593,9 @@
               NFS4ERR_BAD_STATEID is returned.
             </t>
             <t>
-              If the special stateid is one designating the current
-              stateid, and there is a current stateid, then the current
-              stateid is substituted for the special stateid and the
-              checks appropriate to non-special stateids in performed.
-            </t>
-            <t>
               If the combination is valid in general but is not
               appropriate to the context in which the stateid is used
-              (e.g. an all-zero stateid is used when an open stateid
+              (e.g., an all-zero stateid is used when an open stateid
               is required in a LOCK operation), the error
               NFS4ERR_BAD_STATEID is also returned.
             </t>
@@ -696,8 +653,8 @@
               current "other" field, return NFS4ERR_BAD_STATEID.
             </t>
             <t>
-              If the "seqid" field is not zero, and it is less
-              than the current sequence value corresponding the
+              If the "seqid" field is less than
+              the current sequence value corresponding the
               current "other" field, return NFS4ERR_OLD_STATEID.
             </t>
             <t>

@@ -56,9 +56,7 @@
           partitions.
 	      </t>
 	      <t>
-          The definition of stateid was strengthened, which had the
-          side effect of introducing a semantic change in a COMPOUND
-          structure having a current stateid and a saved stateid.
+                The definition of stateid was strengthened.
 	      </t>
       </list>
     </t>
