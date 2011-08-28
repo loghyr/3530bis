@@ -739,10 +739,7 @@
       <t>
         This state transfer will reduce disruption to the client
         when a file system transition occurs.  If the servers are successful in
-        transferring all state, the client can attempt to establish
-        sessions associated with the client ID used for the source
-        file system instance.  If the server accepts that as a valid
-        client ID, then the client may use the existing stateids
+        transferring all state, then the client may use the existing stateids
         associated with that client ID for the old file system instance
         in connection with that same client ID in connection with
         the transitioned file system instance.
