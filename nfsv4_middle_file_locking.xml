@@ -439,40 +439,7 @@
           NFS4_UINT32_MAX, and one (not zero) is the next seqid value.
           The purpose of the incrementing of the seqid is to allow the server
           to communicate to the client the order in which operations that
-          modified locking state associated with a stateid have been processed
-          and to make it possible for the client to send requests that are
-          conditional on the set of locks not having changed since the stateid
-          in question was returned.
-        </t>
-
-        <t>
-          When a client sends a
-          stateid to the server, it has two choices with regard to the seqid
-          sent.  It may set the seqid to zero to indicate to the server that it
-          wishes the most up-to-date seqid for that stateid's "other" field to
-          be used.  This would be the common choice in the case of a stateid
-          sent with a READ or WRITE operation.  It also may set a non-zero
-          value, in which case the server checks if that seqid is the correct
-          one.  In that case, the server is required to return
-          NFS4ERR_OLD_STATEID if the seqid is lower than the most current value
-          and NFS4ERR_BAD_STATEID if the seqid is greater than the most current
-          value.  This would be the common choice in the case of stateids sent
-          with a CLOSE or OPEN_DOWNGRADE.  Because OPENs may be sent in
-          parallel for the same owner, a client might close a file without
-          knowing that an OPEN upgrade had been done by the server, changing
-          the lock in question.  If CLOSE were sent with a zero seqid, the OPEN
-          upgrade would be canceled before the client even received an
-          indication that an upgrade had happened.
-        </t>
-
-        <t>
-          When a stateid is sent by the server to the client as part of a
-          callback operation, it is not subject to checking for a current seqid
-          and returning NFS4ERR_OLD_STATEID.  This is because the client is not
-          in a position to know the most up-to-date seqid and thus cannot
-          verify it.  Unless specially noted, the seqid value for a stateid
-          sent by the server to the client as part of a callback is required to
-          be zero with NFS4ERR_BAD_STATEID returned if it is not.
+          modified locking state associated with a stateid have been processed.
         </t>
 
         <t>
