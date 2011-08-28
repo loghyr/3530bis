@@ -417,8 +417,8 @@
           identifying the specific set of locks and a 32-bit "seqid" sequence
           value.  Except in the case of special stateids (see <xref target="ss:fl:special" />), a
           particular value of the "other" field denotes a set of locks of the
-          same type (for example, byte-range locks, opens, delegations, or
-          layouts), for a specific file or directory, and sharing the same
+          same type (for example, byte-range locks, opens, or delegations),
+          for a specific file or directory, and sharing the same
           ownership characteristics.  The seqid designates a specific instance
           of such a set of locks, and is incremented to indicate changes in
           such a set of locks, either by the addition or deletion of locks from
