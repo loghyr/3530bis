@@ -641,7 +641,7 @@
       situations in which the stateid is valid but designates 
       revoked locking state.  Depending on the operation, the 
       stateid when valid may designate opens, byte-range locks,
-      file delegations, layouts, or device maps.
+      or file delegations.
     </t>
     <section title="NFS4ERR_ADMIN_REVOKED (Error Code 10047)" 
              anchor="err_ADMIN_REVOKED">
