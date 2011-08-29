@@ -678,9 +678,8 @@
     <section title="NFS4ERR_OLD_STATEID (Error Code 10024)" 
              anchor="err_OLD_STATEID">
       <t>
-        A stateid with a non-zero seqid value does match 
-        the current seqid for the state designated by the
-        user.
+        A stateid is provided with a seqid value that is not the most
+	current.
       </t>
     </section>
     <section title="NFS4ERR_STALE_STATEID (Error Code 10023)" 
