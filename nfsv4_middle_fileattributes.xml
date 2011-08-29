@@ -1055,8 +1055,8 @@
         <vspace blankLines='1' />
         Note that there may be a number of distinct but
         overlapping sets of files or directories for which a
-        quota_used value is maintained, e.g. "all files with a
-        given owner", "all files with a given group owner". etc.
+        quota_used value is maintained, e.g., "all files with a
+        given owner", "all files with a given group owner", etc.
         The server is at liberty to choose any of those sets
         when providing the content of the quota_used attribute, but
         should do so in a repeatable way.  The rule may be
