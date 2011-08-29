@@ -1019,8 +1019,8 @@
         </t>
         <t>
           When any one of the sequence values matches a previous request,
-          for a state-owner, it is treated a retransmission and not
-          re-executed.  When the type of the operation doe not match that
+          for a state-owner, it is treated as a retransmission and not
+          re-executed.  When the type of the operation does not match that
           originally used, 
           NFS4ERR_BADSEQ is returned.  When the server can determine that
           the request differs from the original it may return NFS4ERR_BADSEQ.   
