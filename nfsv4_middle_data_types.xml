@@ -254,8 +254,7 @@
       <t>
         This structure is used for the various state sharing mechanisms
         between the client and server.  For the client, this data
-        structure is read-only.  The starting value of the seqid
-        field is undefined.  The server is required to increment the
+        structure is read-only.  The server is required to increment the
         seqid field monotonically at each transition of the stateid.
         This is important since the client will inspect the seqid in
         OPEN stateids to determine the order of OPEN processing done
