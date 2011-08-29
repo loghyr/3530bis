@@ -2465,10 +2465,6 @@
         See <xref target="current_filehandle"/> for more details on the
         current filehandle.
       </t>
-      <t>
-        See <xref target="current_stateid"/> for more details on the current
-        stateid. 
-      </t>
     </section>
     <section toc="exclude" anchor="OP_PUTROOTFH_IMPLEMENTATION" title="IMPLEMENTATION">
 
