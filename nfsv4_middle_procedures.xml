@@ -2303,7 +2303,7 @@
 
       <t>
         Replaces the current filehandle with the filehandle provided
-        as an argument. Clears the current stateid.
+        as an argument.
       </t>
 
       <t>
@@ -2460,9 +2460,6 @@
         on the server. This filehandle may be different from the
         "public" filehandle which may be associated with some other
         directory on the server.
-      </t>
-      <t>
-        PUTROOTFH also clears the current stateid.
       </t>
       <t>
         See <xref target="current_filehandle"/> for more details on the
