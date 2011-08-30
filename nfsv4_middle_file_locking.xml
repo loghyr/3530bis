@@ -1009,7 +1009,7 @@
         <t>
           When a sequence value associated with a state-owner is unavailable 
           for checking because the state-owner is unknown to the
-          server, it take no part in the comparison.
+          server, it takes no part in the comparison.
         </t>
         <t>
           When any of the state-owner sequence values are invalid, 
