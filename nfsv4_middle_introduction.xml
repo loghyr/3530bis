@@ -245,7 +245,7 @@
         use of RPCSEC_GSS, various mechanisms can be provided to
         offer authentication, integrity, and privacy to the NFS
         version 4 protocol.  Kerberos V5 will be used as described
-        in <xref target="RFC1964" /> to provide one security
+        in <xref target="RFC4121" /> to provide one security
         framework.
         With the use of RPCSEC_GSS,
         other mechanisms may also be specified and used for NFS

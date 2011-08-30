@@ -644,17 +644,23 @@ document are to be interpreted as described in RFC
       target="ftp://ftp.isi.edu/in-notes/rfc4506.txt"/>
   </reference>
 
-    <reference anchor='RFC1964'>
+    <reference anchor='RFC4121'>
       <front>
-	<title>The Kerberos Version 5 GSS-API Mechanism</title>
-	<author initials="J." surname="Linn" fullname="J. Linn">
-	  <organization>OpenVision Technologies</organization>
+	<title>The Kerberos Version 5 Generic Security Service
+	  Application Program Interface (GSS-API) Mechanism: Version 2</title>
+	<author initials="L." surname="Zhu" fullname="L. Zhu">
+	  <organization>Microsoft</organization>
 	</author>
-	<date year="1996" month="June"/>
+	<author initials="K." surname="Jaganathan" fullname="K. Jaganathan">
+	  <organization>Microsoft</organization>
+	</author>
+	<author initials="S." surname="Hartman" fullname="S. Hartman">
+	  <organization>MIT</organization>
+	</author>
+	<date year="2005" month="July"/>
       </front>
-      <seriesInfo name="RFC" value="1964"/>
-      <format type="TXT" octets="600988" 
-	      target="ftp://ftp.isi.edu/in-notes/rfc1964.txt"/>
+      <seriesInfo name="RFC" value="4121"/>
+      <format type="TXT" target="http://www.ietf.org/rfc/rfc4121.txt"/>
     </reference>
 
     <reference anchor='RFC3010'>

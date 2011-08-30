@@ -141,7 +141,7 @@
       <section anchor="krb5:sectrip" title="Kerberos V5 as a security triple">
 
         <t>
-          The Kerberos V5 GSS-API mechanism as described in <xref target="RFC1964" /> MUST be
+          The Kerberos V5 GSS-API mechanism as described in <xref target="RFC4121" /> MUST be
           implemented and provide the following security triples.
         </t>
 
@@ -181,14 +181,6 @@
           <xref target="RFC2623" />.
         </t>
 
-        <t>
-          Users and implementors are warned that 56 bit DES is no longer
-          considered state of the art in terms of resistance to brute force
-          attacks.  Once a revision to <xref target="RFC1964" /> is available that adds support
-          for AES, implementors are urged to incorporate AES into their NFSv4
-          over Kerberos V5 protocol stacks, and users are similarly urged to
-          migrate to the use of AES.
-        </t>
       </section>
     </section>
   </section>
