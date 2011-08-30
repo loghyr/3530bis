@@ -45,7 +45,8 @@
           the reality of required string processing.
         </t>
 	      <t>
-	        LIPKEY SPKM/3 has been moved from being REQUIRED to being removed.
+	        The previously required LIPKEY and SPKM-3 security mechanisms
+		have been removed.
 	      </t>
 	      <t>
 	        Some clarification on a client re-establishing callback
@@ -222,8 +223,8 @@
       This will be done to provide an appropriate context for both
       the reader who is familiar with the previous versions of the
       NFS protocol and the reader that is new to the NFS protocols.
-      For the reader new to the NFS protocols, there is still a
-      fundamental knowledge that is expected.  The reader should
+      For the reader new to the NFS protocols, some fundamental
+      knowledge is still expected.  The reader should
       be familiar with the XDR and RPC protocols as described in
       <xref target="RFC5531" /> and <xref target="RFC4506" />.
       A basic knowledge of filesystems and distributed filesystems

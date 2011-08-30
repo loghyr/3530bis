@@ -280,7 +280,7 @@
 
       <t>
         Regardless of what security mechanism under RPCSEC_GSS is
-        being used, the NFS server, MUST identify itself in GSS-API via a
+        being used, the NFS server MUST identify itself in GSS-API via a
         GSS_C_NT_HOSTBASED_SERVICE name type.  GSS_C_NT_HOSTBASED_SERVICE names
         are of the form:
 
