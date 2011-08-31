@@ -2539,7 +2539,7 @@
       <t>
         If the current filehandle is not a regular file, an error
         will be returned to the client.  In the case the current
-        filehandle represents a directory, NFS4ERR_ISDIR is return;
+        filehandle represents a directory, NFS4ERR_ISDIR is returned;
         otherwise, NFS4ERR_INVAL is returned.
       </t>
 
