@@ -92,6 +92,10 @@ const NFS4_FHSIZE		= 128;
 const NFS4_VERIFIER_SIZE	= 8;
 const NFS4_OPAQUE_LIMIT		= 1024;
 
+const NFS4_INT64_MAX		= 0x7fffffffffffffff;
+const NFS4_UINT64_MAX		= 0xffffffffffffffff;
+const NFS4_INT32_MAX		= 0x7fffffff;
+const NFS4_UINT32_MAX		= 0xffffffff;
 EOF
 
 	;;
