@@ -782,12 +782,6 @@
         period. (See <xref target="sec:mig_state" /> for further details.)
       </t>
       <t>
-        Information about client identity may be propagated between
-        servers in the form of client_owner4 and associated verifiers,
-        under the assumption that the client presents the same values to
-        all the servers with which it deals.
-      </t>
-      <t>
         Servers are encouraged to provide facilities to allow locks
         to be reclaimed on the new server after a file system
         transition.  Often such facilities may not be available
