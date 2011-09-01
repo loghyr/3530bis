@@ -427,8 +427,8 @@
         </t>
 
         <t>
-          When such a set of locks is first created, the server returns a
-          stateid with seqid value of one.  On subsequent operations that
+          When such a set of locks is first created, the server SHOULD return
+	  a stateid with seqid value of one.  On subsequent operations that
           modify the set of locks, the server is required to increment the
           "seqid" field by one whenever it returns a stateid for the same
           state-owner/file/type combination and there is some change in the set
@@ -436,7 +436,7 @@
           stateid with an "other" field the same as previously used for that
           state-owner/file/type combination, with an incremented "seqid" field.
           This pattern continues until the seqid is incremented past
-          NFS4_UINT32_MAX, and one (not zero) is the next seqid value.
+          NFS4_UINT32_MAX, and one (not zero) SHOULD be the next seqid value.
           The purpose of the incrementing of the seqid is to allow the server
           to communicate to the client the order in which operations that
           modified locking state associated with a stateid have been processed.
