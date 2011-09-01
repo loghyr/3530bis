@@ -628,8 +628,7 @@
             </t>
             <t>
               If the stateid represents revoked state, then return
-              NFS4ERR_EXPIRED, NFS4ERR_ADMIN_REVOKED, or
-              NFS4ERR_DELEG_REVOKED, as appropriate.
+              NFS4ERR_EXPIRED or NFS4ERR_ADMIN_REVOKED, as appropriate.
             </t>
             <t>
               If the stateid type is not valid for the context in which the
