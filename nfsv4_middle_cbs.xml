@@ -270,7 +270,7 @@
       <section toc="exclude" anchor="OP_CB_ILLEGAL_DESCRIPTION" title="DESCRIPTION">
 
         <t>
-          This operation is a placeholder for encoding a result to
+          This operation is a place-holder for encoding a result to
           handle the case of the client sending an operation code within
           COMPOUND that is not supported. See <xref target="OP_COMPOUND_DESCRIPTION" /> for more details.
         </t>

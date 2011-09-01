@@ -49,7 +49,7 @@
     file name processing will occur within the implementation 
     of the file system rather than within the limits of 
     the NFSv4 server implementation per se.  As a
-    result, cetain aspects of name processing may change as
+    result, certain aspects of name processing may change as
     the locus of processing moves from file system to file
     system.  As a result of these factors, the protocol cannot 
     enforce uniformity of name-related processing upon NFSv4

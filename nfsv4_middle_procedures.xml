@@ -1464,12 +1464,12 @@
 
       <t>
         NFSv4 servers depart from the semantics of previous
-        NFS versions in allowing LOOKUP requests to cross mountpoints
-        on the server.  The client can detect a mountpoint crossing
+        NFS versions in allowing LOOKUP requests to cross mount points
+        on the server.  The client can detect a mount point crossing
         by comparing the fsid attribute of the directory with the
         fsid attribute of the directory looked up.  If the fsids are
-        different then the new directory is a server mountpoint.
-        UNIX clients that detect a mountpoint crossing will need
+        different then the new directory is a server mount point.
+        UNIX clients that detect a mount point crossing will need
         to mount the server's filesystem.  This needs to be done to
         maintain the file object identity checking mechanisms common
         to UNIX clients.
@@ -1549,7 +1549,7 @@
     <section toc="exclude" anchor="OP_LOOKUPP_IMPLEMENTATION" title="IMPLEMENTATION">
 
       <t>
-        As for LOOKUP, LOOKUPP will also cross mountpoints.
+        As for LOOKUP, LOOKUPP will also cross mount points.
       </t>
 
       <t>
@@ -4401,7 +4401,7 @@ M        named by filename from the directory corresponding to the
     <section toc="exclude" anchor="OP_ILLEGAL_DESCRIPTION" title="DESCRIPTION">
 
       <t>
-        This operation is a placeholder for encoding a result to
+        This operation is a place holder for encoding a result to
         handle the case of the client sending an operation code within
         COMPOUND that is not supported. See
         <xref target="OP_COMPOUND_DESCRIPTION" /> for more details.

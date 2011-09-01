@@ -38,7 +38,7 @@
   </t>
   <t>
     Bruce Fields was a good sounding board for both
-    the Third Edge Condition and Courtsey Locks in general.
+    the Third Edge Condition and Courtesy Locks in general.
     He was also the leading advocate of stamping out
     backport issues from <xref target="RFC5661" />.
   </t>
@@ -58,7 +58,7 @@
 
   <t>
     [RFC Editor: prior to publishing this document as an RFC,
-    please replace all occurences of RFCNFSv4XDR
+    please replace all occurrences of RFCNFSv4XDR
     with RFCxxxx where xxxx is the RFC number assigned to the
     XDR document.]
   </t>

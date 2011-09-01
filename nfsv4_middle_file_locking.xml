@@ -995,7 +995,7 @@
     <section title="Interactions of multiple sequence values">
       <t>
         Some Operations may have multiple sources of data for request
-        sequence checking and retrannsmision determination.  Some Operations
+        sequence checking and retransmission determination.  Some Operations
         have multiple sequence values associated with multiple types of
         state-owners.  In addition, such Operations may also have a stateid
         with its own seqid value, that will be checked for validity.    
@@ -1014,7 +1014,7 @@
         <t>
           When any of the state-owner sequence values are invalid, 
           NFS4ERR_BADSEQ is returned.  When a stateid sequence is checked,
-          NFSS4ERR_BAD_STATEID, or NFS4ERR_OLDSTATEID is returned as 
+          NFS4ERR_BAD_STATEID, or NFS4ERR_OLDSTATEID is returned as 
           appropriate, but NFS4ERR_BADSEQ has priority.
         </t>
         <t>
@@ -1032,7 +1032,7 @@
         <t>
           When there are no available sequence values available for comparison
           and the operation is an OPEN, the server indicates
-          to the client that an OPEN_CONFRIM is required, unless it can 
+          to the client that an OPEN_CONFIRM is required, unless it can 
           conclusively determine that confirmation is not required (e.g.,
           by knowing that no open-owner state has ever been released for the 
           current clientid). 
