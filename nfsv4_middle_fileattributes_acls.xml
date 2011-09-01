@@ -1134,11 +1134,8 @@
         <section title="Setting mode and not ACL" anchor="setmode">
           <t>
             When any of the nine low-order mode bits
-            are subject to change, either because the mode
-            attribute was set or because the mode_set_masked
-            attribute was set and the mask included one or more
-            bits from the nine low-order mode bits,
-            and no ACL attribute is explicitly
+            are changed because the mode
+            attribute was set, and no ACL attribute is explicitly
             set, the acl attribute must be modified
             in accordance with the updated value of those bits.
             This must happen even if the value of the low-order bits
@@ -1202,7 +1199,7 @@
                  anchor="settingacl">
           <t>
             When setting the acl and not setting the
-            mode or mode_set_masked attributes, the permission
+            mode attribute, the permission
             bits of the mode need to be derived from the ACL.
             In this case, the ACL attribute SHOULD be set as
             given. The nine low-order bits of the mode
@@ -1215,11 +1212,10 @@
         </section>
         <section title="Setting both ACL and mode" anchor="setboth">
           <t>
-            When setting both the mode (includes use of either the
-            mode attribute or the mode_set_masked attribute) 
+            When setting both the mode 
             and the acl attribute in the
             same operation, the attributes MUST be applied in this
-            order: mode (or mode_set_masked), then ACL.  The 
+            order: mode, then ACL.  The 
             mode-related attribute is set as given,
             then the ACL attribute is set as given, possibly changing
             the final mode, as described above in
