@@ -658,7 +658,9 @@
       There are two types of open delegations, OPEN_DELEGATE_READ and
       OPEN_DELEGATE_WRITE.  A OPEN_DELEGATE_READ delegation allows a
       client to handle, on its own, requests to
-      open a file for reading that do not deny read access to others.
+      open a file for reading that do not deny read access to others. It MUST,
+      however, continue to send all requests to open a file for writing to the
+      server.
       Multiple OPEN_DELEGATE_READ delegations may be outstanding simultaneously
       and do not conflict.  A OPEN_DELEGATE_WRITE delegation allows the client to
       handle, on its own, all opens.  Only one OPEN_DELEGATE_WRITE delegation may
@@ -667,9 +669,11 @@
     </t>
 
     <t>
-      When a client has a OPEN_DELEGATE_READ delegation, it may not make any changes
-      to the contents or attributes of the file but it is assured that no
-      other client may do so.  When a client has a OPEN_DELEGATE_WRITE delegation,
+      When a single client holds a OPEN_DELEGATE_READ delegation, it is assured that
+      no other client may modify the contents or attributes of the file. If more than
+      one client holds an OPEN_DELEGATE_READ delegation, then the contents and
+      attributes of that file are not allowed to change.
+      When a client has an OPEN_DELEGATE_WRITE delegation,
       it may modify the file data since no other client will be accessing
       the file's data.  The client holding a OPEN_DELEGATE_WRITE delegation may only
       affect file attributes which are intimately connected with the file
@@ -780,9 +784,11 @@
         OPEN delegation allows much of the message overhead associated with
         the opening and closing files to be eliminated.  An open when an open
         delegation is in effect does not require that a validation message be
-        sent to the server.  The continued endurance of the "OPEN_DELEGATE_READ
+        sent to the server unless there exists a potential for conflict with the
+        requested share mode. The continued endurance of the "OPEN_DELEGATE_READ
         delegation" provides a guarantee that no OPEN for write and thus no
-        write has occurred.  Similarly, when closing a file opened for write
+        write has occurred that did not originate from this client.
+        Similarly, when closing a file opened for write
         and if OPEN_DELEGATE_WRITE delegation is in effect, the data written does
         not have to be flushed to the server until the open delegation is
         recalled.  The continued endurance of the open delegation provides
