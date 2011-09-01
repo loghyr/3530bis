@@ -165,7 +165,7 @@
         </t>
         <t>
           If OPENATTR is done on a named attribute directory or on
-          a named attribute, the server MUST return NFS4ERR_WRONG_TYPE.
+          a named attribute, the server MUST return an error.
         </t>
         <t>
           Doing a RENAME of a named attribute to a different named 
