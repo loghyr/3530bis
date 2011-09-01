@@ -488,7 +488,7 @@
           <c>USHOULD</c>
           <c>NIP</c>
           <c>
-            Tag expected to be UTF-8but no validation by server or
+            Tag expected to be UTF-8 but no validation by server or
             client is to be done.
           </c>
         <c>component4</c>
