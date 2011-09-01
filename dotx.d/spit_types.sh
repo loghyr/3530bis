@@ -41,7 +41,7 @@ typedef :utf8val_RECOMMENDED4:component4:Represents path name components.
 typedef :utf8val_RECOMMENDED4:linktext4:Symbolic link contents.
 typedef :component4:pathname4<>:Represents path name for fs_locations.
 typedef :uint64_t:nfs_lockid4
-typedef :opaque  :verifier4[NFS4_VERIFIER_SIZE]:Verifier used for various operations (COMMIT, CREATE, EXCHANGE_ID, OPEN, READDIR, WRITE) NFS4_VERIFIER_SIZE is defined as 8.
+typedef :opaque  :verifier4[NFS4_VERIFIER_SIZE]:Verifier used for various operations (COMMIT, CREATE, OPEN, READDIR, WRITE) NFS4_VERIFIER_SIZE is defined as 8.
 EOF
 
 	fi
