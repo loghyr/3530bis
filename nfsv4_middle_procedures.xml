@@ -1996,8 +1996,18 @@
       </t>
 
       <t>
-        If the component provided to OPEN is a symbolic link,
-        the error NFS4ERR_SYMLINK will be returned to the client.
+        If the component provided to OPEN resolves to something
+        other than a regular file, an error will be returned to the
+        client.  If it is a directory, NFS4ERR_ISDIR is returned;
+        otherwise, NFS4ERR_SYMLINK is returned.  Note that
+        NFS4ERR_SYMLINK is returned for both symlinks and for special
+        files of other types; NFS4ERR_INVAL would be inappropriate,
+        since the arguments provided by the client were correct, and
+        the client cannot necessarily know at the time it sent the OPEN
+        that the component would resolve to a non-regular file.
+      </t>
+
+      <t>
         If the current filehandle is not a directory, the error
         NFS4ERR_NOTDIR will be returned.
       </t>
