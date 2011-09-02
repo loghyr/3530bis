@@ -1000,7 +1000,7 @@
         with its own seqid value, that will be checked for validity.    
       </t>
       <t>
-        As noted above, there may be multiple sequence values to check 
+        As noted above, there may be multiple sequence values to check.
         The following rules should be followed by the server
         in processing these multiple sequence values 
         within a single operation. 
