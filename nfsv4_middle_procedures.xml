@@ -1209,9 +1209,9 @@
         In all of the cases, there is a lock_seqid specified, whether the 
         lock-owner is specified explicitly or implicitly.  This seqid value 
         is used 
-        for checking lockowner sequencing/replay issues.  When the given 
-        lockowner is not known to the server, this establishes an initial 
-        sequence value for the new lockowner.
+        for checking lock-owner sequencing/replay issues.  When the given 
+        lock-owner is not known to the server, this establishes an initial 
+        sequence value for the new lock-owner.
         <list style='symbols'>
           <t> 
             In the case in which the state has been created and the boolean is
@@ -2256,7 +2256,7 @@
       <t>
         This operation is used to adjust the share_access and
         share_deny bits for a given open.  This is necessary when
-        a given openowner opens the same file multiple times with
+        a given open-owner opens the same file multiple times with
         different share_access and share_deny flags.  In this
         situation, a close of one of the opens may change the
         appropriate share_access and share_deny flags to remove bits
@@ -2269,7 +2269,7 @@
         The share_access and share_deny bits specified must be exactly
         equal to the union of the share_access and share_deny bits
         specified for some subset of the OPENs in effect for current
-        openowner on the current file.  If that constraint is not
+        open-owner on the current file.  If that constraint is not
         respected, the error NFS4ERR_INVAL should be returned.
         Since share_access and share_deny bits are subsets of those
         already granted, it is not possible for this request to be

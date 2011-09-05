@@ -836,11 +836,11 @@
         subtle.  In fact, advisory and mandatory byte-range locks are exactly
         the same in so far as the APIs and requirements on implementation.
         If the mandatory lock attribute is set on the file, the server
-        checks to see if the lockowner has an appropriate shared (read)
+        checks to see if the lock-owner has an appropriate shared (read)
         or exclusive (write) byte-range lock on the region it wishes to read
         or write to.  If there is no appropriate lock, the server checks
         if there is a conflicting lock (which can be done by attempting
-        to acquire the conflicting lock on the behalf of the lockowner,
+        to acquire the conflicting lock on the behalf of the lock-owner,
         and if successful, release the lock after the READ or WRITE is
         done), and if there is, the server returns NFS4ERR_LOCKED.
       </t>
@@ -1148,10 +1148,10 @@
         Requiring open confirmation on reclaim-type opens is avoidable
         because of the nature of the environments in which such opens are
         done.  For CLAIM_PREVIOUS opens, this is immediately after server
-        reboot, so there should be no time for lockowners to be created,
+        reboot, so there should be no time for open-owners to be created,
         found to be unused, and recycled.  For CLAIM_DELEGATE_PREV opens,
         we are dealing with a client reboot situation.  A server which
-        supports delegation can be sure that no lockowners for that client
+        supports delegation can be sure that no open-owners for that client
         have been recycled since client initialization and thus can ensure
         that confirmation will not be required.
       </t>
@@ -1345,14 +1345,14 @@
       </t>
 
       <t>
-        To minimize client delay upon restart, lock requests are associated
+        To minimize client delay upon restart, open and lock requests are associated
         with an instance of the client by a client supplied verifier.
         This verifier is part of the initial SETCLIENTID call made by
         the client.  The server returns a client ID as a result of the
         SETCLIENTID operation.  The client then confirms the use of the
         client ID with SETCLIENTID_CONFIRM.  The client ID in combination
         with an opaque owner field is then used by the client to identify
-        the lock owner for OPEN.  This chain of associations is then used
+        the open owner for OPEN.  This chain of associations is then used
         to identify all locks for a particular client.
       </t>
 
@@ -1693,9 +1693,9 @@
             conditions occur.  The server that is completely tolerant of all
             edge conditions will record in stable storage every lock that
             is acquired, removing the lock record from stable storage only
-            when the lock is unlocked by the client and the lock's lockowner
+            when the lock is unlocked by the client and the lock's owner
             advances the sequence number such that the lock release is not
-            the last stateful event for the lockowner's sequence.  For the two
+            the last stateful event for the owner's sequence.  For the two
             aforementioned edge conditions, the harshest a server can be, and
             still support a grace period for reclaims, requires that the server
             record in stable storage information some minimal information.
@@ -2158,12 +2158,12 @@
 
         <list style='symbols'>
           <t>
-            Another validly sequenced request for the same lockowner,
+            Another validly sequenced request for the same open-owner,
             that is not a retransmission.
           </t>
 
           <t>
-            The time that a lockowner is freed by the server due to period
+            The time that an open-owner is freed by the server due to period
             with no activity.
           </t>
 
@@ -2189,7 +2189,7 @@
   <section title="Open Upgrade and Downgrade">
 
     <t>
-      When an OPEN is done for a file and the lockowner for which
+      When an OPEN is done for a file and the open-owner for which
       the open is being done already has the file open, the result
       is to upgrade the open file status maintained on the server to
       include the access and deny bits specified by the new OPEN as
