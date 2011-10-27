@@ -138,68 +138,12 @@
       <t>
         The clientaddr4 structure is used as part of the SETCLIENTID
         operation to either specify the address of the client that is
-        using a client ID or as part of the callback registration.  The
-        r_netid and r_addr fields are specified in <xref target="RFC1833" />, but they
-        are underspecified in <xref target="RFC1833" /> as far as what they should look
-        like for specific protocols.
-      </t>
-
-      <t>
-        For TCP over IPv4 and for UDP over IPv4, the format of r_addr
-        is the US-ASCII string:
-      </t>
-
-      <t>
-        <figure>
-          <artwork>
-  h1.h2.h3.h4.p1.p2
-          </artwork>
-        </figure>
-      </t>
-
-      <t>
-        The prefix, "h1.h2.h3.h4", is the standard textual form for
-        representing an IPv4 address, which is always four octets
-        long.  Assuming big-endian ordering, h1, h2, h3, and h4, are
-        respectively, the first through fourth octets each converted
-        to ASCII-decimal.  Assuming big-endian ordering, p1 and p2 are,
-        respectively, the first and second octets each converted to
-        ASCII-decimal.  For example, if a host, in big-endian order,
-        has an address of 0x0A010307 and there is a service listening
-        on, in big endian order, port 0x020F (decimal 527), then the
-        complete universal address is "10.1.3.7.2.15".
-      </t>
-
-      <t>
-        For TCP over IPv4 the value of r_netid is the string "tcp".
-        For UDP over IPv4 the value of r_netid is the string "udp".
-      </t>
-
-      <t>
-        For TCP over IPv6 and for UDP over IPv6, the format of r_addr
-        is the US-ASCII string:
-      </t>
-
-      <t>
-        <figure>
-          <artwork>
-  x1:x2:x3:x4:x5:x6:x7:x8.p1.p2
-          </artwork>
-        </figure>
-      </t>
-
-      <t>
-        The suffix "p1.p2" is the service port, and is computed the
-        same way as with universal addresses for TCP and UDP over IPv4.
-        The prefix, "x1:x2:x3:x4:x5:x6:x7:x8", is the standard textual
-        form for representing an IPv6 address as defined in Section
-        2.2 of <xref target="RFC2373" />.  Additionally, the two alternative forms
-        specified in Section 2.2 of <xref target="RFC2373" /> are also acceptable.
-      </t>
-
-      <t>
-        For TCP over IPv6 the value of r_netid is the string "tcp6".
-        For UDP over IPv6 the value of r_netid is the string "udp6".
+        using a client ID or as part of the callback registration.
+        The r_netid and r_addr fields respectively contain a
+        netid and uaddr.  The netid and uaddr concepts are defined in <xref target="RFC5665" />.
+        The netid and uaddr formats for TCP over IPv4 and TCP over IPv6 are
+        defined in <xref target="RFC5665" />, specifically Tables 2 and 3 and Sections 5.2.3.3 and
+        5.2.3.4.
       </t>
     </section>
 
