@@ -886,6 +886,29 @@ document are to be interpreted as described in RFC
 <format type='TXT' octets='172710' target='ftp://ftp.isi.edu/in-notes/rfc793.txt' />
 </reference>
 
+<reference anchor='RFC3940'>
+<front>
+<title>Negative-acknowledgment (NACK)-Oriented Reliable Multicast (NORM) Protocol</title>
+<author initials="B." surname="Adamson" />
+<author initials="C." surname="Bormann" />
+<author initials="M." surname="Handley" />
+<author initials="J." surname="Macker" />
+<date year='2004' month='November' /></front>
+<seriesInfo name='RFC' value='3940' />
+<format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc3940.txt' />
+</reference>
+
+<reference anchor='RFC4340'>
+<front>
+<title>Datagram Congestion Control Protocol (DCCP)</title>
+<author initials="E." surname="Kohler" />
+<author initials="M." surname="Handley" />
+<author initials="S." surname="Floyd" />
+<date year='2006' month='March' /></front>
+<seriesInfo name='RFC' value='4340' />
+<format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc4330.txt' />
+</reference>
+
 <reference anchor='ISEG_errata'>
 <front>
 <title>IESG Processing of RFC Errata for the IETF Stream</title>

@@ -43,6 +43,13 @@
     </t>
 
     <t>
+      To date, all NFSv4 implementations are TCP based, i.e., there are
+      none for SCTP nor UDP. UDP by itself is not sufficient as a
+      transport for NFSv4, neither is UDP in combination with some other
+      mechanism (e.g., DCCP <xref target="RFC4340" />, NORM <xref target="RFC3940" />).
+    </t>
+
+    <t>
       As noted in <xref target="sec:security" />,
       the authentication model for NFSv4 has moved from
       machine-based to principal-based.  However, this modification
