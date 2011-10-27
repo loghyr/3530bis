@@ -3407,6 +3407,21 @@ M        named by filename from the directory corresponding to the
       </t>
 
       <t>
+        Note that a server MAY use the AUTH_NONE flavor to signify that
+        the client is allowed to attempt to use authentication flavors
+        that are not explicitly listed in the SECINFO results.
+        Instead of using a listed flavor, the client might then, for instance
+        opt to use an otherwise unlisted RPCSEC_GSS mechanism instead of
+        AUTH_NONE. It may wish to do so in order to meet an application
+        requirement for data integrity or privacy.
+        In choosing to use an unlisted flavor, the client SHOULD always
+        be prepared to handle a failure by falling back to using AUTH_NONE
+        or another listed flavor. It MUST NOT assume that identity mapping
+        is supported, and should be prepared for the fact that its identity
+        is squashed.
+      </t>
+
+      <t>
         See <xref target="sec:security" /> for a discussion
         on the recommendations for security flavor used by SECINFO.
       </t>
