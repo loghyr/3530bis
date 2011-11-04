@@ -1012,21 +1012,22 @@
         </t>
         <t>
           When any of the state-owner sequence values are invalid, 
-          NFS4ERR_BADSEQ is returned.  When a stateid sequence is checked,
-          NFS4ERR_BAD_STATEID, or NFS4ERR_OLDSTATEID is returned as 
-          appropriate, but NFS4ERR_BADSEQ has priority.
+          NFS4ERR_BAD_SEQID is returned.  When a stateid sequence is checked,
+          NFS4ERR_BAD_STATEID, or NFS4ERR_OLD_STATEID is returned as
+          appropriate, but NFS4ERR_BAD_SEQID has priority.
         </t>
         <t>
           When any one of the sequence values matches a previous request,
           for a state-owner, it is treated as a retransmission and not
           re-executed.  When the type of the operation does not match that
           originally used, 
-          NFS4ERR_BADSEQ is returned.  When the server can determine that
-          the request differs from the original it may return NFS4ERR_BADSEQ.   
+          NFS4ERR_BAD_SEQID is returned.  When the server can determine that
+          the request differs from the original it may return
+	  NFS4ERR_BAD_SEQID.
         </t>
         <t>
           When multiple of the sequence values match previous operations,
-          but the operations are not the same, NFS4ERR_BADSEQ is returned.
+          but the operations are not the same, NFS4ERR_BAD_SEQID is returned.
         </t>
         <t>
           When there are no available sequence values available for comparison

@@ -1222,7 +1222,7 @@
           <t> 
             In the case in which the state has been created and the boolean is
             true, the server rejects the request with the error 
-            NFS4ERR_BADSEQ.  The only exception is where there is a 
+            NFS4ERR_BAD_SEQID.  The only exception is where there is a
             retransmission of a previous request in which the boolean was true.
             In this case, the lock_seqid will match the original request and 
             the response will reflect the final case, below. 
