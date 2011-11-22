@@ -1650,7 +1650,7 @@
       <?rfc include='autogen/open_res.xml'?>
 
     </section>
-    <section toc="exclude" anchor="OP_OPEN_WARNING" title="WARNING TO CLIENT IMPLEMENTORS">
+    <section toc="exclude" anchor="OP_OPEN_WARNING" title="Warning to Client Implementors">
 
       <t>
         OPEN resembles LOOKUP in that it generates a filehandle for the
@@ -1658,7 +1658,7 @@
         on the filehandle.  In normal circumstances, the client can
         only release this state with a CLOSE operation.  CLOSE uses
         the current filehandle to determine which file to close.
-        Therefore the client MUST follow every OPEN operation with
+        Therefore, the client MUST follow every OPEN operation with
         a GETFH operation in the same COMPOUND procedure.  This will
         supply the client with the filehandle such that CLOSE can be
         used appropriately.
@@ -2027,27 +2027,6 @@
       </t>
 
     </section>
-    <section toc="exclude" title="Warning to Client Implementors">
-      <t>
-        OPEN resembles LOOKUP in that it generates a filehandle for the
-        client to use.  Unlike LOOKUP though, OPEN creates server state on
-        the filehandle.  In normal circumstances, the client can only release
-        this state with a CLOSE operation.  CLOSE uses the current filehandle
-        to determine which file to close.  Therefore, the client MUST follow
-        every OPEN operation with a GETFH operation in the same COMPOUND
-        procedure.  This will supply the client with the filehandle such that
-        CLOSE can be used appropriately.
-      </t>
-
-      <t>
-        Simply waiting for the lease on the file to expire is insufficient
-        because the server may maintain the state indefinitely as long as
-        another client does not attempt to make a conflicting access to the
-        same file.
-      </t>
-
-    </section>
-
   </section>
   <section anchor="OP_OPENATTR" title="Operation 19: OPENATTR - Open Named Attribute Directory">
 
