@@ -885,29 +885,34 @@
     <section title="NFS4ERR_NO_GRACE (Error Code 10033)" 
              anchor="err_NO_GRACE">
       <t>
-        A reclaim of client state was attempted in circumstances in 
-        which the server cannot guarantee that conflicting state has 
-        not been provided to another client.  As a result, the server cannot
-        guarantee that conflicting state has not been provided to
-        another client.
+        The server cannot guarantee that it has not granted state to
+        another client which may conflict with this client's state.
+        No further reclaims from this client will succeed.
       </t>
     </section>
     <section title="NFS4ERR_RECLAIM_BAD (Error Code 10034)" 
              anchor="err_RECLAIM_BAD">
       <t>
-        A reclaim attempted by the client does not match the
-        server's state consistency checks and has been rejected 
-        therefore as invalid.
+        The server cannot guarantee that it has not granted state to
+        another client which may conflict with the requested state.
+        However, this applies only to the state requested in this call;
+        further reclaims may succeed.
+      </t>
+      <t>
+        Unlike NFS4ERR_RECLAIM_CONFLICT, this can occur between
+        correctly functioning clients and servers: the "edge condition"
+        scenarios described in <xref target="ss:fl:cl" /> leave only the
+        server knowing whether the client's locks are still valid, and
+        NFS4ERR_RECLAIM_BAD is the server's way of informing the client
+        that they are not.
       </t>
     </section>
     <section title="NFS4ERR_RECLAIM_CONFLICT (Error Code 10035)" 
              anchor="err_RECLAIM_CONFLICT">
       <t>
-        The reclaim attempted by the client has encountered a conflict
-        and cannot be satisfied.  Potentially indicates a misbehaving
-        client, although not necessarily the one receiving the error.
-        The misbehavior might be on the part of the client that 
-        established the lock with which this client conflicted. 
+        The reclaim attempted by the client conflicts with a lock
+        already held by another client.  Unlike NFS4ERR_RECLAIM_BAD,
+        this can only occur if one of the clients misbehaved.
       </t>
     </section>
   </section>

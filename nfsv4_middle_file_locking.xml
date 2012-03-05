@@ -1735,7 +1735,8 @@
             after the server reboots, the record that client A's lease expired
             means that another client could have acquired a conflicting record
             lock, share reservation, or delegation.  Hence the server must
-            reject a reclaim from client A with the error NFS4ERR_NO_GRACE.
+            reject a reclaim from client A with the error NFS4ERR_NO_GRACE or
+            NFS4ERR_RECLAIM_BAD.
           </t>
 
           <t>
@@ -1743,7 +1744,8 @@
             second time, the record that the client had an unexpired record
             lock, share reservation, or delegation established before the
             server's previous incarnation means that the server must reject
-            a reclaim from client A with the error NFS4ERR_NO_GRACE.
+            a reclaim from client A with the error NFS4ERR_NO_GRACE or
+            NFS4ERR_RECLAIM_BAD.
           </t>
 
           <t>
@@ -1879,17 +1881,18 @@
           </t>
         </section>
 
-        <section title="Client's Handling of NFS4ERR_NO_GRACE">
+        <section title="Client's Handling of reclaim errors">
 
           <t>
-            A mandate for the client's handling of the NFS4ERR_NO_GRACE error
-            is outside the scope of this specification, since the strategies
-            for such handling are very dependent on the client's operating
-            environment.  However, one potential approach is described below.
+            A mandate for the client's handling of the NFS4ERR_NO_GRACE
+            and NFS4ERR_RECLAIM_BAD errors is outside the scope of this
+            specification, since the strategies for such handling are
+            very dependent on the client's operating environment.
+            However, one potential approach is described below.
           </t>
 
           <t>
-            When the client receives NFS4ERR_NO_GRACE, it could examine
+            When the client's reclaim fails, it could examine
             the change attribute of the objects the client is trying
             to reclaim state for, and use that to determine whether
             to re-establish the state via normal OPEN or LOCK requests.
@@ -1933,10 +1936,15 @@
                 The client MAY NOT want to do a SETCLIENTID and instead
                 SHOULD probe via a RENEW call.
               </t>
-              <t hangText="NFS4ERR_NO_GRACE:"> <vspace blankLines='1' />
+              <t hangText="NFS4ERR_RECLAIM_BAD:"> <vspace blankLines='1' />
                 The current lock has been revoked during the partition and
                 the server rebooted. The server might have no information
                 on the other locks. They may still be renewable.
+              </t>
+              <t hangText="NFS4ERR_NO_GRACE:"> <vspace blankLines='1' />
+                The client's locks have been revoked during the partition and
+                the server rebooted. None of the client's locks will be
+                renewable.
               </t>
               <t hangText="NFS4ERR_OLD_STATEID:"> <vspace blankLines='1' />
                 The server has not rebooted. The client SHOULD handle
