@@ -1251,7 +1251,7 @@
       owner, owner_group, or acl attributes.  When a server does
       accept an owner or owner_group value as valid on a SETATTR
       (and similarly for the owner and group strings in an acl), it
-      is promising to return that same string for which see below)
+      is promising to return that same string (for which see below)
       when a corresponding GETATTR is done.  For some
       internationalization-related exceptions where this is not
       possible, see below.  Configuration changes (including
