@@ -3788,7 +3788,7 @@ M        named by filename from the directory corresponding to the
 
       <figure>
         <artwork>
-  clientid, verifier -> -
+  clientid, setclientid_confirm -> -
         </artwork>
       </figure>
 
