@@ -222,60 +222,145 @@
       </t>
 
       <t>
-        In the event the client reboots or restarts, the failure to renew
-        leases will result in the revocation of byte-range locks and share
-        reservations.  Delegations, however, may be treated a bit
-        differently.
+        In the event the client reboots or restarts, the confirmation of
+        a SETCLIENTID done with an nfs_client_id4 with a new verifier4 value
+        will result in the release of byte-range locks and share reservations.
+        Delegations, however, may be treated a bit differently.
       </t>
 
       <t>
         There will be situations in which delegations will need to be
         reestablished after a client reboots or restarts.  The reason for
         this is the client may have file data stored locally and this data
-        was associated with the previously held delegations.  The client
-        will need to reestablish the appropriate file state on the server.
+        was associated with the previously held delegations.  The client will
+        need to reestablish the appropriate file state on the server.
       </t>
 
       <t>
-        To allow for this type of client recovery, the server MAY extend the
-        period for delegation recovery beyond the typical lease expiration
-        period.  This implies that requests from other clients that
-        conflict with these delegations will need to wait.  Because the
-        normal recall process may require significant time for the client to
-        flush changed state to the server, other clients need be prepared for
-        delays that occur because of a conflicting delegation.  This longer
-        interval would increase the window for clients to reboot and consult
-        stable storage so that the delegations can be reclaimed.  For open
-        delegations, such delegations are reclaimed using OPEN with a claim
-        type of CLAIM_DELEGATE_PREV.  (See <xref target="ss:cc:cache_revoke" />
-        and <xref target="OP_OPEN" /> for discussion of open
-        delegation and the details of OPEN respectively).
+        To allow for this type of client recovery, the server MAY allow
+        delegations to be retained after other sort of locks are released.
+        This implies that requests from other clients that conflict with these
+        delegations will need to wait.  Because the normal recall process may
+        require significant time for the client to flush changed state to the
+        server, other clients need to be prepared for delays that occur because
+        of a conflicting delegation.  In order to give clients a chance to get
+        through the reboot process during which leases will not be renewed,
+        the server MAY extend the period for delegation recovery beyond the
+        typical lease expiration period.  For open delegations, such delegations
+        that are not released are reclaimed using OPEN with a claim type of
+        CLAIM_DELEGATE_PREV.  (See <xref target="ss:cc:cache_revoke" />
+        and <xref target="OP_OPEN" /> for discussion
+        of open delegation and the details of OPEN respectively).
       </t>
 
       <t>
         A server MAY support a claim type of CLAIM_DELEGATE_PREV, but if it
-        does, it MUST NOT remove delegations upon SETCLIENTID_CONFIRM, and
-        instead MUST, for a period of time no less than that of the value
-        of the lease_time attribute, maintain the client's delegations to
-        allow time for the client to issue CLAIM_DELEGATE_PREV requests.
-        The server that supports CLAIM_DELEGATE_PREV MUST support the
-        DELEGPURGE operation.
+        does, it MUST NOT remove delegations upon SETCLIENTID_CONFIRM and
+        instead MUST make them available for client reclaim using
+        CLAIM_DELEGATE_PREV.  The server MAY NOT remove the delegations until
+        either the client does a DELEGPURGE, or one lease period has
+        elapsed from the time the later of the SETCLIENTID_CONFIRM or the
+        last successful CLAIM_DELEGATE_PREV reclaim.
+      </t>
+
+      <t>
+        Note that the requirement stated above is not meant to imply that
+        when the client is no longer obliged, as required above, to retain
+        delegation information, that it should necessarily dispose of it.
+        Some specific cases are:
+      </t>
+
+      <t>
+        <list style='symbols'>
+          <t>
+            When the period is terminated by the occurrence of DELEGPURGE,
+            deletion of unreclaimed delegations is appropriate and desirable.
+          </t>
+
+          <t>
+            When the period is terminated by a lease period elapsing without
+            a successful CLAIM_DELEGATE_PREV reclaim, and that situation
+            appears to be the result of a network partition (i.e., lease
+            expiration has occurred), a server's lease expiration approach,
+            possibly including the use of courtesy locks would normally
+            provide for the retention of unreclaimed delegations.  Even in
+            the event that lease cancellation occurs, such delegation should
+            be reclaimed using CLAIM_DELEGATE_PREV as part of network partition
+            recovery.
+          </t>
+
+          <t>
+            When the period of non-communicating is followed by a client reboot,
+            unreclaimed delegations, should also be reclaimable by use of
+            CLAIM_DELEGATE_PREV as part of client reboot recovery.
+          </t>
+
+          <t>
+            When the period is terminated by a lease period elapsing without
+            a successful CLAIM_DELEGATE_PREV reclaim, and lease renewal
+            is occurring, the server may well conclude that unreclaimed
+            delegations have been abandoned, and consider the situation as
+            one in which an implied DELEGPURGE should be assumed.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        A server that supports a claim type of CLAIM_DELEGATE_PREV MUST support
+        the DELEGPURGE operation, and similarly a server that supports
+        DELEGPURGE MUST support CLAIM_DELEGATE_PREV.  A server which does
+        not support CLAIM_DELEGATE_PREV MUST return NFS4ERR_NOTSUPP if the
+        client attempts to use that feature or performs a DELEGPURGE operation.
+      </t>
+
+      <t>
+        Support for a claim type of CLAIM_DELEGATE_PREV, is often referred to
+        as providing for "client-persistent delegations" in that they allow
+        use of client persistent storage on the client to store data written
+        by the client, even across a client restart.  It should be noted that,
+        with the optional exception noted below, this feature requires persistent
+        storage to be used on the client and does not add to persistent storage
+        requirements on the server.
+      </t>
+
+      <t>
+        One good way to think about client-persistent delegations is that for
+        the most part, they function like "courtesy locks", with a special
+        semantic adjustments to allow them to be retained across a client restart,
+        which cause all other sorts of locks to be freed.  Such locks are generally
+        not retained across a server restart.  The one exception is the
+        case of simultaneous failure of the client and server and is discussed
+        below.
+      </t>
+
+      <t>
+        When the server indicates support of CLAIM_DELEGATE_PREV (implicitly)
+        by returning NFS_OK to DELEGPURGE, a client with a write delegation,
+        can use write-back caching for data to be written to the server, deferring
+        the write-back, until such time as the delegation is recalled, possibly
+        after intervening client restarts.  Similarly, when the server indicates
+        support of CLAIM_DELEGATE_PREV, a client with a read delegation and
+        an open-for-write subordinate to that delegation, may be sure of the
+        integrity of its persistently cached copy of the file after a client
+        restart without specific verification of the change attribute.
       </t>
 
       <t>
         When the server reboots or restarts, delegations are reclaimed (using
-        the OPEN operation with CLAIM_PREVIOUS) in a similar fashion to
-        byte-range locks and share reservations.  However, there is a slight
-        semantic difference.  In the normal case if the server decides that a
+        the OPEN operation with CLAIM_PREVIOUS) in a similar fashion to byte-range
+        locks and share reservations.  However, there is a slight
+        semantic difference.  In the normal case, if the server decides that a
         delegation should not be granted, it performs the requested action
         (e.g., OPEN) without granting any delegation.  For reclaim, the
-        server grants the delegation but a special designation is applied
-        so that the client treats the delegation as having been granted
-        but recalled by the server.  Because of this, the client has the
-        duty to write all modified state to the server and then return the
+        server grants the delegation but a special designation is applied so
+        that the client treats the delegation as having been granted but
+        recalled by the server.  Because of this, the client has the duty to
+        write all modified state to the server and then return the
         delegation.  This process of handling delegation reclaim reconciles
         three principles of the NFSv4 protocol:
+      </t>
 
+      <t>
         <list style='symbols'>
           <t>
             Upon reclaim, a client reporting resources assigned to it by an
@@ -304,40 +389,96 @@
       </t>
 
       <t>
-        When a network partition occurs, delegations are subject
-        to freeing by the server when the lease renewal period
-        expires.  This is similar to the behavior for locks and
-        share reservations.  For delegations, however, the server may
-        extend the period in which conflicting requests are held off.
-        Eventually the occurrence of a conflicting request from another
-        client will cause revocation of the delegation.  A loss of the
-        callback path (e.g., by later network configuration change)
-        will have the same effect.  A recall request will fail and
-        revocation of the delegation will result.
+        Situations in which there us a series of client and server restarts where
+        there is no restart of both at the same time, are dealt with via a
+        combination of CLAIM_DELEGATE_PREV and CLAIM_PREVIOUS reclaim cycles.
+        Persistent storage is needed only on the client.  For each server
+        failure, a CLAIM_PREVIOUS reclaim cycle is done, while for each client
+        restart, a CLAIM_DELEGATE_PREV reclaim cycle is done.
       </t>
 
       <t>
-        A client normally finds out about revocation of a delegation
-        when it uses a stateid associated with a delegation and
-        receives the error NFS4ERR_EXPIRED.  It also may find out
-        about delegation revocation after a client reboot when it
-        attempts to reclaim a delegation and receives that same error.
-        Note that in the case of a revoked OPEN_DELEGATE_WRITE delegation, there
-        are issues because data may have been modified by the client
-        whose delegation is revoked and separately by other clients.
-        See <xref target="ss:cc:rrwod" /> for a discussion of such issues.
-        Note also that when delegations are revoked, information about
-        the revoked delegation will be written by the server to stable
-        storage (as described in <xref target="ss:fl:crash_recov" />).
-        This is done to deal with the case in which a server reboots
-        after revoking a delegation but before the client holding the
-        revoked delegation is notified about the revocation.
+        To deal with the possibility of simultaneous failure of client and
+        server (e.g., a data center power outage), the server MAY
+        persistently store delegation information so that it can respond to
+        a CLAIM_DELEGATE_PREV reclaim request which it receives from a
+        restarting client.   This is the one case in which persistent
+        delegation state can be retained across a server restart.  A server
+        is not required to store this information, but if it does do so, it
+        should do so for write delegations and for read delegations, during
+        the pendency of which (across multiple client and/or server
+        instances), some open-for-write was done as part of delegation.  When
+        the space to persistently record such information is limited, the
+        server should recall delegations in this class in preference to
+        keeping them active without persistent storage recording.
       </t>
 
+      <t>
+        When a network partition occurs, delegations are subject to freeing
+        by the server when the lease renewal period expires.  This is similar
+        to the behavior for locks and share reservations, and, as for locks
+        and share reservations it may be modified by support for "courtesy
+        locks" in which locks are not freed in the absence of a conflicting
+        lock request.  Whereas, for locks and share reservations, freeing of
+        locks will occur immediately upon the appearance of a conflicting
+        request, for delegations, the server may institute period during which
+        conflicting requests are held off.  Eventually the occurrence of a
+        conflicting request from another client will cause revocation of the
+        delegation.
+      </t>
+
+      <t>
+        A loss of the callback path (e.g., by later network configuration
+        change) will have a similar effect in that it can also result in
+        revocation of a delegation  A recall request will fail and revocation
+        of the delegation will result.
+      </t>
+
+      <t>
+        A client normally finds out about revocation of a delegation when it
+        uses a stateid associated with a delegation and receives one of the
+        errors NFS4ERR_EXPIRED, NFS4ERR_BAD_STATEID, or NFS4ERR_ADMIN_REVOKED
+        (NFS4ERR_EXPIRED indicates that all lock state associated with the
+        client has been lost).  It also may find out about delegation revocation
+        after a client reboot when it attempts to reclaim a delegation and
+        receives NFS4ERR_EXPIRED.  Note that in the case of a revoked
+        OPEN_DELEGATE_WRITE delegation, there are issues because data may
+        have been modified by the client whose delegation is revoked and
+        separately by other clients.  See <xref target="ss:cc:rrwod" /> for a discussion of
+        such issues.  Note also that when delegations are revoked,
+        information about the revoked delegation will be written by the
+        server to stable storage (as described in <xref target="ss:fl:crash_recov" />).  This is done
+        to deal with the case in which a server reboots after revoking a
+        delegation but before the client holding the revoked delegation is
+        notified about the revocation.
+      </t>
+
+      <t>
+        Note that when there is a loss of a delegation, due to a network
+        partition in which all locks associated with the lease are lost,
+        the client will also receive the error NFS4ERR_EXPIRED.  This case
+        can be distinguished from other situations in which delegations
+        are revoked by seeing that the associated clientid becomes invalid
+        so that NFS4ERR_STALE_CLIENTID is returned when it is used.
+      </t>
+
+      <t>
+        When NFS4ERR_EXPIRED Is returned, the server MAY retain information
+        about the delegations held by the client, deleting those that are
+        invalidated by a conflicting request.  Retaining such information
+        will allow the client to recover all non-invalidated delegations
+        using the claim type CLAIM_DELEGATE_PREV, once the
+        SETCLIENTID_CONFIRM is done to recover.  Attempted recovery of
+        a delegation that the client has no record of, typically because they
+        were invalidated by conflicting requests, will get the error
+        NFS4ERR_BAD_RECLAIM.  Once a reclaim is attempted for all delegations
+        that the client held, it SHOULD do a DELEGPURGE to allow any remaining
+        server delegation information to be freed.
+      </t>
     </section>
   </section>
-  <section title="Data Caching">
 
+  <section title="Data Caching">
     <t>
       When applications share access to a set of files, they need to be
       implemented so as to take account of the possibility of conflicting
@@ -356,7 +497,6 @@
     </t>
 
     <section title="Data Caching and OPENs">
-
       <t>
         In order to avoid invalidating the sharing assumptions that
         applications rely on, NFSv4 clients should not provide cached
@@ -413,10 +553,9 @@
           </t>
         </list>
       </t>
-
     </section>
-    <section anchor="ss:cc:dcfl" title="Data Caching and File Locking">
 
+    <section anchor="ss:cc:dcfl" title="Data Caching and File Locking">
       <t>
         For those applications that choose to use file locking instead of
         share reservations to exclude inconsistent file access, there is an

@@ -117,7 +117,7 @@
         Both sorts of owners consist of a clientid and an opaque
         owner string.  For each client, the set of distinct owner values
         used with that client constitutes the set of owners of that type,
-        for the given client.  
+        for the given client.
       </t>
 
       <t>
@@ -627,8 +627,9 @@
               filehandle, return NFS4ERR_BAD_STATEID.
             </t>
             <t>
-              If the stateid represents revoked state, then return
-              NFS4ERR_EXPIRED or NFS4ERR_ADMIN_REVOKED, as appropriate.
+              If the stateid represents revoked state or state lost as a result
+              of lease expiration, then return NFS4ERR_EXPIRED,
+              NFS4ERR_BAD_STATEID, or NFS4ERR_ADMIN_REVOKED, as appropriate.
             </t>
             <t>
               If the stateid type is not valid for the context in which the
@@ -662,11 +663,9 @@
             </t>
           </list>
         </t>
-
       </section>
 
       <section anchor="ss:fl:sufioo" title="Stateid Use for I/O Operations">
-
         <t>
           Clients performing I/O operations need to select an appropriate
           stateid based on the locks (including opens and delegations) held by
@@ -997,21 +996,21 @@
         sequence checking and retransmission determination.  Some Operations
         have multiple sequence values associated with multiple types of
         state-owners.  In addition, such Operations may also have a stateid
-        with its own seqid value, that will be checked for validity.    
+        with its own seqid value, that will be checked for validity.
       </t>
       <t>
         As noted above, there may be multiple sequence values to check.
         The following rules should be followed by the server
-        in processing these multiple sequence values 
-        within a single operation. 
+        in processing these multiple sequence values
+        within a single operation.
       <list style='symbols'>
         <t>
-          When a sequence value associated with a state-owner is unavailable 
+          When a sequence value associated with a state-owner is unavailable
           for checking because the state-owner is unknown to the
           server, it takes no part in the comparison.
         </t>
         <t>
-          When any of the state-owner sequence values are invalid, 
+          When any of the state-owner sequence values are invalid,
           NFS4ERR_BAD_SEQID is returned.  When a stateid sequence is checked,
           NFS4ERR_BAD_STATEID, or NFS4ERR_OLD_STATEID is returned as
           appropriate, but NFS4ERR_BAD_SEQID has priority.
@@ -1020,7 +1019,7 @@
           When any one of the sequence values matches a previous request,
           for a state-owner, it is treated as a retransmission and not
           re-executed.  When the type of the operation does not match that
-          originally used, 
+          originally used,
           NFS4ERR_BAD_SEQID is returned.  When the server can determine that
           the request differs from the original it may return
 	  NFS4ERR_BAD_SEQID.
@@ -1032,10 +1031,10 @@
         <t>
           When there are no available sequence values available for comparison
           and the operation is an OPEN, the server indicates
-          to the client that an OPEN_CONFIRM is required, unless it can 
+          to the client that an OPEN_CONFIRM is required, unless it can
           conclusively determine that confirmation is not required (e.g.,
-          by knowing that no open-owner state has ever been released for the 
-          current clientid). 
+          by knowing that no open-owner state has ever been released for the
+          current clientid).
         </t>
       </list>
       </t>
@@ -1055,25 +1054,25 @@
         state was not released.
       </t>
       <t>
-        If the server were able to be sure that a given state-owner would 
-        never again be used by a client, such an issue could not arise. 
-        Even when the state-owner state is released and the client 
+        If the server were able to be sure that a given state-owner would
+        never again be used by a client, such an issue could not arise.
+        Even when the state-owner state is released and the client
         subsequently uses that state-owner, retransmitted requests will be detected
-        as invalid and the request not executed, although the client may 
+        as invalid and the request not executed, although the client may
         have a recovery
-        path that is more complicated than simply getting the original 
-        response back transparently.          
+        path that is more complicated than simply getting the original
+        response back transparently.
       </t>
       <t>
-        In any event, the server is able to safely release state-owner 
-        state (in the sense that retransmitted requests will not be erroneously 
+        In any event, the server is able to safely release state-owner
+        state (in the sense that retransmitted requests will not be erroneously
         acted upon) when the state-owner no currently  being utilized by
-        the client (i.e., there are no open files associated with an 
-        open-owner and no lock stateids associated with a lock-owner).  
-        The server may choose 
+        the client (i.e., there are no open files associated with an
+        open-owner and no lock stateids associated with a lock-owner).
+        The server may choose
         to hold the state-owner state in order to simplify the recovery
         path, in the case in which retransmissions of currently active
-        requests are received.  However, the period it chooses to hold this 
+        requests are received.  However, the period it chooses to hold this
         state is implementation specific.
       </t>
       <t>
@@ -1150,13 +1149,14 @@
         because of the nature of the environments in which such opens are
         done.  For CLAIM_PREVIOUS opens, this is immediately after server
         reboot, so there should be no time for open-owners to be created,
-        found to be unused, and recycled.  For CLAIM_DELEGATE_PREV opens,
-        we are dealing with a client reboot situation.  A server which
-        supports delegation can be sure that no open-owners for that client
-        have been recycled since client initialization and thus can ensure
-        that confirmation will not be required.
+        found to be unused, and recycled.  For CLAIM_DELEGATE_PREV opens, we
+        are dealing with either a client reboot situation or a network partition
+        resulting in deletion of lease state (and returning NFS4ERR_EXPIRED).
+        A server which supports delegations can be sure that no open-owners
+        for that client have been recycled since client initialization or
+        deletion of lease state and thus can ensure that confirmation will
+        not be required.
       </t>
-
     </section>
   </section>
   <section title="Lock Ranges">
@@ -1285,10 +1285,11 @@
         </t>
 
         <t>
-          Any operation made with a valid stateid (CLOSE, DELEGPURGE,
-          DELEGRETURN, LOCK, LOCKU, OPEN, OPEN_CONFIRM, OPEN_DOWNGRADE,
-          READ, RENEW, SETATTR, or WRITE).  This does not include the
-          special stateids of all bits 0 or all bits 1.
+          Any operation made with a valid clientid (DELEGPURGE, RENEW,
+          OPEN, LOCK) or a valid stateid (CLOSE, DELEGRETURN, LOCK, LOCKU,
+          OPEN, OPEN_CONFIRM, OPEN_DOWNGRADE, READ, SETATTR, or WRITE).
+          In the latter case, the stateid must not be one of the
+          special stateids consisting of all bits 0 or all bits 1.
         <vspace blankLines='1' />
           Note that if the client had restarted or rebooted, the
           client would not be making these requests without issuing
@@ -1405,10 +1406,10 @@
         "grace period".  During the grace period, clients recover locks
         and the associated state by reclaim-type locking requests (i.e.,
         LOCK requests with reclaim set to true and OPEN operations with
-        a claim type of CLAIM_PREVIOUS).  During the grace period, the
-        server must reject READ and WRITE operations and non-reclaim
-        locking requests (i.e., other LOCK and OPEN operations) with an
-        error of NFS4ERR_GRACE.
+        a claim type of either CLAIM_PREVIOUS or CLAIM_DELEGATE_PREV).
+        During the grace period, the server must reject READ and WRITE
+        operations and non-reclaim locking requests (i.e., other LOCK
+        and OPEN operations) with an error of NFS4ERR_GRACE.
       </t>
 
       <t>
@@ -1482,14 +1483,14 @@
         server instantiation.  This allows the client state obtained
         during the previous server instance to be reliably re-established.
       </t>
-
     </section>
-    <section title="Network Partitions and Recovery">
 
+    <section title="Network Partitions and Recovery">
       <t>
         If the duration of a network partition is greater than the lease
         period provided by the server, the server will have not received
         a lease renewal from the client.  If this occurs, the server may
+        cancel the lease and
         free all locks held for the client.  As a result, all stateids
         held by the client will become invalid or stale.  Once the client
         is able to reach the server after such a network partition,
@@ -1501,25 +1502,122 @@
 
       <section anchor="ss:fl:cl" title="Courtesy Locks">
         <t>
-          As a courtesy to the client or as an optimization, the server
-          may continue to hold locks on behalf of a client for which recent
-          communication has extended beyond the lease period.  If the server
-          receives a lock or I/O request that conflicts with one of these
-          courtesy locks, the server MUST free the courtesy lock and grant
-          the new request. If the server runs out of resources, it MAY
-          free all courtesy locks. I.e., the client MUST not make an
-          assumption that the server has issued courtesy locks.
+          As a courtesy to the client or as an optimization, the server may
+          continue to hold locks, including delegations, on behalf of a client
+          for which recent communication has extended beyond the lease period,
+          delaying the cancellation of the lease.  If the server receives a lock
+          or I/O request that conflicts with one of these courtesy locks or if it
+          runs out of resources, the server MAY cause lease cancellation to occur at
+          that time and henceforth return NFS4ERR_EXPIRED when any of the stateids
+          associated with the freed locks is used. If lease cancellation has not
+          occurred and the server receives a lock or I/O request that conflicts with
+          one of the courtesy locks, the requirements are as follows:
+
+          <list style='symbols'>
+            <t>
+              In the case of a courtesy lock which is not a delegation, it MUST free
+              the courtesy lock and grant the new request.
+            </t>
+
+            <t>
+              In the case of lock or IO request which conflicts with a delegation
+              which is being held as courtesy lock, the server MAY delay resolution
+              of request but MUST NOT reject the request and MUST free the delegation
+              and grant the new request eventually.
+            </t>
+
+            <t>
+              In the case of a requests for a delegation which conflicts with a
+              delegation which is being held as courtesy lock, the server MAY
+              grant the new request or not as it chooses, but if it grants the
+              conflicting request, the delegation haled as courtesy lock MUST be
+              freed.
+            </t>
+          </list>
         </t>
 
         <t>
-          If the server does not reboot before the network partition is healed,
-          when the original client tries to access a courtesy lock which
-          was freed, the server SHOULD send back a NFS4ERR_BAD_STATEID
-          to the client. If the client tries to access a courtesy lock
-          which was not freed, then the server SHOULD mark all of the
-          courtesy locks as implicitly being renewed.
+          If the server does not reboot or cancel the lease before the network
+          partition is healed, when the original client tries to access a courtesy
+          lock which was freed, the server SHOULD send back a NFS4ERR_BAD_STATEID
+          to the client.  If the client tries to access a courtesy lock which
+          was not freed, then the server SHOULD mark all of the courtesy locks as
+          implicitly being renewed.
+        </t>
+      </section>
+
+      <section anchor="ss:fl:lc" title="Lease Cancellation">
+        <t>
+          As a result of lease expiration, leases may be cancelled, either
+          immediately upon expiration or subsequently, depending on the occurrence
+          of a conflicting lock or extension of the period of partition beyond
+          what the server will tolerate.
         </t>
 
+        <t>
+          When a lease is cancelled, all locking state associated with it is
+          freed and use of any the associated stateids will result in
+          NFS4ERR_EXPIRED being returned.  Similarly, use of the associated clientid
+          will result in NFS4ERR_EXPIRED being returned.
+        </t>
+
+        <t>
+          The client should recover from this situation by using SETCLIENTID
+          followed by SETCLIENTID_CONFIRM, in order to establish a new clientid.
+          Once a lock is obtained using this clientid, a lease will be established.
+        </t>
+      </section>
+
+      <section title="Client's Reaction to a Freed Lock">
+        <t>
+          There is no way for a client to predetermine how a given server
+          is going to behave during a network partition. When the
+          partition heals, either the client still has all of its locks,
+          it has some of its locks, or it has none of them. The
+          client will be able to examine the various error return
+          values to determine its response.
+
+            <list style="hanging">
+              <t hangText="NFS4ERR_EXPIRED:"> <vspace blankLines='1' />
+                All locks have been freed as a result of a lease cancellation
+                which occurred during the partition.  The client should use a
+                SETCLIENTID to recover.
+              </t>
+
+              <t hangText="NFS4ERR_ADMIN_REVOKED:"> <vspace blankLines='1' />
+                The current lock has been revoked before, during, or after
+                the partition.  The client SHOULD handle this error
+                as it normally would.
+              </t>
+
+              <t hangText="NFS4ERR_BAD_STATEID:"> <vspace blankLines='1' />
+                The current lock has been revoked/released during the partition and the
+                server did not reboot.  Other locks MAY still be renewed.  The
+                client need not do a SETCLIENTID and instead SHOULD probe
+                via a RENEW call.
+              </t>
+
+              <t hangText="NFS4ERR_RECLAIM_BAD:"> <vspace blankLines='1' />
+                The current lock has been revoked during the partition and
+                the server rebooted. The server might have no information
+                on the other locks. They may still be renewable.
+              </t>
+
+              <t hangText="NFS4ERR_NO_GRACE:"> <vspace blankLines='1' />
+                The client's locks have been revoked during the partition and
+                the server rebooted. None of the client's locks will be
+                renewable.
+              </t>
+
+              <t hangText="NFS4ERR_OLD_STATEID:"> <vspace blankLines='1' />
+                The server has not rebooted. The client SHOULD handle
+                this error as it normally would.
+              </t>
+            </list>
+          </t>
+      </section>
+
+      <section anchor="ss:fl:edges" title="Edge Conditions">
         <t>
           When a network partition is combined with a server reboot, then
           both the server and client have responsibilities to ensure that
@@ -1532,7 +1630,7 @@
               reclaim any locks which it did not hold at the end of
               its most recent successfully established client lease.
             </t>
-            
+
             <t>
               Server's responsibility: A server MUST NOT allow a
               client to reclaim a lock unless it knows that it could
@@ -1543,13 +1641,22 @@
             </t>
           </list>
         </t>
-        
+
         <t>
           A server may consider a client's lease "successfully
           established" once it has received an open operation from that
           client.
         </t>
-        
+
+        <t>
+          The above are directed to CLAIM_PREVIOUS reclaims and not to
+          CLAIM_DELEGATE_PREV reclaims, which generally do not involve
+          a server reboot.  However, when a server persistently stores
+          delegation information to support CLAIM_DELEGATE_PREV across
+          a period in which both client and server are down at the same
+          time, similar strictures apply.
+        </t>
+
         <t>
           The next sections give examples showing what can go wrong if
           these responsibilities are neglected, and provides examples of
@@ -1881,8 +1988,7 @@
           </t>
         </section>
 
-        <section title="Client's Handling of reclaim errors">
-
+        <section title="Client's Handling of Reclaim Errors">
           <t>
             A mandate for the client's handling of the NFS4ERR_NO_GRACE
             and NFS4ERR_RECLAIM_BAD errors is outside the scope of this
@@ -1911,52 +2017,10 @@
           </t>
         </section>
       </section>
-
-      <section title="Client's Reaction to a Freed Lock">
-        <t>
-          There is no way for a client to predetermine how a given server
-          is going to behave during a network partition. When the
-          partition heals, either the client still has all of its locks,
-          it has some of its locks, or it has none of them. The
-          client will be able to examine the various error return
-          values to determine its response.
-
-            <list style="hanging">
-              <t hangText="NFS4ERR_EXPIRED:"> <vspace blankLines='1' />
-                All locks has been revoked during the partition. The client
-                should use a SETCLIENTID to recover.
-              </t>
-              <t hangText="NFS4ERR_ADMIN_REVOKED:"> <vspace blankLines='1' />
-                The current lock has been revoked during the partition and
-                there is no clue as to whether the server rebooted.
-              </t>
-              <t hangText="NFS4ERR_BAD_STATEID:"> <vspace blankLines='1' />
-                The current lock has been revoked during the partition and
-                the server did not reboot. Other locks MAY still be renewed.
-                The client MAY NOT want to do a SETCLIENTID and instead
-                SHOULD probe via a RENEW call.
-              </t>
-              <t hangText="NFS4ERR_RECLAIM_BAD:"> <vspace blankLines='1' />
-                The current lock has been revoked during the partition and
-                the server rebooted. The server might have no information
-                on the other locks. They may still be renewable.
-              </t>
-              <t hangText="NFS4ERR_NO_GRACE:"> <vspace blankLines='1' />
-                The client's locks have been revoked during the partition and
-                the server rebooted. None of the client's locks will be
-                renewable.
-              </t>
-              <t hangText="NFS4ERR_OLD_STATEID:"> <vspace blankLines='1' />
-                The server has not rebooted. The client SHOULD handle
-                this error as it normally would.
-              </t>
-            </list>
-          </t>
-      </section>
     </section>
   </section>
-  <section title="Recovery from a Lock Request Timeout or Abort">
 
+  <section title="Recovery from a Lock Request Timeout or Abort">
     <t>
       In the event a lock request times out, a client may decide to
       not retry the request.  The client may also abort the request
@@ -1984,10 +2048,9 @@
       information on the client and server for the given state-owner
       will re-synchronize and in turn the lock state will re-synchronize.
     </t>
-
   </section>
-  <section anchor="ss:fl:srl" title="Server Revocation of Locks">
 
+  <section anchor="ss:fl:srl" title="Server Revocation of Locks">
     <t>
       At any point, the server can revoke locks held by a client and the
       client must be prepared for this event.  When the client detects

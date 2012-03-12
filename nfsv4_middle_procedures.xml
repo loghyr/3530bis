@@ -779,29 +779,79 @@
       </t>
 
       <t>
-        This operation should be used by clients that record delegation
+        This operation in provided to support clients that record delegation
         information on stable storage on the client.  In this case,
         DELEGPURGE should be issued immediately after doing delegation
-        recovery on all delegations known to the client.  Doing so
-        will notify the server that no additional delegations for the
-        client will be recovered allowing it to free resources, and
-        avoid delaying other clients who make requests that conflict
-        with the unrecovered delegations.  The set of delegations known
-        to the server and the client may be different.  The reason for
-        this is that a client may fail after making a request which
-        resulted in delegation but before it received the results
-        and committed them to the client's stable storage.
+        recovery (using CLAIM_DELEGATE_PREV) on all delegations known to
+        the client.  Doing so will notify the server that no additional
+        delegations for the client will be recovered allowing it to free
+        resources, and avoid delaying other clients who make requests that
+        conflict with the unrecovered delegations.  All client SHOULD use
+        DELEGPURGE as part of recovery once it is known that no further
+        CLAIM_DELEGATE_PREV recovery will be done.  This includes clients
+        that do not record delegation information on stable storage, who would
+        then do a DELEGPURGE immediately after SETCLIENTID_CONFIRM.
       </t>
 
       <t>
-        The server MAY support DELEGPURGE, but if it does not, it
-        MUST NOT support CLAIM_DELEGATE_PREV.
+        The set of delegations known to the server and the
+        client may be different.  The reasons for this include:
       </t>
 
+      <t>
+        <list style='symbols'>
+          <t>
+            A client may fail after making a request which resulted in delegation
+            but before it received the results and committed them to the client's
+            stable storage.
+          </t>
+
+          <t>
+            A client may fail after deleting its indication that a delegation exists
+            but before the delegation return is fully processed by the server.
+          </t>
+
+          <t>
+            In the case in which the server and the client restart, the server
+            may have limited persistent recording of delegation to a subset of
+            those in existence.
+          </t>
+
+          <t>
+            A client may have only persistently recorded information about a subset of
+            delegations.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        The server MAY support DELEGPURGE, but its support or non-support should
+        match that of CLAIM_DELEGATE_PREV:
+      </t>
+
+      <t>
+        <list style='symbols'>
+          <t>
+            A server may support both DELEGPURGE and CLAIM_DELEGATE_PREV.
+          </t>
+
+          <t>
+            A server may support neither DELEGPURGE nor CLAIM_DELEGATE_PREV.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        This fact allows a client starting up to determine if the server is prepared
+        to support persistent storage of delegation information and thus whether it
+        may use write-back caching to local persistent storage, relying on
+        CLAIM_DELEGATE_PREV recovery to allow such changed data to be flushed
+        safely to the server in the event of client restart.
+      </t>
     </section>
   </section>
-  <section anchor="OP_DELEGRETURN" title="Operation 8: DELEGRETURN - Return Delegation">
 
+  <section anchor="OP_DELEGRETURN" title="Operation 8: DELEGRETURN - Return Delegation">
     <section toc="exclude" anchor="OP_DELEGRETURN_SYNOPSIS" title="SYNOPSIS">
 
       <figure>
@@ -1791,13 +1841,38 @@
 
           <t hangText="CLAIM_DELEGATE_PREV:">
             The client is claiming a delegation granted to a previous
-            client instance; used after the client reboots. The server
-            MAY support CLAIM_DELEGATE_PREV.  If it does support
+            client instance.  This claim type is for use after a
+            SETCLIENTID_CONFIRM and before the corresponding DELEGPURGE
+            in two situations: after a client reboot and after a lease
+            expiration that resulted in loss of all lock state.  The
+            server MAY support CLAIM_DELEGATE_PREV.  If it does support
             CLAIM_DELEGATE_PREV, SETCLIENTID_CONFIRM MUST NOT remove
             the client's delegation state, and the server MUST support
             the DELEGPURGE operation.
           </t>
+        </list>
+      </t>
 
+      <t>
+        The following errors apply to use of the CLAIM_DELEGATE_PREV
+        claim type:
+
+        <list style='symbols'>
+          <t>
+            NFS4ERR_NOTSUPP is returned if the server does not support this
+            claim type.
+          </t>
+
+          <t>
+            NFS4ERR_INVAL is returned if the reclaim is done at an inappropriate
+            time, e.g., after DELEGPURGE has been done.
+          </t>
+
+          <t>
+            NFS4ERR_BAD_RECLAIM is returned if the other error conditions do not
+            apply and the server has no record of the delegation whose reclaim
+            is being attempted.
+          </t>
         </list>
       </t>
 
