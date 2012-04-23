@@ -439,7 +439,7 @@
              anchor="err_STALE">
       <t>
         The current or saved filehandle value designating an argument
-        to the current operation is invalid
+        to the current operation is invalid.
         The file referred to by that filehandle no longer
         exists or access to it has been revoked.
       </t>
