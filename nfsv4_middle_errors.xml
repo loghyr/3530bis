@@ -3,12 +3,12 @@
 
 <section title="Error Values">
   <t>
-    NFS error numbers are assigned to failed operations within a 
-    Compound (COMPOUND or CB_COMPOUND) request.  A Compound request 
-    contains a number of NFS operations that have their results 
-    encoded in sequence in a Compound reply.  The results of successful 
-    operations will consist of an NFS4_OK status followed by the 
-    encoded results of the operation.  If an NFS operation fails, an 
+    NFS error numbers are assigned to failed operations within a
+    Compound (COMPOUND or CB_COMPOUND) request.  A Compound request
+    contains a number of NFS operations that have their results
+    encoded in sequence in a Compound reply.  The results of successful
+    operations will consist of an NFS4_OK status followed by the
+    encoded results of the operation.  If an NFS operation fails, an
     error status will be entered in the reply and the Compound
     request will be terminated.
   </t>
@@ -284,7 +284,7 @@
       This section deals with errors that are applicable to a broad
       set of different purposes.
     </t>
-    <section title="NFS4ERR_BADXDR (Error Code 10036)" 
+    <section title="NFS4ERR_BADXDR (Error Code 10036)"
        	     anchor="err_BADXDR">
       <t>
         The arguments for this operation do not match those specified in
@@ -293,23 +293,23 @@
         that this error applies when fixed enumerations (these include
         booleans) have a value within the input stream which is not
         valid for the enum.  A replier may pre-parse all operations for
-        a Compound procedure before doing any operation execution 
-        and return RPC-level XDR errors in that case.  
+        a Compound procedure before doing any operation execution
+        and return RPC-level XDR errors in that case.
       </t>
     </section>
-    <section title="NFS4ERR_BAD_COOKIE (Error Code 10003)" 
+    <section title="NFS4ERR_BAD_COOKIE (Error Code 10003)"
              anchor="err_BAD_COOKIE">
       <t>
         Used for operations that provide a set of information indexed by
         some quantity provided by the client or cookie sent by the
-        server for an earlier invocation.  Where the value cannot 
-        be used for its intended purpose, this error results. 
+        server for an earlier invocation.  Where the value cannot
+        be used for its intended purpose, this error results.
       </t>
     </section>
-    <section title="NFS4ERR_DELAY (Error Code 10008)" 
+    <section title="NFS4ERR_DELAY (Error Code 10008)"
              anchor="err_DELAY">
       <t>
-        For any of a number of reasons, the replier could not 
+        For any of a number of reasons, the replier could not
         process this operation in what was deemed a reasonable
         time. The client should wait and then try the request
         with a new RPC transaction ID.
@@ -318,8 +318,8 @@
         Some example of situations that might lead to this situation:
           <list style="symbols">
             <t>
-              A server that supports hierarchical storage receives a 
-              request to process a file that had been migrated. 
+              A server that supports hierarchical storage receives a
+              request to process a file that had been migrated.
             </t>
             <t>
              An operation requires a delegation recall to proceed
@@ -329,7 +329,7 @@
          </list>
        </t>
     </section>
-    <section title="NFS4ERR_INVAL (Error Code 22)" 
+    <section title="NFS4ERR_INVAL (Error Code 22)"
              anchor="err_INVAL">
       <t>
         The arguments for this operation are not valid for some reason, even
@@ -337,16 +337,16 @@
         the request.
       </t>
     </section>
-    <section title="NFS4ERR_NOTSUPP (Error Code 10004)" 
+    <section title="NFS4ERR_NOTSUPP (Error Code 10004)"
              anchor="err_NOTSUPP">
       <t>
         Operation not supported, either because the operation is
         an OPTIONAL one and is not supported by this server or
-        because the operation MUST NOT be implemented in 
+        because the operation MUST NOT be implemented in
         the current minor version.
       </t>
     </section>
-    <section title="NFS4ERR_SERVERFAULT (Error Code 10006)" 
+    <section title="NFS4ERR_SERVERFAULT (Error Code 10006)"
              anchor="err_SERVERFAULT">
       <t>
         An error occurred on the server which does not map to any of
@@ -355,11 +355,11 @@
         may choose to translate this to EIO.
      </t>
     </section>
-    <section title="NFS4ERR_TOOSMALL (Error Code 10005)" 
-             anchor="err_TOOSMALL"> 
+    <section title="NFS4ERR_TOOSMALL (Error Code 10005)"
+             anchor="err_TOOSMALL">
       <t>
         Used where an operation returns a variable amount of data,
-        with a limit specified by the client.  Where the data 
+        with a limit specified by the client.  Where the data
         returned cannot be fit within the limit specified by the
         client, this error results.
       </t>
@@ -372,16 +372,16 @@
       or saved filehandle, or the filehandle passed to PUTFH
       intended to become the current filehandle, is invalid
       in some way.  This includes situations in which the
-      filehandle is a valid filehandle in general but is not 
+      filehandle is a valid filehandle in general but is not
       of the appropriate object type for the current operation.
     </t>
     <t>
       Where the error description indicates a problem with the
-      current or saved filehandle, it is to be understood that 
+      current or saved filehandle, it is to be understood that
       filehandles are only checked for the condition if they
       are implicit arguments of the operation in question.
     </t>
-    <section title="NFS4ERR_BADHANDLE (Error Code 10001)" 
+    <section title="NFS4ERR_BADHANDLE (Error Code 10001)"
              anchor="err_BADHANDLE">
       <t>
         Illegal NFS filehandle for the current server.  The current
@@ -389,45 +389,45 @@
         as valid (by PUTFH), no subsequent status change can cause the
         filehandle to generate this error.
       </t>
-    </section> 
-    <section title="NFS4ERR_FHEXPIRED (Error Code 10014)" 
+    </section>
+    <section title="NFS4ERR_FHEXPIRED (Error Code 10014)"
              anchor="err_FHEXPIRED">
       <t>
         A current or saved filehandle which is an argument to the
         current operation is volatile and has expired at the server.
       </t>
     </section>
-   <section title="NFS4ERR_ISDIR (Error Code 21)" 
+   <section title="NFS4ERR_ISDIR (Error Code 21)"
              anchor="err_ISDIR">
       <t>
-        The current or saved filehandle designates a directory 
-        when the current operation does not allow a directory to 
+        The current or saved filehandle designates a directory
+        when the current operation does not allow a directory to
         be accepted as the target of this operation.
       </t>
     </section>
-    <section title="NFS4ERR_MOVED (Error Code 10019)" 
+    <section title="NFS4ERR_MOVED (Error Code 10019)"
              anchor="err_MOVED">
       <t>
         The file system which contains the current filehandle object
-        is not present at the server.  It may have been relocated, 
+        is not present at the server.  It may have been relocated,
         migrated to another server or may have never been present.
-        The client may obtain the new file system location by obtaining 
-        the "fs_locations" or attribute for the 
-        current filehandle.  For further discussion, refer to 
-        <xref target="sec:mars" /> 
+        The client may obtain the new file system location by obtaining
+        the "fs_locations" or attribute for the
+        current filehandle.  For further discussion, refer to
+        <xref target="sec:mars" />.
       </t>
     </section>
-    <section title="NFS4ERR_NOFILEHANDLE (Error Code 10020)" 
+    <section title="NFS4ERR_NOFILEHANDLE (Error Code 10020)"
              anchor="err_NOFILEHANDLE">
       <t>
-        The logical current or saved filehandle value is required by 
+        The logical current or saved filehandle value is required by
         the current operation and is not set.
         This may be a result of a malformed COMPOUND
         operation (i.e., no PUTFH or PUTROOTFH before an operation that
         requires the current filehandle be set).
       </t>
     </section>
-    <section title="NFS4ERR_NOTDIR (Error Code 20)" 
+    <section title="NFS4ERR_NOTDIR (Error Code 20)"
              anchor="err_NOTDIR">
       <t>
         The current (or saved) filehandle designates an object which
@@ -435,7 +435,7 @@
         required.
       </t>
     </section>
-    <section title="NFS4ERR_STALE (Error Code 70)" 
+    <section title="NFS4ERR_STALE (Error Code 70)"
              anchor="err_STALE">
       <t>
         The current or saved filehandle value designating an argument
@@ -444,11 +444,11 @@
         exists or access to it has been revoked.
       </t>
     </section>
-    <section title="NFS4ERR_SYMLINK (Error Code 10029)" 
+    <section title="NFS4ERR_SYMLINK (Error Code 10029)"
              anchor="err_SYMLINK">
       <t>
-        The current filehandle designates a symbolic link when the 
-        current operation does not allow a symbolic link as the 
+        The current filehandle designates a symbolic link when the
+        current operation does not allow a symbolic link as the
         target.
       </t>
     </section>
@@ -458,7 +458,7 @@
     <t>
       This section deals with errors that relate to overall structure
       of a Compound request (by which we mean to include both
-      COMPOUND and CB_COMPOUND), rather than to particular operations. 
+      COMPOUND and CB_COMPOUND), rather than to particular operations.
     </t>
     <t>
       There are a number of basic constraints on the operations that
@@ -480,20 +480,20 @@
         the results must specify a result count of zero.
       </t>
     </section>
-    <section title="NFS4ERR_OP_ILLEGAL (Error Code 10044)" 
+    <section title="NFS4ERR_OP_ILLEGAL (Error Code 10044)"
              anchor="err_OP_ILLEGAL">
       <t>
         The operation code is not a valid one for the current
         Compound procedure.  The opcode
         in the result stream matched with this error is the
         ILLEGAL value, although the value that appears in the
-        request stream may be different.  Where an illegal 
+        request stream may be different.  Where an illegal
         value appears and the replier pre-parses all operations for
-        a Compound procedure before doing any operation execution, 
-        an RPC-level XDR error may be returned in this case.  
+        a Compound procedure before doing any operation execution,
+        an RPC-level XDR error may be returned in this case.
       </t>
     </section>
-    <section title="NFS4ERR_RESOURCE (Error Code 10018)" 
+    <section title="NFS4ERR_RESOURCE (Error Code 10018)"
              anchor="err_RESOURCE">
       <t>
         For the processing of the Compound procedure, the server may
@@ -511,39 +511,39 @@
       file system implementation rather than in the protocol or any
       NFSv4.x feature.
     </t>
-    <section title="NFS4ERR_BADTYPE (Error Code 10007)" 
+    <section title="NFS4ERR_BADTYPE (Error Code 10007)"
              anchor="err_BADTYPE">
       <t>
         An attempt was made to create an object with an inappropriate
-        type specified to CREATE.  This may be because the type 
-        is undefined, because it is a type not supported by the 
+        type specified to CREATE.  This may be because the type
+        is undefined, because it is a type not supported by the
         server, or because it is a type for which create is not
-        intended such as a regular file or named attribute, for 
+        intended such as a regular file or named attribute, for
         which OPEN is used to do the file creation.
       </t>
     </section>
-    <section title="NFS4ERR_DQUOT (Error Code 19)" 
+    <section title="NFS4ERR_DQUOT (Error Code 19)"
              anchor="err_DQUOT">
       <t>
         Resource (quota) hard limit exceeded. The user's resource
         limit on the server has been exceeded.
       </t>
     </section>
-    <section title="NFS4ERR_EXIST (Error Code 17)" 
+    <section title="NFS4ERR_EXIST (Error Code 17)"
              anchor="err_EXIST">
       <t>
         A file of the specified target name (when creating, renaming
         or linking) already exists.
       </t>
     </section>
-    <section title="NFS4ERR_FBIG (Error Code 27)" 
+    <section title="NFS4ERR_FBIG (Error Code 27)"
              anchor="err_FBIG">
       <t>
         File too large. The operation would have caused a file to
         grow beyond the server's limit.
       </t>
     </section>
-    <section title="NFS4ERR_FILE_OPEN (Error Code 10046)" 
+    <section title="NFS4ERR_FILE_OPEN (Error Code 10046)"
              anchor="err_FILE_OPEN">
       <t>
         The operation is not allowed because a
@@ -552,66 +552,66 @@
         removing, or renaming open files.
       </t>
     </section>
-    <section title="NFS4ERR_IO (Error Code 5)" 
+    <section title="NFS4ERR_IO (Error Code 5)"
              anchor="err_IO">
       <t>
         Indicates that an I/O error occurred for which the file system
         was unable to provide recovery.
       </t>
     </section>
-    <section title="NFS4ERR_MLINK (Error Code 31)" 
+    <section title="NFS4ERR_MLINK (Error Code 31)"
              anchor="err_MLINK">
       <t>
         The request would have caused the server's limit for the
         number of hard links a file may have to be exceeded.
       </t>
     </section>
-    <section title="NFS4ERR_NOENT (Error Code 2)" 
+    <section title="NFS4ERR_NOENT (Error Code 2)"
              anchor="err_NOENT">
       <t>
          Indicates no such file or directory. The file or directory name
          specified does not exist.
       </t>
     </section>
-    <section title="NFS4ERR_NOSPC (Error Code 28)" 
+    <section title="NFS4ERR_NOSPC (Error Code 28)"
              anchor="err_NOSPC">
       <t>
-        Indicates no space left on device. The operation would have 
+        Indicates no space left on device. The operation would have
         caused the server's file system to exceed its limit.
       </t>
     </section>
-    <section title="NFS4ERR_NOTEMPTY (Error Code 66)" 
+    <section title="NFS4ERR_NOTEMPTY (Error Code 66)"
              anchor="err_NOTEMPTY">
       <t>
          An attempt was made to remove a directory that was not
          empty.
       </t>
     </section>
-    <section title="NFS4ERR_NXIO (Error Code 5)" 
+    <section title="NFS4ERR_NXIO (Error Code 5)"
              anchor="err_NXIO">
       <t>
         I/O error. No such device or address.
       </t>
     </section>
-    <section title="NFS4ERR_RESTOREFH (Error Code 10030)" 
+    <section title="NFS4ERR_RESTOREFH (Error Code 10030)"
              anchor="err_RESTOREFH">
       <t>
         The RESTOREFH operation does not have a saved filehandle
         (identified by SAVEFH) to operate upon.
       </t>
     </section>
-    <section title="NFS4ERR_ROFS (Error Code 30)" 
+    <section title="NFS4ERR_ROFS (Error Code 30)"
              anchor="err_ROFS">
       <t>
-         Indicates a read-only file system. A modifying operation was 
+         Indicates a read-only file system. A modifying operation was
          attempted on a read-only file system.
       </t>
     </section>
-    <section title="NFS4ERR_XDEV (Error Code 18)" 
+    <section title="NFS4ERR_XDEV (Error Code 18)"
              anchor="err_XDEV">
       <t>
         Indicates an attempt to do an operation, such as linking, that
-        inappropriately crosses a boundary.  This may be due to such 
+        inappropriately crosses a boundary.  This may be due to such
         boundaries as:
         <list style="symbols">
           <t>
@@ -619,7 +619,7 @@
           </t>
           <t>
             That between different named attribute directories or
-            between a named attribute directory and an ordinary 
+            between a named attribute directory and an ordinary
             directory.
           </t>
           <t>
@@ -637,13 +637,13 @@
     <t>
       These errors indicate problems with the stateid (or one of
       the stateids) passed to a given operation.  This includes
-      situations in which the stateid is invalid as well as 
-      situations in which the stateid is valid but designates 
-      revoked locking state.  Depending on the operation, the 
+      situations in which the stateid is invalid as well as
+      situations in which the stateid is valid but designates
+      revoked locking state.  Depending on the operation, the
       stateid when valid may designate opens, byte-range locks,
       or file delegations.
     </t>
-    <section title="NFS4ERR_ADMIN_REVOKED (Error Code 10047)" 
+    <section title="NFS4ERR_ADMIN_REVOKED (Error Code 10047)"
              anchor="err_ADMIN_REVOKED">
       <t>
         A stateid designates locking state of any type that has been revoked
@@ -652,7 +652,7 @@
         while the lease was valid.
       </t>
     </section>
-    <section title="NFS4ERR_BAD_STATEID (Error Code 10026)" 
+    <section title="NFS4ERR_BAD_STATEID (Error Code 10026)"
              anchor="err_BAD_STATEID">
       <t>
         A stateid generated by the current server instance was used which
@@ -672,7 +672,7 @@
         </list>
       </t>
     </section>
-    <section title="NFS4ERR_EXPIRED (Error Code 10011)" 
+    <section title="NFS4ERR_EXPIRED (Error Code 10011)"
              anchor="err_EXPIRED">
       <t>
         A stateid or clientid designates locking state of any type that
@@ -681,21 +681,21 @@
         request for a conflicting lock.
       </t>
     </section>
-    <section title="NFS4ERR_LEASE_MOVED (Error Code 10031)" 
+    <section title="NFS4ERR_LEASE_MOVED (Error Code 10031)"
              anchor="err_LEASE_MOVED">
       <t>
-        A lease being renewed is associated with a file system 
+        A lease being renewed is associated with a file system
         that has been migrated to a new server.
       </t>
     </section>
-    <section title="NFS4ERR_OLD_STATEID (Error Code 10024)" 
+    <section title="NFS4ERR_OLD_STATEID (Error Code 10024)"
              anchor="err_OLD_STATEID">
       <t>
         A stateid is provided with a seqid value that is not the most
 	current.
       </t>
     </section>
-    <section title="NFS4ERR_STALE_STATEID (Error Code 10023)" 
+    <section title="NFS4ERR_STALE_STATEID (Error Code 10023)"
              anchor="err_STALE_STATEID">
       <t>
         A stateid generated by an earlier server instance was
@@ -708,7 +708,7 @@
     <t>
       These are the various permission-related errors in NFSv4.
     </t>
-    <section title="NFS4ERR_ACCESS (Error Code 13)" 
+    <section title="NFS4ERR_ACCESS (Error Code 13)"
              anchor="err_ACCESS">
       <t>
         Indicates permission denied. The caller does
@@ -717,23 +717,22 @@
         NFS4ERR_PERM (<xref target="err_PERM" />), which
         restricts itself to owner or privileged user
         permission failures.
-
       </t>
     </section>
-    <section title="NFS4ERR_PERM (Error Code 1)" 
+    <section title="NFS4ERR_PERM (Error Code 1)"
              anchor="err_PERM">
       <t>
-        Indicates requester is not the owner. The operation was not 
-        allowed because the caller is neither a privileged user 
+        Indicates requester is not the owner. The operation was not
+        allowed because the caller is neither a privileged user
         (root) nor the owner of the target of the operation.
       </t>
     </section>
-    <section title="NFS4ERR_WRONGSEC (Error Code 10016)" 
+    <section title="NFS4ERR_WRONGSEC (Error Code 10016)"
              anchor="err_WRONGSEC">
       <t>
-        Indicates that the security mechanism being used by the client 
-        for the operation does not match the server's security policy.  
-        The client should change the security mechanism being used and 
+        Indicates that the security mechanism being used by the client
+        for the operation does not match the server's security policy.
+        The client should change the security mechanism being used and
         re-send the operation.  SECINFO can be used
         to determine the appropriate mechanism.
       </t>
@@ -743,25 +742,25 @@
   <section title="Name Errors" anchor="errors_name">
     <t>
       Names in NFSv4 are UTF-8 strings.  When the strings are not
-      are of length zero, the error NFS4ERR_INVAL results.  When 
+      are of length zero, the error NFS4ERR_INVAL results.  When
       they are not valid UTF-8 the error NFS4ERR_INVAL also results,
-      but servers may accommodate file systems with different 
-      character formats and not return this error.  Besides 
-      this, there are a number of other errors 
+      but servers may accommodate file systems with different
+      character formats and not return this error.  Besides
+      this, there are a number of other errors
       to indicate specific problems with names.
     </t>
-    <section title="NFS4ERR_BADCHAR (Error Code 10040)" 
+    <section title="NFS4ERR_BADCHAR (Error Code 10040)"
              anchor="err_BADCHAR">
       <t>
-        A UTF-8 string contains a character which is not supported 
+        A UTF-8 string contains a character which is not supported
         by the server in the context in which it being used.
       </t>
     </section>
-    <section title="NFS4ERR_BADNAME (Error Code 10041)" 
+    <section title="NFS4ERR_BADNAME (Error Code 10041)"
              anchor="err_BADNAME">
       <t>
          A name string in a request consisted of valid UTF-8
-         characters supported by the server but the name is not 
+         characters supported by the server but the name is not
          supported by the server as a valid name for current operation.
          An example might be creating a file or directory named ".."
          on a server whose file system uses that name for links to
@@ -770,16 +769,16 @@
       <t>
          This error should not be returned due a normalization issue
          in a string.  When a file system keeps names in a particular
-         normalization form, it is the server's responsibility to 
-         do the appropriate normalization, rather than rejecting 
+         normalization form, it is the server's responsibility to
+         do the appropriate normalization, rather than rejecting
          the name.
       </t>
     </section>
-    <section title="NFS4ERR_NAMETOOLONG (Error Code 63)" 
+    <section title="NFS4ERR_NAMETOOLONG (Error Code 63)"
              anchor="err_NAMETOOLONG">
       <t>
          Returned when the filename in an operation exceeds the
-         server's implementation limit.  
+         server's implementation limit.
       </t>
     </section>
   </section>
@@ -791,47 +790,47 @@
       with errors specific to the process of reclaiming locks.  Those
       are dealt with in the next section.
     </t>
-    <section title="NFS4ERR_BAD_RANGE (Error Code 10042)" 
+    <section title="NFS4ERR_BAD_RANGE (Error Code 10042)"
              anchor="err_BAD_RANGE">
       <t>
         The range for a LOCK, LOCKT, or LOCKU operation is not
         appropriate to the allowable range of offsets for the
         server.  E.g., this error results when a server
         which only supports 32-bit ranges receives a range that
-        cannot be handled by that server.  (See 
+        cannot be handled by that server.  (See
         <xref target="OP_LOCK_DESCRIPTION" />).
 
       </t>
     </section>
-    <section title="NFS4ERR_BAD_SEQID (Error Code 10026)" 
+    <section title="NFS4ERR_BAD_SEQID (Error Code 10026)"
              anchor="err_BAD_SEQID">
       <t>
-        The sequence number (seqid) in a locking request is neither the 
+        The sequence number (seqid) in a locking request is neither the
         next expected number or the last number processed.
       </t>
     </section>
-    <section title="NFS4ERR_DEADLOCK (Error Code 10045)" 
+    <section title="NFS4ERR_DEADLOCK (Error Code 10045)"
              anchor="err_DEADLOCK">
       <t>
         The server has been able to determine a file locking
         deadlock condition for a blocking lock request.
       </t>
     </section>
-    <section title="NFS4ERR_DENIED (Error Code 10010)" 
+    <section title="NFS4ERR_DENIED (Error Code 10010)"
              anchor="err_DENIED">
       <t>
         An attempt to lock a file is denied.  Since this may be a
         temporary condition, the client is encouraged to re-send the lock
-        request until the lock is accepted.  See 
+        request until the lock is accepted.  See
         <xref target="sec:blocklock" /> for a discussion of the re-send.
       </t>
     </section>
-    <section title="NFS4ERR_LOCKED (Error Code 10012)" 
+    <section title="NFS4ERR_LOCKED (Error Code 10012)"
              anchor="err_LOCKED">
       <t>
         A read or write operation was attempted on a file where there
         was a conflict between the I/O and an existing lock:
-        <list style="symbols"> 
+        <list style="symbols">
           <t>
             There is a share reservation inconsistent with the I/O
             being done.
@@ -843,27 +842,27 @@
         </list>
       </t>
     </section>
-    <section title="NFS4ERR_LOCKS_HELD (Error Code 10037)" 
+    <section title="NFS4ERR_LOCKS_HELD (Error Code 10037)"
              anchor="err_LOCKS_HELD">
       <t>
         An operation was prevented by the unexpected presence of locks.
       </t>
     </section>
-    <section title="NFS4ERR_LOCK_NOTSUPP (Error Code 10043)" 
+    <section title="NFS4ERR_LOCK_NOTSUPP (Error Code 10043)"
              anchor="err_LOCK_NOTSUPP">
       <t>
-        A locking request was attempted which would require the upgrade 
+        A locking request was attempted which would require the upgrade
         or downgrade of a lock range already held by the owner when the
         server does not support atomic upgrade or downgrade of locks.
       </t>
     </section>
-    <section title="NFS4ERR_LOCK_RANGE (Error Code 10028)" 
+    <section title="NFS4ERR_LOCK_RANGE (Error Code 10028)"
              anchor="err_LOCK_RANGE">
       <t>
         A lock request is operating on a range that overlaps in part a
         currently held lock for the current lock owner and does not
-        precisely match a single such lock where the server 
-        does not support this type of request, and thus does not 
+        precisely match a single such lock where the server
+        does not support this type of request, and thus does not
         implement POSIX locking semantics <xref target="fcntl" />. See
         <xref target="OP_LOCK_IMPLEMENTATION" />,
         <xref target="OP_LOCKT_IMPLEMENTATION" />, and
@@ -871,7 +870,7 @@
         how this applies to LOCK, LOCKT, and LOCKU respectively.
       </t>
     </section>
-    <section title="NFS4ERR_OPENMODE (Error Code 10038)" 
+    <section title="NFS4ERR_OPENMODE (Error Code 10038)"
              anchor="err_OPENMODE">
       <t>
         The client attempted a READ, WRITE, LOCK or other operation
@@ -886,16 +885,16 @@
       These errors relate to the process of reclaiming locks after a
       server restart.
     </t>
-    <section title="NFS4ERR_GRACE (Error Code 10013)" 
+    <section title="NFS4ERR_GRACE (Error Code 10013)"
              anchor="err_GRACE">
       <t>
         The server is in its recovery or grace period which should
         at least match the lease period of the server.  A locking
-        request other than a reclaim could not be granted during 
+        request other than a reclaim could not be granted during
         that period.
       </t>
     </section>
-    <section title="NFS4ERR_NO_GRACE (Error Code 10033)" 
+    <section title="NFS4ERR_NO_GRACE (Error Code 10033)"
              anchor="err_NO_GRACE">
       <t>
         The server cannot guarantee that it has not granted state to
@@ -903,7 +902,7 @@
         No further reclaims from this client will succeed.
       </t>
     </section>
-    <section title="NFS4ERR_RECLAIM_BAD (Error Code 10034)" 
+    <section title="NFS4ERR_RECLAIM_BAD (Error Code 10034)"
              anchor="err_RECLAIM_BAD">
       <t>
         The server cannot guarantee that it has not granted state to
@@ -920,7 +919,7 @@
         that they are not.
       </t>
     </section>
-    <section title="NFS4ERR_RECLAIM_CONFLICT (Error Code 10035)" 
+    <section title="NFS4ERR_RECLAIM_CONFLICT (Error Code 10035)"
              anchor="err_RECLAIM_CONFLICT">
       <t>
         The reclaim attempted by the client conflicts with a lock
@@ -935,14 +934,14 @@
       This sections deals with errors associated with requests used
       to create and manage client IDs.
     </t>
-    <section title="NFS4ERR_CLID_INUSE (Error Code 10017)" 
+    <section title="NFS4ERR_CLID_INUSE (Error Code 10017)"
              anchor="err_CLID_INUSE">
       <t>
         The SETCLIENTID operation has found that a client id is
         already in use by another client.
       </t>
     </section>
-    <section title="NFS4ERR_STALE_CLIENTID (Error Code 10022)" 
+    <section title="NFS4ERR_STALE_CLIENTID (Error Code 10022)"
              anchor="err_STALE_CLIENTID">
       <t>
         A client ID not recognized by the server was used in a locking
@@ -956,34 +955,34 @@
       This section deals with errors specific to attribute handling
       within NFSv4.
     </t>
-    <section title="NFS4ERR_ATTRNOTSUPP (Error Code 10032)" 
+    <section title="NFS4ERR_ATTRNOTSUPP (Error Code 10032)"
              anchor="err_ATTRNOTSUPP">
       <t>
-        An attribute specified is not supported by the server.  This 
+        An attribute specified is not supported by the server.  This
         error MUST NOT be returned by the GETATTR operation.
       </t>
     </section>
-    <section title="NFS4ERR_BADOWNER (Error Code 10039)" 
+    <section title="NFS4ERR_BADOWNER (Error Code 10039)"
              anchor="err_BADOWNER">
       <t>
-        Returned when an owner or owner_group attribute value or the who 
+        Returned when an owner or owner_group attribute value or the who
         field of an ace within an ACL attribute value cannot be
         translated to a local representation.
       </t>
     </section>
-    <section title="NFS4ERR_NOT_SAME (Error Code 10027)" 
+    <section title="NFS4ERR_NOT_SAME (Error Code 10027)"
              anchor="err_NOT_SAME">
       <t>
         This error is returned by the VERIFY operation to signify
-        that the attributes compared were not the same as those provided 
+        that the attributes compared were not the same as those provided
         in the client's request.
       </t>
     </section>
-    <section title="NFS4ERR_SAME (Error Code 10009)" 
+    <section title="NFS4ERR_SAME (Error Code 10009)"
              anchor="err_SAME">
       <t>
         This error is returned by the NVERIFY operation to signify
-        that the attributes compared were the same as those provided 
+        that the attributes compared were the same as those provided
         in the client's request.
       </t>
     </section>
@@ -998,7 +997,7 @@
 <section title="Operations and their valid errors">
   <t>
     This section contains a table which gives the valid error returns
-    for each protocol operation.  The error code NFS4_OK (indicating 
+    for each protocol operation.  The error code NFS4_OK (indicating
     no error) is not listed but should be understood to be returnable
     by all operations except ILLEGAL.
   </t>
@@ -1872,8 +1871,8 @@
 
 <!-- ENDOFTHEERRORTABLE -->
 <!-- DO NOT MOVE THIS OR THE ONE ABOVE LINE - IT MUST BE AT THE START OF TABLE -->
-    
-  </texttable>    
+
+  </texttable>
 </section>
 
 <!-- When adding new errors above, add them to the next section under -->
@@ -1883,9 +1882,9 @@
 <section title="Callback operations and their valid errors">
   <t>
     This section contains a table which gives the valid error returns
-    for each callback operation.  The error code NFS4_OK (indicating 
+    for each callback operation.  The error code NFS4_OK (indicating
     no error) is not listed but should be understood to be returnable
-    by all callback operations with the exception of CB_ILLEGAL. 
+    by all callback operations with the exception of CB_ILLEGAL.
   </t>
   <texttable anchor='cb_op_error_returns'>
     <preamble> Valid error returns for each protocol
