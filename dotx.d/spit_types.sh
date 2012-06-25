@@ -35,8 +35,8 @@ typedef :opaque  :utf8string<>:UTF-8 encoding for strings.
 typedef :utf8string:utf8_expected:String expected to be UTF-8 but no validation
 typedef :utf8string:utf8val_RECOMMENDED4:String SHOULD be sent UTF-8 and SHOULD be validated
 typedef :utf8string:utf8val_REQUIRED4:String MUST be sent UTF-8 and MUST be validated
-typedef :utf8string:ascii_REQUIRED4:String MUST be sent as ASCII and thus is automatically UTF.8
-typedef :utf8_expected:comptag4:Tag should be UTF.8 but is not checked
+typedef :utf8string:ascii_REQUIRED4:String MUST be sent as ASCII and thus is automatically UTF-8
+typedef :utf8_expected:comptag4:Tag should be UTF-8 but is not checked
 typedef :utf8val_RECOMMENDED4:component4:Represents path name components.
 typedef :utf8val_RECOMMENDED4:linktext4:Symbolic link contents.
 typedef :component4:pathname4<>:Represents path name for fs_locations.
