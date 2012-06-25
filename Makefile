@@ -1,4 +1,4 @@
-# Copyright (C) The IETF Trust (2009-2011)
+# Copyright (C) The IETF Trust (2009-2012)
 #
 # Manage the .xml for the NFSv4 3530bis document.
 #
@@ -8,7 +8,9 @@ MONTH=`date +%B`
 DAY=`date +%d`
 PREVVERS=17
 VERS=18
-VPATH = dotx.d
+VPATH=dotx.d
+
+XML2RFC=xml2rfc.tcl
 
 autogen/%.xml : %.x
 	@mkdir -p autogen
@@ -74,17 +76,17 @@ pall:
 
 draft-ietf-nfsv4-rfc3530bis-$(VERS).txt: draft-ietf-nfsv4-rfc3530bis-$(VERS).xml
 	rm -f $@ draft-tmp.txt
-	sh xml2rfc_wrapper.sh draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.txt
+	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.txt
 	mv draft-tmp.txt $@
 
 draft-ietf-nfsv4-rfc3530bis-$(VERS).html: draft-ietf-nfsv4-rfc3530bis-$(VERS).xml
 	rm -f $@ draft-tmp.html
-	sh xml2rfc_wrapper.sh draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.html
+	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.html
 	mv draft-tmp.html $@
 
 draft-ietf-nfsv4-rfc3530bis-$(VERS).nr: draft-ietf-nfsv4-rfc3530bis-$(VERS).xml
 	rm -f $@ draft-tmp.nr
-	sh xml2rfc_wrapper.sh draft-ietf-nfsv4-rfc3530bis-$(VERS).xml $@.tmp
+	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml $@.tmp
 	mv draft-tmp.nr $@
 
 nfsv4_middle_errortoop_autogen.xml: nfsv4_middle_errors.xml

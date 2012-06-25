@@ -1,4 +1,4 @@
-# Copyright (C) The IETF Trust (2009-2011)
+# Copyright (C) The IETF Trust (2009-2012)
 # Manage the .xml for the NFSv4 document.
 #
 YEAR=`date +%Y`
@@ -6,7 +6,8 @@ MONTH=`date +%B`
 DAY=`date +%d`
 PREVVERS=10
 VERS=11
-VPATH = ../../dotx.d
+VPATH=../../dotx.d
+XML2RFC=xml2rfc.tcl
 
 all: txt filelist
 
@@ -45,7 +46,7 @@ tmp.x:	tmp.txt
 
 tmp.txt: draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).xml
 	rm -f tmp.txt tmp2.txt
-	XML2RFCDOT="." sh ../xml2rfc_wrapper.sh draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).xml tmp2.txt
+	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).xml tmp2.txt
 	mv -f tmp2.txt tmp.txt
 
 draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).txt: tmp.txt tmp.x
@@ -62,7 +63,7 @@ draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).txt: tmp.txt tmp.x
 	cp tmp.txt $@
 
 draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).nr: draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).xml
-	XML2RFCDOT="." sh ../xml2rfc_wrapper.sh draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).xml $@
+	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).xml $@
 
 dotx_front_autogen.xml: dotx_front.xml Makefile
 	sed -e s/DAYVAR/${DAY}/g -e s/MONTHVAR/${MONTH}/g -e s/YEARVAR/${YEAR}/g < dotx_front.xml > dotx_front_autogen.xml
