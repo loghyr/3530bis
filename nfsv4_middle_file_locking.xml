@@ -1273,37 +1273,32 @@
     </t>
 
     <t>
-      The following events cause implicit renewal of all of the leases
-      for a given client (i.e., all those sharing a given client ID).
-      Each of these is a positive indication that the client is still
-      active and that the associated state held at the server, for the
-      client, is still valid.
+      The client can implicitly provide a a positive indication that
+      it is still active and that the associated state held at the
+      server, for the client, is still valid.  Any operation made
+      with a valid clientid (DELEGPURGE, RENEW,
+      OPEN, LOCK) or a valid stateid (CLOSE, DELEGRETURN, LOCK, LOCKU,
+      OPEN, OPEN_CONFIRM, OPEN_DOWNGRADE, READ, SETATTR, or WRITE)
+      informs the server to renew all of the leases for that
+      client (i.e., all those sharing a given client ID).
+      In the latter case, the stateid must not be one of the
+      special stateids consisting of all bits 0 or all bits 1.
+    </t>
 
-      <list style='symbols'>
-        <t>
-          An OPEN with a valid client ID.
-        </t>
+    <t>
+      Note that if the client had restarted or rebooted, the
+      client would not be making these requests without issuing
+      the SETCLIENTID/SETCLIENTID_CONFIRM sequence.  The use of the
+      SETCLIENTID/SETCLIENTID_CONFIRM sequence (one that changes the
+      client verifier) notifies the server to drop the locking state
+      associated with the client.  SETCLIENTID/SETCLIENTID_CONFIRM
+      never renews a lease.
+    </t>
 
-        <t>
-          Any operation made with a valid clientid (DELEGPURGE, RENEW,
-          OPEN, LOCK) or a valid stateid (CLOSE, DELEGRETURN, LOCK, LOCKU,
-          OPEN, OPEN_CONFIRM, OPEN_DOWNGRADE, READ, SETATTR, or WRITE).
-          In the latter case, the stateid must not be one of the
-          special stateids consisting of all bits 0 or all bits 1.
-        <vspace blankLines='1' />
-          Note that if the client had restarted or rebooted, the
-          client would not be making these requests without issuing
-          the SETCLIENTID/SETCLIENTID_CONFIRM sequence.  The use of the
-          SETCLIENTID/SETCLIENTID_CONFIRM sequence (one that changes the
-          client verifier) notifies the server to drop the locking state
-          associated with the client.  SETCLIENTID/SETCLIENTID_CONFIRM
-          never renews a lease.
-        <vspace blankLines='1' />
-          If the server has rebooted, the stateids (NFS4ERR_STALE_STATEID
-          error) or the client ID (NFS4ERR_STALE_CLIENTID error) will
-          not be valid hence preventing spurious renewals.
-        </t>
-      </list>
+    <t>
+      If the server has rebooted, the stateids (NFS4ERR_STALE_STATEID
+      error) or the client ID (NFS4ERR_STALE_CLIENTID error) will
+      not be valid hence preventing spurious renewals.
     </t>
 
     <t>
