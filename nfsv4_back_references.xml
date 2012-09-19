@@ -965,4 +965,37 @@ document are to be interpreted as described in RFC
       </front>
     </reference>
 
+    <reference anchor='RFC4511'>
+      <front>
+        <title>Lightweight Directory Access Protocol (LDAP): The Protocol</title>
+        <author fullname='J. Sermersheim' initials='J.' surname='Sermersheim'>
+          <organization />
+        </author>
+
+        <date year='2006' month='June' />
+      </front>
+
+      <seriesInfo value='4511' name='RFC' />
+      <format octets='150116' type='TXT' target='http://www.rfc-editor.org/rfc/rfc4511.txt' />
+    </reference>
+
+    <reference anchor='RFC5246'>
+      <front>
+        <title>The Transport Layer Security (TLS) Protocol Version 1.2</title>
+        <author fullname='T. Dierks' initials='T.' surname='Dierks'>
+          <organization />
+        </author>
+
+        <author fullname='E. Rescorla' initials='E.' surname='Rescorla'>
+          <organization />
+        </author>
+
+        <date year='2008' month='August' />
+
+      </front>
+
+      <seriesInfo value='5246' name='RFC' />
+      <format octets='222395' type='TXT' target='http://www.rfc-editor.org/rfc/rfc5246.txt' />
+    </reference>
+
 </references>

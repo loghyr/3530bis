@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2012) -->
+<!-- Copyright (C) The Internet Society (2010-2012) -->
 <section anchor="sec:security" title="Security Considerations">
 
   <t>
@@ -22,6 +22,17 @@
     to the integrity and privacy of NFS requests and responses.
     The issues of end to end mutual authentication, integrity,
     and privacy are discussed as part of <xref target="sec:rpc_flavors" />.
+  </t>
+
+  <t>
+    When an NFSv4 mandated security model is used and a security principal or
+    an NFSv4 name in user@dns_domain form needs to be translated to or from a
+    local representation as described in Section 5.9, the translation SHOULD be
+    done in a secure manner that preserves the integrity of the translation.  For
+    communication with a name service such as LDAP (<xref target='RFC4511' />),
+    this means employing a security service that uses authentication
+    and data integrity. Kerberos and TLS (<xref target='RFC5246' />) are examples
+    of such a security service.
   </t>
 
   <t>
