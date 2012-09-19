@@ -27,7 +27,8 @@
   <t>
     When an NFSv4 mandated security model is used and a security principal or
     an NFSv4 name in user@dns_domain form needs to be translated to or from a
-    local representation as described in Section 5.9, the translation SHOULD be
+    local representation as described in
+    <xref target='sec:fattr:owner_group' />, the translation SHOULD be
     done in a secure manner that preserves the integrity of the translation.  For
     communication with a name service such as LDAP (<xref target='RFC4511' />),
     this means employing a security service that uses authentication
@@ -36,12 +37,10 @@
   </t>
 
   <t>
-    Note that while NFSv4 mandates an end to end mutual authentication
-    model, the "classic" model of machine authentication via IP address
-    checking and AUTH_SYS identification can still be supported with the
-    caveat that the AUTH_SYS flavor is neither MANDATORY nor
-    RECOMMENDED by this specification, and so interoperability via
-    AUTH_SYS is not assured.
+    Note that being REQUIRED to implement does not mean REQUIRED to use;
+    AUTH_SYS can be used by NFSv4 clients and servers.  However,
+    AUTH_SYS is merely an OPTIONAL security flavor in NFSv4, and so
+    interoperability via AUTH_SYS is not assured.
   </t>
 
   <t>
