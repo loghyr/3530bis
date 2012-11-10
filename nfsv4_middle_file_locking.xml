@@ -1273,15 +1273,14 @@
     </t>
 
     <t>
-      The client can implicitly provide a a positive indication that
-      it is still active and that the associated state held at the
-      server, for the client, is still valid.  Any operation made
-      with a valid clientid (DELEGPURGE, RENEW,
-      OPEN, LOCK) or a valid stateid (CLOSE, DELEGRETURN, LOCK, LOCKU,
-      OPEN, OPEN_CONFIRM, OPEN_DOWNGRADE, READ, SETATTR, or WRITE)
-      informs the server to renew all of the leases for that
-      client (i.e., all those sharing a given client ID).
-      In the latter case, the stateid must not be one of the
+      The client can implicitly provide a positive indication that it is
+      still active and that the associated state held at the server, for
+      the client, is still valid.  Any operation made with a valid clientid
+      (DELEGPURGE, LOCK, LOCKT, OPEN, RELEASE_LOCKOWNER, or RENEW) or a
+      valid stateid (CLOSE, DELEGRETURN, LOCK, LOCKU, OPEN, OPEN_CONFIRM,
+      OPEN_DOWNGRADE, READ, SETATTR, or WRITE) informs the server to renew
+      all of the leases for that client (i.e., all those sharing a given
+      client ID).  In the latter case, the stateid must not be one of the
       special stateids consisting of all bits 0 or all bits 1.
     </t>
 
