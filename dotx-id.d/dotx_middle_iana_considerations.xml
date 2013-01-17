@@ -2,8 +2,6 @@
 <!-- Copyright (C) The Internet Society (2010-2011) -->
 <section anchor="ianaconsider" title="IANA Considerations">
     <t>
-      See the IANA Considerations section of <xref
-      target="I-D.ietf-nfsv4-rfc3530bis"/>.
-
+      This document does not have any IANA considerations.
     </t>
 </section>

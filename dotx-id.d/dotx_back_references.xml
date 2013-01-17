@@ -47,13 +47,13 @@
     <organization abbrev='Editors' />
 </author>
 
-<date month='July' day='07' year='2010' />
+<date month='November' day='10' year='2012' />
 
 </front>
 
-<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-04' />
+<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-21' />
 <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-04.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-21.txt' />
 </reference>
 
   </references>

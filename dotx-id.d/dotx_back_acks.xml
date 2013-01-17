@@ -15,10 +15,8 @@
   </t>
 
   <t>
-    [RFC Editor: prior to publishing this document as an RFC,
-    please replace all occurences of RFC3530bis
-    with RFCxxxx where xxxx is the RFC number assigned to the
-    XDR document.]
+    [RFC3530bis should be replaced by the RFC number of
+    draft-ietf-nfsv4-rfc3530bis in this draft.]
   </t>
 
   <t>

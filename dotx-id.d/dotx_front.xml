@@ -60,9 +60,9 @@
         Internet environment.
       </t>
       <t>
-        This document, together with RFC3530bis
-        replaces RFC 3530 as the definition of the NFS version
-        4 protocol.
+        RFC3530bis is formally obsoleting RFC 3530. But this document,
+        together with RFC3530bis replaces RFC 3530 as the definition of 
+        the NFS version 4 protocol.
       </t>
     </abstract>
 
