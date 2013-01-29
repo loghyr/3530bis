@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 <section anchor="sec:mars" title="Multi-Server Namespace">
   <t>
     NFSv4 supports attributes that allow a namespace to extend
@@ -467,18 +467,28 @@
       detect changes in location information.
     </t>
     <t>
-      A problem exists if a client allows an open owner to have state
-      on multiple filesystems on a server. If one of those filesystems
-      is migrated, what happens to the sequence numbers? A client can
-      avoid such a situation with the stipulation that any client
-      which supports migration MUST ensure that any open owner is
-      confined to a single filesystem. If the server finds itself
-      migrating open owners that span multiple filesystems, then it
-      MUST not migrate the state for the conflicting open owners
-      on the non-migrated filesystems; instead it MUST return
-      NFS4ERR_STALE_STATEID if the client tries to use those stateids.
+      A potential problem exists if a client were to allow an open owner to
+      have state on multiple filesystems on server, in that it is unclear
+      how the sequence numbers associated with open owners are to be dealt
+      with, in the event of transparent state migration.  A client can avoid
+      such a situation, if it ensures that any use of an open owner is
+      confined to a single filesystem.
+    </t>
+
+    <t>
+      A server MAY decline to migrate state associated with open owners that
+      span multiple filesystems.  In cases in which the server chooses not
+      to migrate such state, the server MUST return NFS4ERR_BAD_STATEID
+      when the client uses those stateids on the new server.
+    </t>
+
+    <t>
+      The server MUST return NFS4ERR_STALE_STATEID  when the
+      client uses those stateids on the old server, regardless of whether migration
+      has occurred or not.
     </t>
   </section>
+
   <section anchor="effecting_transitions"
            title="Effecting File System Transitions">
     <t>

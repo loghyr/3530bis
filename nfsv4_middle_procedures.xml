@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 <section anchor="sec:operations" title="NFSv4 Procedures">
 
   <section anchor="OP_NULL" title="Procedure 0: NULL - No Operation">
@@ -2090,7 +2090,7 @@
       <t>
         If a COMPOUND contains an OPEN which establishes a
         OPEN_DELEGATE_WRITE delegation, then a subsequent
-        GETATTR inside that COMPOUND SHOULD not result in a
+        GETATTR inside that COMPOUND SHOULD NOT result in a
         CB_GETATTR to the client. The server SHOULD understand
         the GETATTR to be for the same client ID and avoid
         querying the client, which will not be able to respond.

@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 <section anchor="file_attributes" title="File Attributes">
   <t>
     To meet the requirements of extensibility and increased
@@ -850,10 +850,8 @@
        supported.
        </t>
        <t>
-         The server can specify a root path by setting an array of
-	 zero path components. Other than this special case, the
-	 server MUST not present empty path components to the
-	 client.
+         The server specifies the root path for a given server by returning a path
+         consisting of zero path components.
        </t>
     </section>
 

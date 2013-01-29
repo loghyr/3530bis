@@ -257,7 +257,7 @@
         A server MAY support a claim type of CLAIM_DELEGATE_PREV, but if it
         does, it MUST NOT remove delegations upon SETCLIENTID_CONFIRM and
         instead MUST make them available for client reclaim using
-        CLAIM_DELEGATE_PREV.  The server MAY NOT remove the delegations until
+        CLAIM_DELEGATE_PREV.  The server MUST NOT remove the delegations until
         either the client does a DELEGPURGE, or one lease period has
         elapsed from the time the later of the SETCLIENTID_CONFIRM or the
         last successful CLAIM_DELEGATE_PREV reclaim.
