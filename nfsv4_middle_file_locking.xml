@@ -286,7 +286,7 @@
         receives a NFS4ERR_STALE_STATEID error using a stateid derived
         from its current client ID, since this also indicates a server
         reboot which has invalidated the existing client ID (see
-        <xref target="ss:fl:losd" /> for details).
+        <xref target="ss:fl:sfr" /> for details).
       </t>
 
       <t>

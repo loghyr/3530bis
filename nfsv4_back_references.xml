@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
   <references title="Normative References">
   <?rfc sortrefs="yes"?>
 
@@ -13,15 +13,15 @@
           <organization abbrev='Editors' />
         </author>
 
-        <date month='Feb' day='03' year='2011' />
+        <date month='Feb' day='25' year='2013' />
 
         <abstract><t>This Internet-Draft provides the XDR description for NFSv4.</t></abstract>
 
       </front>
 
-      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-02' />
+      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-16' />
       <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530-dot-x-02.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-dot-x-16.txt' />
     </reference>
 
     <reference anchor='RFC5665'>
@@ -253,17 +253,16 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='TXT' octets='138684' target='ftp://ftp.isi.edu/in-notes/rfc3454.txt' />
     </reference>
 
-    <reference anchor='I-D.draft-ietf-idna'>
+    <reference anchor='RFC5891'>
       <front>
         <title>Internationalized Domain Names in Applications (IDNA): Protocol</title>
         <author initials='J' surname='Klensin' fullname='John C. Klensin'>
           <organization />
         </author>
-        <date month='January' year='2010' />
+        <date month='August' year='2010' />
       </front>
-      <seriesInfo name='Internet-Draft' value='draft-ietf-idnabis-protocol-18' />
-      <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-idnabis-protocol-18.txt' />
+      <seriesInfo name='RFC' value='5891' />
+      <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc5891.txt' />
     </reference>
   </references>
 
@@ -839,16 +838,16 @@ document are to be interpreted as described in RFC
 <format type='TXT' octets='172710' target='ftp://ftp.isi.edu/in-notes/rfc793.txt' />
 </reference>
 
-<reference anchor='RFC3940'>
+<reference anchor='RFC5740'>
 <front>
-<title>Negative-acknowledgment (NACK)-Oriented Reliable Multicast (NORM) Protocol</title>
+<title>Negative-acknowledgment (NACK)-Oriented Reliable Multicast (NORM) Transport Protocol</title>
 <author initials="B." surname="Adamson" />
 <author initials="C." surname="Bormann" />
 <author initials="M." surname="Handley" />
 <author initials="J." surname="Macker" />
-<date year='2004' month='November' /></front>
-<seriesInfo name='RFC' value='3940' />
-<format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc3940.txt' />
+<date year='2009' month='November' /></front>
+<seriesInfo name='RFC' value='5740' />
+<format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc5740.txt' />
 </reference>
 
 <reference anchor='RFC4340'>

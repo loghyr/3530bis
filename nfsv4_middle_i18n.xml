@@ -243,7 +243,7 @@
             defined by the appropriate internet standards
             is used.  For server and domain naming,
             this involves normalization form NFKC
-            as specified in <xref target='I-D.draft-ietf-idna' />
+            as specified in <xref target='RFC5891' />
           </t>
           <t>
             For other strings, particular those passed
@@ -317,7 +317,7 @@
             defined by the appropriate internet standards
             is used.  For server and domain naming,
             this is the responsibility of IDNA as 
-            described in <xref target='I-D.draft-ietf-idna' />.
+            described in <xref target='RFC5891' />.
           </t>
           <t>
             For other strings, particularly those passed

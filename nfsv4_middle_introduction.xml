@@ -38,7 +38,7 @@
           entity.
         </t>
         <t>
-          Updating handling of domain names to reflect IDNA <xref target='I-D.draft-ietf-idna' />.
+          Updating handling of domain names to reflect IDNA <xref target='RFC5891' />.
         </t>
         <t>
           Restructuring of string types to more appropriately reflect

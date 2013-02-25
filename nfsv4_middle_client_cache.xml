@@ -1532,7 +1532,7 @@
       not propagated directly to the server but when the modified data is
       flushed to the server, analogous attribute changes are made on the
       server.  When open delegation is in effect, the modified attributes
-      may be returned to the server in the response to a CB_RECALL call.
+      may be returned to the server in the response to a CB_GETATTR call.
     </t>
 
     <t>
