@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 
 <front>
     <title abbrev="NFSv4">
@@ -14,13 +14,13 @@
         <organization abbrev="NetApp">NetApp</organization>
         <address>
             <postal>
-                <street>9110 E 66th St</street>
-                <city>Tulsa</city>
-                <region>OK</region>
-                <code>74133</code>
+                <street>495 E Java Dr</street>
+                <city>Sunnyvale</city>
+                <region>CA</region>
+                <code>95054</code>
                 <country>USA</country>
             </postal>
-            <phone>+1-918-307-1415</phone>
+            <phone>+1 408 419 3018</phone>
             <email>thomas@netapp.com</email>
         </address>
     </author>
