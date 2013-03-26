@@ -522,7 +522,7 @@
         which OPEN is used to do the file creation.
       </t>
     </section>
-    <section title="NFS4ERR_DQUOT (Error Code 19)"
+    <section title="NFS4ERR_DQUOT (Error Code 69)"
              anchor="err_DQUOT">
       <t>
         Resource (quota) hard limit exceeded. The user's resource
