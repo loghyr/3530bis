@@ -1,161 +1,12 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 <section anchor="sec:intro" title="Introduction" >
-  <section anchor="changes_since3530" title="Changes since RFC 3530">
-    <t>
-      This document, together with the companion XDR description 
-      document <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, 
-      obsoletes RFC 3530 <xref target="RFC3530" />
-      as the authoritative document describing NFSv4.  It does
-      not introduce any over-the-wire protocol
-      changes, in the sense that previously valid requests requests
-      remain valid.  However, some requests previously defined as
-      invalid, although not generally rejected, are now 
-      explicitly allowed, in that internationalization handling
-      has been generalized and liberalized.  The main changes from 
-      RFC 3530 are:
-
-      <list style='symbols'>
-        <t>
-          The XDR definition has been moved to a companion document
-          <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />
-        </t>
-        <t>
-          Updates for the latest IETF intellectual property statements
-        </t>
-        <t>
-          There is a restructured and more complete explanation of
-          multi-server namespace features.  In particular, this 
-          explanation explicitly describes handling of inter-server
-          referrals, even where neither migration nor replication
-          is involved.
-        </t>
-        <t>
-          More liberal handling of internationalization for file names
-          and user and group names, with the elimination of restrictions
-          imposed by stringprep, with the recognition that rules for
-          the forms of these name are the province of the receiving
-          entity.
-        </t>
-        <t>
-          Updating handling of domain names to reflect IDNA <xref target='RFC5891' />.
-        </t>
-        <t>
-          Restructuring of string types to more appropriately reflect
-          the reality of required string processing.
-        </t>
-	      <t>
-	        The previously required LIPKEY and SPKM-3 security mechanisms
-		have been removed.
-	      </t>
-	      <t>
-	        Some clarification on a client re-establishing callback
-	        information to the new server if state has been migrated.
-	      </t>
-	      <t>
-	        A third edge case was added for Courtesy locks and network
-          partitions.
-	      </t>
-	      <t>
-                The definition of stateid was strengthened.
-	      </t>
-      </list>
-    </t>
-  </section>
-
-  <section anchor="changes_since3010" title="Changes since RFC 3010">
-
-    <t>
-      This definition of the NFSv4 protocol replaces or
-      obsoletes the definition present in <xref target="RFC3010" />.
-      While portions of the two documents have remained the same,
-      there have been substantive changes in others.  The changes made
-      between <xref target="RFC3010" /> and this document represent
-      implementation experience and further review of the protocol.
-      While some modifications were made for ease of implementation
-      or clarification, most updates represent errors or situations
-      where the <xref target="RFC3010" /> definition were untenable.
-    </t>
-
-    <t>
-      The following list is not all inclusive of all changes but
-      presents some of the most notable changes or additions made:
-
-      <list style='symbols'>
-        <t>
-          The state model has added an open_owner4 identifier.  This
-          was done to accommodate Posix based clients and the model
-          they use for file locking.  For Posix clients, an open_owner4
-          would correspond to a file descriptor potentially shared
-          amongst a set of processes and the lock_owner4 identifier
-          would correspond to a process that is locking a file.
-        </t>
-
-        <t>
-          Clarifications and error conditions were added for the
-          handling of the owner and group attributes.  Since these
-          attributes are string based (as opposed to the numeric
-          uid/gid of previous versions of NFS), translations may not
-          be available and hence the changes made.
-        </t>
-
-        <t>
-          Clarifications for the ACL and mode attributes to address
-          evaluation and partial support.
-        </t>
-
-        <t>
-          For identifiers that are defined as XDR opaque, limits were
-          set on their size.
-        </t>
-
-        <t>
-          Added the mounted_on_filed attribute to allow Posix clients
-          to correctly construct local mounts.
-        </t>
-
-        <t>
-          Modified the SETCLIENTID/SETCLIENTID_CONFIRM operations to
-          deal correctly with confirmation details along with adding
-          the ability to specify new client callback information.
-          Also added clarification of the callback information itself.
-        </t>
-
-        <t>
-          Added a new operation RELEASE_LOCKOWNER to enable notifying
-          the server that a lock_owner4 will no longer be used by
-          the client.
-        </t>
-
-        <t>
-          RENEW operation changes to identify the client correctly
-          and allow for additional error returns.
-        </t>
-
-        <t>
-          Verify error return possibilities for all operations.
-        </t>
-
-        <t>
-          Remove use of the pathname4 data type from LOOKUP and OPEN
-          in favor of having the client construct a sequence of LOOKUP
-          operations to achieve the same effect.
-        </t>
-
-        <t>
-          Clarification of the internationalization issues and adoption
-          of the new stringprep profile framework.
-        </t> 
-      </list>
-    </t>
-  </section>
-
   <section anchor="v4_goals" title="NFS Version 4 Goals">
-
     <t>
-      The NFSv4 protocol is a further revision of the NFS
-      protocol defined already by versions 2 <xref target="RFC1094" />
-      and 3 <xref target="RFC1813" />.  It retains the essential
+      The Network Filesystem version 4 (NFSv4) protocol is a further
+      revision of the NFS protocol defined already by versions
+      2 <xref target="RFC1094" /> and 3 <xref target="RFC1813" />.
+      It retains the essential
       characteristics of previous versions: design for easy recovery,
       independent of transport protocols, operating systems and
       filesystems, simplicity, and good performance.  The NFSv4
@@ -196,11 +47,23 @@
         </t>
       </list>
     </t>
+
+    <t>
+      This document, together with the companion XDR description 
+      document <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, 
+      obsoletes RFC 3530 <xref target="RFC3530" />
+      as the authoritative document describing NFSv4.  It does
+      not introduce any over-the-wire protocol
+      changes, in the sense that previously valid requests requests
+      remain valid.  However, some requests previously defined as
+      invalid, although not generally rejected, are now 
+      explicitly allowed, in that internationalization handling
+      has been generalized and liberalized.
+    </t>
   </section>
 
   <section anchor="document_incons" 
            title="Inconsistencies of this Document with the companion document NFS Version 4 Protocol">
-
     <t>
       <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, NFS Version 4
       Protocol, contains the definitions in XDR description language of
@@ -216,7 +79,6 @@
   </section>
 
   <section anchor="feature_overview" title="Overview of NFSv4 Features">
-
     <t>
       To provide a reasonable context for the reader, the major
       features of NFSv4 protocol will be reviewed in brief.
@@ -635,4 +497,143 @@
       </list>
     </t>
   </section>
+
+  <section anchor="changes_since3530" title="Changes since RFC 3530">
+    <t>
+      The main changes from RFC 3530 <xref target="RFC3530" /> are:
+
+      <list style='symbols'>
+        <t>
+          The XDR definition has been moved to a companion document
+          <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />
+        </t>
+        <t>
+          Updates for the latest IETF intellectual property statements
+        </t>
+        <t>
+          There is a restructured and more complete explanation of
+          multi-server namespace features.  In particular, this 
+          explanation explicitly describes handling of inter-server
+          referrals, even where neither migration nor replication
+          is involved.
+        </t>
+        <t>
+          More liberal handling of internationalization for file names
+          and user and group names, with the elimination of restrictions
+          imposed by stringprep, with the recognition that rules for
+          the forms of these name are the province of the receiving
+          entity.
+        </t>
+        <t>
+          Updating handling of domain names to reflect IDNA <xref target='RFC5891' />.
+        </t>
+        <t>
+          Restructuring of string types to more appropriately reflect
+          the reality of required string processing.
+        </t>
+	      <t>
+	        The previously required LIPKEY and SPKM-3 security mechanisms
+		      have been removed.
+	      </t>
+	      <t>
+	        Some clarification on a client re-establishing callback
+	        information to the new server if state has been migrated.
+	      </t>
+	      <t>
+	        A third edge case was added for Courtesy locks and network
+          partitions.
+	      </t>
+	      <t>
+                The definition of stateid was strengthened.
+	      </t>
+      </list>
+    </t>
+  </section>
+
+  <section anchor="changes_since3010" title="Changes since RFC 3010">
+    <t>
+      This definition of the NFSv4 protocol replaces or
+      obsoletes the definition present in <xref target="RFC3010" />.
+      While portions of the two documents have remained the same,
+      there have been substantive changes in others.  The changes made
+      between <xref target="RFC3010" /> and this document represent
+      implementation experience and further review of the protocol.
+      While some modifications were made for ease of implementation
+      or clarification, most updates represent errors or situations
+      where the <xref target="RFC3010" /> definition were untenable.
+    </t>
+
+    <t>
+      The following list is not all inclusive of all changes but
+      presents some of the most notable changes or additions made:
+
+      <list style='symbols'>
+        <t>
+          The state model has added an open_owner4 identifier.  This
+          was done to accommodate Posix based clients and the model
+          they use for file locking.  For Posix clients, an open_owner4
+          would correspond to a file descriptor potentially shared
+          amongst a set of processes and the lock_owner4 identifier
+          would correspond to a process that is locking a file.
+        </t>
+
+        <t>
+          Clarifications and error conditions were added for the
+          handling of the owner and group attributes.  Since these
+          attributes are string based (as opposed to the numeric
+          uid/gid of previous versions of NFS), translations may not
+          be available and hence the changes made.
+        </t>
+
+        <t>
+          Clarifications for the ACL and mode attributes to address
+          evaluation and partial support.
+        </t>
+
+        <t>
+          For identifiers that are defined as XDR opaque, limits were
+          set on their size.
+        </t>
+
+        <t>
+          Added the mounted_on_fileid attribute to allow Posix clients
+          to correctly construct local mounts.
+        </t>
+
+        <t>
+          Modified the SETCLIENTID/SETCLIENTID_CONFIRM operations to
+          deal correctly with confirmation details along with adding
+          the ability to specify new client callback information.
+          Also added clarification of the callback information itself.
+        </t>
+
+        <t>
+          Added a new operation RELEASE_LOCKOWNER to enable notifying
+          the server that a lock_owner4 will no longer be used by
+          the client.
+        </t>
+
+        <t>
+          RENEW operation changes to identify the client correctly
+          and allow for additional error returns.
+        </t>
+
+        <t>
+          Verify error return possibilities for all operations.
+        </t>
+
+        <t>
+          Remove use of the pathname4 data type from LOOKUP and OPEN
+          in favor of having the client construct a sequence of LOOKUP
+          operations to achieve the same effect.
+        </t>
+
+        <t>
+          Clarification of the internationalization issues and adoption
+          of the new stringprep profile framework.
+        </t> 
+      </list>
+    </t>
+  </section>
+
 </section>

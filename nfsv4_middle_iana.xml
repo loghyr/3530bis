@@ -1,21 +1,23 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 <section anchor="sec:iana" title="IANA Considerations">
 
-<t>
-This section uses terms that are defined in <xref target="RFC5226"/>.
-</t>
+  <t>
+    This section uses terms that are defined in <xref target="RFC5226"/>.
+  </t>
 
  <section anchor="namedattributesiana" title="Named Attribute Definitions">
    <t>
-     IANA will create a registry called the "NFSv4 Named Attribute Definitions Registry".
+     IANA had created a registry called the "NFSv4 Named Attribute Definitions Registry"
+     for RFC 3530 <xref target="RFC3530" />. This section introduces no new
+     changes, but it does recap the intent.
    </t>
    <t>
      The NFSv4 protocol supports the association of a file with zero or
      more named attributes.  The name space identifiers for these attributes
      are defined as string names.  The protocol does not define the
      specific assignment of the name space for these file attributes.
-     An IANA registry will promote interoperability
+     The IANA registry promotes interoperability
      where common interests exist.  While application developers are
      allowed to define and use attributes as needed, they are encouraged
      to register the attributes with IANA.
@@ -53,12 +55,11 @@ This section uses terms that are defined in <xref target="RFC5226"/>.
      attributes without risk of conflicting with an
      assignment in IANA's registry should use the prefix
      "PRIV" in all of its named attributes.
-
    </t>
    <t>
      Because some NFSv4 clients and servers have case insensitive
      semantics, the fifteen additional lower case and mixed case
-     permutations of each of "EXPE", "PRIV", and "STDS", are Reserved (e.g.
+     ermutations of each of "EXPE", "PRIV", and "STDS", are Reserved (e.g.
      "expe", "expE", "exPe", etc. are Reserved).
      Similarly, IANA must not allow two assignments that would conflict
      if both named attributes were converted to a common case.

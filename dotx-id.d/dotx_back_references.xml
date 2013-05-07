@@ -2,23 +2,6 @@
 <!-- Copyright (C) The Internet Society (2010-2011) -->
   <references title="Normative References">
 
-    <reference anchor='RFC2119'>
-      <front>
-	<title abbrev='RFC Key Words'>Key words for use in RFCs to Indicate Requirement Levels</title>
-	<author initials='S.' surname='Bradner' fullname='Scott Bradner'>
-	  <organization>Harvard University</organization>
-	  <address>
-	    <postal>
-	      <street>1350 Mass. Ave.</street>
-	      <street>Cambridge</street>
-	    <street>MA 02138</street></postal>
-	    <phone>- +1 617 495 3864</phone>
-	<email>sob@harvard.edu</email></address></author>
-	<date year='1997' month='March' />
-      </front>
-    </reference>
-
-
     <reference anchor='RFC4506'>
 
       <front>
@@ -51,9 +34,9 @@
 
 </front>
 
-<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-25' />
+<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-26' />
 <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-25.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-26.txt' />
 </reference>
 
   </references>

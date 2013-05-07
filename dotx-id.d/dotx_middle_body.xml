@@ -9,7 +9,7 @@
 </t>
 <t>
  The XDR description is provided in this document in a way
- that makes it simple for the reader to extract into ready
+ that makes it simple for the reader to extract it into ready
  to compile form. The reader can feed this document in the
  following shell script to produce the machine readable XDR
  description of NFSv4.0:
