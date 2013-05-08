@@ -9,7 +9,7 @@
  <section anchor="namedattributesiana" title="Named Attribute Definitions">
    <t>
      IANA had created a registry called the "NFSv4 Named Attribute Definitions Registry"
-     for RFC 3530 <xref target="RFC3530" />. This section introduces no new
+     for <xref target="RFC3530" /> and <xref target="RFC5661" />. This section introduces no new
      changes, but it does recap the intent.
    </t>
    <t>

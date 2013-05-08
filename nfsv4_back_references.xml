@@ -223,36 +223,6 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
 	      target='ftp://ftp.isi.edu/in-notes/rfc2743.txt' />
     </reference>
 
-    <reference anchor='RFC3454'>
-
-      <front>
-	<title>Preparation of Internationalized Strings ("stringprep")</title>
-	<author initials='P.' surname='Hoffman' fullname='P. Hoffman'>
-	  <organization /></author>
-	<author initials='M.' surname='Blanchet' fullname='M. Blanchet'>
-	  <organization /></author>
-	<date year='2002' month='December' />
-	<abstract>
-	  <t>
-	    &lt;p>This document describes a framework for preparing
-	    Unicode text strings in order to increase the likelihood
-	    that string input and string comparison work in ways that
-	    make sense for typical users throughout the world. The
-	    stringprep protocol is useful for protocol identifier
-	    values, company and personal names, internationalized
-	    domain names, and other text strings. This document does
-	    not specify how protocols should prepare text
-	    strings. Protocols must create profiles of stringprep in
-	    order to fully specify the processing options. [STANDARDS
-	    TRACK] &lt;/p>
-          </t>
-        </abstract>
-      </front>
-
-      <seriesInfo name='RFC' value='3454' />
-      <format type='TXT' octets='138684' target='ftp://ftp.isi.edu/in-notes/rfc3454.txt' />
-    </reference>
-
     <reference anchor='RFC5891'>
       <front>
         <title>Internationalized Domain Names in Applications (IDNA): Protocol</title>
@@ -263,6 +233,21 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       </front>
       <seriesInfo name='RFC' value='5891' />
       <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc5891.txt' />
+    </reference>
+
+    <reference anchor='RFC6649'>
+      <front>
+        <title>Deprecate DES, RC4-HMAC-EXP, and Other Weak Cryptographic Algorithms in Kerberos</title>
+        <author initials='L' surname='Astrand' fullname='L. Hornquist Astrand'>
+          <organization />
+        </author>
+        <author initials='T' surname='Yu' fullname='Tom Yu'>
+          <organization />
+        </author>
+        <date month='July' year='2012' />
+      </front>
+      <seriesInfo name='RFC' value='6649' />
+      <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc6649.txt' />
     </reference>
   </references>
 
@@ -962,6 +947,36 @@ document are to be interpreted as described in RFC
 	      </author>
 	      <date  year="2004"/>
       </front>
+    </reference>
+
+    <reference anchor='RFC3454'>
+
+      <front>
+	<title>Preparation of Internationalized Strings ("stringprep")</title>
+	<author initials='P.' surname='Hoffman' fullname='P. Hoffman'>
+	  <organization /></author>
+	<author initials='M.' surname='Blanchet' fullname='M. Blanchet'>
+	  <organization /></author>
+	<date year='2002' month='December' />
+	<abstract>
+	  <t>
+	    &lt;p>This document describes a framework for preparing
+	    Unicode text strings in order to increase the likelihood
+	    that string input and string comparison work in ways that
+	    make sense for typical users throughout the world. The
+	    stringprep protocol is useful for protocol identifier
+	    values, company and personal names, internationalized
+	    domain names, and other text strings. This document does
+	    not specify how protocols should prepare text
+	    strings. Protocols must create profiles of stringprep in
+	    order to fully specify the processing options. [STANDARDS
+	    TRACK] &lt;/p>
+          </t>
+        </abstract>
+      </front>
+
+      <seriesInfo name='RFC' value='3454' />
+      <format type='TXT' octets='138684' target='ftp://ftp.isi.edu/in-notes/rfc3454.txt' />
     </reference>
 
     <reference anchor='RFC4511'>

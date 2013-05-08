@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 <section title="Acknowledgments">
 	<t>
 		A bis is certainly built on the shoulders of the first
@@ -46,6 +46,10 @@
     Marcel Telka was a champion of straightening out the
     difference between a lock-owner and an open-owner. He
     has also been diligent in reviewing the final document.
+  </t>
+  <t>
+    Benjamin Kaduk reminded us that DES is dead and Nico
+    Williams helped us close the lid on the coffin.
   </t>
 </section>
 

@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 <section anchor="sec:rpc_flavors" title="RPC and Security Flavor">
    
   <t>
@@ -139,38 +139,48 @@
     <section title="Security mechanisms for NFSv4">
 
       <t>
-        The use of RPCSEC_GSS requires selection of: mechanism, quality
-        of protection, and service (authentication, integrity, privacy).
-        The remainder of this document will refer to these three parameters
-        of the RPCSEC_GSS security as the security triple.
+        RPCSEC_GSS, via GSS-API, normalizes access to mechanisms that provide
+        security services.  Therefore, NFSv4 clients and servers MUST
+        support the Kerberos V5 security mechanism.
+      </t>
+
+      <t>
+        The use of RPCSEC_GSS requires selection of mechanism, quality of
+        protection (QOP), and service (authentication, integrity, privacy).
+        For the mandated security mechanisms, NFSv4 specifies that a QOP of
+        zero is used, leaving it up to the mechanism or the mechanism's
+        configuration to map QOP zero to an appropriate level of protection.
+        Each mandated mechanism specifies a minimum set of cryptographic
+        algorithms for implementing integrity and privacy.  NFSv4 clients
+        and servers MUST be implemented on operating environments that comply
+        with the REQUIRED cryptographic algorithms of each REQUIRED
+        mechanism.
       </t>
 
       <section anchor="krb5:sectrip" title="Kerberos V5 as a security triple">
 
         <t>
           The Kerberos V5 GSS-API mechanism as described in <xref target="RFC4121" /> MUST be
-          implemented and provide the following security triples.
+          implemented with the RPCSEC_GSS services as specified in the
+          following table:
         </t>
 
         <t>
           <figure>
             <artwork>
-  column descriptions:
+   column descriptions:
+   1 == number of pseudo flavor
+   2 == name of pseudo flavor
+   3 == mechanism's OID
+   4 == RPCSEC_GSS service
+   5 == NFSv4 clients MUST support
+   6 == NFSv4 servers MUST support
 
-  1 == number of pseudo flavor
-  2 == name of pseudo flavor
-  3 == mechanism's OID
-  4 == mechanism's algorithm(s)
-  5 == RPCSEC_GSS service
-
-  1      2     3                    4             5
-  --------------------------------------------------------------------
-  390003 krb5  1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_none
-  390004 krb5i 1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_integrity
-  390005 krb5p 1.2.840.113554.1.2.2 DES MAC MD5   rpc_gss_svc_privacy
-                                    for integrity,
-                                    and 56 bit DES
-                                    for privacy.
+   1      2        3                    4                     5   6
+   ------------------------------------------------------------------
+   390003 krb5     1.2.840.113554.1.2.2 rpc_gss_svc_none      yes yes
+   390004 krb5i    1.2.840.113554.1.2.2 rpc_gss_svc_integrity yes yes
+   390005 krb5p    1.2.840.113554.1.2.2 rpc_gss_svc_privacy    no yes
             </artwork>
           </figure>
         </t>
@@ -180,13 +190,34 @@
           implementor.  Because this NFS protocol includes a method to negotiate
           security and it understands the GSS-API mechanism, the pseudo flavor
           is not needed.  The pseudo flavor is needed for NFSv3 since
-          the security negotiation is done via the MOUNT protocol.
+          the security negotiation is done via the MOUNT protocol as described
+          in <xref target="RFC2623" />.
         </t>
 
         <t>
-          For a discussion of NFS' use of RPCSEC_GSS and Kerberos V5, please see
-          <xref target="RFC2623" />.
+          At the time this document was specified, the Advanced Encryption Standard
+          (AES) with HMAC-SHA1 was a REQUIRED algorithm set for Kerberos V5.
+          In contrast, when NFSv4.0 was first specified in
+          <xref target="RFC3530" />, weaker algorithm sets were
+          REQUIRED for Kerberos V5, and were REQUIRED in the NFSv4.0
+          specification, because the Kerberos V5 specification at the time did
+          not specify stronger algorithms.  The NFSv4 specification does not
+          specify REQUIRED algorithms for Kerberos V5, and instead, the
+          implementor is expected to track the evolution of the Kerberos V5
+          standard if and when stronger algorithms are specified.
         </t>
+
+        <section toc='exclude' anchor="ss:core_infrastructure:SCfCAiKV" title="Security Considerations for Cryptographic Algorithms in Kerberos V5">
+          <t>
+            When deploying NFSv4, the strength of the security achieved depends
+            on the existing Kerberos V5 infrastructure.  The algorithms of
+            Kerberos V5 are not directly exposed to or selectable by the client
+            or server, so there is some due diligence required by the user of
+            NFSv4 to ensure that security is acceptable where needed. Guidance
+            is provided in <xref target="RFC6649" /> as to why weak algorithms
+            should be disabled by default.
+          </t>
+        </section>
 
       </section>
     </section>
