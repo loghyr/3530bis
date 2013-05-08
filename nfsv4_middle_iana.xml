@@ -59,7 +59,7 @@
    <t>
      Because some NFSv4 clients and servers have case insensitive
      semantics, the fifteen additional lower case and mixed case
-     ermutations of each of "EXPE", "PRIV", and "STDS", are Reserved (e.g.
+     permutations of each of "EXPE", "PRIV", and "STDS", are Reserved (e.g.
      "expe", "expE", "exPe", etc. are Reserved).
      Similarly, IANA must not allow two assignments that would conflict
      if both named attributes were converted to a common case.

@@ -54,7 +54,7 @@
       obsoletes RFC 3530 <xref target="RFC3530" />
       as the authoritative document describing NFSv4.  It does
       not introduce any over-the-wire protocol
-      changes, in the sense that previously valid requests requests
+      changes, in the sense that previously valid requests
       remain valid.  However, some requests previously defined as
       invalid, although not generally rejected, are now 
       explicitly allowed, in that internationalization handling
