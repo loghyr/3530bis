@@ -6,8 +6,9 @@
     The NFSv4 protocol is a Remote Procedure Call (RPC)
     application that uses RPC version 2 and the corresponding eXternal
     Data Representation (XDR) as defined in <xref target="RFC5531" />
-    and <xref target="RFC4506" />.  The RPCSEC_GSS security flavor as
-    defined in <xref target="RFC2203" /> MUST be implemented
+    and <xref target="RFC4506" />.  The RPCSEC_GSS security flavors as
+    defined in version 1 (<xref target="RFC2203" />) and version 2
+    (<xref target="RFC5403" />) MUST be implemented
     as the mechanism to deliver stronger security for the NFSv4
     protocol.  However, deployment of RPCSEC_GSS is optional.
   </t>
@@ -78,9 +79,9 @@
     <section title="Client Retransmission Behavior">
 
       <t>
-        When processing a request received over a reliable transport such as
+        When processing a NFSv4 request received over a reliable transport such as
         TCP, the NFSv4 server MUST NOT silently drop the request,
-        except if the transport connection has been broken.  Given such a
+        except if the established transport connection has been broken.  Given such a
         contract between NFSv4 clients and servers, clients MUST NOT
         retry a request unless one or both of the following are true:
 

@@ -349,7 +349,7 @@
         <xref target="attrdef_lease_time" />
       </c>
 
-      <c>rdattr_error</c><c>11</c><c>enum</c><c>R</c>
+      <c>rdattr_error</c><c>11</c><c>nfsstat4</c><c>R</c>
       <c>
         <xref target="attrdef_rdattr_error" />
       </c>
@@ -1035,8 +1035,8 @@
         disk space that can be allocated to this file or directory
         before the user may reasonably be warned.  It is understood
         that this space may be consumed by allocations to other files
-        or directories though there is a rule as to which other files
-        or directories.
+        or directories though there may exist server side rules as
+        to which other files or directories.
       </t>
     </section>
 

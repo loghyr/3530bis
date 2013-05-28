@@ -25,7 +25,8 @@
           Strong security with negotiation built into the protocol.
         <vspace blankLines='1' />
           The protocol builds on the work of the ONCRPC working group
-          in supporting the RPCSEC_GSS protocol.  Additionally, the NFS
+          in supporting the RPCSEC_GSS protocol (see both <xref target="RFC2203" />
+          and <xref target="RFC5403" />).  Additionally, the NFS
           version 4 protocol provides a mechanism to allow clients and
           servers the ability to negotiate security and require clients
           and servers to support a minimal set of security schemes.
@@ -102,7 +103,8 @@
         defined in <xref target="RFC5531" /> and
         <xref target="RFC4506" />.  To meet end to end
         security requirements, the RPCSEC_GSS framework
-        <xref target="RFC2203" />
+        (both version 1 in <xref target="RFC2203" /> and
+        version 2 in <xref target="RFC5403" />)
         will be used to extend the basic RPC security.  With the
         use of RPCSEC_GSS, various mechanisms can be provided to
         offer authentication, integrity, and privacy to the NFS
