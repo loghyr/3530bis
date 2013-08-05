@@ -910,8 +910,8 @@
 
       <t>
         Locking is different than most NFS operations as it requires
-        "at-most-one" semantics that are not provided by ONCRPC.
-        ONCRPC over a reliable transport is not sufficient because a
+        "at-most-one" semantics that are not provided by ONC RPC.
+        ONC RPC over a reliable transport is not sufficient because a
         sequence of locking requests may span multiple TCP connections.
         In the face of retransmission or reordering, lock or unlock
         requests must have a well defined and consistent behavior.

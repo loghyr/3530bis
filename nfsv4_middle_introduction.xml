@@ -24,7 +24,8 @@
         <t>
           Strong security with negotiation built into the protocol.
         <vspace blankLines='1' />
-          The protocol builds on the work of the ONCRPC working group
+          The protocol builds on the work of the Open Network Computing
+          (ONC) Remote Procedure Call (RPC) working group
           in supporting the RPCSEC_GSS protocol (see both <xref target="RFC2203" />
           and <xref target="RFC5403" />).  Additionally, the NFS
           version 4 protocol provides a mechanism to allow clients and
@@ -50,20 +51,20 @@
     </t>
 
     <t>
-      This document, together with the companion XDR description 
-      document <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, 
+      This document, together with the companion XDR description
+      document <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />,
       obsoletes RFC 3530 <xref target="RFC3530" />
       as the authoritative document describing NFSv4.  It does
       not introduce any over-the-wire protocol
       changes, in the sense that previously valid requests
       remain valid.  However, some requests previously defined as
-      invalid, although not generally rejected, are now 
+      invalid, although not generally rejected, are now
       explicitly allowed, in that internationalization handling
       has been generalized and liberalized.
     </t>
   </section>
 
-  <section anchor="document_incons" 
+  <section anchor="document_incons"
            title="Inconsistencies of this Document with the companion document NFS Version 4 Protocol">
     <t>
       <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, NFS Version 4
@@ -85,7 +86,7 @@
       features of NFSv4 protocol will be reviewed in brief.
       This will be done to provide an appropriate context for both
       the reader who is familiar with the previous versions of the
-      NFS protocol and the reader that is new to the NFS protocols.
+      NFS protocol and the reader who is new to the NFS protocols.
       For the reader new to the NFS protocols, some fundamental
       knowledge is still expected.  The reader should
       be familiar with the XDR and RPC protocols as described in
@@ -119,7 +120,7 @@
       <t>
         To enable in-band security negotiation, the NFSv4
         protocol has added a new operation which provides the client
-        a method of querying the server about its policies regarding
+        with a method of querying the server about its policies regarding
         which security mechanisms must be used for access to the
         server's filesystem resources.  With this, the client can
         securely match the security mechanism that meets the policies
@@ -173,7 +174,6 @@
     </section>
 
     <section anchor="intro_fs_model" title="Filesystem Model">
-
       <t>
         The general filesystem model used for the NFSv4
         protocol is the same as previous versions.  The server
@@ -196,7 +196,6 @@
       </t>
 
       <section anchor="intro_fh_types" title="Filehandle Types">
-
         <t>
           In previous versions of the NFS protocol, the filehandle
           provided by the server was guaranteed to be valid or
@@ -216,64 +215,63 @@
 
       <section anchor="intro_attrs" title="Attribute Types">
         <t>
-	  The NFSv4 protocol has a rich and extensible
-	  file object attribute structure, which is divided
-	  into REQUIRED, RECOMMENDED, and named attributes
-	  (see <xref target="file_attributes"/>).
+          The NFSv4 protocol has a rich and extensible
+          file object attribute structure, which is divided
+          into REQUIRED, RECOMMENDED, and named attributes
+          (see <xref target="file_attributes"/>).
         </t>
         <t>
-	  Several (but not all) of the REQUIRED attributes
-	  are derived from the attributes of NFSv3 (see
-	  definition of the fattr3 data type in <xref
-	  target="RFC1813"/>). An example of a REQUIRED
-	  attribute is the file object's type (<xref
-	  target="attrdef_type"/>) so that regular files
-	  can be distinguished from directories (also known
-	  as folders in some operating environments) and
-	  other types of objects. REQUIRED attributes are
-	  discussed in <xref
-	  target="mandatory_attributes_intro"/>.
+          Several (but not all) of the REQUIRED attributes
+          are derived from the attributes of NFSv3 (see
+          definition of the fattr3 data type in <xref
+          target="RFC1813"/>). An example of a REQUIRED
+          attribute is the file object's type (<xref
+          target="attrdef_type"/>) so that regular files
+          can be distinguished from directories (also known
+          as folders in some operating environments) and
+          other types of objects. REQUIRED attributes are
+          discussed in <xref
+          target="mandatory_attributes_intro"/>.
         </t>
         <t>
-	  An example of the RECOMMENDED attributes is
-	  an acl.  This attribute defines an
-	  Access Control List (ACL) on a file object
-	  ((<xref target="acl"/>).  An ACL provides
-	  file access control beyond the
-	  model used in NFSv3.   The ACL definition allows
-	  for specification of specific sets of permissions
-	  for individual users and groups.  In addition,
-	  ACL inheritance allows propagation of access
-	  permissions and restriction down a directory tree
-	  as file system objects are created.  RECOMMENDED
-	  attributes are discussed in <xref
-	  target="recommended_attributes_intro"/>.
+          An example of the RECOMMENDED attributes is
+          an acl (<xref target="attrdef_acl" />).  This attribute defines an
+          Access Control List (ACL) on a file object. An ACL provides
+          file access control beyond the
+          model used in NFSv3.   The ACL definition allows
+          for specification of specific sets of permissions
+          for individual users and groups.  In addition,
+          ACL inheritance allows propagation of access
+          permissions and restriction down a directory tree
+          as file system objects are created.  RECOMMENDED
+          attributes are discussed in <xref
+          target="recommended_attributes_intro"/>.
         </t>
         <t>
-          A named attribute is an opaque byte stream that is associated 
-          with a directory or file and referred to by a string name.  
-          Named attributes are meant to be used by client applications 
-          as a method to associate application-specific data with a 
+          A named attribute is an opaque byte stream that is associated
+          with a directory or file and referred to by a string name.
+          Named attributes are meant to be used by client applications
+          as a method to associate application-specific data with a
           regular file or directory.  NFSv4.1 modifies named attributes
           relative to NFSv4.0 by tightening the allowed operations in
           order to prevent the development of non-interoperable
           implementations.  Named attributes are discussed
-	  in <xref target="named_attributes_intro" />.
+          in <xref target="named_attributes_intro" />.
         </t>
       </section>
       <section anchor="intro_ms_namespace" title="Multi-server Namespace">
         <t>
           NFSv4 contains a number of features to allow
           implementation of namespaces that cross server boundaries
-          and that allow and facilitate a non-disruptive transfer of 
-          support for individual file systems between servers.  They 
+          and that allow and facilitate a non-disruptive transfer of
+          support for individual file systems between servers.  They
           are all based upon attributes that allow one file system to
-          specify alternate or new locations for that file system.   
+          specify alternate or new locations for that file system.
         </t>
         <t>
           These attributes may be used together with the concept
           of absent file systems, which provide specifications
-          for additional locations but no actual file system 
+          for additional locations but no actual file system
           content.  This allows a number of important facilities:
           <list style="symbols">
             <t>
@@ -285,12 +283,12 @@
             <t>
               Location attributes may be provided for present file systems
               to provide the locations of alternate file system instances
-              or replicas to be used in the event that the current 
+              or replicas to be used in the event that the current
               file system instance becomes unavailable.
             </t>
             <t>
               Location attributes may be provided when a previously
-              present file system becomes absent.  This allows 
+              present file system becomes absent.  This allows
               non-disruptive migration of file systems to alternate
               servers.
             </t>
@@ -514,10 +512,7 @@
         </t>
         <t>
           There is a restructured and more complete explanation of
-          multi-server namespace features.  In particular, this 
-          explanation explicitly describes handling of inter-server
-          referrals, even where neither migration nor replication
-          is involved.
+          multi-server namespace features.
         </t>
         <t>
           More liberal handling of internationalization for file names
@@ -527,27 +522,27 @@
           entity.
         </t>
         <t>
-          Updating handling of domain names to reflect IDNA <xref target='RFC5891' />.
+          Updating handling of domain names to reflect Internationalized Domain Names in Applications (IDNA) <xref target='RFC5891' />.
         </t>
         <t>
           Restructuring of string types to more appropriately reflect
           the reality of required string processing.
         </t>
-	      <t>
-	        The previously required LIPKEY and SPKM-3 security mechanisms
-		      have been removed.
-	      </t>
-	      <t>
-	        Some clarification on a client re-establishing callback
-	        information to the new server if state has been migrated.
-	      </t>
-	      <t>
-	        A third edge case was added for Courtesy locks and network
+        <t>
+          The previously required LIPKEY and SPKM-3 security mechanisms
+          have been removed.
+        </t>
+        <t>
+          Some clarification on a client re-establishing callback
+          information to the new server if state has been migrated.
+        </t>
+        <t>
+          A third edge case was added for Courtesy locks and network
           partitions.
-	      </t>
-	      <t>
-                The definition of stateid was strengthened.
-	      </t>
+        </t>
+        <t>
+          The definition of stateid was strengthened.
+        </t>
       </list>
     </t>
   </section>
@@ -633,7 +628,7 @@
         <t>
           Clarification of the internationalization issues and adoption
           of the new stringprep profile framework.
-        </t> 
+        </t>
       </list>
     </t>
   </section>
