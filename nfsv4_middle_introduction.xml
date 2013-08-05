@@ -99,7 +99,7 @@
 
       <t>
         As with previous versions of NFS, the External Data
-        Representation (XDR) and Remote Procedure Call (RPC)
+        Representation (XDR) and RPC
         mechanisms used for the NFSv4 protocol are those
         defined in <xref target="RFC5531" /> and
         <xref target="RFC4506" />.  To meet end to end

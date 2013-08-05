@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 <section anchor="sec:data_types" title="Protocol Data Types">
 
    <t>
@@ -160,7 +160,7 @@
       <?rfc include='autogen/type_nfs_client_id4.xml'?>
       <t>
         This structure is part of the arguments to the SETCLIENTID
-        operation.  NFS4_OPAQUE_LIMIT is defined as 1024.
+        operation.
       </t>
     </section>
 
@@ -168,7 +168,6 @@
       <?rfc include='autogen/type_open_owner4.xml'?>
       <t>
         This structure is used to identify the owner of open state.
-        NFS4_OPAQUE_LIMIT is defined as 1024.
       </t>
     </section>
 
@@ -176,7 +175,7 @@
       <?rfc include='autogen/type_lock_owner4.xml'?>
       <t>
         This structure is used to identify the owner of file locking
-        state.  NFS4_OPAQUE_LIMIT is defined as 1024.
+        state.
       </t>
     </section>
 

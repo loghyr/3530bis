@@ -1,7 +1,7 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
-<section anchor="sec:filehandles" title="Filehandles">
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
 
+<section anchor="sec:filehandles" title="Filehandles">
   <t>
     The filehandle in the NFS protocol is a per server unique identifier
     for a filesystem object.  The contents of the filehandle are
@@ -118,8 +118,8 @@
         by doing a byte-by-byte comparison.  However, the client MUST
         NOT otherwise interpret the contents of filehandles.  If two
         filehandles from the same server are equal, they MUST refer to
-        the same file.  Servers SHOULD try to maintain a one-to-one
-        correspondence between filehandles and files but this is not
+        the same filesystem object.  Servers SHOULD try to maintain a one-to-one
+        correspondence between filehandles and filesystem objects but this is not
         required.  Clients MUST use filehandle comparisons only to improve
         performance, not for correct behavior.  All clients need to be
         prepared for situations in which it cannot be determined whether
@@ -299,7 +299,7 @@
   <section title="Client Recovery from Filehandle Expiration">
 
     <t>
-      If possible, the client SHOULD recover from the receipt of an
+      If possible, the client should recover from the receipt of an
       NFS4ERR_FHEXPIRED error.  The client must take on additional
       responsibility so that it may prepare itself to recover from the
       expiration of a volatile filehandle.  If the server returns

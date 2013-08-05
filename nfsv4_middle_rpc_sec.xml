@@ -3,9 +3,9 @@
 <section anchor="sec:rpc_flavors" title="RPC and Security Flavor">
    
   <t>
-    The NFSv4 protocol is a Remote Procedure Call (RPC)
-    application that uses RPC version 2 and the corresponding eXternal
-    Data Representation (XDR) as defined in <xref target="RFC5531" />
+    The NFSv4 protocol is a RPC
+    application that uses RPC version 2 and the XDR
+    as defined in <xref target="RFC5531" />
     and <xref target="RFC4506" />.  The RPCSEC_GSS security flavors as
     defined in version 1 (<xref target="RFC2203" />) and version 2
     (<xref target="RFC5403" />) MUST be implemented
@@ -25,21 +25,22 @@
     </t>
 
     <t>
-      Where an NFSv4 implementation supports operation over the IP
-      network protocol, the supported transports between NFS and IP MUST be
-      among the IETF-approved congestion control transport protocols,
-      which include TCP and SCTP.  To enhance the possibilities for
+      Where an NFSv4 implementation supports operation over the IP network
+      protocol, the supported transport layer between NFS and IP MUST be an IETF
+      standardised transport protocol that is specified to avoid network 
+      congestion; such  transports include TCP and SCTP.
+      To enhance the possibilities for
       interoperability, an NFSv4 implementation MUST support
       operation over the TCP transport protocol, at least until such time
       as a standards track RFC revises this requirement to use a different
-      IETF-approved congestion control transport protocol.
+      IETF standardised transport protocol with appropriate congestion control.
     </t>
 
     <t>
       If TCP is used as the transport, the client and server SHOULD use
       persistent connections.  This will prevent the weakening of TCP's
       congestion control via short lived connections and will improve
-      performance for the WAN environment by eliminating the need for
+      performance for the Wide Area Network (WAN) environment by eliminating the need for
       SYN handshakes.
     </t>
 
@@ -59,7 +60,7 @@
       model from whole machine-based to one based on a per user model.
       In particular, NFS over TCP client implementations have traditionally
       multiplexed traffic for multiple users over a common TCP connection
-      between an NFS client and server.  This has been true, regardless
+      between an NFS client and server.  This has been true, regardless of
       whether the NFS client is using AUTH_SYS, AUTH_DH, RPCSEC_GSS or
       any other flavor.  Similarly, NFS over TCP server implementations
       have assumed such a model and thus scale the implementation of TCP
@@ -70,14 +71,7 @@
       reduced service.
     </t>
 
-    <t>
-      Note that for various timers, the client and server should avoid
-      inadvertent synchronization of those timers.  For further discussion
-      of the general issue refer to <xref target="Floyd" />.
-    </t>
-
     <section title="Client Retransmission Behavior">
-
       <t>
         When processing a NFSv4 request received over a reliable transport such as
         TCP, the NFSv4 server MUST NOT silently drop the request,
@@ -158,8 +152,7 @@
         mechanism.
       </t>
 
-      <section anchor="krb5:sectrip" title="Kerberos V5 as a security triple">
-
+      <section anchor="krb5:sectrip" title="Kerberos V5 as a Security Triple">
         <t>
           The Kerberos V5 GSS-API mechanism as described in <xref target="RFC4121" /> MUST be
           implemented with the RPCSEC_GSS services as specified in the
@@ -225,27 +218,25 @@
   </section>
 
   <section title="Security Negotiation">
+    <t>
+      With the NFSv4 server potentially offering multiple security
+      mechanisms, the client needs a method to determine or negotiate
+      which mechanism is to be used for its communication with the server.
+      The NFS server may have multiple points within its filesystem name
+      space that are available for use by NFS clients.  In turn the NFS
+      server may be configured such that each of these entry points may
+      have different or multiple security mechanisms in use.
+    </t>
 
-  <t>
-    With the NFSv4 server potentially offering multiple security
-    mechanisms, the client needs a method to determine or negotiate
-    which mechanism is to be used for its communication with the server.
-    The NFS server may have multiple points within its filesystem name
-    space that are available for use by NFS clients.  In turn the NFS
-    server may be configured such that each of these entry points may
-    have different or multiple security mechanisms in use.
-  </t>
-
-  <t>
-    The security negotiation between client and server SHOULD be done
-    with a secure channel to eliminate the possibility of a third party
-    intercepting the negotiation sequence and forcing the client and
-    server to choose a lower level of security than required or desired.
-    See <xref target="sec:security" /> for further discussion.
-  </t>
+    <t>
+      The security negotiation between client and server SHOULD be done
+      with a secure channel to eliminate the possibility of a third party
+      intercepting the negotiation sequence and forcing the client and
+      server to choose a lower level of security than required or desired.
+      See <xref target="sec:security" /> for further discussion.
+    </t>
 
     <section title="SECINFO">
-
       <t>
         The new SECINFO operation will allow the client to determine, on a per
         filehandle basis, what security triple is to be used for server access.

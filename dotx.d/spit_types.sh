@@ -90,6 +90,7 @@ EOF
 cat << EOF > $i
 const NFS4_FHSIZE		= 128;
 const NFS4_VERIFIER_SIZE	= 8;
+const NFS4_OTHER_SIZE		= 12;
 const NFS4_OPAQUE_LIMIT		= 1024;
 
 const NFS4_INT64_MAX		= 0x7fffffffffffffff;
@@ -299,7 +300,7 @@ EOF
 cat << EOF > $i
 struct stateid4 {
 	uint32_t	seqid;
-	opaque		other[12];
+	opaque		other[NFS4_OTHER_SIZE];
 };
 EOF
 	;;

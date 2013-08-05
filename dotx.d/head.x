@@ -386,7 +386,7 @@ include(type_cb_client4.x)
  */
 struct stateid4 {
 	uint32_t	seqid;
-	opaque		other[12];
+	opaque		other[NFS4_OTHER_SIZE];
 };
 
 /*

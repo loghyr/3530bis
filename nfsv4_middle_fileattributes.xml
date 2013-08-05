@@ -1,6 +1,7 @@
 <!-- Copyright (C) The IETF Trust (2009-2013) -->
 <!-- Copyright (C) The Internet Society (2010-2013) -->
-<section anchor="file_attributes" title="File Attributes">
+
+<section anchor="file_attributes" title="Attributes">
   <t>
     To meet the requirements of extensibility and increased
     interoperability with non-UNIX platforms, attributes need to be handled
@@ -28,7 +29,7 @@
     discussion.
   </t>
   <t>
-    Named attributes are accessed by the new OPENATTR operation, which
+    Named attributes are accessed by the OPENATTR operation, which
     accesses a hidden directory of attributes associated with a file
     system object.  OPENATTR takes a filehandle for the object and returns
     the filehandle for the attribute hierarchy.  The filehandle for the
@@ -79,7 +80,7 @@
       the REQUIRED attributes some client functionality may be impaired or
       limited in some ways.  A client may ask for any of these attributes to
       be returned by setting a bit in the GETATTR request, and the server
-      must return their value.
+      MUST return their value.
     </t>
   </section>
   <section anchor="recommended_attributes_intro" title="RECOMMENDED Attributes">
@@ -687,7 +688,7 @@
         <t>
           A value created by the server that the client can use to
           determine if file data, directory contents, or attributes of
-          the object have been modified.  The server may return the
+          the object have been modified.  The server MAY return the
           object's time_metadata attribute for this attribute's value
           but only if the file system object cannot be updated more
           frequently than the resolution of time_metadata.
@@ -1276,8 +1277,8 @@
       owner string. For example, the DNS domain name might be
       "lab.example.org", but the user names are defined in
       "example.org". In the absence of such a configuration,
-      or as a default, the current DNS domain name should be 
-      the value used for the "dns_domain".
+      or as a default, the current DNS domain name of the server
+      should be the value used for the "dns_domain".
     </t>
     <t>
       As mentioned above, it is desirable that a server when
@@ -1290,7 +1291,7 @@
       <list style='symbols'>
         <t>
           The string representing the domain may be converted to
-          equivalent U-label, if presented using a form other a 
+          equivalent U-label (see <xref target='RFC5890' />), if presented using a form other a 
           a U-label.  See <xref target="Type-INET" /> for details.
         </t>
         <t>

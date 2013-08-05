@@ -238,6 +238,18 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
 	      target='ftp://ftp.isi.edu/in-notes/rfc2743.txt' />
     </reference>
 
+    <reference anchor='RFC5890'>
+      <front>
+        <title>Internationalized Domain Names in Applications (IDNA): Definitions and Document Framework</title>
+        <author initials='J' surname='Klensin' fullname='John C. Klensin'>
+          <organization />
+        </author>
+        <date month='August' year='2010' />
+      </front>
+      <seriesInfo name='RFC' value='5890' />
+      <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc5890.txt' />
+    </reference>
+
     <reference anchor='RFC5891'>
       <front>
         <title>Internationalized Domain Names in Applications (IDNA): Protocol</title>
