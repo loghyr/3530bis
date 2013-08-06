@@ -1,5 +1,6 @@
 <!-- Copyright (C) The IETF Trust (2009-2013) -->
 <!-- Copyright (C) The Internet Society (2010-2013) -->
+
 <section title="Access Control Attributes" anchor="acl">
     <t>
         Access Control Lists (ACLs) are file attributes that specify
@@ -9,7 +10,7 @@
         interactions.  Note that file attributes may apply to any file
         system object.
     </t>
-    
+
     <section title="Goals">
       <t>
         ACLs and modes represent two well established models for
@@ -64,10 +65,10 @@
         </list>
       </t>
     </section>
-    
+
     <section title="File Attributes Discussion">
       <section anchor="attrdef_acl"
-	       title="Attribute 12: acl">
+         title="Attribute 12: acl">
         <t>
           The NFSv4.0 ACL attribute contains an array of access
           control entries (ACEs) that are associated with the file
@@ -138,7 +139,8 @@
           enforcement for NFSv4.0 access may be different from,
           but not weaker than, the enforcement for local access, and
           both may be different from the enforcement for access
-          through other protocols such as SMB. So it may be useful for
+          through other protocols such as Server Message Block (SMB).
+          So it may be useful for
           a server to accept an ACL even if not all of its modules are
           able to support it.
         </t>
@@ -156,7 +158,7 @@
 
         <?rfc include='autogen/const_acetype4.xml'?>
           <t>
-            All four but types are permitted in the acl attribute.
+            All four bit types are permitted in the acl attribute.
           </t>
           <texttable>
             <ttcol>Value</ttcol>
@@ -195,14 +197,14 @@
             </postamble>
           </texttable>
         </section>
-	<section anchor="attrdef_aclsupport"
-	     title="Attribute 13: aclsupport">
+  <section anchor="attrdef_aclsupport"
+       title="Attribute 13: aclsupport">
           <t>
             A server need not support all of the above ACE types.
-	    This attribute indicates which ACE types are supported for
-	    the current file system.  The bitmask constants used to
-	    represent the above definitions within the aclsupport
-	    attribute are as follows:
+            This attribute indicates which ACE types are supported for
+            the current file system.  The bitmask constants used to
+            represent the above definitions within the aclsupport
+            attribute are as follows:
           </t>
 
         <?rfc include='autogen/const_aclsupport4.xml'?>
@@ -235,408 +237,407 @@
           </t>
 
           <t>
-	   Note that some masks have coincident values, for
-	   example, ACE4_READ_DATA and ACE4_LIST_DIRECTORY.
-	   The mask entries ACE4_LIST_DIRECTORY,
-	   ACE4_ADD_FILE, and ACE4_ADD_SUBDIRECTORY are
-	   intended to be used with directory objects,
-	   while ACE4_READ_DATA, ACE4_WRITE_DATA, and
-	   ACE4_APPEND_DATA are intended to be used with
-	   non-directory objects.
+            Note that some masks have coincident values, for
+            example, ACE4_READ_DATA and ACE4_LIST_DIRECTORY.
+            The mask entries ACE4_LIST_DIRECTORY,
+            ACE4_ADD_FILE, and ACE4_ADD_SUBDIRECTORY are
+            intended to be used with directory objects,
+            while ACE4_READ_DATA, ACE4_WRITE_DATA, and
+            ACE4_APPEND_DATA are intended to be used with
+            non-directory objects.
           </t>
 
           <section title="Discussion of Mask Attributes">
-	    <t>
-	      <list style="hanging">
-		<t hangText="ACE4_READ_DATA">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="READ" />
-			<t hangText="OPEN" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to read the data of the file.
-		      <vspace blankLines='1' />
-		      Servers SHOULD allow a user the ability to read the data
-		      of the file when only the ACE4_EXECUTE access mask bit is
-		      allowed.
-		    </t>
-		  </list>
-		</t>
+      <t>
+        <list style="hanging">
+    <t hangText="ACE4_READ_DATA">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="READ" />
+      <t hangText="OPEN" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to read the data of the file.
+          <vspace blankLines='1' />
+          Servers SHOULD allow a user the ability to read the data
+          of the file when only the ACE4_EXECUTE access mask bit is
+          allowed.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_LIST_DIRECTORY">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="READDIR" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to list the contents of a directory.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_LIST_DIRECTORY">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="READDIR" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to list the contents of a directory.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_WRITE_DATA">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="WRITE" />
-			<t hangText="OPEN" />
-			<t hangText="SETATTR of size" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to modify a file's data.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_WRITE_DATA">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="WRITE" />
+      <t hangText="OPEN" />
+      <t hangText="SETATTR of size" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to modify a file's data.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_ADD_FILE">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="CREATE" />
-			<t hangText="LINK" />
-			<t hangText="OPEN" />
-			<t hangText="RENAME" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to add a new file in a directory.
-		      The CREATE operation is affected when nfs_ftype4
-		      is NF4LNK, NF4BLK, NF4CHR, NF4SOCK, or
-		      NF4FIFO. (NF4DIR is not listed because it is
-		      covered by ACE4_ADD_SUBDIRECTORY.) OPEN is
-		      affected when used to create a regular file.
-		      LINK and RENAME are always affected.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_ADD_FILE">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="CREATE" />
+      <t hangText="LINK" />
+      <t hangText="OPEN" />
+      <t hangText="RENAME" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to add a new file in a directory.
+          The CREATE operation is affected when nfs_ftype4
+          is NF4LNK, NF4BLK, NF4CHR, NF4SOCK, or
+          NF4FIFO. (NF4DIR is not listed because it is
+          covered by ACE4_ADD_SUBDIRECTORY.) OPEN is
+          affected when used to create a regular file.
+          LINK and RENAME are always affected.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_APPEND_DATA">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="WRITE" />
-			<t hangText="OPEN" />
-			<t hangText="SETATTR of size" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      The ability to modify a file's data, but only
-		      starting at EOF.  This allows for the notion of
-		      append-only files, by allowing ACE4_APPEND_DATA
-		      and denying ACE4_WRITE_DATA to the same user or
-		      group.  If a file has an ACL such as the one
-		      described above and a WRITE request is made for
-		      somewhere other than EOF, the server SHOULD
-		      return NFS4ERR_ACCESS.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_APPEND_DATA">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="WRITE" />
+      <t hangText="OPEN" />
+      <t hangText="SETATTR of size" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          The ability to modify a file's data, but only
+          starting at EOF.  This allows for the notion of
+          append-only files, by allowing ACE4_APPEND_DATA
+          and denying ACE4_WRITE_DATA to the same user or
+          group.  If a file has an ACL such as the one
+          described above and a WRITE request is made for
+          somewhere other than EOF, the server SHOULD
+          return NFS4ERR_ACCESS.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_ADD_SUBDIRECTORY">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="CREATE" />
-			<t hangText="RENAME" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to create a subdirectory in a
-		      directory.  The CREATE operation is affected
-		      when nfs_ftype4 is NF4DIR.  The RENAME operation
-		      is always affected.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_ADD_SUBDIRECTORY">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="CREATE" />
+      <t hangText="RENAME" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to create a subdirectory in a
+          directory.  The CREATE operation is affected
+          when nfs_ftype4 is NF4DIR.  The RENAME operation
+          is always affected.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_READ_NAMED_ATTRS">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="OPENATTR" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to read the named attributes of a
-		      file or to lookup the named attributes
-		      directory.  OPENATTR is affected when it is not
-		      used to create a named attribute directory.
-		      This is when 1.) createdir is TRUE, but a named
-		      attribute directory already exists, or 2.)
-		      createdir is FALSE.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_READ_NAMED_ATTRS">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="OPENATTR" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to read the named attributes of a
+          file or to lookup the named attributes
+          directory.  OPENATTR is affected when it is not
+          used to create a named attribute directory.
+          This is when 1.) createdir is TRUE, but a named
+          attribute directory already exists, or 2.)
+          createdir is FALSE.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_WRITE_NAMED_ATTRS">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="OPENATTR" />
-			<t hangText="" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to write the named attributes of a
-		      file or to create a named attribute directory.
-		      OPENATTR is affected when it is used to create a
-		      named attribute directory.  This is when
-		      createdir is TRUE and no named attribute
-		      directory exists.  The ability to check whether
-		      or not a named attribute directory exists
-		      depends on the ability to look it up, therefore,
-		      users also need the ACE4_READ_NAMED_ATTRS
-		      permission in order to create a named attribute
-		      directory.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_WRITE_NAMED_ATTRS">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="OPENATTR" />
+      <t hangText="" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to write the named attributes of a
+          file or to create a named attribute directory.
+          OPENATTR is affected when it is used to create a
+          named attribute directory.  This is when
+          createdir is TRUE and no named attribute
+          directory exists.  The ability to check whether
+          or not a named attribute directory exists
+          depends on the ability to look it up, therefore,
+          users also need the ACE4_READ_NAMED_ATTRS
+          permission in order to create a named attribute
+          directory.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_EXECUTE">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="READ" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to execute a file.
-		      <vspace blankLines='1' />
-		      Servers SHOULD allow a
-		      user the ability to read the data of the file
-		      when only the ACE4_EXECUTE access mask bit is
-		      allowed.  This is because there is no way to
-		      execute a file without reading the contents.
-		      Though a server may treat ACE4_EXECUTE and
-		      ACE4_READ_DATA bits identically when deciding to
-		      permit a READ operation, it SHOULD still allow
-		      the two bits to be set independently in ACLs,
-		      and MUST distinguish between them when replying
-		      to ACCESS operations.  In particular, servers
-		      SHOULD NOT silently turn on one of the two bits
-		      when the other is set, as that would make it
-		      impossible for the client to correctly enforce
-		      the distinction between read and execute
-		      permissions.  
-		      <vspace blankLines='1' />
-		      As an example, following a SETATTR of the following ACL:
-		      <vspace blankLines='1' />
+    <t hangText="ACE4_EXECUTE">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="READ" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to execute a file.
+          <vspace blankLines='1' />
+          Servers SHOULD allow a
+          user the ability to read the data of the file
+          when only the ACE4_EXECUTE access mask bit is
+          allowed.  This is because there is no way to
+          execute a file without reading the contents.
+          Though a server may treat ACE4_EXECUTE and
+          ACE4_READ_DATA bits identically when deciding to
+          permit a READ operation, it SHOULD still allow
+          the two bits to be set independently in ACLs,
+          and MUST distinguish between them when replying
+          to ACCESS operations.  In particular, servers
+          SHOULD NOT silently turn on one of the two bits
+          when the other is set, as that would make it
+          impossible for the client to correctly enforce
+          the distinction between read and execute
+          permissions.
+          <vspace blankLines='1' />
+          As an example, following a SETATTR of the following ACL:
+          <vspace blankLines='1' />
                       nfsuser:ACE4_EXECUTE:ALLOW
-		      <vspace blankLines='1' />
-		      A subsequent GETATTR of ACL for that file SHOULD return:
-		      <vspace blankLines='1' />
+          <vspace blankLines='1' />
+          A subsequent GETATTR of ACL for that file SHOULD return:
+          <vspace blankLines='1' />
                       nfsuser:ACE4_EXECUTE:ALLOW
-		      <vspace blankLines='1' />
-		      Rather than:
-		      <vspace blankLines='1' />
+          <vspace blankLines='1' />
+          Rather than:
+          <vspace blankLines='1' />
                       nfsuser:ACE4_EXECUTE/ACE4_READ_DATA:ALLOW
-		    </t>
-		  </list>
-		</t>
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_EXECUTE">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="LOOKUP" />
-			<t hangText="OPEN" />
-			<t hangText="REMOVE" />
-			<t hangText="RENAME" />
-			<t hangText="LINK" />
-			<t hangText="CREATE" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to traverse/search a directory.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_EXECUTE">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="LOOKUP" />
+      <t hangText="OPEN" />
+      <t hangText="REMOVE" />
+      <t hangText="RENAME" />
+      <t hangText="LINK" />
+      <t hangText="CREATE" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to traverse/search a directory.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_DELETE_CHILD">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="REMOVE" />
-			<t hangText="RENAME" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to delete a file or directory within
-		      a directory. 
+    <t hangText="ACE4_DELETE_CHILD">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="REMOVE" />
+      <t hangText="RENAME" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to delete a file or directory within
+          a directory.
 
-		      See <xref
-		      target="delete-delete_child"/>
-		      for information on ACE4_DELETE and
-		      ACE4_DELETE_CHILD interact.
+          See <xref
+          target="delete-delete_child"/>
+          for information on how ACE4_DELETE and
+          ACE4_DELETE_CHILD interact.
 
-		    </t>
-		  </list>
-		</t>
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_READ_ATTRIBUTES">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="GETATTR of file system object attributes" />
-			<t hangText="VERIFY" />
-			<t hangText="NVERIFY" />
-			<t hangText="READDIR" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      The ability to read basic attributes (non-ACLs)
-		      of a file.  On a UNIX system, basic attributes
-		      can be thought of as the stat level attributes.
-		      Allowing this access mask bit would mean the
-		      entity can execute "ls -l" and stat.  If a
-		      READDIR operation requests attributes, this mask
-		      must be allowed for the READDIR to succeed.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_READ_ATTRIBUTES">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="GETATTR of file system object attributes" />
+      <t hangText="VERIFY" />
+      <t hangText="NVERIFY" />
+      <t hangText="READDIR" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          The ability to read basic attributes (non-ACLs)
+          of a file.  On a UNIX system, basic attributes
+          can be thought of as the stat level attributes.
+          Allowing this access mask bit would mean the
+          entity can execute "ls -l" and stat.  If a
+          READDIR operation requests attributes, this mask
+          must be allowed for the READDIR to succeed.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_WRITE_ATTRIBUTES">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="SETATTR of time_access_set, time_backup," />
-			<t hangText="time_create, time_modify_set, mimetype, hidden, system" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to change the times associated with a
-		      file or directory to an arbitrary value.  Also
-		      permission to change the mimetype, hidden and
-		      system attributes.  A user having
-		      ACE4_WRITE_DATA or ACE4_WRITE_ATTRIBUTES will be
-		      allowed to set the times associated with a file
-		      to the current server time.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_WRITE_ATTRIBUTES">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="SETATTR of time_access_set, time_backup," />
+      <t hangText="time_create, time_modify_set, mimetype, hidden, system" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to change the times associated with a
+          file or directory to an arbitrary value.  Also
+          permission to change the mimetype, hidden and
+          system attributes.  A user having
+          ACE4_WRITE_DATA or ACE4_WRITE_ATTRIBUTES will be
+          allowed to set the times associated with a file
+          to the current server time.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_DELETE">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="REMOVE" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
+    <t hangText="ACE4_DELETE">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="REMOVE" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
 
-		      Permission to delete the
-		      file or directory. 
+          Permission to delete the
+          file or directory.
 
-		      See <xref
-		      target="delete-delete_child"/>
-		      for information on ACE4_DELETE and
-		      ACE4_DELETE_CHILD interact.
+          See <xref
+          target="delete-delete_child"/>
+          for information on ACE4_DELETE and
+          ACE4_DELETE_CHILD interact.
 
-		    </t>
-		  </list>
-		</t>
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_READ_ACL">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="GETATTR of acl" />
-			<t hangText="NVERIFY" />
-			<t hangText="VERIFY" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to read the ACL.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_READ_ACL">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="GETATTR of acl" />
+      <t hangText="NVERIFY" />
+      <t hangText="VERIFY" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to read the ACL.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_WRITE_ACL">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="SETATTR of acl and mode" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to write the acl and mode attributes.
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_WRITE_ACL">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="SETATTR of acl and mode" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to write the acl and mode attributes.
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_WRITE_OWNER">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="SETATTR of owner and owner_group" />
-		      </list>
-		    </t>
-		    <t hangText="Discussion:">
-		      <vspace blankLines='1' />
-		      Permission to write the owner and owner_group
-		      attributes.  On UNIX systems, this is the
-		      ability to execute chown() and chgrp().
-		    </t>
-		  </list>
-		</t>
+    <t hangText="ACE4_WRITE_OWNER">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+      <t hangText="SETATTR of owner and owner_group" />
+          </list>
+        </t>
+        <t hangText="Discussion:">
+          <vspace blankLines='1' />
+          Permission to write the owner and owner_group
+          attributes.  On UNIX systems, this is the
+          ability to execute chown() and chgrp().
+        </t>
+      </list>
+    </t>
 
-		<t hangText="ACE4_SYNCHRONIZE">
-		  <list style="hanging">
-		    <t hangText="Operation(s) affected:">
-		      <list style="hanging">
-			<t hangText="NONE" />
-		      </list>
-		    </t>
-                    <t hangText='Discussion:'><vspace blankLines="1"/>
-                      Permission to use the file object as a synchronization
-                      primitive for interprocess communication.  This permission is
-                      not enforced or interpreted by the NFSv4.0 server on behalf of
-                      the client.
-                      <vspace blankLines="1"/>
-                      Typically, the ACE4_SYNCHRONIZE permission is only meaningful
-                      on local file systems, i.e., file systems not accessed via
-                      NFSv4.0.  The reason that the permission bit exists is that
-                      some operating environments, such as Windows, use
-                      ACE4_SYNCHRONIZE.
-                      <vspace blankLines="1"/>
-                      For example, if a client copies a file that has
-                      ACE4_SYNCHRONIZE set from a local file system to an NFSv4.0
-                      server, and then later copies the file from the NFSv4.0 server
-                      to a local file system, it is likely that if ACE4_SYNCHRONIZE
-                      was set in the original file, the client will want it set in
-                      the second copy.  The first copy will not have the permission
-                      set unless the NFSv4.0 server has the means to set the
-                      ACE4_SYNCHRONIZE bit.  The second copy will not have the
-                      permission set unless the NFSv4.0 server has the means to
-                      retrieve the ACE4_SYNCHRONIZE bit.
-                    </t>
-		  </list>
-		</t>
-
-	      </list>
-	    </t>
+    <t hangText="ACE4_SYNCHRONIZE">
+      <list style="hanging">
+        <t hangText="Operation(s) affected:">
+          <list style="hanging">
+            <t hangText="NONE" />
+              </list>
+                </t>
+                  <t hangText='Discussion:'><vspace blankLines="1"/>
+                    Permission to use the file object as a synchronization
+                    primitive for interprocess communication.  This permission is
+                    not enforced or interpreted by the NFSv4.0 server on behalf of
+                    the client.
+                    <vspace blankLines="1"/>
+                    Typically, the ACE4_SYNCHRONIZE permission is only meaningful
+                    on local file systems, i.e., file systems not accessed via
+                    NFSv4.0.  The reason that the permission bit exists is that
+                    some operating environments, such as Windows, use
+                    ACE4_SYNCHRONIZE.
+                    <vspace blankLines="1"/>
+                    For example, if a client copies a file that has
+                    ACE4_SYNCHRONIZE set from a local file system to an NFSv4.0
+                    server, and then later copies the file from the NFSv4.0 server
+                    to a local file system, it is likely that if ACE4_SYNCHRONIZE
+                    was set in the original file, the client will want it set in
+                    the second copy.  The first copy will not have the permission
+                    set unless the NFSv4.0 server has the means to set the
+                    ACE4_SYNCHRONIZE bit.  The second copy will not have the
+                    permission set unless the NFSv4.0 server has the means to
+                    retrieve the ACE4_SYNCHRONIZE bit.
+                  </t>
+                </list>
+              </t>
+            </list>
+            </t>
 
             <t>
               Server implementations need not provide the granularity
@@ -811,7 +812,7 @@
                   AUDIT or ALARM ACE, then the appropriate
                   AUDIT or ALARM event occurs. If the
                   operation failed, and if the FAILED flag
-                  was set for the matching AUDIT or ALARM 
+                  was set for the matching AUDIT or ALARM
                   ACE, then the appropriate AUDIT or ALARM
                   event occurs.  Either or both of the
                   SUCCESS or FAILED can be set, but if
@@ -933,7 +934,7 @@
       </section>
 
       <section anchor="attrdef_mode"
-	       title="Attribute 33: mode">
+         title="Attribute 33: mode">
         <t>
           The NFSv4.0 mode attribute is based on the UNIX mode
           bits. The following bits are defined:
@@ -962,7 +963,7 @@
       </section>
 
     </section>
-    
+
     <section title="Common Methods">
       <t>
         The requirements in this section will be referred to in future
@@ -970,11 +971,11 @@
       </t>
       <section title="Interpreting an ACL" anchor="useacl">
         <section title="Server Considerations" anchor="serverinterp">
-          <t> 
-	    The server uses the algorithm described in
-	    <xref target="attrdef_acl"/> to determine whether an ACL
-	    allows access to an object.  However, the ACL may not be
-	    the sole determiner of access.  For example:
+          <t>
+            The server uses the algorithm described in
+            <xref target="attrdef_acl"/> to determine whether an ACL
+            allows access to an object.  However, the ACL may not be
+            the sole determiner of access.  For example:
             <list style="symbols">
               <t>
                 In the case of a file system exported as read-only,
@@ -1110,7 +1111,7 @@
         </section>
       </section>
     </section>
-    
+
     <section title="Requirements" anchor="aclreqs">
       <t>
         The server that supports both mode and ACL must take care to
@@ -1122,7 +1123,7 @@
       </t>
       <t>
         In this section, much is made of the methods in <xref
-   target="computemode" />. Many requirements refer to this section.
+        target="computemode" />. Many requirements refer to this section.
         But note that the methods have behaviors specified with
         &quot;SHOULD&quot;. This is intentional, to avoid invalidating
         existing implementations that compute the mode according to the
@@ -1204,18 +1205,18 @@
             In this case, the ACL attribute SHOULD be set as
             given. The nine low-order bits of the mode
             attribute (MODE4_R*, MODE4_W*, MODE4_X*) MUST be
-            modified to match the result of the method 
-	    <xref target="computemode" />. The three high-order bits
+            modified to match the result of the method
+      <xref target="computemode" />. The three high-order bits
             of the mode (MODE4_SUID, MODE4_SGID, MODE4_SVTX)
             SHOULD remain unchanged.
           </t>
         </section>
         <section title="Setting both ACL and mode" anchor="setboth">
           <t>
-            When setting both the mode 
+            When setting both the mode
             and the acl attribute in the
             same operation, the attributes MUST be applied in this
-            order: mode, then ACL.  The 
+            order: mode, then ACL.  The
             mode-related attribute is set as given,
             then the ACL attribute is set as given, possibly changing
             the final mode, as described above in
@@ -1270,7 +1271,7 @@
               SHOULD take place, but the mode MUST be applied to the
               inherited ACL as described in <xref target="setmode" />,
               thereby modifying the ACL.
-		      <vspace blankLines='1' />
+          <vspace blankLines='1' />
             </t>
             <t>If just the ACL is given in the call:
               <vspace blankLines="1" />
@@ -1278,13 +1279,13 @@
               the ACL as defined in the CREATE or OPEN will be set
               without modification, and the mode modified as in
               <xref target="settingacl" />
-		      <vspace blankLines='1' />
+          <vspace blankLines='1' />
             </t>
             <t>If both mode and ACL are given in the call:
               <vspace blankLines="1" /> In this case, inheritance
               SHOULD NOT take place, and both attributes will be set
               as described in <xref target="setboth" />.
-		      <vspace blankLines='1' />
+          <vspace blankLines='1' />
             </t>
             <t>
               If neither mode nor ACL are given in the call:
@@ -1306,13 +1307,13 @@
               <vspace blankLines="1" />
               In other cases, inheritance SHOULD take place, and no
               modifications to the ACL will happen. The mode
-              attribute, if supported, MUST be as computed in 
-	      <xref target="computemode" />, with the MODE4_SUID,
+              attribute, if supported, MUST be as computed in
+        <xref target="computemode" />, with the MODE4_SUID,
               MODE4_SGID and MODE4_SVTX bits clear.
               If no inheritable ACEs exist on the parent directory,
               the rules for creating acl attributes
               are implementation defined.
-		      <vspace blankLines='1' />
+              <vspace blankLines='1' />
             </t>
           </list>
         </t>
@@ -1345,7 +1346,6 @@
             new directory's children.
           </t>
         </section>
-        
       </section>
     </section>
 </section>

@@ -1360,7 +1360,9 @@
   <section anchor="character_case_attributes" title="Character Case Attributes">
     <t>
       With respect to the case_insensitive and case_preserving
-      attributes, each UCS-4 character (which UTF-8 encodes) has a
+      attributes, each Universal Multiple-octet coded
+      Character Set-4 (UCS-4) <xref target='ISO.10646-1.1993' />
+      character (which UTF-8 encodes) has a
       "long descriptive name" <xref target="RFC1345">RFC1345</xref>
       which may or may not include the word "CAPITAL" or "SMALL".
       The presence of SMALL or CAPITAL allows an NFS server to

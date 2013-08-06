@@ -32,7 +32,7 @@
     done in a secure manner that preserves the integrity of the translation.  For
     communication with a name service such as LDAP (<xref target='RFC4511' />),
     this means employing a security service that uses authentication
-    and data integrity. Kerberos and TLS (<xref target='RFC5246' />) are examples
+    and data integrity. Kerberos and Transport Layer Security (TLS) (<xref target='RFC5246' />) are examples
     of such a security service.
   </t>
 

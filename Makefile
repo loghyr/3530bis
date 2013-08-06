@@ -294,8 +294,8 @@ IDXMLSRC_BASE = \
 	nfsv4_middle_filehandles.xml \
 	nfsv4_middle_fileattributes.xml \
 	nfsv4_middle_fileattributes_acls.xml \
-        nfsv4_middle_mars.xml \
 	nfsv4_middle_server_name.xml \
+        nfsv4_middle_mars.xml \
         nfsv4_middle_file_locking.xml \
 	nfsv4_middle_client_cache.xml \
 	nfsv4_middle_minor.xml \
