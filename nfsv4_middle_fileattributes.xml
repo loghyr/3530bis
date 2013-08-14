@@ -1288,6 +1288,7 @@
       issues (for a general discussion of which see 
       <xref target="sec:i18n" />) make this impossible and the
       client needs to take note of the following situations:
+<!--
       <list style='symbols'>
         <t>
           The string representing the domain may be converted to
@@ -1301,6 +1302,7 @@
           See <xref target="Type-prinp" /> for details.
         </t>
       </list>
+-->
     </t>
     <t>
       In the case where there is no translation available to the
@@ -1371,12 +1373,6 @@
       although there are variations that occur additional characters
       with a name including "SMALL" or "CAPITAL" are added in a 
       subsequent version of Unicode.
-    </t>
-    <t>
-      For general character handling and internationalization issues,
-      see <xref target="sec:i18n"/>.  For details regarding case
-      mapping, see the section 
-      <xref target="sec:i18n:case" format="title" />.
     </t>
   </section>
 </section>

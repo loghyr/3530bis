@@ -32,13 +32,12 @@ typedef :uint32_t:qop4:Quality of protection designation in SECINFO.
 typedef :opaque  :sec_oid4<>:Security Object Identifier. The sec_oid4 data type is not really opaque. Instead it contains an ASN.1 OBJECT IDENTIFIER as used by GSS-API in the mech_type argument to GSS_Init_sec_context. See <xref target="RFC2743" /> for details.
 typedef :uint32_t:seqid4:Sequence identifier used for file locking.
 typedef :opaque  :utf8string<>:UTF-8 encoding for strings.
-typedef :utf8string:utf8_expected:String expected to be UTF-8 but no validation
-typedef :utf8string:utf8val_RECOMMENDED4:String SHOULD be sent UTF-8 and SHOULD be validated
-typedef :utf8string:utf8val_REQUIRED4:String MUST be sent UTF-8 and MUST be validated
-typedef :utf8string:ascii_REQUIRED4:String MUST be sent as ASCII and thus is automatically UTF-8
-typedef :utf8_expected:comptag4:Tag should be UTF-8 but is not checked
-typedef :utf8val_RECOMMENDED4:component4:Represents path name components.
-typedef :utf8val_RECOMMENDED4:linktext4:Symbolic link contents.
+typedef :utf8string:utf8str_cis:Case-insensitive UTF-8 string.
+typedef :utf8string:utf8str_cs:Case-sensitive UTF-8 string.
+typedef :utf8string:utf8str_mixed:UTF-8 strings with a case-sensitive prefix and a case-insensitive suffix.
+typedef :utf8str_cs:component4:Represents pathname components.
+typedef :utf8str_cs:linktext4:Symbolic link contents ("symbolic link" is defined in an Open Group <xref target='openg_symlink' /> standard).
+typedef :utf8string:ascii_REQUIRED4:String MUST be sent as ASCII and thus is automatically UTF-8.
 typedef :component4:pathname4<>:Represents path name for fs_locations.
 typedef :uint64_t:nfs_lockid4
 typedef :opaque  :verifier4[NFS4_VERIFIER_SIZE]:Verifier used for various operations (COMMIT, CREATE, OPEN, READDIR, WRITE) NFS4_VERIFIER_SIZE is defined as 8.
@@ -161,7 +160,7 @@ EOF
 
 cat << EOF > $i
 struct fs_location4 {
-	utf8val_REQUIRED4	server<>;
+	utf8str_cis		server<>;
 	pathname4		rootpath;
 };
 EOF
@@ -333,7 +332,7 @@ struct nfsace4 {
 	acetype4		type;
 	aceflag4		flag;
 	acemask4		access_mask;
-	utf8val_REQUIRED4	who;
+	utf8str_mixed		who;
 };
 EOF
 	;;
@@ -456,7 +455,7 @@ EOF
 
 cat << EOF > $i
 struct CB_COMPOUND4args {
-	comptag4	tag;
+	utf8str_cs	tag;
 	uint32_t	minorversion;
 	uint32_t	callback_ident;
 	nfs_cb_argop4	argarray<>;
@@ -480,7 +479,7 @@ EOF
 cat << EOF > $i
 struct CB_COMPOUND4res {
     	nfsstat4 	status;
-	comptag4	tag;
+	utf8str_cs	tag;
 	nfs_cb_resop4	resarray<>;
 };
 EOF
@@ -638,7 +637,7 @@ EOF
 
 cat << EOF > $i
 struct COMPOUND4args {
-	comptag4	tag;
+	utf8str_cs	tag;
 	uint32_t	minorversion;
 	nfs_argop4	argarray<>;
 };
@@ -650,7 +649,7 @@ EOF
 cat << EOF > $i
 struct COMPOUND4res {
 	nfsstat4	status;
-	comptag4 	tag;
+	utf8str_cs 	tag;
 	nfs_resop4	resarray<>;
 };
 EOF

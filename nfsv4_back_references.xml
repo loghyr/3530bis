@@ -276,6 +276,21 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <seriesInfo name='RFC' value='6649' />
       <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc6649.txt' />
     </reference>
+
+    <reference anchor="openg_symlink">
+      <front>
+     <title>
+         Section 3.372 of Chapter 3 of Base Definitions
+         of The Open Group Base Specifications Issue 6, IEEE Std 1003.1, 2004 Edition, HTML Version (www.opengroup.org), ISBN
+         1931624232
+     </title>
+  <author>
+    <organization>The Open Group
+    </organization>
+  </author>
+  <date year="2004" />
+      </front>
+    </reference>
   </references>
 
   <references title="Informative References">
