@@ -1,5 +1,6 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
+
 <section anchor="sec:client_caching" title="Client-Side Caching">
 
   <t>
@@ -153,7 +154,7 @@
       state (such as modified data) to the server and return the
       delegation.  The conflicting request will not be acted on until
       the recall is complete.  The recall is considered complete when
-      the client returns the delegation or the server times its wait
+      the client returns the delegation or the server times out its wait
       for the delegation to be returned and revokes the delegation as
       a result of the timeout.  In the interim, the server will either
       delay responding to conflicting requests or respond to them with
@@ -168,9 +169,9 @@
       the server should allow sufficient time for the delegation to be
       returned since it may involve numerous RPCs to the server.  If the
       server is able to determine that the client is diligently flushing
-      state to the server as a result of the recall, the server may extend
+      state to the server as a result of the recall, the server MAY extend
       the usual time allowed for a recall.  However, the time allowed for
-      recall completion should not be unbounded.
+      recall completion SHOULD NOT be unbounded.
     </t>
 
     <t>
@@ -200,7 +201,6 @@
       need and preemptively release them.
     </t>
 
-
     <section anchor="ss:cc:deleg_recovery" title="Delegation Recovery">
 
       <t>
@@ -212,7 +212,7 @@
           </t>
 
           <t>
-            Server reboot or restart
+            Server reboot or restart (see <xref target='ss:fl:cl' />)
           </t>
 
           <t>
@@ -325,7 +325,7 @@
 
       <t>
         One good way to think about client-persistent delegations is that for
-        the most part, they function like "courtesy locks", with a special
+        the most part, they function like "courtesy locks", with special
         semantic adjustments to allow them to be retained across a client restart,
         which cause all other sorts of locks to be freed.  Such locks are generally
         not retained across a server restart.  The one exception is the
@@ -463,7 +463,7 @@
       </t>
 
       <t>
-        When NFS4ERR_EXPIRED Is returned, the server MAY retain information
+        When NFS4ERR_EXPIRED is returned, the server MAY retain information
         about the delegations held by the client, deleting those that are
         invalidated by a conflicting request.  Retaining such information
         will allow the client to recover all non-invalidated delegations
@@ -529,13 +529,13 @@
 
             Since the change attribute is updated for data and metadata
             modifications, some client implementors may be tempted to use the
-            time_modify attribute and not change to validate cached data, so
+            time_modify attribute and not the change attribute to validate cached data, so
             that metadata changes do not spuriously invalidate clean data.
             The implementor is cautioned in this approach.  The change
             attribute is guaranteed to change for each update to the file,
             whereas time_modify is guaranteed to change only at the granularity
             of the time_delta attribute.  Use by the client's data cache
-            validation logic of time_modify and not change runs the risk of
+            validation logic of time_modify and not the change attribute runs the risk of
             the client incorrectly marking stale data as valid.
           </t>
 
@@ -543,7 +543,7 @@
             Second, modified data must be flushed to the server before closing
             a file OPENed for write.  This is complementary to the first rule.
             If the data is not flushed at CLOSE, the revalidation done after
-            client OPENs as file is unable to achieve its purpose.  The other
+            the client OPENs a file is unable to achieve its purpose.  The other
             aspect to flushing the data before close is that the data must
             be committed to stable storage, at the server, before the CLOSE
             operation is requested by the client.  In the case of a server
@@ -854,7 +854,7 @@
     <t>
       The delegation stateid is separate and distinct from the stateid for
       the OPEN proper.  The standard stateid, unlike the delegation
-      stateid, is associated with a particular lock-owner and will continue
+      stateid, is associated with a particular open-owner and will continue
       to be valid after the delegation is recalled and the file remains
       open.
     </t>
@@ -1081,7 +1081,7 @@
         encode the change attribute in network order when sending it to the
         client.  The client MUST decode it from network order to its native
         order when receiving it and the client MUST encode it network order
-        when sending it to the server.  For this reason, change is defined as
+        when sending it to the server.  For this reason, the change attribute is defined as
         an unsigned integer rather than an opaque array of bytes.
       </t>
       <t>
@@ -1487,9 +1487,9 @@
         the file data as modified during the delegation under a different
         name in the filesystem name space to ease recovery.  Note that when
         the client can determine that the file has not been modified by any
-        other client, or when the client has a complete cached copy of file
+        other client, or when the client has a complete cached copy of the file
         in question, such a saved copy of the client's view of the file
-        may be of particular value for recovery.  In other case, recovery
+        may be of particular value for recovery.  In other cases, recovery
         using a copy of the file based partially on the client's cached
         data and partially on the server copy as modified by other clients,
         will be anything but straightforward, so clients may avoid saving
@@ -1563,7 +1563,7 @@
         </t>
 
         <t>
-          When operations are performed that change attributes at the
+          When operations are performed that modify attributes at the
           server, the updated attribute set is requested as part of the
           containing RPC.  This includes directory operations that update
           attributes indirectly.  This is accomplished by following the
@@ -1645,8 +1645,8 @@
       access and modification (time_access, time_metadata, time_modify,
       and change) will be updated.  However, in many operating environments,
       when page faults are not required these attributes will not be updated
-      on reads or updates to the file via memory access (regardless whether
-      the file is local file or is being access remotely).  A client or
+      on reads or updates to the file via memory access (regardless of whether
+      the file is a local file or is being access remotely).  A client or
       server MAY fail to update attributes of a file that is being accessed
       via memory mapped I/O.  This has several implications:
 

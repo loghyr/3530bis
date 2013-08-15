@@ -1,5 +1,6 @@
 <!-- Copyright (C) The IETF Trust (2009-2013) -->
 <!-- Copyright (C) The Internet Society (2010-2013) -->
+
 <section anchor="sec:intro" title="Introduction" >
   <section anchor="v4_goals" title="NFS Version 4 Goals">
     <t>
@@ -57,10 +58,7 @@
       as the authoritative document describing NFSv4.  It does
       not introduce any over-the-wire protocol
       changes, in the sense that previously valid requests
-      remain valid.  However, some requests previously defined as
-      invalid, although not generally rejected, are now
-      explicitly allowed, in that internationalization handling
-      has been generalized and liberalized.
+      remain valid.
     </t>
   </section>
 
@@ -515,18 +513,7 @@
           multi-server namespace features.
         </t>
         <t>
-          More liberal handling of internationalization for file names
-          and user and group names, with the elimination of restrictions
-          imposed by stringprep, with the recognition that rules for
-          the forms of these name are the province of the receiving
-          entity.
-        </t>
-        <t>
           Updating handling of domain names to reflect Internationalized Domain Names in Applications (IDNA) <xref target='RFC5891' />.
-        </t>
-        <t>
-          Restructuring of string types to more appropriately reflect
-          the reality of required string processing.
         </t>
         <t>
           The previously required LIPKEY and SPKM-3 security mechanisms
@@ -623,11 +610,6 @@
           Remove use of the pathname4 data type from LOOKUP and OPEN
           in favor of having the client construct a sequence of LOOKUP
           operations to achieve the same effect.
-        </t>
-
-        <t>
-          Clarification of the internationalization issues and adoption
-          of the new stringprep profile framework.
         </t>
       </list>
     </t>

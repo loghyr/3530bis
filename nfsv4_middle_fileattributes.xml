@@ -1286,23 +1286,22 @@
       in an attribute, return this same string when that 
       corresponding attribute is fetched.  Internationalization 
       issues (for a general discussion of which see 
-      <xref target="sec:i18n" />) make this impossible and the
+      <xref target="sec:i18n" />) may make this impossible and the
       client needs to take note of the following situations:
-<!--
+
       <list style='symbols'>
         <t>
           The string representing the domain may be converted to
-          equivalent U-label (see <xref target='RFC5890' />), if presented using a form other a 
-          a U-label.  See <xref target="Type-INET" /> for details.
+          equivalent U-label (see <xref target='RFC5890' />), if presented using a
+          form other than a 
+          a U-label.  See <xref target="ss:i18n:types" /> for details.
         </t>
         <t>
           The user or group may be returned in a different
           form, due to normalization issues, although it will
           always be a canonically equivalent string.
-          See <xref target="Type-prinp" /> for details.
         </t>
       </list>
--->
     </t>
     <t>
       In the case where there is no translation available to the

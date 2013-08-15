@@ -1,5 +1,6 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2013) -->
+<!-- Copyright (C) The Internet Society (2010-2013) -->
+
 <section anchor="sec:lock_share" title="File Locking and Share Reservations">
 
   <t>
@@ -53,7 +54,8 @@
 
   <t>
     To support Win32 share reservations it is necessary to atomically
-    OPEN or CREATE files.  Having a separate share/unshare operation
+    OPEN or CREATE files and apply the appropriate locks in the same
+    operation.  Having a separate share/unshare operation
     would not allow correct implementation of the Win32 OpenFile API.
     In order to correctly implement share semantics, the previous
     NFS protocol mechanisms used when a file is opened or created
@@ -136,7 +138,7 @@
       <t>
         The first field, verifier is a client incarnation verifier that is
         used to detect client reboots.  Only if the verifier is different
-        from that which the server has previously recorded the client
+        from that which the server has previously recorded for the client
         (as identified by the second field of the structure, id) does the
         server start the process of canceling the client's leased state.
       </t>
@@ -366,8 +368,8 @@
 
       <t>
         Each stateid must be unique to the server.  Many operations take
-	a stateid as an argument but not a clientid, so the server must
-	be able to infer the client from the stateid.
+        a stateid as an argument but not a clientid, so the server must
+        be able to infer the client from the stateid.
       </t>
 
       <section anchor="stateid_types" title="Stateid Types">
@@ -428,7 +430,7 @@
 
         <t>
           When such a set of locks is first created, the server SHOULD return
-	  a stateid with seqid value of one.  On subsequent operations that
+          a stateid with seqid value of one.  On subsequent operations that
           modify the set of locks, the server is required to increment the
           "seqid" field by one whenever it returns a stateid for the same
           state-owner/file/type combination and there is some change in the set
@@ -667,7 +669,7 @@
 
       <section anchor="ss:fl:sufioo" title="Stateid Use for I/O Operations">
         <t>
-          Clients performing I/O operations need to select an appropriate
+          Clients performing Input/Output (I/O) operations need to select an appropriate
           stateid based on the locks (including opens and delegations) held by
           the client and the various types of state-owners sending the I/O
           requests.  SETATTR operations that change the file size are treated
@@ -879,7 +881,7 @@
         may unavoidably do reads (e.g., due to buffer cache constraints).
         However, even if READs are allowed in these circumstances,
         the server MUST still check for locks that conflict with the
-        READ (e.g., another open specify denial of READs).  Note that
+        READ (e.g., another open specifying denial of READs).  Note that
         a server which does enforce the access mode check on READs need
         not explicitly check for conflicting share reservations since the
         existence of OPEN for read access guarantees that no conflicting
@@ -919,7 +921,7 @@
         that is a consecutively increasing integer.  Different state-owners
         have different sequences.  The server maintains the last sequence
         number (L) received and the response that was returned.  The server
-        is free to assign any value for the first request issued for any
+        SHOULD assign a seqid value of one for the first request issued for any
         given state-owner.
       </t>
 
@@ -944,8 +946,9 @@
       <t>
         Since the sequence number is represented with an unsigned 32-bit
         integer, the arithmetic involved with the sequence number is
-        mod 2^32.  For an example of modulo arithmetic involving sequence
-        numbers see <xref target="RFC0793" />.
+        mod 2^32.  Note that when the seqid wraps, it SHOULD bypass
+        zero and use one as the next seqid value. For an example of
+        modulo arithmetic involving sequence numbers see <xref target="RFC0793" />.
       </t>
 
       <t>
@@ -1022,7 +1025,7 @@
           originally used,
           NFS4ERR_BAD_SEQID is returned.  When the server can determine that
           the request differs from the original it may return
-	  NFS4ERR_BAD_SEQID.
+          NFS4ERR_BAD_SEQID.
         </t>
         <t>
           When multiple of the sequence values match previous operations,
@@ -1232,8 +1235,8 @@
       request is allowed the lock.  Clients are required to poll at
       an interval sufficiently small that it is likely to acquire the
       lock in a timely manner.  The server is not required to maintain a
-      list of pending blocked locks as it is used to increase fairness
-      and not correct operation.  Because of the unordered nature of
+      list of pending blocked locks as it is not used to provide correct
+      operation but only to increase fairness.  Because of the unordered nature of
       crash recovery, storing of lock state to stable storage would be
       required to guarantee ordered granting of blocking locks.
     </t>
@@ -2087,7 +2090,7 @@
       receive an error of NFS4ERR_ADMIN_REVOKED.  In this instance the
       client may assume that only the state-owner's locks have been lost.
       The client notifies the lock holder appropriately.  The client
-      may not assume the lease period has been renewed as a result of
+      MUST NOT assume the lease period has been renewed as a result of
       a failed operation.
     </t>
 
