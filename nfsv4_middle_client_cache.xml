@@ -363,7 +363,7 @@
       <t>
         <list style='symbols'>
           <t>
-            Upon reclaim, a client reporting resources assigned to it by an
+            Upon reclaim, a client claiming resources assigned to it by an
             earlier server instance must be granted those resources.
           </t>
 
@@ -389,7 +389,7 @@
       </t>
 
       <t>
-        Situations in which there us a series of client and server restarts where
+        Situations in which there is a series of client and server restarts where
         there is no restart of both at the same time, are dealt with via a
         combination of CLAIM_DELEGATE_PREV and CLAIM_PREVIOUS reclaim cycles.
         Persistent storage is needed only on the client.  For each server

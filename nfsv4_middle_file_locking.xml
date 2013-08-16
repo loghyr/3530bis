@@ -2375,9 +2375,9 @@
     <t>
       If a server replica or a server immigrating a file system agrees
       to, or is expected to, accept opaque values from the client that
-      originated from another server, then it is a wise implementation
-      practice for the servers to encode the "opaque" values in network
-      byte order.  This way, servers acting as replicas or immigrating
+      originated from another server, then servers SHOULD encode
+      the "opaque" values in network byte order.  This way, servers
+      acting as replicas or immigrating
       file systems will be able to parse values like stateids, directory
       cookies, filehandles, etc. even if their native byte order is
       different from other servers cooperating in the replication and

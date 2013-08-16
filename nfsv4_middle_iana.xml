@@ -41,7 +41,7 @@
      Under the NFSv4 specification, the name of a named
      attribute can in theory be up to 2^32 - 1 bytes in
      length, but in practice NFSv4 clients and servers
-     will be unable to a handle string that long. IANA
+     will be unable to handle a string that long. IANA
      should reject any assignment request with a named
      attribute that exceeds 128 UTF-8 characters. To give
      IESG the flexibility to set up bases of assignment of

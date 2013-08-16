@@ -63,7 +63,7 @@
   </section>
 
   <section anchor="document_incons"
-           title="Inconsistencies of this Document with the companion document NFS Version 4 Protocol">
+           title="Definitions in the companion document NFS Version 4 Protocol are Authoritative">
     <t>
       <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, NFS Version 4
       Protocol, contains the definitions in XDR description language of
@@ -387,6 +387,10 @@
       an appropriate context for the reader.
 
       <list style='hanging'>
+        <t hangText="Absent File System:">
+          A file system is "absent" when a namespace component does not have a 
+          backing file system.
+        </t>
         <t hangText="Byte:">
           In this document, a byte is an octet, i.e., a datum exactly 8
           bits in length.

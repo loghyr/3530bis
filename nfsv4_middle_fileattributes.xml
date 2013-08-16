@@ -271,7 +271,7 @@
      <t>Id: The number assigned to the attribute. In
         the event of conflicts between the assigned number and <xref
         target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>, the latter is
-        likely authoritative, but should be resolved with Errata to this
+        authoritative, but in such an event, it should be resolved with Errata to this
         document and/or <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>.
         See <xref target="ISEG_errata"/> for the Errata process.</t>
      <t>Data Type: The XDR data type of the attribute.</t>
@@ -1044,7 +1044,7 @@
     <section toc="exclude" anchor="attrdef_quota_used"
              title="Attribute 40: quota_used">
       <t anchor="quota_used">
-        The value in bytes that represents the amount of disc
+        The value in bytes that represents the amount of disk
         space used by this file or directory and possibly a
         number of other similar files or directories, where the
         set of "similar" meets at least the criterion that
