@@ -13,15 +13,15 @@
           <organization abbrev='Editors' />
         </author>
 
-        <date month='May' day='08' year='2013' />
+        <date month='Aug' day='16' year='2013' />
 
         <abstract><t>This Internet-Draft provides the XDR description for NFSv4.</t></abstract>
 
       </front>
 
-      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-17' />
+      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-18' />
       <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-dot-x-17.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-dot-x-18.txt' />
     </reference>
 
     <reference anchor='RFC5665'>
@@ -1081,6 +1081,19 @@ document are to be interpreted as described in RFC
 
       <seriesInfo value='4178' name='RFC' />
       <format type='TXT' target='http://www.rfc-editor.org/rfc/rfc4178.txt' />
+    </reference>
+
+  <reference anchor="P1003.1e">
+      <front>
+     <title>IEEE Draft P1003.1e
+     </title>
+  <author>
+    <organization>Institute of Electrical and Electronics Engineers, Inc.
+    </organization>
+  </author>
+  <date year="1997" />
+      </front>
+      <format type='HTML' target='http://wt.xpilot.org/publications/posix.1e/download.html' />
     </reference>
 
 </references>

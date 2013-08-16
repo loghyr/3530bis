@@ -30,13 +30,13 @@
     <organization abbrev='Editors' />
 </author>
 
-<date month='May' day='08' year='2013' />
+<date month='Aug' day='16' year='2013' />
 
 </front>
 
-<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-26' />
+<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-27' />
 <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-26.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-27.txt' />
 </reference>
 
   </references>

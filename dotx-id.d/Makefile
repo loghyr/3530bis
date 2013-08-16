@@ -4,8 +4,8 @@
 YEAR=`date +%Y`
 MONTH=`date +%B`
 DAY=`date +%d`
-PREVVERS=17
-VERS=18
+PREVVERS=18
+VERS=19
 VPATH=../../dotx.d
 XML2RFC=xml2rfc.tcl
 

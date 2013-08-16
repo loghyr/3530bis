@@ -1122,12 +1122,12 @@
         owner_group and mode attributes, or for just the ACL.
       </t>
       <t>
-        In this section, much is made of the methods in <xref
-        target="computemode" />. Many requirements refer to this section.
-        But note that the methods have behaviors specified with
+        Many requirements refer to <xref
+        target="computemode" />,
+        but note that the methods have behaviors specified with
         &quot;SHOULD&quot;. This is intentional, to avoid invalidating
         existing implementations that compute the mode according to the
-        withdrawn POSIX ACL draft (1003.1e draft 17), rather than by
+        withdrawn POSIX ACL draft (<xref target='P1003.1e' />), rather than by
         actual permissions on owner, group, and other.
       </t>
       <section title="Setting the mode and/or ACL Attributes"
@@ -1262,9 +1262,8 @@
           inheriting an ACE within this section.
         </t>
         <t>
-          Implementors should standardize on what the behavior of CREATE
-          and OPEN must be depending on the presence or absence of the
-          mode and ACL attributes.
+          In the presence or absence of the mode and ACL attributes, the
+          behavior of CREATE and OPEN SHOULD be:
           <list style="numbers">
             <t>If just the mode is given in the call:
               <vspace blankLines="1" /> In this case, inheritance

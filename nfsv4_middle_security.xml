@@ -70,7 +70,7 @@
   </t>
 
   <t>
-    The second operation that should definitely use integrity protection
+    The second operation that SHOULD use integrity protection
     is any GETATTR for the fs_locations attribute. The attack has two
     steps.  First the attacker modifies the unprotected results of
     some operation to return NFS4ERR_MOVED. Second, when the client
