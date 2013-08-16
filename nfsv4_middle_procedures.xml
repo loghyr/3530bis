@@ -381,7 +381,7 @@
         the NFSv4 protocol, the client can ask the server to
         indicate whether or not one or more classes of operations are
         permitted.  The ACCESS operation is provided to allow clients
-        to check before doing a series of operations which will result
+        to check before doing a series of operations which might result
         in an access failure.  The OPEN operation provides a point
         where the server can verify access to the file object and
         method to return that information to the client.  The ACCESS
@@ -916,7 +916,7 @@
         sets a bit in the bitmap argument for each attribute value
         that it would like the server to return.  The server returns
         an attribute bitmap that indicates the attribute values for
-        which it was able to return, followed by the attribute values
+        which it was able to return values, followed by the attribute values
         ordered lowest attribute number first.
       </t>
 
@@ -976,9 +976,8 @@
     </t>
     <t>
       Unless one of the above happens very quickly,
-      one or more NFS4ERR_DELAY errors will be returned if
+      one or more NFS4ERR_DELAY errors will be returned
       while a delegation is outstanding.
-
     </t>
 
 
@@ -2230,7 +2229,7 @@
       </t>
 
       <t>
-        Servers must not require confirmation on OPENs that grant
+        Servers MUST NOT require confirmation on OPENs that grant
         delegations or are doing reclaim operations.  See 
         <xref target="ss:fl:open_conf" />
         for details.  The server can easily avoid
@@ -2476,7 +2475,8 @@
       <t>
         There is a form of security negotiation as described
         in <xref target="RFC2755" /> that uses the public filehandle a method of
-        employing SNEGO.  This method is not available with NFSv4
+        employing Simple and Protected GSSAPI Negotiation Mechanism (SNEGO)
+        <xref target="RFC4178" />.  This method is not available with NFSv4
 				as filehandles are not overloaded with special meaning and
         therefore do not provide the same framework as NFSv2
         and NFSv3.  Clients should therefore use the security negotiation
@@ -2629,8 +2629,8 @@
         another client or perhaps on the server itself, changing the file
         size from what the requesting client believes to be the case.  This
         would reduce the actual amount of data available to the client.  It
-        is possible that the server reduce the transfer size and so return a
-        short read result.  Server resource exhaustion may also occur in a
+        is possible that the server reduces the transfer size and so returns a
+        short read result.  Server resource exhaustion may also result in a
         short read.
       </t>
 
@@ -3090,8 +3090,6 @@ M        named by filename from the directory corresponding to the
         for further discussion.
       </t>
 
-
-
     </section>
     <section toc="exclude" anchor="OP_RENAME_IMPLEMENTATION" title="IMPLEMENTATION">
 
@@ -3173,7 +3171,7 @@ M        named by filename from the directory corresponding to the
         share reservation lease cannot be renewed, then the server
         MUST return an error other than NFS4ERR_CB_PATH_DOWN, even
         if the callback path is also down.  In the event that
-        the server has conditions such that is could return either
+        the server has conditions such that it could return either
         NFS4ERR_CB_PATH_DOWN or NFS4ERR_LEASE_MOVED,
         NFS4ERR_LEASE_MOVED MUST be handled first.
       </t>

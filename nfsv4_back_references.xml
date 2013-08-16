@@ -1054,4 +1054,33 @@ document are to be interpreted as described in RFC
       <format octets='222395' type='TXT' target='http://www.rfc-editor.org/rfc/rfc5246.txt' />
     </reference>
 
+    <reference anchor='RFC4178'>
+      <front>
+        <title>The Simple and Protected
+    Generic Security Service Application Program Interface (GSS-API)
+                         Negotiation Mechanism</title>
+        <author fullname='L. Zhu' initials='L.' surname='Zhu'>
+          <organization />
+        </author>
+
+        <author fullname='P. Leach' initials='P.' surname='Leach'>
+          <organization />
+        </author>
+
+        <author fullname='K. Jaganathan' initials='K.' surname='Jaganathan'>
+          <organization />
+        </author>
+
+        <author fullname='W. Ingersoll' initials='W.' surname='Ingersoll'>
+          <organization />
+        </author>
+
+        <date year='2005' month='October' />
+
+      </front>
+
+      <seriesInfo value='4178' name='RFC' />
+      <format type='TXT' target='http://www.rfc-editor.org/rfc/rfc4178.txt' />
+    </reference>
+
 </references>
