@@ -440,7 +440,7 @@
       <t>
         The current or saved filehandle value designating an argument
         to the current operation is invalid.
-        The filesystem object referred to by that filehandle no longer
+        The file system object referred to by that filehandle no longer
         exists or access to it has been revoked.
       </t>
     </section>
@@ -532,14 +532,14 @@
     <section title="NFS4ERR_EXIST (Error Code 17)"
              anchor="err_EXIST">
       <t>
-        A filesystem object of the specified target name (when creating, renaming
+        A file system object of the specified target name (when creating, renaming
         or linking) already exists.
       </t>
     </section>
     <section title="NFS4ERR_FBIG (Error Code 27)"
              anchor="err_FBIG">
       <t>
-        Filesystem object too large. The operation would have caused a filesystem object to
+        Filesystem object too large. The operation would have caused a file system object to
         grow beyond the server's limit.
       </t>
     </section>
@@ -547,9 +547,9 @@
              anchor="err_FILE_OPEN">
       <t>
         The operation is not allowed because a
-        filesystem object involved in the operation is currently open.
+        file system object involved in the operation is currently open.
         Servers may, but are not required to disallow linking-to,
-        removing, or renaming open filesystem objects.
+        removing, or renaming open file system objects.
       </t>
     </section>
     <section title="NFS4ERR_IO (Error Code 6)"
@@ -563,13 +563,13 @@
              anchor="err_MLINK">
       <t>
         The request would have caused the server's limit for the
-        number of hard links a filesystem object may have to be exceeded.
+        number of hard links a file system object may have to be exceeded.
       </t>
     </section>
     <section title="NFS4ERR_NOENT (Error Code 2)"
              anchor="err_NOENT">
       <t>
-         Indicates no such file or directory. The filesystem object referenced by the name
+         Indicates no such file or directory. The file system object referenced by the name
          specified does not exist.
       </t>
     </section>

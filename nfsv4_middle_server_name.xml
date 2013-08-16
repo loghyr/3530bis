@@ -9,7 +9,7 @@
       pathnames under the root directory or "/".  On a Windows NT server
       the name space constitutes all the files on disks named by mapped
       disk letters.  NFS server administrators rarely make the entire
-      server's filesystem name space available to NFS clients.  More often
+      server's file system name space available to NFS clients.  More often
       portions of the name space are made available via an "export" feature.
       In previous versions of the NFS protocol, the root filehandle for
       each export is obtained through the MOUNT protocol; the client sends
@@ -34,7 +34,7 @@
     <t>
       This style of browsing is not well supported by the NFSv2 and
       NFSv3 protocols.  The client expects all LOOKUP operations to remain
-      within a single server filesystem.  For example, the device attribute
+      within a single server file system.  For example, the device attribute
       will not change.  This prevents a client from taking name space
       paths that span exports.
     </t>
@@ -45,8 +45,8 @@
       understands the server's pathname syntax, it can create an image of
       the server's name space on the client.  The parts of the name
       space that are not exported by the server are filled in with a
-      "pseudo filesystem" that allows the user to browse from one mounted
-      filesystem to another.  There is a drawback to this representation of
+      "pseudo file system" that allows the user to browse from one mounted
+      file system to another.  There is a drawback to this representation of
       the server's name space on the client: it is static.  If the server
       administrator adds a new export the client will be unaware of it.
     </t>
@@ -60,27 +60,27 @@
       name space.  An NFSv4 client uses LOOKUP and READDIR
       operations to browse seamlessly from one export to another.  Portions
       of the server name space that are not exported are bridged via a
-      "pseudo filesystem" that provides a view of exported directories only.
-      A pseudo filesystem has a unique fsid and behaves like a normal,
-      read only filesystem.
+      "pseudo file system" that provides a view of exported directories only.
+      A pseudo file system has a unique fsid and behaves like a normal,
+      read only file system.
     </t>
 
     <t>
       Based on the construction of the server's name space, it is possible
-      that multiple pseudo filesystems may exist.  For example,
+      that multiple pseudo file systems may exist.  For example,
 
       <figure>
         <artwork>
-  /a         pseudo filesystem
-  /a/b       real filesystem
-  /a/b/c     pseudo filesystem
-  /a/b/c/d   real filesystem
+  /a         pseudo file system
+  /a/b       real file system
+  /a/b/c     pseudo file system
+  /a/b/c/d   real file system
         </artwork>
       </figure>
     </t>
 
     <t>
-      Each of the pseudo filesystems are considered separate entities and
+      Each of the pseudo file systems are considered separate entities and
       therefore will have a unique fsid.
     </t>
 
@@ -90,7 +90,7 @@
     <t>
       The DOS and Windows operating environments are sometimes described
       as having "multiple roots".  Filesystems are commonly represented
-      as disk letters.  MacOS represents filesystems as top level names.
+      as disk letters.  MacOS represents file systems as top level names.
       NFSv4 servers for these platforms can construct a pseudo
       file system above these root names so that disk letters or volume
       names are simply directory names in the pseudo root.
@@ -100,13 +100,13 @@
   <section title="Filehandle Volatility">
 
     <t>
-      The nature of the server's pseudo filesystem is that it is a logical
-      representation of filesystem(s) available from the server.  Therefore,
-      the pseudo filesystem is most likely constructed dynamically when
+      The nature of the server's pseudo file system is that it is a logical
+      representation of file system(s) available from the server.  Therefore,
+      the pseudo file system is most likely constructed dynamically when
       the server is first instantiated.  It is expected that the pseudo
-      filesystem may not have an on disk counterpart from which persistent
+      file system may not have an on disk counterpart from which persistent
       filehandles could be constructed.  Even though it is preferable that
-      the server provide persistent filehandles for the pseudo filesystem,
+      the server provide persistent filehandles for the pseudo file system,
       the NFS client should expect that pseudo file system filehandles
       are volatile.  This can be confirmed by checking the associated
       "fh_expire_type" attribute for those filehandles in question.
@@ -119,9 +119,9 @@
   <section title="Exported Root">
 
     <t>
-      If the server's root filesystem is exported, one might conclude that
-      a pseudo-filesystem is not needed.  This would be wrong.  Assume the
-      following filesystems on a server:
+      If the server's root file system is exported, one might conclude that
+      a pseudo-file system is not needed.  This would be wrong.  Assume the
+      following file systems on a server:
 
       <figure>
         <artwork>
@@ -134,44 +134,44 @@
 
     <t>
       Because disk2 is not exported, disk3 cannot be reached with simple
-      LOOKUPs.  The server must bridge the gap with a pseudo-filesystem.
+      LOOKUPs.  The server must bridge the gap with a pseudo-file system.
     </t>
 
   </section>
   <section title="Mount Point Crossing">
 
     <t>
-      The server filesystem environment may be constructed in such a
-      way that one filesystem contains a directory which is 'covered'
-      or mounted upon by a second filesystem.  For example:
+      The server file system environment may be constructed in such a
+      way that one file system contains a directory which is 'covered'
+      or mounted upon by a second file system.  For example:
 
       <figure>
         <artwork>
-  /a/b            (filesystem 1)
-  /a/b/c/d        (filesystem 2)
+  /a/b            (file system 1)
+  /a/b/c/d        (file system 2)
         </artwork>
       </figure>
     </t>
 
     <t>
-      The pseudo filesystem for this server may be constructed to look like:
+      The pseudo file system for this server may be constructed to look like:
 
       <figure>
         <artwork>
   /               (place holder/not exported)
-  /a/b            (filesystem 1)
-  /a/b/c/d        (filesystem 2)
+  /a/b            (file system 1)
+  /a/b/c/d        (file system 2)
         </artwork>
       </figure>
     </t>
 
     <t>
-      It is the server's responsibility to present the pseudo filesystem
+      It is the server's responsibility to present the pseudo file system
       that is complete to the client.  If the client sends a lookup request
       for the path "/a/b/c/d", the server's response is the filehandle of
-      the filesystem "/a/b/c/d".  In previous versions of the NFS protocol,
+      the file system "/a/b/c/d".  In previous versions of the NFS protocol,
       the server would respond with the filehandle of directory "/a/b/c/d"
-      within the filesystem "/a/b".
+      within the file system "/a/b".
     </t>
 
     <t>
@@ -185,14 +185,14 @@
     <t>
       The application of the server's security policy needs to be carefully
       considered by the implementor.  One may choose to limit the
-      viewability of portions of the pseudo filesystem based on the
+      viewability of portions of the pseudo file system based on the
       server's perception of the client's ability to authenticate
       itself properly.  However, with the support of multiple security
       mechanisms and the ability to negotiate the appropriate use of these
       mechanisms, the server is unable to properly determine if a client
       will be able to authenticate itself.  If, based on its policies,
-      the server chooses to limit the contents of the pseudo filesystem,
-      the server may effectively hide filesystems from a client that may
+      the server chooses to limit the contents of the pseudo file system,
+      the server may effectively hide file systems from a client that may
       otherwise have legitimate access.
     </t>
 
@@ -211,7 +211,7 @@
     </t>
 
     <t>
-      The /a/b/c directory is a real filesystem and is the shared resource.
+      The /a/b/c directory is a real file system and is the shared resource.
       The security policy for /a/b/c is Kerberos with integrity.  The server
       should apply the same security policy to /, /a, and /a/b.  This allows
       for the extension of the protection of the server's namespace to

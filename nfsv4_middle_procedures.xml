@@ -1,9 +1,8 @@
 <!-- Copyright (C) The IETF Trust (2009-2013) -->
 <!-- Copyright (C) The Internet Society (2010-2013) -->
+
 <section anchor="sec:operations" title="NFSv4 Procedures">
-
   <section anchor="OP_NULL" title="Procedure 0: NULL - No Operation">
-
     <section toc="exclude" anchor="OP_NULL_SYNOPSIS" title="SYNOPSIS">
 
       <figure>
@@ -706,14 +705,14 @@
 
       <t>
         If createattrs includes neither the owner attribute nor an
-        ACL with an ACE for the owner, and if the server's filesystem
+        ACL with an ACE for the owner, and if the server's file system
         both supports and requires an owner attribute (or an owner
         ACE) then the server MUST derive the owner (or the owner
         ACE). This would typically be from the principal indicated in
         the RPC credentials of the call, but the server's operating
-        environment or filesystem semantics may dictate other methods
+        environment or file system semantics may dictate other methods
         of derivation. Similarly, if createattrs includes neither the
-        group attribute nor a group ACE, and if the server's filesystem
+        group attribute nor a group ACE, and if the server's file system
         both supports and requires the notion of a group attribute
         (or group ACE), the server MUST derive the group attribute
         (or the corresponding owner ACE) for the file. This could be
@@ -723,7 +722,7 @@
         credentials (e.g., POSIX systems have a user database <xref target="getpwnam" />
         that has the group identifier for every user identifier),
         inherited from directory the object is created in, or whatever
-        else the server's operating environment or filesystem semantics
+        else the server's operating environment or file system semantics
         dictate. This applies to the OPEN operation too.
       </t>
 
@@ -912,7 +911,7 @@
     <section toc="exclude" anchor="OP_GETATTR_DESCRIPTION" title="DESCRIPTION">
 
       <t>
-        The GETATTR operation will obtain attributes for the filesystem
+        The GETATTR operation will obtain attributes for the file system
         object specified by the current filehandle.  The client
         sets a bit in the bitmap argument for each attribute value
         that it would like the server to return.  The server returns
@@ -1071,7 +1070,7 @@
         file represented by the saved filehandle, as set by the
         SAVEFH operation, in the directory represented by the current
         filehandle.  The existing file and the target directory must
-        reside within the same filesystem on the server.  On success,
+        reside within the same file system on the server.  On success,
         the current filehandle will continue to be the target
         directory.  If an object exists in the target directory with
         the same name as newname, the server must return NFS4ERR_EXIST.
@@ -1104,9 +1103,9 @@
 
       <t>
         The statement "file and the target directory must reside
-        within the same filesystem on the server" means that the fsid
+        within the same file system on the server" means that the fsid
         fields in the attributes for the objects are the same. If they
-        reside on different filesystems, the error, NFS4ERR_XDEV,
+        reside on different file systems, the error, NFS4ERR_XDEV,
         is returned.  On some servers, the filenames, "." and "..",
         are illegal as newname.
       </t>
@@ -1200,7 +1199,7 @@
         LOCK operations are subject to permission checks and to checks
         against the access type of the associated file.  However, the
         specific right and modes required for various type of locks,
-        reflect the semantics of the server-exported filesystem,
+        reflect the semantics of the server-exported file system,
         and are not specified by the protocol.  For example, Windows
         2000 allows a write lock of a file open for READ, while a
         POSIX-compliant system does not.
@@ -1470,7 +1469,7 @@
     <section toc="exclude" anchor="OP_LOOKUP_DESCRIPTION" title="DESCRIPTION">
 
       <t>
-        This operation LOOKUPs or finds a filesystem object using
+        This operation LOOKUPs or finds a file system object using
         the directory specified by the current filehandle.  LOOKUP
         evaluates the component and if the object exists the current
         filehandle is replaced with the component's filehandle.
@@ -1520,18 +1519,18 @@
         fsid attribute of the directory looked up.  If the fsids are
         different then the new directory is a server mount point.
         UNIX clients that detect a mount point crossing will need
-        to mount the server's filesystem.  This needs to be done to
+        to mount the server's file system.  This needs to be done to
         maintain the file object identity checking mechanisms common
         to UNIX clients.
       </t>
 
       <t>
         Servers that limit NFS access to "shares" or "exported"
-        filesystems should provide a pseudo-filesystem into which
-        the exported filesystems can be integrated, so that clients
+        file systems should provide a pseudo-file system into which
+        the exported file systems can be integrated, so that clients
         can browse the server's name space.  The clients' view of
-        a pseudo filesystem will be limited to paths that lead to
-        exported filesystems.
+        a pseudo file system will be limited to paths that lead to
+        exported file systems.
       </t>
 
       <t>
@@ -1635,7 +1634,7 @@
       <t>
         This operation is used to prefix a sequence of operations
         to be performed if one or more attributes have changed on
-        some filesystem object.  If all the attributes match then
+        some file system object.  If all the attributes match then
         the error NFS4ERR_SAME must be returned.
       </t>
 
@@ -1666,7 +1665,7 @@
       <t>
         In the case that a recommended attribute is specified in
         the NVERIFY operation and the server does not support
-        that attribute for the filesystem object, the error
+        that attribute for the file system object, the error
         NFS4ERR_ATTRNOTSUPP is returned to the client.
       </t>
 
@@ -1937,16 +1936,16 @@
       </t>
 
       <t>
-        If the underlying filesystem at the server is only accessible
+        If the underlying file system at the server is only accessible
         in a read-only mode and the OPEN request has specified
         ACCESS_WRITE or ACCESS_BOTH, the server will return
-        NFS4ERR_ROFS to indicate a read-only filesystem.
+        NFS4ERR_ROFS to indicate a read-only file system.
       </t>
 
       <t>
         As with the CREATE operation, the server MUST derive the owner,
         owner ACE, group, or group ACE if any of the four attributes
-        are required and supported by the server's filesystem.  For an
+        are required and supported by the server's file system.  For an
         OPEN with the EXCLUSIVE4 createmode, the server has no choice,
         since such OPEN calls do not include the createattrs field.
         Conversely, if createattrs is specified, and includes owner
@@ -1979,7 +1978,7 @@
 
       <t>
         If the object does not exist, the server creates the object
-        and stores the verifier in stable storage. For filesystems
+        and stores the verifier in stable storage. For file systems
         that do not provide a mechanism for the storage of arbitrary
         file attributes, the server may use one or more elements of
         the object meta-data to store the verifier. The verifier must
@@ -1992,7 +1991,7 @@
         verifier. The duplicate request cache in volatile storage
         does not survive a crash and may actually flush on a long
         network partition, opening failure windows.  In the UNIX
-        local filesystem environment, the expected storage location
+        local file system environment, the expected storage location
         for the verifier on creation is the meta-data (time stamps)
         of the object. For this reason, an exclusive object create
         may not include initial attributes because the server would
@@ -2133,7 +2132,7 @@
         an object of type NF4ATTRDIR.  From this filehandle, READDIR
         and LOOKUP operations can be used to obtain filehandles for
         the various named attributes associated with the original
-        filesystem object.  Filehandles returned within the named
+        file system object.  Filehandles returned within the named
         attribute directory will have a type of NF4NAMEDATTR.
       </t>
 
@@ -2687,7 +2686,7 @@
 
       <t>
         The READDIR operation retrieves a variable number of entries
-        from a filesystem directory and returns client requested
+        from a file system directory and returns client requested
         attributes for each entry along with information to allow
         the client to request additional directory entries in a
         subsequent READDIR.
@@ -2770,7 +2769,7 @@
       </t>
 
       <t>
-        For some filesystem environments, the directory entries "." and
+        For some file system environments, the directory entries "." and
         ".."  have special meaning and in other environments, they
         may not.  If the server supports these special entries within
         a directory, they should not be returned to the client as part
@@ -2795,7 +2794,7 @@
     <section toc="exclude" anchor="OP_READDIR_IMPLEMENTATION" title="IMPLEMENTATION">
 
       <t>
-        The server's filesystem directory representations can differ
+        The server's file system directory representations can differ
         greatly.  A client's programming interfaces may also be bound
         to the local operating environment in a way that does not
         translate well into the NFS protocol.  Therefore the use
@@ -2933,7 +2932,7 @@
         The REMOVE operation removes (deletes) a directory entry
 M        named by filename from the directory corresponding to the
         current filehandle.  If the entry in the directory was the
-        last reference to the corresponding filesystem object, the
+        last reference to the corresponding file system object, the
         object may be destroyed.
       </t>
 
@@ -3044,7 +3043,7 @@ M        named by filename from the directory corresponding to the
         filehandle, as set by the SAVEFH operation, to newname in
         the target directory corresponding to the current filehandle.
         The operation is required to be atomic to the client.  Source
-        and target directories must reside on the same filesystem on
+        and target directories must reside on the same file system on
         the server.  On success, the current filehandle will continue
         to be the target directory.
       </t>
@@ -3077,10 +3076,10 @@ M        named by filename from the directory corresponding to the
 
       <t>
         If the oldname refers to a named attribute and the saved and
-        current filehandles refer to different filesystem objects,
+        current filehandles refer to different file system objects,
         the server will return NFS4ERR_XDEV just as if the saved
         and current filehandles represented directories on different
-        filesystems.
+        file systems.
       </t>
 
       <t>
@@ -3099,9 +3098,9 @@ M        named by filename from the directory corresponding to the
       <t>
         The RENAME operation must be atomic to the client.  The
         statement "source and target directories must reside on the
-        same filesystem on the server" means that the fsid fields in
+        same file system on the server" means that the fsid fields in
         the attributes for the directories are the same. If they reside
-        on different filesystems, the error, NFS4ERR_XDEV, is returned.
+        on different file systems, the error, NFS4ERR_XDEV, is returned.
       </t>
 
       <t>
@@ -3507,7 +3506,7 @@ M        named by filename from the directory corresponding to the
 
       <t>
         The SETATTR operation changes one or more of the attributes of
-        a filesystem object.  The new attributes are specified with a
+        a file system object.  The new attributes are specified with a
         bitmap and the attributes that follow the bitmap in bit order.
       </t>
 
@@ -4132,7 +4131,7 @@ M        named by filename from the directory corresponding to the
       <t>
         In the case that a recommended attribute is specified in the
         VERIFY operation and the server does not support that attribute
-        for the filesystem object, the error NFS4ERR_ATTRNOTSUPP is
+        for the file system object, the error NFS4ERR_ATTRNOTSUPP is
         returned to the client.
       </t>
 
@@ -4185,7 +4184,7 @@ M        named by filename from the directory corresponding to the
         is to be performed.  The client specifies with the stable
         parameter the method of how the data is to be processed
         by the server.  If stable is FILE_SYNC4, the server must
-        commit the data written plus all filesystem metadata to stable
+        commit the data written plus all file system metadata to stable
         storage before returning results.  This corresponds to the NFS
         version 2 protocol semantics.  Any other behavior constitutes a
         protocol violation.  If stable is DATA_SYNC4, then the server

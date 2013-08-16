@@ -47,7 +47,7 @@
 
     <abstract>
       <t>
-        The Network File System (NFS) version 4 is a distributed filesystem
+        The Network File System (NFS) version 4 is a distributed file system
         protocol which builds on the heritage of NFS protocol version 2, RFC 1094, and
         version 3, RFC 1813.  Unlike earlier versions, the NFS version 4
         protocol supports traditional file access while integrating support

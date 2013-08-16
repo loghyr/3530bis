@@ -2,7 +2,6 @@
 <!-- Copyright (C) The Internet Society (2010-2013) -->
 
 <section anchor="sec:requests" title="NFSv4 Requests">
-
   <t>
     For the NFSv4 RPC program, there are two traditional RPC
     procedures: NULL and COMPOUND.  All other functionality is defined as
@@ -31,7 +30,6 @@
   </t>
 
   <section title="Compound Procedure">
-
     <t>
       The COMPOUND procedure provides the opportunity for better
       performance within high latency networks.  The client can avoid
@@ -78,10 +76,9 @@
       XDR encoding, these counts must match exactly the number of operation
       arguments or results encoded.
     </t>
-
   </section>
-  <section title="Evaluation of a Compound Request">
 
+  <section title="Evaluation of a Compound Request">
     <t>
       The server will process the COMPOUND procedure by evaluating each of
       the operations within the COMPOUND procedure in order.  Each
@@ -104,11 +101,11 @@
     </t>
 
     <t>
-      It is the client's responsibility for recovering from any partially
-      completed COMPOUND procedure.  Partially completed COMPOUND
-      procedures may occur at any point due to errors such as
-      NFS4ERR_RESOURCE and NFS4ERR_DELAY.  This may occur even given an
-      otherwise valid operation string.  Further, a server reboot which
+      A COMPOUND is not a transaction and it is the client's responsibility
+      for recovering from any partially completed COMPOUND procedure.  These
+      may occur at any point due to errors such as
+      NFS4ERR_RESOURCE and NFS4ERR_DELAY.  Note that these errors can occur
+      in an otherwise valid operation string.  Further, a server reboot which
       occurs in the middle of processing a COMPOUND procedure may leave the
       client with the difficult task of determining how far COMPOUND
       processing has proceeded.  Therefore, the client should avoid overly
@@ -123,16 +120,15 @@
       "saved" filehandle is used for temporary storage of a filehandle
       value and as operands for the RENAME and LINK operations.
     </t>
-
   </section>
-  <section title="Synchronous Modifying Operations">
 
+  <section title="Synchronous Modifying Operations">
     <t>
-      NFSv4 operations that modify the filesystem are synchronous.
+      NFSv4 operations that modify the file system are synchronous.
       When an operation is successfully completed at the server, the client
       can depend that any data associated with the request is now on stable
       storage (the one exception is in the case of the file data in a WRITE
-      operation with the UNSTABLE option specified).
+      operation with the UNSTABLE4 option specified).
     </t>
 
     <t>
@@ -147,16 +143,14 @@
       be reflected.  The server must not have just the results of operation
       B in stable storage.
     </t>
-
   </section>
-  <section title="Operation Values">
 
+  <section title="Operation Values">
     <t>
       The operations encoded in the COMPOUND procedure are identified by
       operation values.  To avoid overlap with the RPC procedure numbers,
       operations 0 (zero) and 1 are not defined.  Operation 2 is not
       defined but reserved for future use with minor versioning.
     </t>
-
   </section>
 </section>

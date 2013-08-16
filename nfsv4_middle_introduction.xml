@@ -10,7 +10,7 @@
       It retains the essential
       characteristics of previous versions: design for easy recovery,
       independent of transport protocols, operating systems and
-      filesystems, simplicity, and good performance.  The NFSv4
+      file systems, simplicity, and good performance.  The NFSv4
       revision has the following goals:
 
       <list style='symbols'>
@@ -37,9 +37,9 @@
         <t>
           Good cross-platform interoperability.
         <vspace blankLines='1' />
-          The protocol features a filesystem model that provides a
+          The protocol features a file system model that provides a
           useful, common set of features that does not unduly favor
-          one filesystem or operating system over another.
+          one file system or operating system over another.
         </t>
 
         <t>
@@ -89,7 +89,7 @@
       knowledge is still expected.  The reader should
       be familiar with the XDR and RPC protocols as described in
       <xref target="RFC5531" /> and <xref target="RFC4506" />.
-      A basic knowledge of filesystems and distributed filesystems
+      A basic knowledge of file systems and distributed file systems
       is expected as well.
     </t>
 
@@ -120,7 +120,7 @@
         protocol has added a new operation which provides the client
         with a method of querying the server about its policies regarding
         which security mechanisms must be used for access to the
-        server's filesystem resources.  With this, the client can
+        server's file system resources.  With this, the client can
         securely match the security mechanism that meets the policies
         specified at both the client and server.
       </t>
@@ -141,7 +141,7 @@
         With the use of the COMPOUND procedure, the client is able
         to build simple or complex requests.  These COMPOUND requests
         allow for a reduction in the number of RPCs needed for logical
-        filesystem operations.  For example, without previous contact
+        file system operations.  For example, without previous contact
         with a server a client will be able to read data from a file
         in one request by combining LOOKUP, OPEN, and READ operations
         in a single COMPOUND RPC.  With previous versions of the NFS
@@ -164,7 +164,7 @@
         one operation to another within the sequence of operations.
         There is a concept of a "current filehandle" and "saved
         filehandle".  Most operations use the "current filehandle"
-        as the filesystem object to operate upon.  The "saved
+        as the file system object to operate upon.  The "saved
         filehandle" is used as temporary filehandle storage within
         a COMPOUND procedure as well as an additional operand for
         certain operations.
@@ -173,9 +173,9 @@
 
     <section anchor="intro_fs_model" title="Filesystem Model">
       <t>
-        The general filesystem model used for the NFSv4
+        The general file system model used for the NFSv4
         protocol is the same as previous versions.  The server
-        filesystem is hierarchical with the regular files contained
+        file system is hierarchical with the regular files contained
         within being treated as opaque byte streams.  In a slight
         departure, file and directory names are encoded with UTF-8
         to deal with the basics of internationalization.
@@ -186,24 +186,24 @@
         protocol to provide for the initial mapping between path name
         and filehandle.  Instead of using the older MOUNT protocol
         for this mapping, the server provides a ROOT filehandle
-        that represents the logical root or top of the filesystem
+        that represents the logical root or top of the file system
         tree provided by the server.  The server provides multiple
-        filesystems by gluing them together with pseudo filesystems.
-        These pseudo filesystems provide for potential gaps in the
-        path names between real filesystems.
+        file systems by gluing them together with pseudo file systems.
+        These pseudo file systems provide for potential gaps in the
+        path names between real file systems.
       </t>
 
       <section anchor="intro_fh_types" title="Filehandle Types">
         <t>
           In previous versions of the NFS protocol, the filehandle
           provided by the server was guaranteed to be valid or
-          persistent for the lifetime of the filesystem object
+          persistent for the lifetime of the file system object
           to which it referred.  For some server implementations,
           this persistence requirement has been difficult to meet.
           For the NFSv4 protocol, this requirement has been
           relaxed by introducing another type of filehandle, volatile.
           With persistent and volatile filehandle types, the server
-          implementation can match the abilities of the filesystem at
+          implementation can match the abilities of the file system at
           the server along with the operating environment.  The client
           will have knowledge of the type of filehandle being provided
           by the server and can be prepared to deal with the semantics
@@ -332,7 +332,7 @@
         protocol is similar to previous versions.  Attributes and
         directory information are cached for a duration determined by
         the client.  At the end of a predefined timeout, the client
-        will query the server to see if the related filesystem object
+        will query the server to see if the related file system object
         has been updated.
       </t>
 
@@ -396,7 +396,7 @@
           resources.  The client may be an application that contains
           the logic to access the NFS server directly.  The client
           may also be the traditional operating system client that
-          provides remote filesystem services for a set of applications.
+          provides remote file system services for a set of applications.
         <vspace blankLines='1' />
           With reference to byte-range locking, the client is also the
           entity that maintains a set of locks on behalf of one or more
@@ -441,7 +441,7 @@
 
         <t hangText="Server:">
           The "Server" is the entity responsible for coordinating
-          client access to a set of filesystems.
+          client access to a set of file systems.
         </t>
 
         <t hangText="Stable Storage:">

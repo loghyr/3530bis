@@ -467,16 +467,16 @@
     </t>
     <t>
       A potential problem exists if a client were to allow an open owner to
-      have state on multiple filesystems on server, in that it is unclear
+      have state on multiple file systems on server, in that it is unclear
       how the sequence numbers associated with open owners are to be dealt
       with, in the event of transparent state migration.  A client can avoid
       such a situation, if it ensures that any use of an open owner is
-      confined to a single filesystem.
+      confined to a single file system.
     </t>
 
     <t>
       A server MAY decline to migrate state associated with open owners that
-      span multiple filesystems.  In cases in which the server chooses not
+      span multiple file systems.  In cases in which the server chooses not
       to migrate such state, the server MUST return NFS4ERR_BAD_STATEID
       when the client uses those stateids on the new server.
     </t>

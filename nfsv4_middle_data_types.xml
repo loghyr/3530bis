@@ -46,7 +46,7 @@
         A server converts to and from its local representation of
         time when processing time values, preserving as much accuracy
         as possible.  If the precision of timestamps stored for a
-        filesystem object is less than defined, loss of precision can
+        file system object is less than defined, loss of precision can
         occur.  An adjunct time maintenance protocol is recommended to
         reduce client and server time skew.
       </t>
@@ -77,7 +77,7 @@
     <section toc="exclude" anchor="fsid4" title="fsid4">
       <?rfc include='autogen/type_fsid4.xml'?>
       <t>
-        This type is the filesystem identifier that is used as a
+        This type is the file system identifier that is used as a
         mandatory attribute.
       </t>
     </section>
@@ -127,7 +127,7 @@
       <t>
         This structure is used with the CREATE, LINK, REMOVE, RENAME
         operations to let the client know the value of the change
-        attribute for the directory in which the target filesystem
+        attribute for the directory in which the target file system
         object resides.
       </t>
     </section>

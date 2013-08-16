@@ -222,7 +222,7 @@
       With the NFSv4 server potentially offering multiple security
       mechanisms, the client needs a method to determine or negotiate
       which mechanism is to be used for its communication with the server.
-      The NFS server may have multiple points within its filesystem name
+      The NFS server may have multiple points within its file system name
       space that are available for use by NFS clients.  In turn the NFS
       server may be configured such that each of these entry points may
       have different or multiple security mechanisms in use.
@@ -258,7 +258,7 @@
         During communication with the server, the client may receive an NFS
         error of NFS4ERR_WRONGSEC.  This error allows the server to notify the
         client that the security triple currently being used is not appropriate
-        for access to the server's filesystem resources.  The client is then
+        for access to the server's file system resources.  The client is then
         responsible for determining what security triples are available at the
         server and choose one which is appropriate for the client.  See 
         <xref target="OP_SECINFO" /> for further discussion of how

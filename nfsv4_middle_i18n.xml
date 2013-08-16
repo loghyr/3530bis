@@ -104,7 +104,7 @@
       the operating environment requires normalization, then the
       implementation must normalize the various UTF-8 encoded strings
       within the protocol before presenting the information to an
-      application (at the client) or local filesystem (at the server).
+      application (at the client) or local file system (at the server).
     </t>
 
     <t>
@@ -197,17 +197,17 @@
       Where the client supplied string is not rejected with NFS4ERR_INVAL 
       but contains characters that are not supported by the server as a value 
       for that string (e.g. names containing characters that have more than 
-      two octets on a filesystem that supports Unicode characters only), the
+      two octets on a file system that supports Unicode characters only), the
       server should return an NFS4ERR_BADCHAR error.
     </t>
 
     <t>
-      Where a UTF-8 string is used as a file name, and the filesystem,
+      Where a UTF-8 string is used as a file name, and the file system,
       while supporting all of the characters within the name, does not
       allow that particular name to be used, the error should return the
       error NFS4ERR_BADNAME.  This includes situations in which the server
-      filesystem imposes a normalization constraint on name strings, but
-      will also include such situations as filesystem prohibitions of "."
+      file system imposes a normalization constraint on name strings, but
+      will also include such situations as file system prohibitions of "."
       and ".." as file names for certain operations, and other such
       constraints.
     </t>

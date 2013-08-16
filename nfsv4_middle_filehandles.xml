@@ -4,10 +4,10 @@
 <section anchor="sec:filehandles" title="Filehandles">
   <t>
     The filehandle in the NFS protocol is a per server unique identifier
-    for a filesystem object.  The contents of the filehandle are
+    for a file system object.  The contents of the filehandle are
     opaque to the client.  Therefore, the server is responsible for
     translating the filehandle to an internal representation of the
-    filesystem object.
+    file system object.
   </t>
 
   <section title="Obtaining the First Filehandle">
@@ -19,7 +19,7 @@
       protocol <xref target="RFC1094" /> and the NFSv3 protocol <xref target="RFC1813" />, there
       exists an ancillary protocol to obtain this first filehandle.
       The MOUNT protocol, RPC program number 100005, provides the
-      mechanism of translating a string based filesystem path name to
+      mechanism of translating a string based file system path name to
       a filehandle which can then be used by the NFS protocols.
     </t>
 
@@ -44,7 +44,7 @@
 
       <t>
         The first of the special filehandles is the ROOT filehandle.
-        The ROOT filehandle is the "conceptual" root of the filesystem name
+        The ROOT filehandle is the "conceptual" root of the file system name
         space at the NFS server.  The client uses or starts with the ROOT
         filehandle by employing the PUTROOTFH operation.  The PUTROOTFH
         operation instructs the server to set the "current" filehandle to
@@ -61,12 +61,12 @@
       <t>
         The second special filehandle is the PUBLIC filehandle.  Unlike the
         ROOT filehandle, the PUBLIC filehandle may be bound or represent an
-        arbitrary filesystem object at the server.  The server is responsible
+        arbitrary file system object at the server.  The server is responsible
         for this binding.  It may be that the PUBLIC filehandle and the ROOT
-        filehandle refer to the same filesystem object.  However, it is up to
+        filehandle refer to the same file system object.  However, it is up to
         the administrative software at the server and the policies of the
         server administrator to define the binding of the PUBLIC filehandle
-        and server filesystem object.  The client may not make any
+        and server file system object.  The client may not make any
         assumptions about this binding.  The client uses the PUBLIC
         filehandle via the PUTPUBFH operation.
       </t>
@@ -91,13 +91,13 @@
       The volatile filehandle type was introduced to address server
       functionality or implementation issues which make correct
       implementation of a persistent filehandle infeasible.  Some server
-      environments do not provide a filesystem level invariant that
+      environments do not provide a file system level invariant that
       can be used to construct a persistent filehandle.  The underlying
-      server filesystem may not provide the invariant or the server's
-      filesystem programming interfaces may not provide access to the
+      server file system may not provide the invariant or the server's
+      file system programming interfaces may not provide access to the
       needed invariant.  Volatile filehandles may ease the implementation
       of server functionality such as hierarchical storage management
-      or filesystem reorganization or migration.  However, the volatile
+      or file system reorganization or migration.  However, the volatile
       filehandle increases the implementation burden for the client.
     </t>
 
@@ -118,8 +118,8 @@
         by doing a byte-by-byte comparison.  However, the client MUST
         NOT otherwise interpret the contents of filehandles.  If two
         filehandles from the same server are equal, they MUST refer to
-        the same filesystem object.  Servers SHOULD try to maintain a one-to-one
-        correspondence between filehandles and filesystem objects but this is not
+        the same file system object.  Servers SHOULD try to maintain a one-to-one
+        correspondence between filehandles and file system objects but this is not
         required.  Clients MUST use filehandle comparisons only to improve
         performance, not for correct behavior.  All clients need to be
         prepared for situations in which it cannot be determined whether
@@ -131,7 +131,7 @@
 
       <t>
         As an example, in the case that two different path names when
-        traversed at the server terminate at the same filesystem object,
+        traversed at the server terminate at the same file system object,
         the server SHOULD return the same filehandle for each path.
         This can occur if a hard link is used to create two file names
         which refer to the same underlying file object and associated data.
@@ -146,25 +146,25 @@
 
       <t>
         A persistent filehandle is defined as having a fixed value for the
-        lifetime of the filesystem object to which it refers.  Once the
-        server creates the filehandle for a filesystem object, the server
+        lifetime of the file system object to which it refers.  Once the
+        server creates the filehandle for a file system object, the server
         MUST accept the same filehandle for the object for the lifetime of
         the object.  If the server restarts or reboots the NFS server must
         honor the same filehandle value as it did in the server's previous
-        instantiation.  Similarly, if the filesystem is migrated, the new
+        instantiation.  Similarly, if the file system is migrated, the new
         NFS server must honor the same filehandle as the old NFS server.
       </t>
 
       <t>
         The persistent filehandle will be become stale or invalid when
-        the filesystem object is removed.  When the server is presented
+        the file system object is removed.  When the server is presented
         with a persistent filehandle that refers to a deleted object,
         it MUST return an error of NFS4ERR_STALE.  A filehandle may
-        become stale when the filesystem containing the object is no
+        become stale when the file system containing the object is no
         longer available.  The file system may become unavailable if it
         exists on removable media and the media is no longer available at
-        the server or the filesystem in whole has been destroyed or the
-        filesystem has simply been removed from the server's name space
+        the server or the file system in whole has been destroyed or the
+        file system has simply been removed from the server's name space
         (i.e., unmounted in a UNIX environment).
       </t>
 
@@ -187,14 +187,14 @@
       <t>
         The mandatory attribute "fh_expire_type" is used by the client
         to determine what type of filehandle the server is providing for
-        a particular filesystem.  This attribute is a bitmask with the
+        a particular file system.  This attribute is a bitmask with the
         following values:
 
         <list style='hanging'>
           <t hangText="FH4_PERSISTENT:">
              The value of FH4_PERSISTENT is used to indicate a
              persistent filehandle, which is valid until the object is
-             removed from the filesystem.  The server will not return
+             removed from the file system.  The server will not return
              NFS4ERR_FHEXPIRED for this filehandle.  FH4_PERSISTENT is
              defined as a value in which none of the bits specified
              below are set.
@@ -309,15 +309,15 @@
 
     <t>
       For volatile filehandles, most commonly the client will need to store
-      the component names leading up to and including the filesystem object
+      the component names leading up to and including the file system object
       in question.  With these names, the client should be able to recover
       by finding a filehandle in the name space that is still available
-      or by starting at the root of the server's filesystem name space.
+      or by starting at the root of the server's file system name space.
     </t>
 
     <t>
       If the expired filehandle refers to an object that has been
-      removed from the filesystem, obviously the client will not be
+      removed from the file system, obviously the client will not be
       able to recover from the expired filehandle.
     </t>
 

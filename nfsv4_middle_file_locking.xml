@@ -1168,7 +1168,7 @@
       The protocol allows a lock owner to request a lock with a byte
       range and then either upgrade or unlock a sub-range of the
       initial lock.  It is expected that this will be an uncommon type
-      of request.  In any case, servers or server filesystems may not be
+      of request.  In any case, servers or server file systems may not be
       able to support sub-range lock semantics.  In the event that a
       server receives a locking request that represents a sub-range of
       current locking state for the lock owner, the server is allowed
@@ -2373,30 +2373,30 @@
     </t>
 
     <t>
-      If a server replica or a server immigrating a filesystem agrees
+      If a server replica or a server immigrating a file system agrees
       to, or is expected to, accept opaque values from the client that
       originated from another server, then it is a wise implementation
       practice for the servers to encode the "opaque" values in network
       byte order.  This way, servers acting as replicas or immigrating
-      filesystems will be able to parse values like stateids, directory
+      file systems will be able to parse values like stateids, directory
       cookies, filehandles, etc. even if their native byte order is
       different from other servers cooperating in the replication and
-      migration of the filesystem.
+      migration of the file system.
     </t>
 
     <section title="Migration and State">
 
       <t>
         In the case of migration, the servers involved in the migration
-        of a filesystem SHOULD transfer all server state from the
+        of a file system SHOULD transfer all server state from the
         original to the new server.  This must be done in a way that is
         transparent to the client.  This state transfer will ease the
-        client's transition when a filesystem migration occurs.  If the
+        client's transition when a file system migration occurs.  If the
         servers are successful in transferring all state, the client
         will continue to use stateids assigned by the original server.
         Therefore the new server must recognize these stateids as valid.
         This holds true for the client ID as well.  Since responsibility
-        for an entire filesystem is transferred with a migration event,
+        for an entire file system is transferred with a migration event,
         there is no possibility that conflicts will arise on the new
         server as a result of the transfer of locks.
       </t>
@@ -2451,7 +2451,7 @@
         a client re-establishing a lock on the new server (by means of
         a LOCK or OPEN request), may have the requests denied due to a
         conflicting lock.  Since replication is intended for read-only
-        use of filesystems, such denial of locks should not pose large
+        use of file systems, such denial of locks should not pose large
         difficulties in practice.  When an attempt to re-establish a lock
         on a new server is denied, the client should treat the situation
         as if his original lock had been revoked.
@@ -2462,10 +2462,10 @@
 
       <t>
         In the case of lease renewal, the client may not be submitting
-        requests for a filesystem that has been migrated to another server.
+        requests for a file system that has been migrated to another server.
         This can occur because of the implicit lease renewal mechanism.
-        The client renews leases for all filesystems when submitting a
-        request to any one filesystem at the server.
+        The client renews leases for all file systems when submitting a
+        request to any one file system at the server.
       </t>
 
       <t>
@@ -2478,7 +2478,7 @@
         any of the leases to be renewed has been transferred to a new
         server.  This condition will continue until the client receives
         an NFS4ERR_MOVED error and the server receives the subsequent
-        GETATTR(fs_locations) for an access to each filesystem for which
+        GETATTR(fs_locations) for an access to each file system for which
         a lease has been moved to a new server. By convention, the compound
         including the GETATTR(fs_locations) SHOULD append a RENEW operation
         to permit the server to identify the client doing the access.
@@ -2486,9 +2486,9 @@
 
       <t>
        Upon receiving the NFS4ERR_LEASE_MOVED error, a client that supports
-       filesystem migration MUST probe all filesystems from that server on
+       file system migration MUST probe all file systems from that server on
        which it holds open state. Once the client has successfully probed all those
-       filesystems which are migrated, the server MUST resume normal
+       file systems which are migrated, the server MUST resume normal
        handling of stateful requests from that client.
       </t>
 
