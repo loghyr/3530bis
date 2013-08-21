@@ -69,7 +69,7 @@
           For strings whose form is defined by other internet standards,
           non-ASCII characters MUST be represented using the UTF-8 encoding 
           of Unicode.  In addition other sorts of restrictions defined by
-          those standards need to be addressed.  See section 11.4 for details.
+          those standards need to be addressed.  See <xref target='ss:i18n:types' /> for details.
         </t>
 
         <t>
