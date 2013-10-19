@@ -13,7 +13,7 @@
       portions of the name space are made available via an "export" feature.
       In previous versions of the NFS protocol, the root filehandle for
       each export is obtained through the MOUNT protocol; the client sends
-      a string that identifies the export of name space and the server
+      a string that identifies an object in the exported name space and the server
       returns the root filehandle for it.  The MOUNT protocol supports an
       EXPORTS procedure that will enumerate the server's exports.
     </t>
@@ -120,7 +120,7 @@
 
     <t>
       If the server's root file system is exported, one might conclude that
-      a pseudo-file system is not needed.  This would be wrong.  Assume the
+      a pseudo file system is not needed.  This would be wrong.  Assume the
       following file systems on a server:
 
       <figure>
@@ -134,7 +134,7 @@
 
     <t>
       Because disk2 is not exported, disk3 cannot be reached with simple
-      LOOKUPs.  The server must bridge the gap with a pseudo-file system.
+      LOOKUPs.  The server must bridge the gap with a pseudo file system.
     </t>
 
   </section>

@@ -474,7 +474,7 @@
         <xref target="attrdef_maxwrite" />
       </c>
 
-      <c>mimetype</c><c>32</c><c>utf8&lt;></c><c>R W</c>
+      <c>mimetype</c><c>32</c><c>ascii_ REQUIRED4&lt;&gt;</c><c>R W</c>
       <c>
         <xref target="attrdef_mimetype" />
       </c>
@@ -1293,7 +1293,7 @@
         <t>
           The string representing the domain may be converted to
           equivalent U-label (see <xref target='RFC5890' />), if presented using a
-          form other than a 
+          form other than 
           a U-label.  See <xref target="ss:i18n:types" /> for details.
         </t>
         <t>

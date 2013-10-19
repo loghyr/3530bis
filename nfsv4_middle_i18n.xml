@@ -4,77 +4,119 @@
 <section anchor="sec:i18n" title="Internationalization">
   <section anchor="ss:i18n:intro" title="Introduction">
     <t>
-      This section describes NFSv4.0 internationalization as implemented
-      by existing clients and servers.  As a result, the keywords "MUST",
-      "SHOULD", and "MAY", even though they retain their normal
-      meanings, reflect patterns of existing implementation:  
+      This section uses NFSv4.0 internationalization, as implemented by
+      existing clients and servers, as the basis upon which NFSv4.0 clients
+      may implement internationalization support.  This procedure, while
+      necessary, may result in confusion if we do not clearly understand
+      that we are mixing prescription and description, and why, in this
+      particular case, this is a valid thing to do.
+    </t>
+
+    <t>
+      Note that in this chapter, the keywords "MUST", "SHOULD", and "MAY",
+      retain their normal meanings.  However, in deriving this specification
+      from implementation patterns, we document below how the normative
+      terms used derive from the behavior of existing implementations.
 
       <list style='symbols'>
         <t>
-          Behavior implemented by all existing clients or servers is 
-          described using "MUST", since new implementations need to follow 
-          existing ones to be assured of interoperability.  
+          Behavior implemented by all existing clients or servers is described
+          using “MUST”, since new implementations need to follow existing
+          ones to be assured of interoperability.  While it is possible that
+          different behavior might be workable, we have found no case where
+          this seems reasonable.
         </t>
 
         <t>
-          Behavior implemented by no existing clients or servers is 
-          described using "MUST NOT", if such behavior poses interoperability
-          problems.   
+          Behavior implemented by no existing clients or servers is described
+          using "MUST NOT", if such behavior poses interoperability problems.
         </t>
 
         <t>
-          Behavior implemented by most existing clients or servers, where 
-          that behavior is more desirable than any alternative is described 
-          using "SHOULD", since new implementations need to follow that 
-          existing practice unless there are strong reasons to do otherwise. 
+          Behavior implemented by most existing clients or servers, where
+          that behavior is more desirable than any alternative is described
+          using "SHOULD", since new implementations need to follow that
+          existing practice unless there are strong reasons to do otherwise.
+          <vspace blankLines='1' />
           This also holds for "SHOULD NOT".
         </t>
 
         <t>
-          Behavior implemented by some not all existing clients or 
-          servers, is described using "MAY", indicating that new 
-          implementations have a choice as to whether they will behave in
-          that way.
+          Behavior implemented by some not all existing clients or servers,
+          is described using "MAY", indicating that new implementations have
+          a choice as to whether they will behave in that way.  Thus, new
+          implementations will have the same flexibility that existing ones
+          do.
         </t>
 
         <t>
           Behavior implemented by all existing clients or servers, so far
-          as is known, but where there remains some uncertainty as to details 
-          is described using "should".  Such cases primary concern details
-          of error returns.  New implementations should follow existing 
+          as is known, but where there remains some uncertainty as to details
+          is described using "should".  Such cases primarily concern details
+          of error returns.  New implementations should follow existing
           practice even though such situations generally do not affect
-          interoperability. 
+          interoperability.
         </t>
       </list>
+    </t>
+
+    <t>
+      In the case of a MAY, SHOULD, or SHOULD NOT that applies to
+      servers, clients need to be aware that there are servers which
+      may or may nlot take the specified action, and they need to
+      be prepared for either eventuality.
     </t>
   </section>
 
   <section anchor="ss:i18n:encode" title="String Encoding">
     <t>
       Strings that potentially contain non-ASCII Characters are represented
-      in NFSv4 using the UTF-8 encoding of Unicode.  See [RFC2279] for 
-      precise encoding and decoding rules. 
+      in NFSv4 using the UTF-8 encoding of Unicode.  See [RFC2279] for
+      precise encoding and decoding rules.
     </t>
 
     <t>
       Some details of the protocol treatment depend on the type of string:
- 
+
       <list style='symbols'>
         <t>
-          For strings that are component names, any non-ASCII characters MUST 
+          For strings that are component names, any non-ASCII characters SHOULD
           be represented using the UTF-8 encoding of Unicode.
+          <vspace blankLines='1' />
+
+
+          In many cases, clients have no knowledge of the encoding
+          being used, with the encoding done at user-level under
+          control of a per-process locale specification.  As a
+          result, it may be impossible for the NFSv4 client to
+          enforce use of UTF-8.  Use of non-UTF-8 encodings can be
+          problematic since it may interfere with access to files
+          stored using encoding and because normalization-related
+          processing (see <xref target='ss:i18n:norms' />) would
+          result in name aliasing in the case of a non-UTF-8 encoding
+          resulted characters
+          strings that have multiple equivalent Unicode encodings.
         </t>
 
         <t>
           For strings whose form is defined by other internet standards,
-          non-ASCII characters MUST be represented using the UTF-8 encoding 
+          non-ASCII characters MUST be represented using the UTF-8 encoding
           of Unicode.  In addition other sorts of restrictions defined by
           those standards need to be addressed.  See <xref target='ss:i18n:types' /> for details.
         </t>
 
         <t>
+          The contents of symbolic links (of type linktext4 in the
+          XDR) MUST be treated as opaque data by NFSv4 servers.
+          Although UTF-8 encoding is often used, it need not be.
+          In this respect, the contents of symbolic links are like
+          the contents of regular files in that their encoding is
+          not within the scope of this specification.
+        </t>
+
+        <t>
           For other sorts of strings, any non-ASCII characters SHOULD be
-          represented using the UTF-8 encoding of Unicode. 
+          represented using the UTF-8 encoding of Unicode.
         </t>
       </list>
     </t>
@@ -84,7 +126,7 @@
     <t>
       The client and server operating environments may differ in their
       policies and operational methods with respect to character
-      normalization (See [Unicode1] for a discussion of normalization
+      normalization (See <xref target="Unicode1" /> for a discussion of normalization
       forms).  This difference may also exist between applications on the
       same client.  This adds to the difficulty of providing a single
       normalization policy for the protocol that allows for maximal
@@ -97,7 +139,7 @@
 
     <t>
       The NFS version 4 protocol does not mandate the use of a particular
-      normalization form at this time.  A subsequent minor version of 
+      normalization form at this time.  A subsequent minor version of
       the NFSv4 protocol might specify a particular normalization form.
       Therefore, the server and client can expect that they may receive
       unnormalized characters within protocol requests and responses.  If
@@ -108,13 +150,19 @@
     </t>
 
     <t>
-      Server implementations MAY normalize file names to conform to a 
-      particular normalization form before using the resulting string
-      when looking up or creating a file.  Servers MAY also perform 
-      normalization-insensitive string comparisons without modifying
-      name to match a particular normalization form.  Servers MUST NOT
-      reject a file name because it doesn't a conform to a particular 
-      normalization form. 
+      Server implementations MAY normalize file names to conform
+      to a particular normalization form before using the resulting
+      string when looking up or creating a file.  Servers MAY also
+      perform normalization-insensitive string comparisons without
+      modifying name to match a particular normalization form.
+      Except in cases in which component names are excluded from
+      normalization-related handling because they are not valid
+      UTF-8 strings, a server MUST make the same choice (as to
+      whether to normalize or not, the target form of normalization
+      and whether to do normalization-insensitive string comparisons)
+      in the same way for all accesses to a particular filesystem.
+      Servers MUST NOT reject a file name because it doesn't a
+      conform to a particular normalization form.
     </t>
   </section>
 
@@ -146,7 +194,7 @@
 
     <t>
       The general rules for handling all of these domain-related strings
-      are similar and independent of role the of the sender or receiver as
+      are similar and independent of the role of the sender or receiver as
       client or server although the consequences of failure to obey these
       rules may be different for client or server.  The server can report
       errors when it is sent invalid strings, whereas the client will
@@ -165,14 +213,14 @@
 
     <t>
       When a domain string is part of id@domain or group@domain, the server
-      SHOULD map domain strings which are A-labels or are UTF-8 domain
+      SHOULD map domain strings which are A-labels (see <xref target='RFC5890' />) or are UTF-8 domain
       names which are not U-labels, to the corresponding U-label, using
       ToUnicode(domain) or ToUnicode(ToASCII(domain)).  As a result, the
       domain name returned within a userid on a GETATTR may not match that
       sent when the userid is set using SETATTR, although when this
       happens, the domain will be in the form of a U-label.  When the
       server does not map domain strings which are not U-labels into a
-      U-label, which it MAY do, it MUST NOT modify the domain and the
+      U-label, which it MAY do, it MUST NOT modify the domain, and the
       domain returned on a GETATTR of the userid MUST be the same as that
       used when setting the userid by the SETATTR.
     </t>
@@ -187,29 +235,113 @@
 
   <section anchor="ss:i18n:utf8_err" title="UTF-8 Related Errors">
     <t>
-      Where the client sends an invalid UTF-8 string, the server SHOULD
+      Where the client sends an invalid UTF-8 string, the server MAY
       return an NFS4ERR_INVAL error.  This includes cases in which
       inappropriate prefixes are detected and where the count includes
       trailing bytes that do not constitute a full UCS character.
     </t>
 
     <t>
-      Where the client supplied string is not rejected with NFS4ERR_INVAL 
-      but contains characters that are not supported by the server as a value 
-      for that string (e.g. names containing characters that have more than 
-      two octets on a file system that supports Unicode characters only), the
-      server should return an NFS4ERR_BADCHAR error.
+      Requirements for server handling of component names which are not
+      valid UTF-8, when a server does not return NFS4ERR_INVAL in response
+      to receiving these are described in <xref target='ss:i18n:nonvalid' />.
     </t>
 
     <t>
-      Where a UTF-8 string is used as a file name, and the file system,
-      while supporting all of the characters within the name, does not
-      allow that particular name to be used, the error should return the
-      error NFS4ERR_BADNAME.  This includes situations in which the server
-      file system imposes a normalization constraint on name strings, but
-      will also include such situations as file system prohibitions of "."
-      and ".." as file names for certain operations, and other such
-      constraints.
+      Where the client supplied string is not rejected with
+      NFS4ERR_INVAL but contains characters that are not supported
+      by the server as a value for that string (e.g., names containing
+      slashes or characters that have more than two octets on a
+      filesystem that supports Unicode characters only), the server
+      should return an NFS4ERR_BADCHAR error.
+    </t>
+
+    <t>
+      Where a UTF-8 string is used as a file name, and the file
+      system, while supporting all of the characters within the
+      name, does not allow that particular name to be used, the
+      error should return the error NFS4ERR_BADNAME.  This includes
+      such situations as file system prohibitions of "." and ".."
+      as file names for certain operations, and similar constraints
+    </t>
+  </section>
+
+  <section anchor="ss:i18n:nonvalid" title="Handling of component names that are not valid UTF-8 strings">
+    <t>
+      In cases in which the server receives a component name that is not
+      a valid UTF-8 string, the required handling depends on whether a
+      file object is being created or looked up.  Object creation happens
+      for the component name in LINK and CREATE, and the second component
+      name in RENAME.  Object lookup happens for the component name in
+      LOOKUP and REMOVE, and the first component name in RENAME.  The
+      component name in OPEN will result in object lookup and also object
+      creation if the lookup fails and the other OPEN parameters allow
+      file creation.
+    </t>
+
+    <t>
+      With regard to normalization-related processing, it is generally
+      inhibited, both in the case of object creation and object lookup:
+
+      <list style='symbols'>
+        <t>
+          Characters which are not valid UTF-8, have no canonically equivalent
+          Unicode string so normalization-related processing cannot happen.
+        </t>
+
+        <t>
+          In cases in which a string has valid UTF-8 character strings that
+          do have canonically equivalent Unicode strings, but if the component
+          name is not valid UTF-8, the server MAY perform normalization-related
+          processing on valid UTF-8 substrings within it that do have canonical
+          equivalents.
+        </t>
+      </list>
+    </t>
+
+    <t>
+      When creation of a component name which is not valid UTF-8 occurs,
+      and is allowed by the server:
+
+      <list style='symbols'>
+        <t>
+          A subsequent lookup of the same component name in the same directory
+          MUST result in finding the created file object.
+        </t>
+
+        <t>
+          A READDIR of the directory in which the name is created MUST
+          result in an entry containing the component name used for the
+          creation.
+        </t>
+
+        <t>
+          A subsequent lookup using any other string as the component name
+          SHOULD NOT find the originally created object.
+        </t>
+
+        <t>
+          A subsequent lookup using any valid UTF-8 string MUST NOT  find
+          the originally created object.
+        </t>
+      </list>
+    </t>
+
+    <t>
+      When a lookup of a component name which is not valid UTF-8 occurs,
+      and is allowed by the server:
+
+      <list style='symbols'>
+        <t>
+          The result of the lookup MUST NOT be any directory entry created
+          with a valid UTF-8 component name.
+        </t>
+
+        <t>
+          The result of the lookup MUST be a directory entry created with
+          the identical invalid UTF-8 string, if one exists in the directory.
+        </t>
+      </list>
     </t>
   </section>
 </section>

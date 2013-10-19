@@ -291,6 +291,17 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
   <date year="2004" />
       </front>
     </reference>
+
+    <reference anchor="Unicode1">
+      <front>
+        <title>The Unicode Standard, Version 3.0, ISBN 0-201-61633-5</title>
+        <author>
+          <organization>The Unicode Consortium</organization>
+        </author>
+      </front>
+    </reference>
+
+
   </references>
 
   <references title="Informative References">

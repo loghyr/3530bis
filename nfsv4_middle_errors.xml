@@ -552,7 +552,7 @@
         removing, or renaming open file system objects.
       </t>
     </section>
-    <section title="NFS4ERR_IO (Error Code 6)"
+    <section title="NFS4ERR_IO (Error Code 5)"
              anchor="err_IO">
       <t>
         Indicates that an I/O error occurred for which the file system
@@ -587,7 +587,7 @@
          empty.
       </t>
     </section>
-    <section title="NFS4ERR_NXIO (Error Code 5)"
+    <section title="NFS4ERR_NXIO (Error Code 6)"
              anchor="err_NXIO">
       <t>
         I/O error. No such device or address.

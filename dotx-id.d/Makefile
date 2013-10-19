@@ -4,8 +4,8 @@
 YEAR=`date +%Y`
 MONTH=`date +%B`
 DAY=`date +%d`
-PREVVERS=18
-VERS=19
+PREVVERS=19
+VERS=20
 VPATH=../../dotx.d
 XML2RFC=xml2rfc.tcl
 
@@ -84,6 +84,7 @@ AUTOGEN =	\
 dotx_autogen.xml: Makefile ../dotx.d/nfsv4.x
 	@rm -f $@.tmp $@
 	@cat ../dotx.d/nfsv4.x | sed 's?^?   /// ?' | sed 's/</\&lt;/g'| \
+	sed 's/>/\&gt;/g' | \
 	awk ' \
 		BEGIN	{ print "<figure>"; print" <artwork>"; } \
 			{ print $0 ; } \

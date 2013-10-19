@@ -2139,8 +2139,8 @@
         <artwork>
   if (request.access == 0)
           return (NFS4ERR_INVAL)
-  else if ((request.access & file_state.deny)) ||
-      (request.deny & file_state.access))
+  else if ((request.access &amp; file_state.deny)) ||
+      (request.deny &amp; file_state.access))
           return (NFS4ERR_DENIED)
         </artwork>
       </figure>
