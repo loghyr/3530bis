@@ -63,7 +63,7 @@
     <t>
       In the case of a MAY, SHOULD, or SHOULD NOT that applies to
       servers, clients need to be aware that there are servers which
-      may or may nlot take the specified action, and they need to
+      may or may not take the specified action, and they need to
       be prepared for either eventuality.
     </t>
   </section>
@@ -91,7 +91,7 @@
           result, it may be impossible for the NFSv4 client to
           enforce use of UTF-8.  Use of non-UTF-8 encodings can be
           problematic since it may interfere with access to files
-          stored using encoding and because normalization-related
+          stored using UTF-8 encoding and because normalization-related
           processing (see <xref target='ss:i18n:norms' />) would
           result in name aliasing in the case of a non-UTF-8 encoding
           resulted characters
@@ -244,14 +244,14 @@
     <t>
       Requirements for server handling of component names which are not
       valid UTF-8, when a server does not return NFS4ERR_INVAL in response
-      to receiving these are described in <xref target='ss:i18n:nonvalid' />.
+      to receiving them, are described in <xref target='ss:i18n:nonvalid' />.
     </t>
 
     <t>
       Where the client supplied string is not rejected with
       NFS4ERR_INVAL but contains characters that are not supported
       by the server as a value for that string (e.g., names containing
-      slashes or characters that have more than two octets on a
+      slashes, or characters that have more than two octets on a
       filesystem that supports Unicode characters only), the server
       should return an NFS4ERR_BADCHAR error.
     </t>
@@ -285,8 +285,8 @@
 
       <list style='symbols'>
         <t>
-          Characters which are not valid UTF-8, have no canonically equivalent
-          Unicode string so normalization-related processing cannot happen.
+          Characters which are not valid UTF-8 have no canonically equivalent
+          Unicode string, so normalization-related processing cannot happen.
         </t>
 
         <t>
