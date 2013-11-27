@@ -38,7 +38,7 @@
           using "SHOULD", since new implementations need to follow that
           existing practice unless there are strong reasons to do otherwise.
           <vspace blankLines='1' />
-          This also holds for "SHOULD NOT".
+          The converse holds for "SHOULD NOT".
         </t>
 
         <t>
@@ -68,11 +68,42 @@
     </t>
   </section>
 
+  <section anchor="ss:i18n:limits" title="Limitations on internationalization-related processing in the NFSv4 context">
+    <t>
+      There are a number of noteworthy circumstances that limit the degree
+      to which internationalization-related processing can be made universal
+      with regard to NFSv4 clients and servers:
+
+      <list style='symbols'>
+        <t>
+          The NFSv4 client is part of an extensive set of client-side software
+          components whose design and internal interfaces are not within the
+          IETF’s purview, limiting the degree to which a particular character
+          encoding may be made standard.
+        </t>
+        <t>
+          Server-side handling of file component names is typically
+          implemented within a server-side physical file system, whose
+          handling of character encoding and normalization is not specifiable by the IETF.
+        </t>
+        <t>
+          Typical implementation patterns in Unix systems may mean
+          that the NFSv4 client has no knowledge of the character encoding
+          being used, which may even vary between processes on the same client system.
+        </t>
+        <t>
+          Users may need access to files stored previously with non-UTF-8
+          encodings, or with UTF-8 encodings that do not match any particular normalization form.
+        </t>
+      </list>
+    </t>
+  </section>
+
   <section anchor="ss:i18n:encode" title="String Encoding">
     <t>
-      Strings that potentially contain non-ASCII Characters are represented
-      in NFSv4 using the UTF-8 encoding of Unicode.  See [RFC2279] for
-      precise encoding and decoding rules.
+      Strings that potentially contain non-ASCII Characters are generally
+      represented in NFSv4 using the UTF-8 encoding of Unicode.  See
+      <xref target='RFC2279' /> for precise encoding and decoding rules.
     </t>
 
     <t>
@@ -80,10 +111,10 @@
 
       <list style='symbols'>
         <t>
-          For strings that are component names, any non-ASCII characters SHOULD
-          be represented using the UTF-8 encoding of Unicode.
+          For strings which are component names, the preferred encoding for any
+          non-ASCII characters is any non-ASCII characters is the UTF-8
+          representation of Unicode.
           <vspace blankLines='1' />
-
 
           In many cases, clients have no knowledge of the encoding
           being used, with the encoding done at user-level under

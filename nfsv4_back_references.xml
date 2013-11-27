@@ -163,34 +163,20 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='TXT' octets='50937' target='ftp://ftp.isi.edu/in-notes/rfc5403.txt' />
     </reference>
 
-    <reference anchor='RFC2277'>
+    <reference anchor='RFC2279'>
 
       <front>
-	<title abbrev='Charset Policy'>
-	IETF Policy on Character Sets and Languages</title>
-	<author initials='H.T.' surname='Alvestrand' 
-		fullname='Harald Tveit Alvestrand'>
-	  <organization>UNINETT</organization>
-	  <address>
-	    <postal>
-	      <street>P.O.Box 6883 Elgeseter</street>
-	      <street>N-7002 TRONDHEIM</street>
-	    <country>NORWAY</country></postal>
-	    <phone>+47 73 59 70 94</phone>
-	<email>Harald.T.Alvestrand@uninett.no</email></address></author>
+	<title abbrev='UTF-8'>
+	UTF-8, a transformation format of ISO 10646</title>
+	<author initials='F' surname='Yergeau' 
+		fullname='Francois Yergeau'>
+	  <organization>Alis Technologies</organization>
+	</author>
 	<date year='1998' month='January' />
-	<area>Applications</area>
-	<keyword>Internet Engineering Task Force</keyword>
-      <keyword>character encoding</keyword></front>
-
-      <seriesInfo name='BCP' value='18' />
-      <seriesInfo name='RFC' value='2277' />
-      <format type='TXT' octets='16622' 
-	      target='ftp://ftp.isi.edu/in-notes/rfc2277.txt' />
-      <format type='HTML' octets='26556' 
-	      target='http://xml.resource.org/public/rfc/html/rfc2277.html' />
-      <format type='XML' octets='15544' 
-	      target='http://xml.resource.org/public/rfc/xml/rfc2277.xml' />
+  </front>
+      <seriesInfo name='RFC' value='2279' />
+      <format type='HTML'
+	      target='http://xml.resource.org/public/rfc/html/rfc2279.html' />
     </reference>
 
     <reference anchor='RFC2743'>
@@ -1000,36 +986,6 @@ document are to be interpreted as described in RFC
 	      </author>
 	      <date  year="2004"/>
       </front>
-    </reference>
-
-    <reference anchor='RFC3454'>
-
-      <front>
-	<title>Preparation of Internationalized Strings ("stringprep")</title>
-	<author initials='P.' surname='Hoffman' fullname='P. Hoffman'>
-	  <organization /></author>
-	<author initials='M.' surname='Blanchet' fullname='M. Blanchet'>
-	  <organization /></author>
-	<date year='2002' month='December' />
-	<abstract>
-	  <t>
-	    &lt;p>This document describes a framework for preparing
-	    Unicode text strings in order to increase the likelihood
-	    that string input and string comparison work in ways that
-	    make sense for typical users throughout the world. The
-	    stringprep protocol is useful for protocol identifier
-	    values, company and personal names, internationalized
-	    domain names, and other text strings. This document does
-	    not specify how protocols should prepare text
-	    strings. Protocols must create profiles of stringprep in
-	    order to fully specify the processing options. [STANDARDS
-	    TRACK] &lt;/p>
-          </t>
-        </abstract>
-      </front>
-
-      <seriesInfo name='RFC' value='3454' />
-      <format type='TXT' octets='138684' target='ftp://ftp.isi.edu/in-notes/rfc3454.txt' />
     </reference>
 
     <reference anchor='RFC4511'>
