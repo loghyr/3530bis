@@ -1803,7 +1803,7 @@
             the last stateful event for the owner's sequence.  For the two
             aforementioned edge conditions, the harshest a server can be, and
             still support a grace period for reclaims, requires that the server
-            record in stable storage information some minimal information.
+            record in stable storage some minimal information.
             For example, a server implementation could, for each client,
             save in stable storage a record containing:
 

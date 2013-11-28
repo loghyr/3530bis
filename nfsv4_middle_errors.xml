@@ -753,7 +753,7 @@
              anchor="err_BADCHAR">
       <t>
         A UTF-8 string contains a character which is not supported
-        by the server in the context in which it being used.
+        by the server in the context in which it is being used.
       </t>
     </section>
     <section title="NFS4ERR_BADNAME (Error Code 10041)"

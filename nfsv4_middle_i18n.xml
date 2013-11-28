@@ -116,17 +116,19 @@
           representation of Unicode.
           <vspace blankLines='1' />
 
-          In many cases, clients have no knowledge of the encoding
-          being used, with the encoding done at user-level under
-          control of a per-process locale specification.  As a
-          result, it may be impossible for the NFSv4 client to
-          enforce use of UTF-8.  Use of non-UTF-8 encodings can be
-          problematic since it may interfere with access to files
-          stored using UTF-8 encoding and because normalization-related
-          processing (see <xref target='ss:i18n:norms' />) would
-          result in name aliasing in the case of a non-UTF-8 encoding
-          resulted characters
-          strings that have multiple equivalent Unicode encodings.
+	        In many cases, clients have no knowledge of the encoding
+	        being used, with the encoding done at user-level under
+	        control of a per-process locale specification. As a result,
+	        it may be impossible for the NFSv4 client to enforce use
+	        of UTF-8. Use of non-UTF-8 encodings can be problematic
+	        since it may interfere with access to files stored using
+	        other forms of name encoding. Also, normalization-related
+	        processing (see <xref target='ss:i18n:norms' />) of a string not encoded in
+	        UTF-8 could result in inappropriate name modification or
+	        aliasing. In cases in which one has a non-UT8-name that
+	        accidentally conforms to UTF-8 rules, substitution of
+	        canonically equivalent strings can change the non-UTF-8
+	        encoded name drastically.
         </t>
 
         <t>

@@ -685,12 +685,6 @@
       </t>
 
       <t>
-        If the objname has a length of 0 (zero), or if objname does
-        not obey the UTF-8 definition, the error NFS4ERR_INVAL will
-        be returned.
-      </t>
-
-      <t>
         The current filehandle is replaced by that of the new object.
       </t>
 
@@ -778,7 +772,7 @@
       </t>
 
       <t>
-        This operation in provided to support clients that record delegation
+        This operation is provided to support clients that record delegation
         information on stable storage on the client.  In this case,
         DELEGPURGE should be issued immediately after doing delegation
         recovery (using CLAIM_DELEGATE_PREV) on all delegations known to
@@ -2930,7 +2924,7 @@
 
       <t>
         The REMOVE operation removes (deletes) a directory entry
-M        named by filename from the directory corresponding to the
+        named by filename from the directory corresponding to the
         current filehandle.  If the entry in the directory was the
         last reference to the corresponding file system object, the
         object may be destroyed.
