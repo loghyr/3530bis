@@ -13,15 +13,27 @@
     </t>
 
     <t>
-      Note that in this chapter, the keywords "MUST", "SHOULD", and "MAY",
-      retain their normal meanings.  However, in deriving this specification
-      from implementation patterns, we document below how the normative
-      terms used derive from the behavior of existing implementations.
+      This section is based on the behavior of existing implementations.
+      Note that the behaviors described are each demonstrated by a
+      combination of an NFSv4 server implementation proper and a
+      server-side physical filesystem. It is common for servers and
+      physical filesystems to be configurable as to the behavior
+      shown once set up and each be configuration showing different
+      behavior is considered separately, for our purposes.
+    </t>
+
+    <t>
+      Note that in this section, the keywords "MUST", "SHOULD", and
+      "MAY", retain their normal meanings.  However, in deriving
+      this specification from implementation patterns, we document
+      below how the normative terms used derive from the behavior
+      of existing implementations, in those situations in which
+      existing implementation behavior patterns can be determined.
 
       <list style='symbols'>
         <t>
           Behavior implemented by all existing clients or servers is described
-          using “MUST”, since new implementations need to follow existing
+          using "MUST", since new implementations need to follow existing
           ones to be assured of interoperability.  While it is possible that
           different behavior might be workable, we have found no case where
           this seems reasonable.
@@ -56,6 +68,41 @@
           of error returns.  New implementations should follow existing
           practice even though such situations generally do not affect
           interoperability.
+        </t>
+      </list>
+    </t>
+
+    <t>
+      There are also cases in which certain server behaviors, while
+      not known to exist, cannot be reliably determined not to
+      exist.  In part, this is a consequence of the long period of
+      time that has elapsed since the publication of <xref target='RFC3530' />,
+      resulting in a situation in which those involved in the
+      implementation may no longer be involved in or aware of working
+      group activities.
+    </t>
+
+    <t>
+      In the case of possible server behavior that is neither known
+      to exist nor known not to exist, we use SHOULD NOT and MUST
+      NOT as follows, and similarly for "SHOULD" and "MUST".
+
+      <list style='symbols'>
+        <t>
+          In some cases, the potential behavior is not known to exist but is
+          of such a nature that, if it were in fact implemented, interoperability
+          difficulties would be expected and reported, giving us cause to
+          conclude that the potential behavior is not implemented.  For such
+          behavior, we use MUST NOT.  Similarly we use "MUST" to apply to the
+          contrary behavior.
+        </t>
+
+        <t>
+          In other cases, potential behavior is not known to exist but the
+          behavior, while undesirable, is not of such a nature that we are
+          able to draw any conclusions about its potential existence.  In
+          such cases, we use SHOULD NOT. Similarly we use "SHOULD" to apply
+          to the contrary behavior.
         </t>
       </list>
     </t>
@@ -99,6 +146,53 @@
     </t>
   </section>
 
+  <section anchor="ss:i18n:servsum" title="Summary of Server Behavior Types">
+    <t>
+      As mentioned in <xref target='ss:i18n:types' />, servers MAY reject component name strings
+      that are not valid UTF-8.  This leads to a number of types of valid
+      server behavior as outlined below.  When these are combined with
+      the valid normalization-related behaviors as described in <xref target='ss:i18n:encode' />,
+      this leads to the combined behaviors outlined below.
+
+      <list style='symbols'>
+        <t>
+	        Servers which do limit file component names to UTF-8
+	        strings exist with all of the forms of normalization-related
+	        handling described in <xref target='ss:i18n:encode' />.  These are best described
+	        as "UTF-8-only servers".
+        </t>
+
+        <t>
+	        Servers which do not limit file component names to UTF-8
+	        strings are very common and are necessary to deal with
+	        clients/applications not oriented to the use of UTF-8.
+	        Such servers ignore normalization-related issues and there
+	        is no way for them to implement either normalization or
+	        representation-independent lookups.  These are best
+	        described as "UTF-8-unaware servers" since they treat
+	        file component names as uninterpreted strings of bytes
+	        and have no knowledge of the characters represented. Such
+	        servers ignore normalization-related issues and there is
+	        no way for them to implement either normalization or
+	        representation-independent lookups.  See <xref target='ss:i18n:utf8_err' /> for
+	        details.
+        </t>
+
+        <t>
+	        It is possible for a server to allow component names which
+	        are not valid UTF-8, while still being aware of the
+	        structure of UTF-8 strings.  Such servers could implement
+	        either normalization or representation-independent lookups,
+	        but apply those techniques only to valid UTF-8 strings.
+	        Such servers are not known to exist and SHOULD NOT be
+	        implemented because of the possibility that a filename
+	        using one character set may, by accident, have the
+	        appearance of a UTF-8 filename. See <xref target='ss:i18n:utf8_err' /> for details.
+        </t>
+      </list>
+    </t>
+  </section>
+
   <section anchor="ss:i18n:encode" title="String Encoding">
     <t>
       Strings that potentially contain non-ASCII Characters are generally
@@ -112,8 +206,7 @@
       <list style='symbols'>
         <t>
           For strings which are component names, the preferred encoding for any
-          non-ASCII characters is any non-ASCII characters is the UTF-8
-          representation of Unicode.
+          non-ASCII characters is the UTF-8 representation of Unicode.
           <vspace blankLines='1' />
 
 	        In many cases, clients have no knowledge of the encoding
@@ -299,80 +392,72 @@
     </t>
   </section>
 
-  <section anchor="ss:i18n:nonvalid" title="Handling of component names that are not valid UTF-8 strings">
+  <section anchor="ss:i18n:nonvalid" title="Servers that accept file component names that are not valid UTF-8 strings">
     <t>
-      In cases in which the server receives a component name that is not
-      a valid UTF-8 string, the required handling depends on whether a
-      file object is being created or looked up.  Object creation happens
-      for the component name in LINK and CREATE, and the second component
-      name in RENAME.  Object lookup happens for the component name in
-      LOOKUP and REMOVE, and the first component name in RENAME.  The
-      component name in OPEN will result in object lookup and also object
-      creation if the lookup fails and the other OPEN parameters allow
-      file creation.
+      As stated previously, servers MAY accept, on all or on some
+      subset of the physical filesystems exported, component names
+      that are not valid UTF-8 strings.  A typical pattern is for
+      a server to use UTF-8-unaware physical filesystems that treat
+      component names as uninterpreted strings of bytes, rather
+      than having any awareness of the character set being used.
     </t>
 
     <t>
-      With regard to normalization-related processing, it is generally
-      inhibited, both in the case of object creation and object lookup:
+      Such servers SHOULD NOT change the stored representation of
+      component names from those received on the wire, and SHOULD
+      use binary comparison of component name strings to determine
+      equivalence (as opposed to any broader notion of string
+      comparison).  This is because the server has no knowledge of
+      the character encoding being used.
+    </t>
+
+    <t>
+      Nonetheless, when such a server uses a broader notion of
+      string equivalence than recommended in the preceding paragraph
+      the following considerations apply:
 
       <list style='symbols'>
         <t>
-          Characters which are not valid UTF-8 have no canonically equivalent
-          Unicode string, so normalization-related processing cannot happen.
+	        Outside of 7-bit ASCII, string processing that changes
+	        string contents is usually specific to a character set
+	        and hence is generally unsafe when the character set is
+	        unknown.  This processing could change the filename in
+	        an unexpected fashion, rendering the file inaccessible
+	        to the application or client that created or renamed the
+	        file and to others expecting the original filename.
         </t>
 
         <t>
-          In cases in which a string has valid UTF-8 character strings that
-          do have canonically equivalent Unicode strings, but if the component
-          name is not valid UTF-8, the server MAY perform normalization-related
-          processing on valid UTF-8 substrings within it that do have canonical
-          equivalents.
+	        Unicode normalization is particularly dangerous, as such
+	        processing assumes that the string is UTF-8.  When that
+	        assumption is false because a different character set was
+	        used to create the filename, normalization may corrupt
+	        the filename with respect to that character set, rendering
+	        the file inaccessible to the application that created it
+	        and others expecting the original filename.
         </t>
       </list>
     </t>
 
     <t>
-      When creation of a component name which is not valid UTF-8 occurs,
-      and is allowed by the server:
+      When non-UTF-8 component names are accepted in an environment
+      in which string processing occurs (e.g., to support a broader
+      notion of string equivalence than binary equality), the
+      following considerations apply:
 
       <list style='symbols'>
         <t>
-          A subsequent lookup of the same component name in the same directory
-          MUST result in finding the created file object.
+	        Portions of a string that are not valid UTF-8 cannot be
+	        Unicode normalized because they do not represent Unicode
+	        characters.
         </t>
 
         <t>
-          A READDIR of the directory in which the name is created MUST
-          result in an entry containing the component name used for the
-          creation.
-        </t>
-
-        <t>
-          A subsequent lookup using any other string as the component name
-          SHOULD NOT find the originally created object.
-        </t>
-
-        <t>
-          A subsequent lookup using any valid UTF-8 string MUST NOT  find
-          the originally created object.
-        </t>
-      </list>
-    </t>
-
-    <t>
-      When a lookup of a component name which is not valid UTF-8 occurs,
-      and is allowed by the server:
-
-      <list style='symbols'>
-        <t>
-          The result of the lookup MUST NOT be any directory entry created
-          with a valid UTF-8 component name.
-        </t>
-
-        <t>
-          The result of the lookup MUST be a directory entry created with
-          the identical invalid UTF-8 string, if one exists in the directory.
+	        Nonetheless, it is possible to perform Unicode normalization
+	        on valid UTF-8 substrings in a string that is not valid
+	        UTF-8 by selectively ignoring substrings that are not
+	        valid UTF-8.  This MUST NOT be done since doing so would
+	        result in incorrect string modification or aliasing.
         </t>
       </list>
     </t>
