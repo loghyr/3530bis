@@ -287,7 +287,7 @@
       whether to normalize or not, the target form of normalization
       and whether to do normalization-insensitive string comparisons)
       in the same way for all accesses to a particular filesystem.
-      Servers MUST NOT reject a file name because it doesn't a
+      Servers MUST NOT reject a file name because it does not
       conform to a particular normalization form.
     </t>
   </section>
