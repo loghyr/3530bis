@@ -36,7 +36,7 @@ typedef :utf8string:utf8str_cis:Case-insensitive UTF-8 string.
 typedef :utf8string:utf8str_cs:Case-sensitive UTF-8 string.
 typedef :utf8string:utf8str_mixed:UTF-8 strings with a case-sensitive prefix and a case-insensitive suffix.
 typedef :utf8str_cs:component4:Represents pathname components.
-typedef :opaque  :linktext4:Symbolic link contents ("symbolic link" is defined in an Open Group <xref target='openg_symlink' /> standard).
+typedef :opaque  :linktext4<>:Symbolic link contents ("symbolic link" is defined in an Open Group <xref target='openg_symlink' /> standard).
 typedef :utf8string:ascii_REQUIRED4:String MUST be sent as ASCII and thus is automatically UTF-8.
 typedef :component4:pathname4&lt;&gt;:Represents path name for fs_locations.
 typedef :uint64_t:nfs_lockid4
