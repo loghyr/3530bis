@@ -185,10 +185,13 @@
 	        structure of UTF-8 strings.  Such servers could implement
 	        either normalization or representation-independent lookups,
 	        but apply those techniques only to valid UTF-8 strings.
-	        Such servers are not known to exist and SHOULD NOT be
-	        implemented because of the possibility that a filename
-	        using one character set may, by accident, have the
-	        appearance of a UTF-8 filename. See <xref target='ss:i18n:utf8_err' /> for details.
+          Such servers are not common, but it is possible to configure at
+          least one known server to have this behavior.  This behavior
+          SHOULD NOT be used due to the possibility that a filename
+          using one character set may, by coincidence, have the appearance
+          of a UTF-8 filename; the results of UTF-8 normalization or
+          representation-independent lookups are unlikely to be correct
+          in all cases with respect to the other character set.
         </t>
       </list>
     </t>
@@ -253,7 +256,7 @@
     <t>
       The client and server operating environments may differ in their
       policies and operational methods with respect to character
-      normalization (See <xref target="Unicode1" /> for a discussion of normalization
+      normalization (See <xref target="UNICODE" /> for a discussion of normalization
       forms).  This difference may also exist between applications on the
       same client.  This adds to the difficulty of providing a single
       normalization policy for the protocol that allows for maximal
@@ -438,7 +441,7 @@
           filename, normalization may corrupt the filename with respect to
           that character set, rendering the file inaccessible to the
           application that created it and others expecting the original
-          filename.  Hence, Unicode normalization MUST NOT be performed,
+          filename.  Hence, Unicode normalization SHOULD NOT be performed,
           because it may cause incorrect string modification or aliasing.
         </t>
       </list>

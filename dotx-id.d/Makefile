@@ -1,11 +1,11 @@
-# Copyright (C) The IETF Trust (2009-2012)
+# Copyright (C) The IETF Trust (2009-2014)
 # Manage the .xml for the NFSv4 document.
 #
 YEAR=`date +%Y`
 MONTH=`date +%B`
 DAY=`date +%d`
 PREVVERS=20
-VERS=19
+VERS=21
 VPATH=../../dotx.d
 XML2RFC=xml2rfc.tcl
 

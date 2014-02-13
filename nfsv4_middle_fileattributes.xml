@@ -1198,21 +1198,22 @@
   <section anchor="sec:fattr:owner_group" 
            title="Interpreting owner and owner_group">
     <t>
-      The RECOMMENDED attributes "owner" and "owner_group" (and also
-      users and groups within the "acl" attribute) are represented in
-      terms of a UTF-8 string.  To avoid a representation that is tied
-      to a particular underlying implementation at the client or
-      server, the use of the UTF-8 string has been chosen.  Note that
-      section 6.1 of <xref target="RFC2624">RFC 2624</xref> provides
-      additional rationale.  It is expected that the client and server
-      will have their own local representation of owner and
-      owner_group that is used for local storage or presentation to
-      the end user.  Therefore, it is expected that when these
-      attributes are transferred between the client and server,
-      the local representation is translated to a syntax of the form
-      "user@dns_domain".  This will allow for a client and server that
-      do not use the same local representation the ability to
-      translate to a common syntax that can be interpreted by both.
+
+      The RECOMMENDED attributes "owner" and "owner_group" (and also users
+      and groups used as values of the “who” field within nfs4ace structures
+      used in the acl attribute) are represented in the form of UTF-8
+      strings.  This format avoids use of a representation that is tied
+      to a particular underlying implementation at the client or server.
+      Note that section 6.1 of <xref target="RFC2624" /> provides additional
+      rationale.  It is expected that the client and server will have
+      their own local representation of owners and groups that is used
+      for local storage or presentation to the application via API’s that
+      expect such a representation.  Therefore, the protocol requires
+      that when these attributes are transferred between the client and
+      server, the local representation is translated to a string of the
+      form "identifier@dns_domain".  This allows clients and servers that
+      do not use the same local representation to effectively interoperate
+      since they both use a common syntax that can be interpreted by both.
     </t>
     <t>
       Similarly, security principals may be represented in different
@@ -1243,28 +1244,26 @@
       available.
     </t>
     <t>
-      Servers that do not provide support for all possible values of
-      the owner and owner_group attributes SHOULD return an error
-      (NFS4ERR_BADOWNER) when a string is presented that has no
-      translation, as the value to be set for a SETATTR of the
-      owner, owner_group, or acl attributes.  When a server does
-      accept an owner or owner_group value as valid on a SETATTR
-      (and similarly for the owner and group strings in an acl), it
-      is promising to return that same string (for which see below)
-      when a corresponding GETATTR is done.  For some
-      internationalization-related exceptions where this is not
-      possible, see below.  Configuration changes (including
-      changes from the mapping of the string to the local representation)
-      and ill-constructed name translations (those that contain
-      aliasing) may make that promise impossible to honor.  Servers
-      should make appropriate
-      efforts to avoid a situation in which these attributes have
-      their values changed when no real change to ownership has
-      occurred.
+      Servers that do not provide support for all possible values of user
+      and group strings SHOULD return an error (NFS4ERR_BADOWNER) when a
+      string is presented that has no translation, as the value to be set
+      for a SETATTR of the owner or owner_group attributes or as part of
+      the value of the acl attribute  When a server does accept a user
+      or group string as valid on a SETATTR, it is promising to return
+      that same string (for which see below) when a corresponding GETATTR
+      is done, as long as there has been no further change in the
+      corresponding attribute before the GETATTR.  For some
+      internationalization-related exceptions where this is not possible,
+      see below.  Configuration changes (including changes from the mapping
+      of the string to the local representation) and ill-constructed name
+      translations (those that contain aliasing) may make that promise
+      impossible to honor.  Servers should make appropriate efforts to
+      avoid a situation in which these attributes have their values changed
+      when no real change to either ownership or acls has occurred.
     </t>
     <t>
       The "dns_domain" portion of the owner string is meant to be a
-      DNS domain name.  For example, user@example.org.  Servers should
+      DNS domain name.  For example, "user@example.org".  Servers should
       accept as valid a set of users for at least one domain.  A
       server may treat other domains as having no valid
       translations.  A more general service is provided when a
@@ -1282,7 +1281,7 @@
     </t>
     <t>
       As mentioned above, it is desirable that a server when
-      accepting a string of the form user@domain or group@domain
+      accepting a string of the form "user@domain" or "group@domain"
       in an attribute, return this same string when that 
       corresponding attribute is fetched.  Internationalization 
       issues (for a general discussion of which see 
@@ -1292,14 +1291,20 @@
       <list style='symbols'>
         <t>
           The string representing the domain may be converted to
-          equivalent U-label (see <xref target='RFC5890' />), if presented using a
+          an equivalent U-label (see <xref target='RFC5890' />), if presented using a
           form other than 
-          a U-label.  See <xref target="ss:i18n:types" /> for details.
+          an U-label.  See <xref target="ss:i18n:types" /> for details.
         </t>
         <t>
-          The user or group may be returned in a different
-          form, due to normalization issues, although it will
-          always be a canonically equivalent string.
+          The user or group may be returned in a different form, as a result
+          of Unicode normalization at the server.  
+          The result SHOULD be a canonically
+          equivalent Unicode string <xref target='UNICODE' />.
+          Other sorts of string modification, including
+          case mapping or folding, SHOULD NOT be
+          done as such modifications may cause the
+          server to merge identities that are separate
+          at the client.
         </t>
       </list>
     </t>

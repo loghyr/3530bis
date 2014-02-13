@@ -13,15 +13,15 @@
           <organization abbrev='Editors' />
         </author>
 
-        <date month='Feb' day='12' year='2014' />
+        <date month='Feb' day='13' year='2014' />
 
         <abstract><t>This Internet-Draft provides the XDR description for NFSv4.</t></abstract>
 
       </front>
 
-      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-19' />
+      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-21' />
       <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-dot-x-19.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-dot-x-21.txt' />
     </reference>
 
     <reference anchor='RFC5665'>
@@ -282,16 +282,6 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
   <date year="2004" />
       </front>
     </reference>
-
-    <reference anchor="Unicode1">
-      <front>
-        <title>The Unicode Standard, Version 3.0, ISBN 0-201-61633-5</title>
-        <author>
-          <organization>The Unicode Consortium</organization>
-        </author>
-      </front>
-    </reference>
-
 
   </references>
 
