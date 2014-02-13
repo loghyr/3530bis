@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2013) -->
-<!-- Copyright (C) The Internet Society (2010-2013) -->
+<!-- Copyright (C) The IETF Trust (2009-2014) -->
+<!-- Copyright (C) The Internet Society (2010-2014) -->
 
 <section anchor="file_attributes" title="Attributes">
   <t>
@@ -1360,18 +1360,34 @@
 
   <section anchor="character_case_attributes" title="Character Case Attributes">
     <t>
-      With respect to the case_insensitive and case_preserving
-      attributes, each Universal Multiple-octet coded
-      Character Set-4 (UCS-4) <xref target='ISO.10646-1.1993' />
-      character (which UTF-8 encodes) has a
-      "long descriptive name" <xref target="RFC1345">RFC1345</xref>
-      which may or may not include the word "CAPITAL" or "SMALL".
-      The presence of SMALL or CAPITAL allows an NFS server to
-      implement unambiguous and efficient table driven mappings for
-      case insensitive comparisons, and non-case-preserving storage,
-      although there are variations that occur additional characters
-      with a name including "SMALL" or "CAPITAL" are added in a 
-      subsequent version of Unicode.
+      With respect to the case_insensitive and case_preserving attributes,
+      case insensitive comparisons of Unicode characters SHOULD use Unicode
+      Default Case Folding as defined in Chapter 3 of the Unicode Standard
+      <xref target="UNICODE" />, and MAY override that behavior for specific selected characters
+      with the case folding defined in the SpecialCasing.txt <xref target="SPECIALCASING" />
+      file in section 3.13 of the Unicode Standard.  
+    </t>
+
+    <t>
+      The SpecialCasing.txt file replaces the Default Case Folding with
+      locale and context-dependent case folding for specific situations.
+      An example of locale and context-dependent case folding is that
+      LATIN CAPITAL LETTER I ("I", U+0049) is default case folded to
+      LATIN SMALL LETTER I ("i", U+0069); however, Turkish and several
+      other languages) treat an "I" character with a dot as a different
+      letter than an "I" character without a dot, therefore in such
+      languages, unless an I is before a dot_above, the "I" (U+0049)
+      character should be case folded to a different character,
+      LATIN SMALL LETTER DOTLESS I (U+0131).
+    </t>
+
+    <t>
+      The <xref target="UNICODE" /> and
+      <xref target="SPECIALCASING" /> references in this RFC 
+      are for version 6.3.0 of the Unicode standard, as that was
+      the latest version of Unicode when this RFC was published.
+      Implementations SHOULD always use the latest version of Unicode
+      (http://www.unicode.org/versions/latest/).
     </t>
   </section>
 </section>

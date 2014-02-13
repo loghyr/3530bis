@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2013) -->
-<!-- Copyright (C) The Internet Society (2010-2013) -->
+<!-- Copyright (C) The IETF Trust (2009-2014) -->
+<!-- Copyright (C) The Internet Society (2010-2014) -->
   <references title="Normative References">
   <?rfc sortrefs="yes"?>
 
@@ -13,15 +13,15 @@
           <organization abbrev='Editors' />
         </author>
 
-        <date month='Aug' day='16' year='2013' />
+        <date month='Feb' day='12' year='2014' />
 
         <abstract><t>This Internet-Draft provides the XDR description for NFSv4.</t></abstract>
 
       </front>
 
-      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-18' />
+      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-19' />
       <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-dot-x-18.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-dot-x-19.txt' />
     </reference>
 
     <reference anchor='RFC5665'>
@@ -46,21 +46,26 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='TXT' target='http://ietf.org/rfc/rfc5665.txt' />
     </reference>
 
-      
-    <reference anchor="ISO.10646-1.1993">
-      <front>
-     <title>Information Technology - Universal Multiple-octet coded
-     Character Set (UCS) - Part 1: Architecture and Basic Multilingual
-     Plane</title>
-	<author>
-	  <organization>International Organization for Standardization
-	  </organization>
-	</author>
-	<date month="May" year="1993" />
-      </front>
+  <reference anchor="UNICODE" target="http://www.unicode.org/versions/Unicode6.3.0/">
+    <front>
+      <title>The Unicode Standard, Version 6.3.0</title>
+      <author>
+        <organization>The Unicode Consortium</organization>
+      </author>
+      <date year="2013" month="September"/>
+    </front>
+  </reference>
 
-      <seriesInfo name="ISO" value="Standard 10646-1" />
-    </reference>
+  <reference anchor="SPECIALCASING" target="http://www.unicode.org/Public/6.3.0/ucd/SpecialCasing.txt">
+    <front>
+      <title>SpecialCasing-6.3.0.txt</title>
+      <author>
+        <organization>The Unicode Consortium</organization>
+      </author>
+      <date year="2013" month="September"/>
+    </front>
+    <seriesInfo name='Unicode Character Database' value='' />
+  </reference>
 
     <reference anchor='RFC5531'>
       <front>
@@ -329,28 +334,6 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
 
 <seriesInfo name='RFC' value='1094' />
 <format type='TXT' octets='51454' target='ftp://ftp.isi.edu/in-notes/rfc1094.txt' />
-</reference>
-
-<reference anchor='RFC1345'>
-
-<front>
-<title>Character Mnemonics and Character Sets</title>
-<author initials='K.' surname='Simonsen' fullname='Keld Simonsen'>
-<organization>Rationel Almen Planlaegning</organization>
-<address>
-<postal>
-<street>Sankt Joergens Alle 8</street>
-<city>Koebenhavn V</city>
-<region />
-<code>DK-1615</code>
-<country>DK</country></postal>
-<phone>+45 31 226543</phone>
-<facsimile>+45 33 158516</facsimile>
-<email>Keld.Simonsen@dkuug.dk</email></address></author>
-<date year='1992' month='June' /></front>
-
-<seriesInfo name='RFC' value='1345' />
-<format type='TXT' octets='249737' target='ftp://ftp.isi.edu/in-notes/rfc1345.txt' />
 </reference>
 
 <reference anchor='RFC1813'>

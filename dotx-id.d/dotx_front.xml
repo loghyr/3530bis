@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2013) -->
-<!-- Copyright (C) The Internet Society (2010-2013) -->
+<!-- Copyright (C) The IETF Trust (2009-2014) -->
+<!-- Copyright (C) The Internet Society (2010-2014) -->
 
 <front>
     <title abbrev="NFSv4">
@@ -25,20 +25,18 @@
         </address>
     </author>
   <author initials='D.' surname='Noveck'
-          fullname = 'David Noveck'
-            role="editor">
-    <organization abbrev='EMC'>EMC Corporation</organization>
+          fullname = 'David Noveck' role='editor'>
     <address>
        <postal>
-         <street>32 Coslin Drive</street>
-         <city>Southborough</city>
+         <street>26 Locust Ave</street>
+         <city>Lexington</city>
          <region>MA</region>
-         <code>01772</code>
+         <code>02421</code>
          <country>US</country>
        </postal>
 
-       <phone>+1 508 305 8404</phone>
-       <email>novecd@emc.com</email>
+       <phone>+1 781 572 8038</phone>
+       <email>davenoveck@gmail.com</email>
     </address>
   </author>
 

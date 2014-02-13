@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2013) -->
-<!-- Copyright (C) The Internet Society (2010-2013) -->
+<!-- Copyright (C) The IETF Trust (2009-2014) -->
+<!-- Copyright (C) The Internet Society (2010-2014) -->
 
 <section anchor="sec:i18n" title="Internationalization">
   <section anchor="ss:i18n:intro" title="Introduction">
@@ -134,9 +134,10 @@
           handling of character encoding and normalization is not specifiable by the IETF.
         </t>
         <t>
-          Typical implementation patterns in Unix systems may mean
-          that the NFSv4 client has no knowledge of the character encoding
-          being used, which may even vary between processes on the same client system.
+          Typical implementation patterns in Unix systems result in the
+          NFSv4 client having no knowledge of the character encoding being
+          used, which may even vary between processes on the same client
+          system.
         </t>
         <t>
           Users may need access to files stored previously with non-UTF-8
@@ -156,8 +157,8 @@
 
       <list style='symbols'>
         <t>
-	        Servers which do limit file component names to UTF-8
-	        strings exist with all of the forms of normalization-related
+	        Servers which limit file component names to UTF-8
+	        strings exist with normalization-related
 	        handling described in <xref target='ss:i18n:encode' />.  These are best described
 	        as "UTF-8-only servers".
         </t>
@@ -225,10 +226,10 @@
         </t>
 
         <t>
-          For strings whose form is defined by other internet standards,
-          non-ASCII characters MUST be represented using the UTF-8 encoding
-          of Unicode.  In addition other sorts of restrictions defined by
-          those standards need to be addressed.  See <xref target='ss:i18n:types' /> for details.
+          For strings based on domain names, non-ASCII characters MUST be
+          represented using the UTF-8 encoding of Unicode, and additional
+          string format restrictions apply.
+          See <xref target='ss:i18n:types' /> for details.
         </t>
 
         <t>
@@ -294,10 +295,11 @@
 
   <section anchor="ss:i18n:types" title="Types with Processing Defined by Other Internet Areas">
     <t>
-      There are two types of strings which NFSv4 deals with whose
-      processing is defined by other Internet standards, and where issues
-      related to different handling choices by server operating systems or
-      server file systems do not apply.
+      There are two types of strings that NFSv4 deals with that are based
+      on domain names.  Processing of such strings is defined by other
+      Internet standards, and hence the processing behavior for such
+      strings should be consistent across all server operating systems
+      and server file systems.
     </t>
 
     <t>
@@ -328,9 +330,9 @@
     </t>
 
     <t>
-      The string sent SHOULD be in the form of a U-label although it MAY be
-      in the form of an A-label or a UTF-8 string that would not map to
-      itself when canonicalized by applying ToUnicode(ToASCII(...)).  The
+      The string sent SHOULD be in the form of an U-label although it MAY be
+      in the form of an A-label or a UTF-8 domain name that is not a properly formatted U-label.
+      The
       receiver needs to be able to accept domain and server names in any of
       the formats allowed.  The server MUST reject, using the error
       NFS4ERR_INVAL, a string which is not valid UTF-8 or which begins with
@@ -344,7 +346,7 @@
       ToUnicode(domain) or ToUnicode(ToASCII(domain)).  As a result, the
       domain name returned within a userid on a GETATTR may not match that
       sent when the userid is set using SETATTR, although when this
-      happens, the domain will be in the form of a U-label.  When the
+      happens, the domain will be in the form of an U-label.  When the
       server does not map domain strings which are not U-labels into a
       U-label, which it MAY do, it MUST NOT modify the domain, and the
       domain returned on a GETATTR of the userid MUST be the same as that
@@ -377,8 +379,8 @@
       Where the client supplied string is not rejected with
       NFS4ERR_INVAL but contains characters that are not supported
       by the server as a value for that string (e.g., names containing
-      slashes, or characters that have more than two octets on a
-      filesystem that supports Unicode characters only), the server
+      slashes, or characters that does not fit into 16 bits when
+      converted from UTF-8 to a Unicode codepoint), the server
       should return an NFS4ERR_BADCHAR error.
     </t>
 
@@ -418,46 +420,26 @@
 
       <list style='symbols'>
         <t>
-	        Outside of 7-bit ASCII, string processing that changes
-	        string contents is usually specific to a character set
-	        and hence is generally unsafe when the character set is
-	        unknown.  This processing could change the filename in
-	        an unexpected fashion, rendering the file inaccessible
-	        to the application or client that created or renamed the
-	        file and to others expecting the original filename.
+          Outside of 7-bit ASCII, string processing that changes string
+          contents is usually specific to a character set and hence is
+          generally unsafe when the character set is unknown.  This
+          processing could change the filename in an unexpected fashion,
+          rendering the file inaccessible to the application or client that
+          created or renamed the file and to others expecting the original
+          filename.  Hence, such processing should not be performed because
+          doing so is likely to result in incorrect string modification or
+          aliasing.
         </t>
 
         <t>
-	        Unicode normalization is particularly dangerous, as such
-	        processing assumes that the string is UTF-8.  When that
-	        assumption is false because a different character set was
-	        used to create the filename, normalization may corrupt
-	        the filename with respect to that character set, rendering
-	        the file inaccessible to the application that created it
-	        and others expecting the original filename.
-        </t>
-      </list>
-    </t>
-
-    <t>
-      When non-UTF-8 component names are accepted in an environment
-      in which string processing occurs (e.g., to support a broader
-      notion of string equivalence than binary equality), the
-      following considerations apply:
-
-      <list style='symbols'>
-        <t>
-	        Portions of a string that are not valid UTF-8 cannot be
-	        Unicode normalized because they do not represent Unicode
-	        characters.
-        </t>
-
-        <t>
-	        Nonetheless, it is possible to perform Unicode normalization
-	        on valid UTF-8 substrings in a string that is not valid
-	        UTF-8 by selectively ignoring substrings that are not
-	        valid UTF-8.  This MUST NOT be done since doing so would
-	        result in incorrect string modification or aliasing.
+          Unicode normalization is particularly dangerous, as such
+          processing assumes that the string is UTF-8.  When that assumption
+          is false because a different character set was used to create the
+          filename, normalization may corrupt the filename with respect to
+          that character set, rendering the file inaccessible to the
+          application that created it and others expecting the original
+          filename.  Hence, Unicode normalization MUST NOT be performed,
+          because it may cause incorrect string modification or aliasing.
         </t>
       </list>
     </t>

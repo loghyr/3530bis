@@ -25,18 +25,17 @@
     </author>
   <author initials='D.' surname='Noveck'
           fullname = 'David Noveck' role='editor'>
-    <organization abbrev='EMC'>EMC Corporation</organization>
     <address>
        <postal>
-         <street>228 South Street</street>
-         <city>Hopkinton</city> 
+         <street>26 Locust Ave</street>
+         <city>Lexington</city> 
          <region>MA</region>
-         <code>01748</code>
+         <code>02421</code>
          <country>US</country>
        </postal>
 
-       <phone>+1 508 249 5748</phone>
-       <email>david.noveck@emc.com</email>
+       <phone>+1 781 572 8038</phone>
+       <email>davenoveck@gmail.com</email>
     </address>
   </author> 
 
