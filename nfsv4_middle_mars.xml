@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2013) -->
-<!-- Copyright (C) The Internet Society (2010-2013) -->
+<!-- Copyright (C) The IETF Trust (2009-2014) -->
+<!-- Copyright (C) The Internet Society (2010-2014) -->
 <section anchor="sec:mars" title="Multi-Server Namespace">
   <t>
     NFSv4 supports attributes that allow a namespace to extend
@@ -49,7 +49,7 @@
       file system contains no files or directories other than the
       root.  Any reference to it, except
       to access a small set of attributes useful in determining
-      alternate locations, will result in an error, NFS4ERR_MOVED.
+      alternative locations, will result in an error, NFS4ERR_MOVED.
       Note that if the server ever returns the error NFS4ERR_MOVED,
       it MUST support the fs_locations attribute.
     </t>
@@ -228,7 +228,7 @@
       Under some circumstances, multiple alternative locations
       may be used simultaneously to provide higher-performance
       access to the file system in question.  Provision of
-      such alternate locations is referred to as "replication"
+      such alternative locations is referred to as "replication"
       although there are cases in which replicated sets of data are
       not in fact present, and the replicas are instead different
       paths to the same data.
@@ -236,7 +236,7 @@
     <t>
       When a file system is present and becomes absent, clients can be
       given the opportunity to have continued access to their data,
-      at an alternate location.  In this case, a continued attempt
+      at an alternative location.  In this case, a continued attempt
       to use the data in the now-absent file system will result
       in an NFS4ERR_MOVED error and, at that point, the successor
       locations (typically only one although multiple choices are possible)
@@ -266,25 +266,25 @@
 	to be used to access data in place of or in addition to
 	the current file system instance.  On first access to a
         file system, the client should obtain the value of the set
-        of alternate locations by interrogating the fs_locations
+        of alternative locations by interrogating the fs_locations
         attribute.
       </t>
       <t>
         In the event that server failures, communications problems,
         or other difficulties make continued access to the current
         file system impossible or otherwise impractical, the client
-        can use the alternate locations as a way to get continued
+        can use the alternative locations as a way to get continued
         access to its data.  Multiple locations may
         be used simultaneously, to provide higher performance
         through the exploitation of multiple paths between client
         and target file system.
       </t>
       <t>
-        The alternate locations may be physical replicas of the
+        The alternative locations may be physical replicas of the
         (typically read-only) file system data, or they may
-        reflect alternate paths to the same server or provide
+        reflect alternative paths to the same server or provide
         for the use of various forms of server
-        clustering in which multiple servers provide alternate
+        clustering in which multiple servers provide alternative
         ways of accessing the same physical file system. How these
 	different modes of file system transition are represented
 	within the fs_locations attribute and how the client deals
@@ -303,7 +303,7 @@
       <t>
         When a file system is present and becomes absent, clients can be
         given the opportunity to have continued access to their data,
-        at an alternate location, as specified by the fs_locations
+        at an alternative location, as specified by the fs_locations
         attribute.  Typically, a client will be
         accessing the file system in question, get an NFS4ERR_MOVED
         error, and then use the fs_locations
@@ -320,7 +320,7 @@
         event between client and server.
       </t>
       <t>
-        The new location may be an alternate
+        The new location may be an alternative
 	communication path to the same server or, in the case of
         various forms of server clustering, another server providing
 	access to the same physical file system. The client's
@@ -330,7 +330,7 @@
 	discussed in detail below.
       </t>
       <t>
-        When an alternate location is designated as the target for
+        When an alternative location is designated as the target for
         migration, it must designate the same data.
         Where file systems are writable,
         a change made on the original file system must be visible on
@@ -411,7 +411,7 @@
       It may do this even in the absence of
       explicit listing in fs_locations.
       Such corresponding file system locations can be used as
-      alternate locations, just as those explicitly specified via
+      alternative locations, just as those explicitly specified via
       the fs_locations attribute.
     </t>
     <t>
@@ -492,7 +492,7 @@
            title="Effecting File System Referrals">
     <t>
       Referrals are effected when an absent file system is encountered,
-      and one or more alternate locations are made available by the
+      and one or more alternative locations are made available by the
       fs_locations attribute.  The client will
       typically get an NFS4ERR_MOVED error, fetch the appropriate
       location information, and proceed to access the file system on
@@ -991,7 +991,7 @@
     </t>
     <t>
      When the fs_locations attribute
-     is interrogated and there are no alternate file system locations,
+     is interrogated and there are no alternative file system locations,
      the server SHOULD return a zero-length array of fs_location4
      structures, together with a valid fs_root.
    </t>

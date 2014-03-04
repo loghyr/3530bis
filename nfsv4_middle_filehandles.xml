@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2013) -->
-<!-- Copyright (C) The Internet Society (2010-2013) -->
+<!-- Copyright (C) The IETF Trust (2009-2014) -->
+<!-- Copyright (C) The Internet Society (2010-2014) -->
 
 <section anchor="sec:filehandles" title="Filehandles">
   <t>
@@ -79,7 +79,8 @@
 
     <t>
       In the NFSv2 and NFSv3 protocols, there was one type of
-      filehandle with a single set of semantics.  This type of filehandle
+      filehandle with a single set of semantics, of which the primary
+      one was that it was peristent across a server reboot.  As such, this type of filehandle
       is termed "persistent" in NFS Version 4.  The semantics of a
       persistent filehandle remain the same as before.  A new type of
       filehandle introduced in NFS Version 4 is the "volatile"

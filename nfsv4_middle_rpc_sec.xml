@@ -28,12 +28,10 @@
       Where an NFSv4 implementation supports operation over the IP network
       protocol, the supported transport layer between NFS and IP MUST be an IETF
       standardised transport protocol that is specified to avoid network 
-      congestion; such  transports include TCP and SCTP.
-      To enhance the possibilities for
+      congestion; such  transports include TCP and Stream Control Transmission
+      Protocol (SCTP).  To enhance the possibilities for
       interoperability, an NFSv4 implementation MUST support
-      operation over the TCP transport protocol, at least until such time
-      as a standards track RFC revises this requirement to use a different
-      IETF standardised transport protocol with appropriate congestion control.
+      operation over the TCP transport protocol.
     </t>
 
     <t>
@@ -42,13 +40,6 @@
       congestion control via short lived connections and will improve
       performance for the Wide Area Network (WAN) environment by eliminating the need for
       SYN handshakes.
-    </t>
-
-    <t>
-      To date, all NFSv4 implementations are TCP based, i.e., there are
-      none for SCTP nor UDP. UDP by itself is not sufficient as a
-      transport for NFSv4, neither is UDP in combination with some other
-      mechanism (e.g., DCCP <xref target="RFC4340" />, NORM <xref target="RFC5740" />).
     </t>
 
     <t>
@@ -127,7 +118,7 @@
       use of various security mechanisms by the RPC layer without the
       additional implementation overhead of adding RPC security flavors.
       For NFSv4, the RPCSEC_GSS security flavor MUST be used to
-      enable the mandatory security mechanism.  Other flavors, such as,
+      enable the mandatory to implement security mechanism.  Other flavors, such as,
       AUTH_NONE, AUTH_SYS, and AUTH_DH MAY be implemented as well.
     </t>
 
@@ -222,9 +213,9 @@
       With the NFSv4 server potentially offering multiple security
       mechanisms, the client needs a method to determine or negotiate
       which mechanism is to be used for its communication with the server.
-      The NFS server may have multiple points within its file system name
+      The NFS server can have multiple points within its file system name
       space that are available for use by NFS clients.  In turn the NFS
-      server may be configured such that each of these entry points may
+      server can be configured such that each of these entry points can
       have different or multiple security mechanisms in use.
     </t>
 
@@ -255,7 +246,7 @@
         MUST support a minimum set of security (i.e.,
         Kerberos-V5 under RPCSEC_GSS), the NFS client will start its
         communication with the server with one of the minimal security triples.
-        During communication with the server, the client may receive an NFS
+        During communication with the server, the client can receive an NFS
         error of NFS4ERR_WRONGSEC.  This error allows the server to notify the
         client that the security triple currently being used is not appropriate
         for access to the server's file system resources.  The client is then
