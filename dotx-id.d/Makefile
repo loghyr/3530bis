@@ -101,6 +101,8 @@ FRONT_PREGEN = dotx_front.xml
 IDXMLSRC_BASE = \
 	dotx_middle_start.xml \
 	dotx_middle_body.xml \
+	dotx_autogen.xml \
+	dotx_middle_body_end.xml \
 	dotx_middle_security_considerations.xml \
 	dotx_middle_iana_considerations.xml \
 	dotx_middle_end.xml \
@@ -117,7 +119,7 @@ draft-ietf-nfsv4-rfc3530bis-dot-x-$(VERS).xml: Makefile $(START) $(IDCONTENTS) $
 		rm -f $@ $@.tmp
 		cp $(START) $@.tmp
 		chmod +w $@.tmp
-		for i in $(IDCONTENTS) ; do echo '<?rfc include="'$$i'"?>' >> $@.tmp ; done
+		for i in $(IDCONTENTS) ; do cat $$i >> $@.tmp ; done
 		cat $(END) >> $@.tmp
 		mv $@.tmp $@
 
