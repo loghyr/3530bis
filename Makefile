@@ -6,11 +6,13 @@
 YEAR=`date +%Y`
 MONTH=`date +%B`
 DAY=`date +%d`
-PREVVERS=31
-VERS=32
+PREVVERS=32
+VERS=33
 VPATH=dotx.d
 
 XML2RFC=xml2rfc.tcl
+DRAFT_BASE=draft-ietf-nfsv4-rfc3530bis
+DOC_PREFIX=nfsv4
 
 autogen/%.xml : %.x
 	@mkdir -p autogen
@@ -30,11 +32,11 @@ all: html txt dotx dotx-txt
 # Build the stuff needed to ensure integrity of document.
 common: testx dotx html dotx-txt
 
-txt: draft-ietf-nfsv4-rfc3530bis-$(VERS).txt
+txt: ${DRAFT_BASE}-$(VERS).txt
 
-html: draft-ietf-nfsv4-rfc3530bis-$(VERS).html
+html: ${DRAFT_BASE}-$(VERS).html
 
-nr: draft-ietf-nfsv4-rfc3530bis-$(VERS).nr
+nr: ${DRAFT_BASE}-$(VERS).nr
 
 dotx:
 	cd dotx.d ; VERS=$(VERS) $(MAKE) all
@@ -45,12 +47,12 @@ dotx:
 dotx-txt:
 	cd dotx-id.d ; SPECVERS=$(VERS) $(MAKE) all
 
-xml: draft-ietf-nfsv4-rfc3530bis-$(VERS).xml
+xml: ${DRAFT_BASE}-$(VERS).xml
 
 clobber:
-	$(RM) draft-ietf-nfsv4-rfc3530bis-$(VERS).txt \
-		draft-ietf-nfsv4-rfc3530bis-$(VERS).html \
-		draft-ietf-nfsv4-rfc3530bis-$(VERS).nr
+	$(RM) ${DRAFT_BASE}-$(VERS).txt \
+		${DRAFT_BASE}-$(VERS).html \
+		${DRAFT_BASE}-$(VERS).nr
 	export SPECVERS=$(VERS)
 	export VERS=$(VERS)
 	cd dotx-id.d ; SPECVERS=$(VERS) $(MAKE) clobber
@@ -59,7 +61,7 @@ clobber:
 clean:
 	rm -f $(AUTOGEN)
 	rm -rf autogen
-	rm -f draft-ietf-nfsv4-rfc3530bis-$(VERS).xml
+	rm -f ${DRAFT_BASE}-$(VERS).xml
 	rm -rf draft-$(VERS)
 	rm -f draft-$(VERS).tar.gz
 	rm -rf testx.d
@@ -74,29 +76,23 @@ pall:
 	( $(MAKE) html ; echo .html done ) & \
 	wait
 
-draft-ietf-nfsv4-rfc3530bis-$(VERS).txt: draft-ietf-nfsv4-rfc3530bis-$(VERS).xml
-	rm -f $@ draft-tmp.txt
-	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.txt
-	mv draft-tmp.txt $@
+${DRAFT_BASE}-$(VERS).txt: ${DRAFT_BASE}-$(VERS).xml
+	$(XML2RFC) --text ${DRAFT_BASE}-$(VERS).xml -o $@
 
-draft-ietf-nfsv4-rfc3530bis-$(VERS).html: draft-ietf-nfsv4-rfc3530bis-$(VERS).xml
-	rm -f $@ draft-tmp.html
-	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.html
-	mv draft-tmp.html $@
+${DRAFT_BASE}-$(VERS).html: ${DRAFT_BASE}-$(VERS).xml
+	$(XML2RFC) --html ${DRAFT_BASE}-$(VERS).xml -o $@
 
-draft-ietf-nfsv4-rfc3530bis-$(VERS).nr: draft-ietf-nfsv4-rfc3530bis-$(VERS).xml
-	rm -f $@ draft-tmp.nr
-	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml $@.tmp
-	mv draft-tmp.nr $@
+${DRAFT_BASE}-$(VERS).nr: ${DRAFT_BASE}-$(VERS).xml
+	$(XML2RFC) --nroff ${DRAFT_BASE}-$(VERS).xml -o $@
 
-nfsv4_middle_errortoop_autogen.xml: nfsv4_middle_errors.xml
-	./errortbl < nfsv4_middle_errors.xml > nfsv4_middle_errortoop_autogen.xml
+${DOC_PREFIX}_middle_errortoop_autogen.xml: ${DOC_PREFIX}_middle_errors.xml
+	./errortbl < ${DOC_PREFIX}_middle_errors.xml > ${DOC_PREFIX}_middle_errortoop_autogen.xml
 
-nfsv4_front_autogen.xml: nfsv4_front.xml Makefile
-	sed -e s/DAYVAR/${DAY}/g -e s/MONTHVAR/${MONTH}/g -e s/YEARVAR/${YEAR}/g < nfsv4_front.xml > nfsv4_front_autogen.xml
+${DOC_PREFIX}_front_autogen.xml: ${DOC_PREFIX}_front.xml Makefile
+	sed -e s/DAYVAR/${DAY}/g -e s/MONTHVAR/${MONTH}/g -e s/YEARVAR/${YEAR}/g < ${DOC_PREFIX}_front.xml > ${DOC_PREFIX}_front_autogen.xml
 
-nfsv4_rfc_start_autogen.xml: nfsv4_rfc_start.xml Makefile
-	sed -e s/VERSIONVAR/${VERS}/g < nfsv4_rfc_start.xml > nfsv4_rfc_start_autogen.xml
+${DOC_PREFIX}_rfc_start_autogen.xml: ${DOC_PREFIX}_rfc_start.xml Makefile
+	sed -e s/VERSIONVAR/${VERS}/g < ${DOC_PREFIX}_rfc_start.xml > ${DOC_PREFIX}_rfc_start_autogen.xml
 
 autogen/basic_types.xml: dotx.d/spit_types.sh
 	sh dotx.d/spit_types.sh $@
@@ -264,9 +260,9 @@ dotx.d/open_args_gen.x: dotx.d/open_args.x dotx.d/const_access_deny.x
 	cd dotx.d ; VERS=$(VERS) $(MAKE) `basename $@`
 
 AUTOGEN =	\
-		nfsv4_front_autogen.xml \
-		nfsv4_rfc_start_autogen.xml \
-		nfsv4_middle_errortoop_autogen.xml \
+		${DOC_PREFIX}_front_autogen.xml \
+		${DOC_PREFIX}_rfc_start_autogen.xml \
+		${DOC_PREFIX}_middle_errortoop_autogen.xml \
 		autogen/basic_types.xml \
 		$(SPITGEN) \
 		$(SPITGENXML) \
@@ -274,69 +270,98 @@ AUTOGEN =	\
 		autogen/write_res.xml
 
 VESTIGIAL = \
-	nfsv4_middle_op_open_confirm.xml \
-	nfsv4_middle_op_renew.xml \
-	nfsv4_middle_op_setclientid.xml \
-	nfsv4_middle_op_setclientid_confirm.xml \
-	nfsv4_middle_op_release_lockowner.xml
+	${DOC_PREFIX}_middle_op_open_confirm.xml \
+	${DOC_PREFIX}_middle_op_renew.xml \
+	${DOC_PREFIX}_middle_op_setclientid.xml \
+	${DOC_PREFIX}_middle_op_setclientid_confirm.xml \
+	${DOC_PREFIX}_middle_op_release_lockowner.xml
 
-START_PREGEN = nfsv4_rfc_start.xml
-START=	nfsv4_rfc_start_autogen.xml
-END=	nfsv4_rfc_end.xml
+START_PREGEN = ${DOC_PREFIX}_rfc_start.xml
+START=	${DOC_PREFIX}_rfc_start_autogen.xml
+END=	${DOC_PREFIX}_rfc_end.xml
 
-FRONT_PREGEN = nfsv4_front.xml
+FRONT_PREGEN = ${DOC_PREFIX}_front.xml
 
 IDXMLSRC_BASE = \
-	nfsv4_middle_start.xml \
-	nfsv4_middle_introduction.xml \
-	nfsv4_middle_data_types.xml \
-	nfsv4_middle_rpc_sec.xml \
-	nfsv4_middle_filehandles.xml \
-	nfsv4_middle_fileattributes.xml \
-	nfsv4_middle_fileattributes_acls.xml \
-	nfsv4_middle_server_name.xml \
-        nfsv4_middle_mars.xml \
-        nfsv4_middle_file_locking.xml \
-	nfsv4_middle_client_cache.xml \
-	nfsv4_middle_minor.xml \
-	nfsv4_middle_i18n.xml \
-	nfsv4_middle_errors.xml \
-	nfsv4_middle_requests.xml \
-	nfsv4_middle_procedures.xml \
-	nfsv4_middle_cbs.xml \
-        nfsv4_middle_security.xml \
-	nfsv4_middle_iana.xml \
-	nfsv4_middle_end.xml \
-	nfsv4_back_front.xml \
-	nfsv4_back_references.xml \
-	nfsv4_back_acks.xml \
-	nfsv4_back_back.xml
+	${DOC_PREFIX}_middle_start.xml \
+	${DOC_PREFIX}_middle_introduction.xml \
+	${DOC_PREFIX}_middle_data_types.xml \
+	${DOC_PREFIX}_middle_rpc_sec.xml \
+	${DOC_PREFIX}_middle_filehandles.xml \
+	${DOC_PREFIX}_middle_fileattributes.xml \
+	${DOC_PREFIX}_middle_fileattributes_acls.xml \
+	${DOC_PREFIX}_middle_server_name.xml \
+	${DOC_PREFIX}_middle_mars.xml \
+	${DOC_PREFIX}_middle_file_locking.xml \
+	${DOC_PREFIX}_middle_client_cache.xml \
+	${DOC_PREFIX}_middle_minor.xml \
+	${DOC_PREFIX}_middle_i18n.xml \
+	${DOC_PREFIX}_middle_errors.xml \
+	${DOC_PREFIX}_middle_requests.xml \
+	${DOC_PREFIX}_middle_procedures.xml \
+	${DOC_PREFIX}_middle_cbs.xml \
+	${DOC_PREFIX}_middle_security.xml \
+	${DOC_PREFIX}_middle_iana.xml \
+	${DOC_PREFIX}_middle_end.xml \
+	${DOC_PREFIX}_back_front.xml \
+	${DOC_PREFIX}_back_references.xml \
+	${DOC_PREFIX}_back_acks.xml \
+	${DOC_PREFIX}_back_back.xml
 
-IDCONTENTS = nfsv4_front_autogen.xml $(IDXMLSRC_BASE)
+IDXMLSRC_BASE_GENNED = \
+	autogen/${DOC_PREFIX}_middle_start.xml \
+	autogen/${DOC_PREFIX}_middle_introduction.xml \
+	autogen/${DOC_PREFIX}_middle_data_types.xml \
+	autogen/${DOC_PREFIX}_middle_rpc_sec.xml \
+	autogen/${DOC_PREFIX}_middle_filehandles.xml \
+	autogen/${DOC_PREFIX}_middle_fileattributes.xml \
+	autogen/${DOC_PREFIX}_middle_fileattributes_acls.xml \
+	autogen/${DOC_PREFIX}_middle_server_name.xml \
+	autogen/${DOC_PREFIX}_middle_mars.xml \
+	autogen/${DOC_PREFIX}_middle_file_locking.xml \
+	autogen/${DOC_PREFIX}_middle_client_cache.xml \
+	autogen/${DOC_PREFIX}_middle_minor.xml \
+	autogen/${DOC_PREFIX}_middle_i18n.xml \
+	autogen/${DOC_PREFIX}_middle_errors.xml \
+	autogen/${DOC_PREFIX}_middle_requests.xml \
+	autogen/${DOC_PREFIX}_middle_procedures.xml \
+	autogen/${DOC_PREFIX}_middle_cbs.xml \
+	autogen/${DOC_PREFIX}_middle_security.xml \
+	autogen/${DOC_PREFIX}_middle_iana.xml \
+	autogen/${DOC_PREFIX}_middle_end.xml \
+	autogen/${DOC_PREFIX}_back_front.xml \
+	autogen/${DOC_PREFIX}_back_references.xml \
+	autogen/${DOC_PREFIX}_back_acks.xml \
+	autogen/${DOC_PREFIX}_back_back.xml
 
-IDXMLSRC = nfsv4_front.xml $(IDXMLSRC_BASE)
+$(IDXMLSRC_BASE_GENNED):
+	cp `basename $@` $@
+
+IDCONTENTS = ${DOC_PREFIX}_front_autogen.xml $(IDXMLSRC_BASE)
+
+IDXMLSRC = ${DOC_PREFIX}_front.xml $(IDXMLSRC_BASE)
 
 draft-tmp.xml: $(START) Makefile $(END)
 		rm -f $@ $@.tmp
 		cp $(START) $@.tmp
 		chmod +w $@.tmp
-		for i in $(IDCONTENTS) ; do echo '<?rfc include="'$$i'"?>' >> $@.tmp ; done
+		for i in $(IDCONTENTS) ; do cat $$i >> $@.tmp ; done
 		cat $(END) >> $@.tmp
 		mv $@.tmp $@
 
-draft-ietf-nfsv4-rfc3530bis-$(VERS).xml: draft-tmp.xml $(IDCONTENTS) $(AUTOGEN)
+${DRAFT_BASE}-$(VERS).xml: draft-tmp.xml $(IDCONTENTS) $(AUTOGEN) $(IDXMLSRC_BASE_GENNED)
 		rm -f $@
 		cp draft-tmp.xml $@
 
 genhtml: Makefile gendraft html txt dotx dotx-txt draft-$(VERS).tar
 	./gendraft draft-$(PREVVERS) \
-		draft-ietf-nfsv4-rfc3530bis-$(PREVVERS).txt \
+		${DRAFT_BASE}-$(PREVVERS).txt \
 		draft-$(VERS) \
-		draft-ietf-nfsv4-rfc3530bis-$(VERS).txt \
-		draft-ietf-nfsv4-rfc3530bis-$(VERS).html \
+		${DRAFT_BASE}-$(VERS).txt \
+		${DRAFT_BASE}-$(VERS).html \
 		dotx.d/nfsv4.x \
-		draft-ietf-nfsv4-rfc3530bis-dot-x-04.txt \
-		draft-ietf-nfsv4-rfc3530bis-dot-x-05.txt \
+		${DRAFT_BASE}-dot-x-04.txt \
+		${DRAFT_BASE}-dot-x-05.txt \
 		draft-$(VERS).tar.gz
 
 testx: 
@@ -385,9 +410,9 @@ AUXFILES = \
 	xml2rfc
 
 DRAFTFILES = \
-	draft-ietf-nfsv4-rfc3530bis-$(VERS).txt \
-	draft-ietf-nfsv4-rfc3530bis-$(VERS).html \
-	draft-ietf-nfsv4-rfc3530bis-$(VERS).xml
+	${DRAFT_BASE}-$(VERS).txt \
+	${DRAFT_BASE}-$(VERS).html \
+	${DRAFT_BASE}-$(VERS).xml
 
 draft-$(VERS).tar: $(IDCONTENTS) $(START_PREGEN) $(FRONT_PREGEN) $(AUXFILES) $(DRAFTFILES) dotx.d/nfsv4.x
 	rm -f draft-$(VERS).tar.gz

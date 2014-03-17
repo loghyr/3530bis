@@ -16,31 +16,31 @@ typedef :int:int32_t
 typedef :unsigned int:uint32_t
 typedef :hyper:int64_t
 typedef :unsigned hyper:uint64_t
-typedef :opaque  :attrlist4&lt;&gt;:Used for file/directory attributes.
-typedef :uint32_t:bitmap4&lt;&gt;:Used in attribute array encoding.
+typedef :opaque:attrlist4<>:Used for file/directory attributes.
+typedef :uint32_t:bitmap4<>:Used in attribute array encoding.
 typedef :uint64_t:changeid4:Used in the definition of change_info4.
 typedef :uint64_t:clientid4:Shorthand reference to client identification.
 typedef :uint32_t:count4:Various count parameters (READ, WRITE, COMMIT).
 typedef :uint64_t:length4:Describes LOCK lengths.
 typedef :uint32_t:mode4:Mode attribute data type.
 typedef :uint64_t:nfs_cookie4:Opaque cookie value for READDIR.
-typedef :opaque  :nfs_fh4&lt;NFS4_FHSIZE&gt;:Filehandle definition.
+typedef :opaque:nfs_fh4<NFS4_FHSIZE>:Filehandle definition.
 :enum:nfs_ftype4:Various defined file types.
 :enum:nfsstat4:Return value for operations.
 typedef :uint64_t:offset4:Various offset designations (READ, WRITE, LOCK, COMMIT).
 typedef :uint32_t:qop4:Quality of protection designation in SECINFO.
-typedef :opaque  :sec_oid4&lt;&gt;:Security Object Identifier. The sec_oid4 data type is not really opaque. Instead it contains an ASN.1 OBJECT IDENTIFIER as used by GSS-API in the mech_type argument to GSS_Init_sec_context. See <xref target="RFC2743" /> for details.
+typedef :opaque:sec_oid4<>:Security Object Identifier. The sec_oid4 data type is not really opaque. Instead it contains an ASN.1 OBJECT IDENTIFIER as used by GSS-API in the mech_type argument to GSS_Init_sec_context. See <xref target="RFC2743" /> for details.
 typedef :uint32_t:seqid4:Sequence identifier used for file locking.
-typedef :opaque  :utf8string&lt;&gt;:UTF-8 encoding for strings.
-typedef :utf8string:utf8str_cis:Case-insensitive UTF-8 string.
-typedef :utf8string:utf8str_cs:Case-sensitive UTF-8 string.
-typedef :utf8string:utf8str_mixed:UTF-8 strings with a case-sensitive prefix and a case-insensitive suffix.
+typedef :opaque:utf8string<>:UTF-8 encoding for strings.
+typedef :utf8string:utf8str_cis:Case insensitive UTF-8 string.
+typedef :utf8string:utf8str_cs:Case sensitive UTF-8 string.
+typedef :utf8string:utf8str_mixed:UTF-8 strings with a case sensitive prefix and a case insensitive suffix.
 typedef :utf8str_cs:component4:Represents pathname components.
-typedef :opaque  :linktext4<>:Symbolic link contents ("symbolic link" is defined in an Open Group <xref target='openg_symlink' /> standard).
+typedef :opaque:linktext4<>:Symbolic link contents ("symbolic link" is defined in an Open Group <xref target='openg_symlink' /> standard).
 typedef :utf8string:ascii_REQUIRED4:String MUST be sent as ASCII and thus is automatically UTF-8.
-typedef :component4:pathname4&lt;&gt;:Represents path name for fs_locations.
+typedef :component4:pathname4<>:Represents path name for fs_locations.
 typedef :uint64_t:nfs_lockid4
-typedef :opaque  :verifier4[NFS4_VERIFIER_SIZE]:Verifier used for various operations (COMMIT, CREATE, OPEN, READDIR, WRITE) NFS4_VERIFIER_SIZE is defined as 8.
+typedef :opaque:verifier4[NFS4_VERIFIER_SIZE]:Verifier used for various operations (COMMIT, CREATE, OPEN, READDIR, WRITE) NFS4_VERIFIER_SIZE is defined as 8.
 EOF
 
 	fi
@@ -49,7 +49,7 @@ EOF
 	then
 		mkdir -p autogen
 
-		cat $tmp |
+		cat $tmp | sed 's/<xref/qdfuixref/g' | sed 's/</\&lt;/g' |
 		awk -F: '
 			{
 				i = index($3, "&lt;");
@@ -69,10 +69,9 @@ EOF
 				printf "\n";
 			}
 
-		' > $i
+		' | sed 's/qdfuixref/<xref/g' > $i
 	else
-		cat $tmp | sed 's/\&lt;/</g' | sed 's/\&gt;/>/g' |
-		awk -F: '
+		cat $tmp | awk -F: '
 			NR >= 5 {
 				if ($1 != "") {
 					printf "%s%s\t%s;\n", $1, $2, $3;
