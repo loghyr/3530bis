@@ -320,7 +320,7 @@ IDCONTENTS = ${DOC_PREFIX}_front_autogen.xml $(IDXMLSRC_BASE)
 
 IDXMLSRC = ${DOC_PREFIX}_front.xml $(IDXMLSRC_BASE)
 
-draft-tmp.xml: $(START) Makefile $(END)
+draft-tmp.xml: $(START) ${DOC_PREFIX}_front_autogen.xml Makefile $(END)
 		rm -f $@ $@.tmp
 		cp $(START) $@.tmp
 		chmod +w $@.tmp
