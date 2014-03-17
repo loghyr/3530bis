@@ -62,6 +62,8 @@ clean:
 	rm -f $(AUTOGEN)
 	rm -rf autogen
 	rm -f ${DRAFT_BASE}-$(VERS).xml
+	rm -f ${DRAFT_BASE}-$(VERS).txt
+	rm -f ${DRAFT_BASE}-$(VERS).html
 	rm -rf draft-$(VERS)
 	rm -f draft-$(VERS).tar.gz
 	rm -rf testx.d
@@ -77,13 +79,19 @@ pall:
 	wait
 
 ${DRAFT_BASE}-$(VERS).txt: ${DRAFT_BASE}-$(VERS).xml
-	$(XML2RFC) --text ${DRAFT_BASE}-$(VERS).xml -o $@
+	rm -f $@ draft-tmp.txt
+	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.txt
+	mv draft-tmp.txt $@
 
 ${DRAFT_BASE}-$(VERS).html: ${DRAFT_BASE}-$(VERS).xml
-	$(XML2RFC) --html ${DRAFT_BASE}-$(VERS).xml -o $@
+	rm -f $@ draft-tmp.html
+	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.html
+	mv draft-tmp.html $@
 
 ${DRAFT_BASE}-$(VERS).nr: ${DRAFT_BASE}-$(VERS).xml
-	$(XML2RFC) --nroff ${DRAFT_BASE}-$(VERS).xml -o $@
+	rm -f $@ draft-tmp.nr
+	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml $@.tmp
+	mv draft-tmp.nr $@
 
 ${DOC_PREFIX}_middle_errortoop_autogen.xml: ${DOC_PREFIX}_middle_errors.xml
 	./errortbl < ${DOC_PREFIX}_middle_errors.xml > ${DOC_PREFIX}_middle_errortoop_autogen.xml
@@ -308,35 +316,6 @@ IDXMLSRC_BASE = \
 	${DOC_PREFIX}_back_acks.xml \
 	${DOC_PREFIX}_back_back.xml
 
-IDXMLSRC_BASE_GENNED = \
-	autogen/${DOC_PREFIX}_middle_start.xml \
-	autogen/${DOC_PREFIX}_middle_introduction.xml \
-	autogen/${DOC_PREFIX}_middle_data_types.xml \
-	autogen/${DOC_PREFIX}_middle_rpc_sec.xml \
-	autogen/${DOC_PREFIX}_middle_filehandles.xml \
-	autogen/${DOC_PREFIX}_middle_fileattributes.xml \
-	autogen/${DOC_PREFIX}_middle_fileattributes_acls.xml \
-	autogen/${DOC_PREFIX}_middle_server_name.xml \
-	autogen/${DOC_PREFIX}_middle_mars.xml \
-	autogen/${DOC_PREFIX}_middle_file_locking.xml \
-	autogen/${DOC_PREFIX}_middle_client_cache.xml \
-	autogen/${DOC_PREFIX}_middle_minor.xml \
-	autogen/${DOC_PREFIX}_middle_i18n.xml \
-	autogen/${DOC_PREFIX}_middle_errors.xml \
-	autogen/${DOC_PREFIX}_middle_requests.xml \
-	autogen/${DOC_PREFIX}_middle_procedures.xml \
-	autogen/${DOC_PREFIX}_middle_cbs.xml \
-	autogen/${DOC_PREFIX}_middle_security.xml \
-	autogen/${DOC_PREFIX}_middle_iana.xml \
-	autogen/${DOC_PREFIX}_middle_end.xml \
-	autogen/${DOC_PREFIX}_back_front.xml \
-	autogen/${DOC_PREFIX}_back_references.xml \
-	autogen/${DOC_PREFIX}_back_acks.xml \
-	autogen/${DOC_PREFIX}_back_back.xml
-
-$(IDXMLSRC_BASE_GENNED):
-	cp `basename $@` $@
-
 IDCONTENTS = ${DOC_PREFIX}_front_autogen.xml $(IDXMLSRC_BASE)
 
 IDXMLSRC = ${DOC_PREFIX}_front.xml $(IDXMLSRC_BASE)
@@ -349,9 +328,9 @@ draft-tmp.xml: $(START) Makefile $(END)
 		cat $(END) >> $@.tmp
 		mv $@.tmp $@
 
-${DRAFT_BASE}-$(VERS).xml: draft-tmp.xml $(IDCONTENTS) $(AUTOGEN) $(IDXMLSRC_BASE_GENNED)
+${DRAFT_BASE}-$(VERS).xml: draft-tmp.xml $(IDCONTENTS) $(AUTOGEN)
 		rm -f $@
-		cp draft-tmp.xml $@
+		./rfcincfill.pl draft-tmp.xml $@
 
 genhtml: Makefile gendraft html txt dotx dotx-txt draft-$(VERS).tar
 	./gendraft draft-$(PREVVERS) \
