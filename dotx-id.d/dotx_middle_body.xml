@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2011) -->
-<!-- Copyright (C) The Internet Society (2010-2011) -->
+<!-- Copyright (C) The IETF Trust (2009-2014) -->
+<!-- Copyright (C) The Internet Society (2010-2014) -->
 <section anchor="xdr_desc" title="XDR Description of NFSv4.0 " >
 <t>
 
@@ -27,7 +27,7 @@ is in a file called "spec.txt", then the reader can do:
 </t>
 <figure>
 <artwork>
- sh extract.sh < spec.txt > nfs4_prot.x
+ sh extract.sh &lt; spec.txt > nfs4_prot.x
 </artwork>
 </figure>
 
@@ -38,7 +38,6 @@ is in a file called "spec.txt", then the reader can do:
 <t>
  The XDR description, with the sentinel sequence follows:
 </t>
-
 
 
    <?rfc include='dotx_autogen.xml'?>

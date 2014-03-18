@@ -1870,7 +1870,7 @@
                 the side of being harsh.
                 <vspace blankLines="1"/>
                 In the event that, after a server reboot, the server determines
-                that there is unrecoverable damage or corruption to the the
+                that there is unrecoverable damage or corruption to the
                 stable storage, then for all clients and/or locks affected,
                 the server MUST return NFS4ERR_NO_GRACE.
               </t>

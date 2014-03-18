@@ -16,10 +16,10 @@
       This section is based on the behavior of existing implementations.
       Note that the behaviors described are each demonstrated by a
       combination of an NFSv4 server implementation proper and a
-      server-side physical filesystem. It is common for servers and
-      physical filesystems to be configurable as to the behavior
-      shown once set up and each be configuration showing different
-      behavior is considered separately, for our purposes.
+      server-side physical filesystem. It is common for servers
+      and physical filesystems to be configurable as to the behavior shown.
+      In the discussion below, each configuration that shows different
+      behavior is considered separately.
     </t>
 
     <t>
@@ -333,7 +333,7 @@
     </t>
 
     <t>
-      The string sent SHOULD be in the form of an U-label although it MAY be
+      The string sent SHOULD be in the form of a U-label although it MAY be
       in the form of an A-label or a UTF-8 domain name that is not a properly formatted U-label.
       The
       receiver needs to be able to accept domain and server names in any of
@@ -349,7 +349,7 @@
       ToUnicode(domain) or ToUnicode(ToASCII(domain)).  As a result, the
       domain name returned within a userid on a GETATTR may not match that
       sent when the userid is set using SETATTR, although when this
-      happens, the domain will be in the form of an U-label.  When the
+      happens, the domain will be in the form of a U-label.  When the
       server does not map domain strings which are not U-labels into a
       U-label, which it MAY do, it MUST NOT modify the domain, and the
       domain returned on a GETATTR of the userid MUST be the same as that
@@ -382,7 +382,7 @@
       Where the client supplied string is not rejected with
       NFS4ERR_INVAL but contains characters that are not supported
       by the server as a value for that string (e.g., names containing
-      slashes, or characters that does not fit into 16 bits when
+      slashes, or characters that do not fit into 16 bits when
       converted from UTF-8 to a Unicode codepoint), the server
       should return an NFS4ERR_BADCHAR error.
     </t>

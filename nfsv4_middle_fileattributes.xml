@@ -1293,7 +1293,7 @@
           The string representing the domain may be converted to
           an equivalent U-label (see <xref target='RFC5890' />), if presented using a
           form other than 
-          an U-label.  See <xref target="ss:i18n:types" /> for details.
+          a U-label.  See <xref target="ss:i18n:types" /> for details.
         </t>
         <t>
           The user or group may be returned in a different form, as a result
@@ -1352,7 +1352,7 @@
       mechanism is not RPCSEC_GSS.  A client can determine if a server
       supports numeric identifiers by first attempting to provide a numeric
       identifier. If this attempt rejected with an NFS4ERR_BADOWNER error,
-      the the client should only use named identifiers of the form
+      then the client should only use named identifiers of the form
       "user@dns_domain".
     </t>
     <t>

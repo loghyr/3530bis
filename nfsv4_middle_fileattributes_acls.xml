@@ -867,7 +867,7 @@
             <ttcol>Description</ttcol>
             <c>OWNER</c>
             <c>
-              The owner of the file
+              The owner of the file.
             </c>
             <c>GROUP</c>
             <c>
@@ -900,7 +900,7 @@
             <c>AUTHENTICATED</c>
             <c>
               Any authenticated user (opposite of
-              ANONYMOUS)
+              ANONYMOUS).
             </c>
             <c>SERVICE</c>
             <c>
