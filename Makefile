@@ -10,7 +10,7 @@ PREVVERS=32
 VERS=33
 VPATH=dotx.d
 
-XML2RFC=xml2rfc.tcl
+XML2RFC=xml2rfc
 DRAFT_BASE=draft-ietf-nfsv4-rfc3530bis
 DOC_PREFIX=nfsv4
 
@@ -79,19 +79,13 @@ pall:
 	wait
 
 ${DRAFT_BASE}-$(VERS).txt: ${DRAFT_BASE}-$(VERS).xml
-	rm -f $@ draft-tmp.txt
-	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.txt
-	mv draft-tmp.txt $@
+	$(XML2RFC) --text ${DRAFT_BASE}-$(VERS).xml -o $@
 
 ${DRAFT_BASE}-$(VERS).html: ${DRAFT_BASE}-$(VERS).xml
-	rm -f $@ draft-tmp.html
-	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml draft-tmp.html
-	mv draft-tmp.html $@
+	$(XML2RFC) --html ${DRAFT_BASE}-$(VERS).xml -o $@
 
 ${DRAFT_BASE}-$(VERS).nr: ${DRAFT_BASE}-$(VERS).xml
-	rm -f $@ draft-tmp.nr
-	$(XML2RFC) draft-ietf-nfsv4-rfc3530bis-$(VERS).xml $@.tmp
-	mv draft-tmp.nr $@
+	$(XML2RFC) --nroff ${DRAFT_BASE}-$(VERS).xml -o $@
 
 ${DOC_PREFIX}_middle_errortoop_autogen.xml: ${DOC_PREFIX}_middle_errors.xml
 	./errortbl < ${DOC_PREFIX}_middle_errors.xml > ${DOC_PREFIX}_middle_errortoop_autogen.xml

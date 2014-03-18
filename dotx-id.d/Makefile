@@ -7,7 +7,8 @@ DAY=`date +%d`
 PREVVERS=21
 VERS=22
 VPATH=../../dotx.d
-XML2RFC=xml2rfc.tcl
+
+XML2RFC=xml2rfc
 
 DRAFT_BASE=draft-ietf-nfsv4-rfc3530bis-dot-x
 DOC_PREFIX=dotx
@@ -48,9 +49,7 @@ tmp.x:	tmp.txt
 	sh tmp.sh < tmp.txt > tmp.x
 
 tmp.txt: ${DRAFT_BASE}-$(VERS).xml
-	rm -f tmp.txt tmp2.txt
-	$(XML2RFC) ${DRAFT_BASE}-$(VERS).xml tmp2.txt
-	mv -f tmp2.txt tmp.txt
+	$(XML2RFC) --text ${DRAFT_BASE}-$(VERS).xml -o $@
 
 ${DRAFT_BASE}-$(VERS).txt: tmp.txt tmp.x
 	rm -f tmp.out
@@ -66,7 +65,7 @@ ${DRAFT_BASE}-$(VERS).txt: tmp.txt tmp.x
 	cp tmp.txt $@
 
 ${DRAFT_BASE}-$(VERS).nr: ${DRAFT_BASE}-$(VERS).xml
-	$(XML2RFC) ${DRAFT_BASE}-$(VERS).xml $@
+	$(XML2RFC) --nroff ${DRAFT_BASE}-$(VERS).xml -o $@
 
 ${DOC_PREFIX}_front_autogen.xml: ${DOC_PREFIX}_front.xml Makefile
 	sed -e s/DAYVAR/${DAY}/g -e s/MONTHVAR/${MONTH}/g -e s/YEARVAR/${YEAR}/g < ${DOC_PREFIX}_front.xml > ${DOC_PREFIX}_front_autogen.xml
