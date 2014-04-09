@@ -2,6 +2,10 @@
 <!-- Copyright (C) The Internet Society (2010-2011) -->
 <section title="Acknowledgments">
   <t>
+    Tom Haynes would like to thank NetApp, Inc. for its
+    funding of his time on this project.
+  </t>
+  <t>
     David Quigley tested the extraction of the .x file
     from this document and corrected the two resulting
     errors.

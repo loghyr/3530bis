@@ -1,5 +1,5 @@
-<!-- Copyright (C) The IETF Trust (2009-2013) -->
-<!-- Copyright (C) The Internet Society (2010-2013) -->
+<!-- Copyright (C) The IETF Trust (2009-2014) -->
+<!-- Copyright (C) The Internet Society (2010-2014) -->
 <section title="Acknowledgments">
 	<t>
 		A bis is certainly built on the shoulders of the first
@@ -8,6 +8,10 @@
 		and David Noveck are responsible for a great deal
 		of the effort in this work.
 	</t>
+  <t>
+    Tom Haynes would like to thank NetApp, Inc. for its
+    funding of his time on this project.
+  </t>
   <t>
     Rob Thurlow clarified how a client should contact
     a new server if a migration has occurred.
