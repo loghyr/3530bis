@@ -77,8 +77,8 @@
       order to ensure a minimum level of interoperability.  The server MUST
       store and return these attributes, and the client MUST be able to
       function with an attribute set limited to these attributes.  With just
-      the REQUIRED attributes some client functionality may be impaired or
-      limited in some ways.  A client may ask for any of these attributes to
+      the REQUIRED attributes some client functionality can be impaired or
+      limited in some ways.  A client can ask for any of these attributes to
       be returned by setting a bit in the GETATTR request, and the server
       MUST return their value.
     </t>
@@ -88,7 +88,7 @@
       These attributes are understood well enough to warrant support in the
       NFSv4.0 protocol.  However, they may not be supported on all
       clients and servers.  A client MAY ask for any of these attributes to
-      be returned by setting a bit in the GETATTR request but must handle
+      be returned by setting a bit in the GETATTR request but MUST handle
       the case where the server does not return them.  A client MAY ask for
       the set of attributes the server supports and SHOULD NOT request
       attributes the server does not support.  A server should be tolerant
