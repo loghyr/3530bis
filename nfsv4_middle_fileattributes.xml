@@ -270,9 +270,9 @@
      <t>Name: The name of attribute</t>
      <t>Id: The number assigned to the attribute. In
         the event of conflicts between the assigned number and <xref
-        target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>, the latter is
+        target="RFCNFSv4XDR"/>, the latter is
         authoritative, but in such an event, it should be resolved with Errata to this
-        document and/or <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x"/>.
+        document and/or <xref target="RFCNFSv4XDR"/>.
         See <xref target="ISEG_errata"/> for the Errata process.</t>
      <t>Data Type: The XDR data type of the attribute.</t>
      <t>

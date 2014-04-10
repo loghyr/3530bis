@@ -31,6 +31,12 @@
     final result.
   </t>
   <t>
+    Peter Saint-Andre was gracious enough to read the
+    last draft of <xref target="sec:i18n" /> and provided
+    some key insight as to the concerns of the
+    Internationalization community.
+  </t>
+  <t>
     James Lentini graciously read the rewrite of 
     <xref target="sec:mars" /> and his comments were
     vital in improving the quality of that effort.

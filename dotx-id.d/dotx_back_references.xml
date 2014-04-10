@@ -19,7 +19,7 @@
       <format type='TXT' octets='55477' target='ftp://ftp.isi.edu/in-notes/rfc4506.txt' />
     </reference>
 
-<reference anchor='I-D.ietf-nfsv4-rfc3530bis'>
+<reference anchor='RFCNFSv4'>
 <front>
 <title>NFS Version 4 Protocol</title>
 
@@ -30,13 +30,13 @@
     <organization abbrev='Editors' />
 </author>
 
-<date month='Feb' day='13' year='2014' />
+<date month='Apr' day='13' year='2014' />
 
 </front>
 
-<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-31' />
+<seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-33' />
 <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-31.txt' />
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-33.txt' />
 </reference>
 
   </references>

@@ -5,7 +5,7 @@
 
  This document contains the XDR (<xref target="RFC4506" />)
  description of NFSv4.0 protocol (<xref
- target="I-D.ietf-nfsv4-rfc3530bis" />).
+ target="RFCNFSv4" />).
 </t>
 <t>
  The XDR description is provided in this document in a way

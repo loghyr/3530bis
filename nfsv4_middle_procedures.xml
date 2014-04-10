@@ -680,7 +680,7 @@
         If the objname is of zero length, NFS4ERR_INVAL will
         be returned.  The objname is also subject to the normal
         UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:utf8_err" />
+        <xref target="ss:i18n:string_err" />
         for further discussion.
       </t>
 
@@ -1479,7 +1479,7 @@
         If the component is of zero length, NFS4ERR_INVAL will
         be returned.  The component is also subject to the normal
         UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:utf8_err" />
+        <xref target="ss:i18n:string_err" />
         for further discussion.
       </t>
 
@@ -1910,7 +1910,7 @@
         If the component is of zero length, NFS4ERR_INVAL will
         be returned.  The component is also subject to the normal
         UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:utf8_err" />
+        <xref target="ss:i18n:string_err" />
         for further discussion.
       </t>
 
@@ -2942,7 +2942,7 @@
         If the target is of zero length, NFS4ERR_INVAL will
         be returned.  The target is also subject to the normal
         UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:utf8_err" />
+        <xref target="ss:i18n:string_err" />
         for further discussion.
       </t>
 
@@ -3080,7 +3080,7 @@
         If the oldname or newname is of zero length, NFS4ERR_INVAL will
         be returned.  The oldname and newname are also subject to the 
         normal UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:utf8_err" />
+        <xref target="ss:i18n:string_err" />
         for further discussion.
       </t>
 

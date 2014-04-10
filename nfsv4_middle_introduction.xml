@@ -53,7 +53,7 @@
 
     <t>
       This document, together with the companion XDR description
-      document <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />,
+      document <xref target="RFCNFSv4XDR" />,
       obsoletes RFC 3530 <xref target="RFC3530" />
       as the authoritative document describing NFSv4.  It does
       not introduce any over-the-wire protocol
@@ -65,15 +65,15 @@
   <section anchor="document_incons"
            title="Definitions in the companion document NFS Version 4 Protocol are Authoritative">
     <t>
-      <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />, NFS Version 4
+      <xref target="RFCNFSv4XDR" />, NFS Version 4
       Protocol, contains the definitions in XDR description language of
       the constructs used by the protocol.  Inside this document, several
       of the constructs are reproduced for purposes of explanation.  The
       reader is warned of the possibility of errors in the reproduced
-      constructs outside of <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />.
+      constructs outside of <xref target="RFCNFSv4XDR" />.
       For any part of the document that is inconsistent with
-      <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />,
-      <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" /> is to be
+      <xref target="RFCNFSv4XDR" />,
+      <xref target="RFCNFSv4XDR" /> is to be
       considered authoritative.
     </t>
   </section>
@@ -513,7 +513,7 @@
       <list style='symbols'>
         <t>
           The XDR definition has been moved to a companion document
-          <xref target="I-D.ietf-nfsv4-rfc3530bis-dot-x" />
+          <xref target="RFCNFSv4XDR" />
         </t>
         <t>
           Updates for the latest IETF intellectual property statements

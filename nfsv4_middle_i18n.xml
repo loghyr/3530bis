@@ -4,12 +4,13 @@
 <section anchor="sec:i18n" title="Internationalization">
   <section anchor="ss:i18n:intro" title="Introduction">
     <t>
-      This section uses NFSv4.0 internationalization, as implemented by
-      existing clients and servers, as the basis upon which NFSv4.0 clients
-      may implement internationalization support.  This procedure, while
-      necessary, may result in confusion if we do not clearly understand
-      that we are mixing prescription and description, and why, in this
-      particular case, this is a valid thing to do.
+      Internationalization is a complex topic with its own set of
+      terminology (see <xref target='RFC6365' />).  The topic is made more complex in
+      NFSv4.0 by the tangled history and state of NFS implementations.
+      This section describes what we might call "NFSv4.0
+      internationalization" (i.e., internationalization as implemented by
+      existing clients and servers) as the basis upon which NFSv4.0
+      clients may implement internationalization support.
     </t>
 
     <t>
@@ -175,7 +176,7 @@
 	        and have no knowledge of the characters represented. Such
 	        servers ignore normalization-related issues and there is
 	        no way for them to implement either normalization or
-	        representation-independent lookups.  See <xref target='ss:i18n:utf8_err' /> for
+	        representation-independent lookups.  See <xref target='ss:i18n:string_err' /> for
 	        details.
         </t>
 
@@ -199,9 +200,11 @@
 
   <section anchor="ss:i18n:encode" title="String Encoding">
     <t>
-      Strings that potentially contain non-ASCII Characters are generally
-      represented in NFSv4 using the UTF-8 encoding of Unicode.  See
-      <xref target='RFC2279' /> for precise encoding and decoding rules.
+      Strings that potentially contain characters outside the ASCII range
+      <xref target='RFC20' /> are generally represented in NFSv4 using
+      the UTF-8 encoding <xref target='RFC3629' /> of Unicode
+      <xref target='UNICODE' />.  See <xref target='RFC2279' /> for
+      precise encoding and decoding rules.
     </t>
 
     <t>
@@ -334,8 +337,8 @@
 
     <t>
       The string sent SHOULD be in the form of a U-label although it MAY be
-      in the form of an A-label or a UTF-8 domain name that is not a properly formatted U-label.
-      The
+      in the form of one or more A-labels or a UTF-8 domain name that
+      is not a properly formatted U-label.  The
       receiver needs to be able to accept domain and server names in any of
       the formats allowed.  The server MUST reject, using the error
       NFS4ERR_INVAL, a string which is not valid UTF-8 or which begins with
@@ -343,17 +346,32 @@
     </t>
 
     <t>
-      When a domain string is part of id@domain or group@domain, the server
-      SHOULD map domain strings which are A-labels (see <xref target='RFC5890' />) or are UTF-8 domain
-      names which are not U-labels, to the corresponding U-label, using
-      ToUnicode(domain) or ToUnicode(ToASCII(domain)).  As a result, the
-      domain name returned within a userid on a GETATTR may not match that
-      sent when the userid is set using SETATTR, although when this
-      happens, the domain will be in the form of a U-label.  When the
-      server does not map domain strings which are not U-labels into a
-      U-label, which it MAY do, it MUST NOT modify the domain, and the
-      domain returned on a GETATTR of the userid MUST be the same as that
-      used when setting the userid by the SETATTR.
+      When a domain string is part of id@domain or group@domain, there are
+      two possible approaches:
+
+      <list style='numbers'>
+        <t>
+          The server treats the domain string as a U-label (see <xref target='RFC5890' />
+          This happens if the domain string is an A-label (or is a UTF-8-
+          encoded string which is not a U-label) and the server converts the
+          domain string to the corresponding U-label, using the functions
+          ToUnicode(domain) or ToUnicode(ToASCII(domain)).  As a result, the
+          domain string returned within a userid on a GETATTR may not match
+          that sent when the userid is set using SETATTR, although when this
+          happens, the domain will be in the form of an U-label.
+        </t>
+
+        <t>
+          The server does not attempt to treat the domain string as a
+          U-label; specifically, it does not map a domain string which is not
+          a U-label into a U-label using the ToUnicode function as described
+          above.  As a result, the domain string returned on a GETATTR of the
+          userid MUST be the same as that used when setting the userid by the
+          SETATTR.
+        </t>
+      </list>
+
+      A server SHOULD use the first method, but MAY use the second method.
     </t>
 
     <t>
@@ -364,7 +382,7 @@
     </t>
   </section>
 
-  <section anchor="ss:i18n:utf8_err" title="UTF-8 Related Errors">
+  <section anchor="ss:i18n:string_err" title="String Related Errors">
     <t>
       Where the client sends an invalid UTF-8 string, the server MAY
       return an NFS4ERR_INVAL error.  This includes cases in which
@@ -410,10 +428,10 @@
     <t>
       Such servers SHOULD NOT change the stored representation of
       component names from those received on the wire, and SHOULD
-      use binary comparison of component name strings to determine
-      equivalence (as opposed to any broader notion of string
-      comparison).  This is because the server has no knowledge of
-      the character encoding being used.
+      use an octet-by-octet comparison of component name strings
+      to determine equivalence (as opposed to any broader notion
+      of string comparison).  This is because the server has no
+      knowledge of the character encoding being used.
     </t>
 
     <t>

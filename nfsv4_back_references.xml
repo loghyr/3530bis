@@ -3,27 +3,6 @@
   <references title="Normative References">
   <?rfc sortrefs="yes"?>
 
-    <reference anchor='I-D.ietf-nfsv4-rfc3530bis-dot-x'>
-      <front>
-        <title>NFSv4 Version 0 XDR Description</title>
-        <author initials='T' surname='Haynes' fullname='Thomas Haynes'>
-          <organization abbrev='Editors' />
-        </author>
-        <author initials='D' surname='Noveck' fullname='David Noveck'>
-          <organization abbrev='Editors' />
-        </author>
-
-        <date month='Feb' day='13' year='2014' />
-
-        <abstract><t>This Internet-Draft provides the XDR description for NFSv4.</t></abstract>
-
-      </front>
-
-      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-21' />
-      <format type='TXT'
-        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-dot-x-21.txt' />
-    </reference>
-
     <reference anchor='RFC5665'>
       <front>
   <title>IANA Considerations for Remote Procedure Call (RPC) Network Identifiers and Universal Address Formats</title>
@@ -46,6 +25,19 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='TXT' target='http://ietf.org/rfc/rfc5665.txt' />
     </reference>
 
+    <reference anchor='RFC20'>
+
+      <front>
+      <title>ASCII format for network interchange</title>
+      <author initials='V.' surname='Cerf' fullname='Vint Cerf'>
+      <organization>University California Los Angeles (UCLA)</organization></author>
+      <date year='1969' day='16' month='October' />
+      <abstract>
+      <t>For concreteness, we suggest the use of standard 7-bit ASCII embedded in an 8 bit byte whose high order bit is always 0.</t></abstract></front>
+
+      <seriesInfo name='RFC' value='20' />
+      <format type='TXT' octets='18504' target='http://www.rfc-editor.org/rfc/rfc20.txt' />
+    </reference>
   <reference anchor="UNICODE" target="http://www.unicode.org/versions/Unicode6.3.0/">
     <front>
       <title>The Unicode Standard, Version 6.3.0</title>
@@ -66,20 +58,6 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
     </front>
     <seriesInfo name='Unicode Character Database' value='' />
   </reference>
-
-    <reference anchor='RFC5531'>
-      <front>
-	<title abbrev='Remote Procedure Call Protocol Version 2'>RPC:
-	Remote Procedure Call Protocol Specification Version 2</title>
-	<author initials='R.' surname='Thurlow' fullname='R. Thurlow'>
-	  <organization>Sun Microsystems, Inc.</organization>
-	</author>
-	<date year='2009' month='May' />
-      </front>
-
-      <seriesInfo name='RFC' value='5531' />
-      <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc5531.txt' />
-    </reference>
 
     <reference anchor='RFC2119'>
       <front>
@@ -153,21 +131,6 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='XML' octets='50069' target='http://xml.resource.org/public/rfc/xml/rfc2203.xml' />
     </reference>
 
-    <reference anchor='RFC5403'>
-      <front>
-      <title>RPCSEC_GSS Version 2</title>
-
-        <author initials='M.' surname='Eisler' fullname='Michael Eisler'>
-        <organization>NetApp</organization>
-        </author>
-
-      <date year='2009' month='February' />
-      </front>
-
-      <seriesInfo name='RFC' value='5403' />
-      <format type='TXT' octets='50937' target='ftp://ftp.isi.edu/in-notes/rfc5403.txt' />
-    </reference>
-
     <reference anchor='RFC2279'>
 
       <front>
@@ -183,9 +146,7 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='HTML'
 	      target='http://xml.resource.org/public/rfc/html/rfc2279.html' />
     </reference>
-
     <reference anchor='RFC2743'>
-
       <front>
 	<title abbrev='GSS-API'>Generic Security Service Application
 	Program Interface Version 2, Update 1</title>
@@ -201,33 +162,44 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
 	    <phone>+1 781 687 7817</phone>
 	<email>jlinn@rsasecurity.com</email></address></author>
 	<date year='2000' month='January' />
-	<abstract>
-	  <t>The Generic Security Service Application Program
-	  Interface (GSS-API), Version 2, as defined in, provides
-	  security services to callers in a generic fashion,
-	  supportable with a range of underlying mechanisms and
-	  technologies and hence allowing source-level portability of
-	  applications to different environments. This specification
-	  defines GSS-API services and primitives at a level
-	  independent of underlying mechanism and programming language
-	  environment, and is to be complemented by other, related
-	  specifications:</t>
-	  <t>documents defining specific parameter bindings for
-	  particular language environments</t>
-	  <t>documents defining token formats, protocols, and
-	  procedures to be implemented in order to realize GSS-API
-	  services atop particular security mechanisms</t> <t>This
-	  memo obsoletes making specific, incremental changes in
-	  response to implementation experience and liaison
-	  requests. It is intended, therefore, that this memo or a
-	  successor version thereto will become the basis for
-	  subsequent progression of the GSS-API specification on the
-	  standards track.</t></abstract></front>
+	  </front>
 
       <seriesInfo name='RFC' value='2743' />
       <format type='TXT' octets='229418' 
 	      target='ftp://ftp.isi.edu/in-notes/rfc2743.txt' />
     </reference>
+
+
+    <reference anchor='RFC5403'>
+      <front>
+      <title>RPCSEC_GSS Version 2</title>
+
+        <author initials='M.' surname='Eisler' fullname='Michael Eisler'>
+        <organization>NetApp</organization>
+        </author>
+
+      <date year='2009' month='February' />
+      </front>
+
+      <seriesInfo name='RFC' value='5403' />
+      <format type='TXT' octets='50937' target='ftp://ftp.isi.edu/in-notes/rfc5403.txt' />
+    </reference>
+
+    <reference anchor='RFC5531'>
+      <front>
+	<title abbrev='Remote Procedure Call Protocol Version 2'>RPC:
+	Remote Procedure Call Protocol Specification Version 2</title>
+	<author initials='R.' surname='Thurlow' fullname='R. Thurlow'>
+	  <organization>Sun Microsystems, Inc.</organization>
+	</author>
+	<date year='2009' month='May' />
+      </front>
+
+      <seriesInfo name='RFC' value='5531' />
+      <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc5531.txt' />
+    </reference>
+
+
 
     <reference anchor='RFC5890'>
       <front>
@@ -266,6 +238,27 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       </front>
       <seriesInfo name='RFC' value='6649' />
       <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc6649.txt' />
+    </reference>
+
+    <reference anchor='RFCNFSv4XDR'>
+      <front>
+        <title>NFSv4 Version 0 XDR Description</title>
+        <author initials='T' surname='Haynes' fullname='Thomas Haynes'>
+          <organization abbrev='Editors' />
+        </author>
+        <author initials='D' surname='Noveck' fullname='David Noveck'>
+          <organization abbrev='Editors' />
+        </author>
+
+        <date month='Apr' day='13' year='2014' />
+
+        <abstract><t>This Internet-Draft provides the XDR description for NFSv4.</t></abstract>
+
+      </front>
+
+      <seriesInfo name='Internet-Draft' value='draft-ietf-nfsv4-rfc3530bis-dot-x-22' />
+      <format type='TXT'
+        target='http://www.ietf.org/internet-drafts/draft-ietf-nfsv4-rfc3530bis-dot-x-22.txt' />
     </reference>
 
     <reference anchor="openg_symlink">
@@ -631,56 +624,6 @@ document are to be interpreted as described in RFC
 <format type='TXT' octets='23493' target='ftp://ftp.isi.edu/in-notes/rfc2755.txt' />
 </reference>
 
-    <reference anchor='RFC3232'>
-    
-      <front>
-        <title>Assigned Numbers: RFC 1700 is Replaced by an On-line Database</title>
-        <author initials='J.' surname='Reynolds' fullname='J. Reynolds'>
-        <organization /></author>
-        <date year='2002' month='January' />
-        <abstract>
-          <t>&lt;p>This memo obsoletes RFC 1700 (STD 2) "Assigned
-          Numbers", which contained an October 1994 snapshot of assigned
-          Internet protocol parameters. This memo provides information
-          for the Internet community. &lt;/p></t>
-	</abstract></front>
-    
-      <seriesInfo name='RFC' value='3232' />
-      <format type='TXT' octets='3849' target='ftp://ftp.isi.edu/in-notes/rfc3232.txt' />
-    </reference>
-
-  <reference anchor='RFC4506'>
-    <front>
-      <title>XDR: External Data Representation Standard</title>
-      <author initials='M.' surname='Eisler' fullname='Michael Eisler'>
-        <organization>NetApp</organization>
-      </author>
-      <date year="2006" month="May" />
-    </front>
-    <seriesInfo name="RFC" value="4506" />
-    <format type="TXT"
-      target="ftp://ftp.isi.edu/in-notes/rfc4506.txt"/>
-  </reference>
-
-    <reference anchor='RFC4121'>
-      <front>
-	<title>The Kerberos Version 5 Generic Security Service
-	  Application Program Interface (GSS-API) Mechanism: Version 2</title>
-	<author initials="L." surname="Zhu" fullname="L. Zhu">
-	  <organization>Microsoft</organization>
-	</author>
-	<author initials="K." surname="Jaganathan" fullname="K. Jaganathan">
-	  <organization>Microsoft</organization>
-	</author>
-	<author initials="S." surname="Hartman" fullname="S. Hartman">
-	  <organization>MIT</organization>
-	</author>
-	<date year="2005" month="July"/>
-      </front>
-      <seriesInfo name="RFC" value="4121"/>
-      <format type="TXT" target="http://www.ietf.org/rfc/rfc4121.txt"/>
-    </reference>
-
     <reference anchor='RFC3010'>
       <front>
 	<title>Network File System (NFS) version 4 Protocol</title>
@@ -710,6 +653,24 @@ document are to be interpreted as described in RFC
       <seriesInfo name="RFC" value="3010"/>
       <format type="TXT" octets="600988" 
 	      target="ftp://ftp.isi.edu/in-notes/rfc3010.txt"/>
+    </reference>
+
+    <reference anchor='RFC3232'>
+    
+      <front>
+        <title>Assigned Numbers: RFC 1700 is Replaced by an On-line Database</title>
+        <author initials='J.' surname='Reynolds' fullname='J. Reynolds'>
+        <organization /></author>
+        <date year='2002' month='January' />
+        <abstract>
+          <t>&lt;p>This memo obsoletes RFC 1700 (STD 2) "Assigned
+          Numbers", which contained an October 1994 snapshot of assigned
+          Internet protocol parameters. This memo provides information
+          for the Internet community. &lt;/p></t>
+	</abstract></front>
+    
+      <seriesInfo name='RFC' value='3232' />
+      <format type='TXT' octets='3849' target='ftp://ftp.isi.edu/in-notes/rfc3232.txt' />
     </reference>
 
     <reference anchor='RFC3530'>
@@ -742,6 +703,52 @@ document are to be interpreted as described in RFC
       <format type="TXT" octets="600988" 
 	      target="ftp://ftp.isi.edu/in-notes/rfc3530.txt"/>
     </reference>
+
+<reference anchor='RFC3629'>
+
+<front>
+<title>UTF-8, a transformation format of ISO 10646</title>
+<author initials='F.' surname='Yergeau' fullname='F. Yergeau'>
+<organization /></author>
+<date year='2003' month='November' />
+<abstract>
+<t>ISO/IEC 10646-1 defines a large character set called the Universal Character Set (UCS) which encompasses most of the world's writing systems.  The originally proposed encodings of the UCS, however, were not compatible with many current applications and protocols, and this has led to the development of UTF-8, the object of this memo.  UTF-8 has the characteristic of preserving the full US-ASCII range, providing compatibility with file systems, parsers and other software that rely on US-ASCII values but are transparent to other values.  This memo obsoletes and replaces RFC 2279.</t></abstract></front>
+
+<seriesInfo name='STD' value='63' />
+<seriesInfo name='RFC' value='3629' />
+<format type='TXT' octets='33856' target='http://www.rfc-editor.org/rfc/rfc3629.txt' />
+</reference>
+    <reference anchor='RFC4121'>
+      <front>
+	<title>The Kerberos Version 5 Generic Security Service
+	  Application Program Interface (GSS-API) Mechanism: Version 2</title>
+	<author initials="L." surname="Zhu" fullname="L. Zhu">
+	  <organization>Microsoft</organization>
+	</author>
+	<author initials="K." surname="Jaganathan" fullname="K. Jaganathan">
+	  <organization>Microsoft</organization>
+	</author>
+	<author initials="S." surname="Hartman" fullname="S. Hartman">
+	  <organization>MIT</organization>
+	</author>
+	<date year="2005" month="July"/>
+      </front>
+      <seriesInfo name="RFC" value="4121"/>
+      <format type="TXT" target="http://www.ietf.org/rfc/rfc4121.txt"/>
+    </reference>
+
+  <reference anchor='RFC4506'>
+    <front>
+      <title>XDR: External Data Representation Standard</title>
+      <author initials='M.' surname='Eisler' fullname='Michael Eisler'>
+        <organization>NetApp</organization>
+      </author>
+      <date year="2006" month="May" />
+    </front>
+    <seriesInfo name="RFC" value="4506" />
+    <format type="TXT"
+      target="ftp://ftp.isi.edu/in-notes/rfc4506.txt"/>
+  </reference>
 
     <reference anchor='RFC5661'>
       <front>
@@ -1013,4 +1020,20 @@ document are to be interpreted as described in RFC
       <format type='HTML' target='http://wt.xpilot.org/publications/posix.1e/download.html' />
     </reference>
 
+<reference anchor='RFC6365'>
+
+<front>
+<title>Terminology Used in Internationalization in the IETF</title>
+<author initials='P.' surname='Hoffman' fullname='P. Hoffman'>
+<organization /></author>
+<author initials='J.' surname='Klensin' fullname='J. Klensin'>
+<organization /></author>
+<date year='2011' month='September' />
+<abstract>
+<t>This document provides a list of terms used in the IETF when discussing internationalization.  The purpose is to help frame discussions of internationalization in the various areas of the IETF and to help introduce the main concepts to IETF participants.  This memo documents an Internet Best Current Practice.</t></abstract></front>
+
+<seriesInfo name='BCP' value='166' />
+<seriesInfo name='RFC' value='6365' />
+<format type='TXT' octets='103155' target='http://www.rfc-editor.org/rfc/rfc6365.txt' />
+</reference>
 </references>
