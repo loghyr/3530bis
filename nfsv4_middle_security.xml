@@ -93,7 +93,7 @@
     attributes; other character sets may also be allowed for
     file component names.  String processing
     (e.g., Unicode normalization) raises security concerns for
-    string comparison - see
+    string comparison - see Sections
     <xref target="sec:fattr:owner_group" format="counter" /> and
     <xref target="sec:i18n" format="counter" /> for further
     discussion and see <xref target='RFC6943' /> for related identifier comparison
