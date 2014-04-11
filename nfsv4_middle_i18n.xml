@@ -223,12 +223,16 @@
 	        of UTF-8. Use of non-UTF-8 encodings can be problematic
 	        since it may interfere with access to files stored using
 	        other forms of name encoding. Also, normalization-related
-	        processing (see <xref target='ss:i18n:norms' />) of a string not encoded in
-	        UTF-8 could result in inappropriate name modification or
-	        aliasing. In cases in which one has a non-UT8-name that
-	        accidentally conforms to UTF-8 rules, substitution of
-	        canonically equivalent strings can change the non-UTF-8
-	        encoded name drastically.
+	        processing (see <xref target='ss:i18n:norms' />) of a string
+          not encoded in UTF-8 could result in inappropriate name
+          modification or aliasing.  In cases in which one has a non-UT8-
+          name that accidentally conforms to UTF-8 rules, substitution of
+          canonically equivalent strings can change the non-UTF-8 encoded
+          name drastically.  The kinds of modification and aliasing
+          mentioned here can lead to both false negatives and false
+          positives depending on the strings in question, which can
+          result in security issues such as elevation of privilege and
+          denial of service (see <xref target='RFC6943' /> for further discussion).
         </t>
 
         <t>
@@ -294,8 +298,9 @@
       whether to normalize or not, the target form of normalization
       and whether to do normalization-insensitive string comparisons)
       in the same way for all accesses to a particular filesystem.
-      Servers MUST NOT reject a file name because it does not
-      conform to a particular normalization form.
+      Servers SHOULD NOT reject a file name because it does not
+      conform to a particular normalization form as this may deny
+      access to clients that use a different normalization form.
     </t>
   </section>
 
