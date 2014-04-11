@@ -180,7 +180,7 @@
 
       <t>
         The definition of the "tag" in the request is left to the
-        implementor.  It may be used to summarize the content of
+        implementer.  It may be used to summarize the content of
         the compound request for the benefit of packet sniffers and
         engineers debugging implementations.  However, the value of
         "tag" in the response SHOULD be the same value as provided in
@@ -609,14 +609,14 @@
         than previously returned by the server, the client will
         need to retransmit all of the buffers containing uncommitted
         cached data to the server.  How this is to be done is up to
-        the implementor.  If there is only one buffer of interest,
+        the implementer.  If there is only one buffer of interest,
         then it should probably be sent back over in a WRITE request
         with the appropriate stable parameter.  If there is more
         than one buffer, it might be worthwhile retransmitting all of
         the buffers in WRITE requests with the stable parameter set
         to UNSTABLE4 and then retransmitting the COMMIT operation
         to flush all of the data on the server to stable storage.
-        The timing of these retransmissions is left to the implementor.
+        The timing of these retransmissions is left to the implementer.
       </t>
 
       <t>
@@ -680,7 +680,7 @@
         If the objname is of zero length, NFS4ERR_INVAL will
         be returned.  The objname is also subject to the normal
         UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:string_err" />
+        <xref target="ss:i18n:utf8_err" />
         for further discussion.
       </t>
 
@@ -1479,7 +1479,7 @@
         If the component is of zero length, NFS4ERR_INVAL will
         be returned.  The component is also subject to the normal
         UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:string_err" />
+        <xref target="ss:i18n:utf8_err" />
         for further discussion.
       </t>
 
@@ -1910,7 +1910,7 @@
         If the component is of zero length, NFS4ERR_INVAL will
         be returned.  The component is also subject to the normal
         UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:string_err" />
+        <xref target="ss:i18n:utf8_err" />
         for further discussion.
       </t>
 
@@ -2942,7 +2942,7 @@
         If the target is of zero length, NFS4ERR_INVAL will
         be returned.  The target is also subject to the normal
         UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:string_err" />
+        <xref target="ss:i18n:utf8_err" />
         for further discussion.
       </t>
 
@@ -2962,11 +2962,11 @@
         (e.g., a rmdir() on a non-directory) because they knew the
         server would check the file type.  NFSv4 REMOVE can
         be used to delete any directory entry independent of its file
-        type. The implementor of an NFSv4 client's entry
+        type. The implementer of an NFSv4 client's entry
         points from the unlink() and rmdir() system calls should
         first check the file type against the types the system call
         is allowed to remove before issuing a REMOVE. Alternatively,
-        the implementor can produce a COMPOUND call that includes
+        the implementer can produce a COMPOUND call that includes
         a LOOKUP/VERIFY sequence to verify the file type before a
         REMOVE operation in the same COMPOUND call.
       </t>
@@ -3080,7 +3080,7 @@
         If the oldname or newname is of zero length, NFS4ERR_INVAL will
         be returned.  The oldname and newname are also subject to the 
         normal UTF-8, character support, and name checks.  See 
-        <xref target="ss:i18n:string_err" />
+        <xref target="ss:i18n:utf8_err" />
         for further discussion.
       </t>
 
@@ -3098,7 +3098,7 @@
       <t>
         Based on the value of the fh_expire_type attribute for the
         object, the filehandle may or may not expire on a RENAME.
-        However, server implementors are strongly encouraged to
+        However, server implementers are strongly encouraged to
         attempt to keep filehandles from expiring in this fashion.
       </t>
 
@@ -4182,7 +4182,7 @@
         protocol violation.  If stable is DATA_SYNC4, then the server
         must commit all of the data to stable storage and enough of
         the metadata to retrieve the data before returning.  The server
-        implementor is free to implement DATA_SYNC4 in the same fashion
+        implementer is free to implement DATA_SYNC4 in the same fashion
         as FILE_SYNC4, but with a possible performance drop.  If stable
         is UNSTABLE4, the server is free to commit any part of the
         data and the metadata to stable storage, including all or none,

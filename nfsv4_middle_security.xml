@@ -1,7 +1,6 @@
-<!-- Copyright (C) The IETF Trust (2009-2012) -->
-<!-- Copyright (C) The Internet Society (2010-2012) -->
+<!-- Copyright (C) The IETF Trust (2009-2014) -->
+<!-- Copyright (C) The Internet Society (2010-2014) -->
 <section anchor="sec:security" title="Security Considerations">
-
   <t>
     NFS has historically used a model where, from an authentication
     perspective, the client was the entire machine, or at least the
@@ -85,5 +84,22 @@
     that the principal used for these operations is checked against
     and match the previous use of these operations.  See
      <xref target="ss:fl:client_id" /> for further discussion.
+  </t>
+
+  <t>
+    Unicode in the form of UTF-8 is used for file
+    component names (i.e., both directory and file components),
+    as well as the owner and owner_group
+    attributes; other character sets may also be allowed for
+    file component names.  String processing
+    (e.g., Unicode normalization) raises security concerns for
+    string comparison - see
+    <xref target="sec:fattr:owner_group" format="counter" /> and
+    <xref target="sec:i18n" format="counter" /> for further
+    discussion and see <xref target='RFC6943' /> for related identifier comparison
+    security considerations.  File component
+    names are identifiers with respect to the identifier comparison
+    discussion in <xref target='RFC6943' /> because they are used to identify the
+    objects to which ACLs are applied, see <xref target='sec:acl' />.
   </t>
 </section>

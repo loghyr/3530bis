@@ -164,7 +164,7 @@
           <t>
             The string should be selected so the subsequent incarnations
             (e.g., reboots) of the same client cause the client to present
-            the same string.  The implementor is cautioned against an
+            the same string.  The implementer is cautioned against an
             approach that requires the string to be recorded in a local
             file because this precludes the use of the implementation
             in an environment where there is no local disk and all file
@@ -2000,7 +2000,7 @@
             to reclaim state for, and use that to determine whether
             to re-establish the state via normal OPEN or LOCK requests.
             This is acceptable provided the client's operating environment
-            allows it.  In other words, the client implementor is advised
+            allows it.  In other words, the client implementer is advised
             to document for his users the behavior.  The client could also
             inform the application that its byte-range lock or share reservations
             (whether they were delegated or not) have been lost, such as

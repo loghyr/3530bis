@@ -191,7 +191,7 @@
     </t>
 
     <t>
-      Clients need to be aware that server implementors may enforce practical
+      Clients need to be aware that server implementers may enforce practical
       limitations on the number of delegations issued. Further, as there is
       no way to determine which delegations to revoke, the server is allowed
       to revoke any. If the server is implemented to revoke another delegation
@@ -528,10 +528,10 @@
             the benefit of users assuming this degree of cache revalidation.
 
             Since the change attribute is updated for data and metadata
-            modifications, some client implementors may be tempted to use the
+            modifications, some client implementers may be tempted to use the
             time_modify attribute and not the change attribute to validate cached data, so
             that metadata changes do not spuriously invalidate clean data.
-            The implementor is cautioned in this approach.  The change
+            The implementer is cautioned in this approach.  The change
             attribute is guaranteed to change for each update to the file,
             whereas time_modify is guaranteed to change only at the granularity
             of the time_delta attribute.  Use by the client's data cache

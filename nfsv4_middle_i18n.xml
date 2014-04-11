@@ -176,7 +176,7 @@
 	        and have no knowledge of the characters represented. Such
 	        servers ignore normalization-related issues and there is
 	        no way for them to implement either normalization or
-	        representation-independent lookups.  See <xref target='ss:i18n:string_err' /> for
+	        representation-independent lookups.  See <xref target='ss:i18n:utf8_err' /> for
 	        details.
         </t>
 
@@ -228,7 +228,10 @@
           modification or aliasing.  In cases in which one has a non-UT8-
           name that accidentally conforms to UTF-8 rules, substitution of
           canonically equivalent strings can change the non-UTF-8 encoded
-          name drastically.  The kinds of modification and aliasing
+          name drastically.
+          <vspace blankLines='1' />
+
+          The kinds of modification and aliasing
           mentioned here can lead to both false negatives and false
           positives depending on the strings in question, which can
           result in security issues such as elevation of privilege and
@@ -380,14 +383,13 @@
     </t>
 
     <t>
-      The server MAY implement VERIFY and NVERIFY without translating
-      internal state to a string form, so that, for example, a user
-      principal which represents a specific numeric user id, will match a
-      different principal string which represents the same numeric user id.
+      For VERIFY and NVERIFY, additional string processing requirements
+      apply to verification of the owner and owner_group attributes,
+      see <xref target='sec:fattr:owner_group' />.
     </t>
   </section>
 
-  <section anchor="ss:i18n:string_err" title="String Related Errors">
+  <section anchor="ss:i18n:utf8_err" title="UTF-8 Related Errors">
     <t>
       Where the client sends an invalid UTF-8 string, the server MAY
       return an NFS4ERR_INVAL error.  This includes cases in which
@@ -468,6 +470,12 @@
           because it may cause incorrect string modification or aliasing.
         </t>
       </list>
+
+      When the above recommendations are not followed, the resulting
+      string modification and aliasing can lead to both false negatives
+      and false positives depending on the strings in question, which can
+      result in security issues such as elevation of privilege and
+      denial of service (see <xref target='RFC6943' /> for further discussion).
     </t>
   </section>
 </section>

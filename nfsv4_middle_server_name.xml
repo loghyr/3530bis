@@ -184,7 +184,7 @@
 
     <t>
       The application of the server's security policy needs to be carefully
-      considered by the implementor.  One may choose to limit the
+      considered by the implementer.  One may choose to limit the
       viewability of portions of the pseudo file system based on the
       server's perception of the client's ability to authenticate
       itself properly.  However, with the support of multiple security

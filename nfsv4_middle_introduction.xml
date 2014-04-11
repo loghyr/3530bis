@@ -54,7 +54,7 @@
     <t>
       This document, together with the companion XDR description
       document <xref target="RFCNFSv4XDR" />,
-      obsoletes RFC 3530 <xref target="RFC3530" />
+      obsoletes <xref target="RFC3530" />
       as the authoritative document describing NFSv4.  It does
       not introduce any over-the-wire protocol
       changes, in the sense that previously valid requests

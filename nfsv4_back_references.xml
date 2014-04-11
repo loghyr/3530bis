@@ -1,29 +1,7 @@
 <!-- Copyright (C) The IETF Trust (2009-2014) -->
 <!-- Copyright (C) The Internet Society (2010-2014) -->
-  <references title="Normative References">
+<references title="Normative References">
   <?rfc sortrefs="yes"?>
-
-    <reference anchor='RFC5665'>
-      <front>
-  <title>IANA Considerations for Remote Procedure Call (RPC) Network Identifiers and Universal Address Formats</title>
-
-  <author initials='M' surname='Eisler' fullname='Mike Eisler' role='editor'>
-    <organization />
-  </author>
-
-  <date month='January' year='2010' />
-
-  <abstract>
-    <t>
-IANA Considerations for RPC Net Identifiers and Universal Address Formats.
-    </t>
-  </abstract>
-
-      </front>
-
-      <seriesInfo name='RFC' value='5665' />
-      <format type='TXT' target='http://ietf.org/rfc/rfc5665.txt' />
-    </reference>
 
     <reference anchor='RFC20'>
 
@@ -46,17 +24,6 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       </author>
       <date year="2013" month="September"/>
     </front>
-  </reference>
-
-  <reference anchor="SPECIALCASING" target="http://www.unicode.org/Public/6.3.0/ucd/SpecialCasing.txt">
-    <front>
-      <title>SpecialCasing-6.3.0.txt</title>
-      <author>
-        <organization>The Unicode Consortium</organization>
-      </author>
-      <date year="2013" month="September"/>
-    </front>
-    <seriesInfo name='Unicode Character Database' value='' />
   </reference>
 
     <reference anchor='RFC2119'>
@@ -199,6 +166,28 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc5531.txt' />
     </reference>
 
+    <reference anchor='RFC5665'>
+      <front>
+  <title>IANA Considerations for Remote Procedure Call (RPC) Network Identifiers and Universal Address Formats</title>
+
+  <author initials='M' surname='Eisler' fullname='Mike Eisler' role='editor'>
+    <organization />
+  </author>
+
+  <date month='January' year='2010' />
+
+  <abstract>
+    <t>
+IANA Considerations for RPC Net Identifiers and Universal Address Formats.
+    </t>
+  </abstract>
+
+      </front>
+
+      <seriesInfo name='RFC' value='5665' />
+      <format type='TXT' target='http://ietf.org/rfc/rfc5665.txt' />
+    </reference>
+
 
 
     <reference anchor='RFC5890'>
@@ -240,6 +229,20 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc6649.txt' />
     </reference>
 
+    <reference anchor='RFC6943'>
+
+    <front>
+    <title>Issues in Identifier Comparison for Security Purposes</title>
+    <author initials='D.' surname='Thaler' fullname='D. Thaler'>
+    <organization /></author>
+    <date year='2013' month='May' />
+    <abstract>
+    <t>Identifiers such as hostnames, URIs, IP addresses, and email addresses are often used in security contexts to identify security principals and resources.  In such contexts, an identifier presented via some protocol is often compared using some policy to make security decisions such as whether the security principal may access the resource, what level of authentication or encryption is required, etc.  If the parties involved in a security decision use different algorithms to compare identifiers, then failure scenarios ranging from denial of service to elevation of privilege can result.  This document provides a discussion of these issues that designers should consider when defining identifiers and protocols, and when constructing architectures that use multiple protocols.</t></abstract></front>
+
+    <seriesInfo name='RFC' value='6943' />
+    <format type='TXT' octets='62676' target='http://www.rfc-editor.org/rfc/rfc6943.txt' />
+    </reference>
+
     <reference anchor='RFCNFSv4XDR'>
       <front>
         <title>NFSv4 Version 0 XDR Description</title>
@@ -276,26 +279,21 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       </front>
     </reference>
 
+  <reference anchor="SPECIALCASING" target="http://www.unicode.org/Public/6.3.0/ucd/SpecialCasing.txt">
+    <front>
+      <title>SpecialCasing-6.3.0.txt</title>
+      <author>
+        <organization>The Unicode Consortium</organization>
+      </author>
+      <date year="2013" month="September"/>
+    </front>
+    <seriesInfo name='Unicode Character Database' value='' />
+  </reference>
+
+
   </references>
 
   <references title="Informative References">
-
-   <reference anchor='RFC5226'>
-
-   <front>
-   <title>Guidelines for Writing an IANA Considerations Section in RFCs</title>
-   <author initials='T.' surname='Narten' fullname='T. Narten'>
-   <organization /></author>
-   <author initials='H.' surname='Alvestrand' fullname='H. Alvestrand'>
-   <organization /></author>
-   <date year='2008' month='May' />
-   <abstract>
-   <t>Many protocols make use of identifiers consisting of constants and other well-known values. Even after a protocol has been defined and deployment has begun, new values may need to be assigned (e.g., for a new option type in DHCP, or a new encryption or authentication transform for IPsec). To ensure that such quantities have consistent values and interpretations across all implementations, their assignment must be administered by a central authority. For IETF protocols, that role is provided by the Internet Assigned Numbers Authority (IANA).&lt;/t>&lt;t> In order for IANA to manage a given namespace prudently, it needs guidelines describing the conditions under which new values can be assigned or when modifications to existing values can be made. If IANA is expected to play a role in the management of a namespace, IANA must be given clear and concise instructions describing that role. This document discusses issues that should be considered in formulating a policy for assigning values to a namespace and provides guidelines for authors on the specific text that must be included in documents that place demands on IANA.&lt;/t>&lt;t> This document obsoletes RFC 2434. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract></front>
-
-   <seriesInfo name='BCP' value='26' />
-   <seriesInfo name='RFC' value='5226' />
-   <format type='TXT' octets='66160' target='ftp://ftp.isi.edu/in-notes/rfc5226.txt' />
-   </reference>
 
 <reference anchor='RFC1094'>
 
@@ -459,40 +457,6 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='TXT' octets='20498' target='ftp://ftp.isi.edu/in-notes/rfc2055.txt' />
     </reference>
 
-    <reference anchor='RFC2623'>
-    
-      <front>
-      <title abbrev='NFS Security, RPCSEC_GSS, and Kerberos V5'>NFS Version 2 and Version 3 Security Issues and the NFS Protocol's Use of RPCSEC_GSS and Kerberos V5</title>
-
-        <author initials='M.' surname='Eisler' fullname='Mike Eisler'>
-        <organization>Sun Microsystems, Inc.</organization>
-        <address>
-        <postal>
-        <street>5565 Wilson Road</street>
-        <city>Colorado Springs</city>
-        <region>CO</region>
-        <code>80919</code>
-        <country>US</country></postal>
-        <phone>+1 719 599 9026</phone>
-        <email>mre@eng.sun.com</email></address></author>
-
-      <date year='1999' month='June' />
-
-      <abstract>
-
-        <t>This memorandum clarifies various security issues involving
-        the NFSv2 and NFSv3 protocols and then
-        describes how the NFS protocol
-        use the RPCSEC_GSS security flavor protocol and Kerberos V5.
-        This memorandum is provided so that people can write compatible
-        implementations.</t>
-      </abstract>
-      </front>
-      
-      <seriesInfo name='RFC' value='2623' />
-      <format type='TXT' octets='42521' target='ftp://ftp.isi.edu/in-notes/rfc2623.txt' />
-    </reference>
-
 <reference anchor='RFC2224'>
 
 <front>
@@ -535,6 +499,32 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
 <format type='HTML' octets='35259' target='http://xml.resource.org/public/rfc/html/rfc2224.html' />
 <format type='XML' octets='24805' target='http://xml.resource.org/public/rfc/xml/rfc2224.xml' />
 </reference>
+
+    <reference anchor='RFC2623'>
+    
+      <front>
+      <title abbrev='NFS Security, RPCSEC_GSS, and Kerberos V5'>NFS Version 2 and Version 3 Security Issues and the NFS Protocol's Use of RPCSEC_GSS and Kerberos V5</title>
+
+        <author initials='M.' surname='Eisler' fullname='Mike Eisler'>
+        <organization>Sun Microsystems, Inc.</organization>
+        <address>
+        <postal>
+        <street>5565 Wilson Road</street>
+        <city>Colorado Springs</city>
+        <region>CO</region>
+        <code>80919</code>
+        <country>US</country></postal>
+        <phone>+1 719 599 9026</phone>
+        <email>mre@eng.sun.com</email></address></author>
+
+      <date year='1999' month='June' />
+
+      </front>
+      
+      <seriesInfo name='RFC' value='2623' />
+      <format type='TXT' octets='42521' target='ftp://ftp.isi.edu/in-notes/rfc2623.txt' />
+    </reference>
+
 
 <reference anchor='RFC2624'>
 
@@ -749,6 +739,23 @@ document are to be interpreted as described in RFC
     <format type="TXT"
       target="ftp://ftp.isi.edu/in-notes/rfc4506.txt"/>
   </reference>
+
+   <reference anchor='RFC5226'>
+
+   <front>
+   <title>Guidelines for Writing an IANA Considerations Section in RFCs</title>
+   <author initials='T.' surname='Narten' fullname='T. Narten'>
+   <organization /></author>
+   <author initials='H.' surname='Alvestrand' fullname='H. Alvestrand'>
+   <organization /></author>
+   <date year='2008' month='May' />
+   <abstract>
+   <t>Many protocols make use of identifiers consisting of constants and other well-known values. Even after a protocol has been defined and deployment has begun, new values may need to be assigned (e.g., for a new option type in DHCP, or a new encryption or authentication transform for IPsec). To ensure that such quantities have consistent values and interpretations across all implementations, their assignment must be administered by a central authority. For IETF protocols, that role is provided by the Internet Assigned Numbers Authority (IANA).&lt;/t>&lt;t> In order for IANA to manage a given namespace prudently, it needs guidelines describing the conditions under which new values can be assigned or when modifications to existing values can be made. If IANA is expected to play a role in the management of a namespace, IANA must be given clear and concise instructions describing that role. This document discusses issues that should be considered in formulating a policy for assigning values to a namespace and provides guidelines for authors on the specific text that must be included in documents that place demands on IANA.&lt;/t>&lt;t> This document obsoletes RFC 2434. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract></front>
+
+   <seriesInfo name='BCP' value='26' />
+   <seriesInfo name='RFC' value='5226' />
+   <format type='TXT' octets='66160' target='ftp://ftp.isi.edu/in-notes/rfc5226.txt' />
+   </reference>
 
     <reference anchor='RFC5661'>
       <front>

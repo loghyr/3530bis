@@ -315,19 +315,19 @@
         does not specify how the file system will be moved between
         servers.  It is anticipated that a number of different
         server-to-server transfer mechanisms might be used with the
-        choice left to the server implementor.  The NFSv4 protocol
+        choice left to the server implementer.  The NFSv4 protocol
         specifies the method used to communicate the migration
         event between client and server.
       </t>
       <t>
         The new location may be an alternative
-	communication path to the same server or, in the case of
+	      communication path to the same server or, in the case of
         various forms of server clustering, another server providing
-	access to the same physical file system. The client's
-	responsibilities in dealing with this transition depend on
-	the specific nature of the new access path as well as how and
-	whether data was in fact migrated.  These issues will be
-	discussed in detail below.
+	      access to the same physical file system. The client's
+	      responsibilities in dealing with this transition depend on
+	      the specific nature of the new access path as well as how and
+	      whether data was in fact migrated.  These issues will be
+	      discussed in detail below.
       </t>
       <t>
         When an alternative location is designated as the target for

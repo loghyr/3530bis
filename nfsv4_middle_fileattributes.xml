@@ -49,7 +49,7 @@
   </texttable>
   <t>
     Named attributes are intended for data needed by applications rather
-    than by an NFS client implementation.  NFS implementors are strongly
+    than by an NFS client implementation.  NFS implementers are strongly
     encouraged to define their new attributes as RECOMMENDED attributes by
     bringing them to the IETF Standards Track process.
   </t>
@@ -603,8 +603,7 @@
     </texttable>
   </section>
 
-  <section anchor="attribute_definitions" title="Attribute
-                                                 Definitions">
+  <section anchor="attribute_definitions" title="Attribute Definitions">
 
    <section anchor="required_attr" title="Definitions of REQUIRED Attributes">
 
@@ -1198,7 +1197,6 @@
   <section anchor="sec:fattr:owner_group" 
            title="Interpreting owner and owner_group">
     <t>
-
       The RECOMMENDED attributes "owner" and "owner_group" (and also users
       and groups used as values of the “who” field within nfs4ace structures
       used in the acl attribute) are represented in the form of UTF-8
@@ -1296,8 +1294,8 @@
           a U-label.  See <xref target="ss:i18n:types" /> for details.
         </t>
         <t>
-          The user or group may be returned in a different form, as a result
-          of Unicode normalization at the server.  
+          The user or group may be returned or used for verification in a
+          different form, as a result of Unicode normalization at the server.
           The result SHOULD be a canonically
           equivalent Unicode string <xref target='UNICODE' />.
           Other sorts of string modification, including

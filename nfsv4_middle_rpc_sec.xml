@@ -27,7 +27,7 @@
     <t>
       Where an NFSv4 implementation supports operation over the IP network
       protocol, the supported transport layer between NFS and IP MUST be an IETF
-      standardised transport protocol that is specified to avoid network 
+      standardized transport protocol that is specified to avoid network 
       congestion; such  transports include TCP and Stream Control Transmission
       Protocol (SCTP).  To enhance the possibilities for
       interoperability, an NFSv4 implementation MUST support
@@ -172,7 +172,7 @@
 
         <t>
           Note that the pseudo flavor is presented here as a mapping aid to the
-          implementor.  Because this NFS protocol includes a method to negotiate
+          implementer.  Because this NFS protocol includes a method to negotiate
           security and it understands the GSS-API mechanism, the pseudo flavor
           is not needed.  The pseudo flavor is needed for NFSv3 since
           the security negotiation is done via the MOUNT protocol as described
@@ -188,7 +188,7 @@
           specification, because the Kerberos V5 specification at the time did
           not specify stronger algorithms.  The NFSv4 specification does not
           specify REQUIRED algorithms for Kerberos V5, and instead, the
-          implementor is expected to track the evolution of the Kerberos V5
+          implementer is expected to track the evolution of the Kerberos V5
           standard if and when stronger algorithms are specified.
         </t>
 
