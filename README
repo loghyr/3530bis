@@ -7,16 +7,21 @@ NOTE: The drafts contained here may change after it is posted to the IETF site. 
 
 To compile the XML files into text files:
 
-1. Install xml2rfc 
-   http://xml.resource.org/
+1. Install xml2rfc
+   Check with http://xml.resource.org/, but basically:
 
-   These instructions have been tested with version 1.34pre3
+#
+# Install xml2rfc
+#
+curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+python get-pip.py
+pip install xml2rfc
 
-2. Place xml2rfc in your path
+   These instructions have been tested with version 2. The
+   documents no longer build with the version 1.36.
 
-   For example, setenv PATH $PATH":/Users/thomas/Documents/ietf/bin/xml2rfc-1.36"
-
-3. Build
+2. Build
 
    > make
 
+The will generate the draft-ietf-nfsv4-3530bis-<currentdraft>.txt file.
