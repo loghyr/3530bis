@@ -364,8 +364,7 @@ testx:
 		rpcgen -a nfsv4.x ; \
 		if [ ! -f /usr/include/rpc/auth_sys.h ]; then \
 			ln Make* make ; \
-			CFLAGS="-I /usr/include/rpcsecgss -I /usr/include/gssglue" ; export CFLAGS ; \
-			LDLIBS="-lrpcsecgss" ; export LDLIBS ; \
+			CFLAGS="-I /usr/include/gssglue -I /usr/include/tirpc" ; export CFLAGS ; \
 		fi ; \
 		$(MAKE) -f make* )
 
