@@ -5,20 +5,21 @@
   <section anchor="ss:i18n:intro" title="Introduction">
     <t>
       Internationalization is a complex topic with its own set of
-      terminology (see <xref target='RFC6365' />).  The topic is made more complex in
-      NFSv4.0 by the tangled history and state of NFS implementations.
-      This section describes what we might call "NFSv4.0
-      internationalization" (i.e., internationalization as implemented by
-      existing clients and servers) as the basis upon which NFSv4.0
-      clients may implement internationalization support.
+      terminology (see <xref target='RFC6365' />).  The topic is
+      made more complex in NFSv4.0 by the tangled history and state
+      of NFS implementations.  This section describes what we might
+      call "NFSv4.0 internationalization" (i.e., internationalization
+      as implemented by existing clients and servers) as the basis
+      upon which NFSv4.0 clients may implement internationalization
+      support.
     </t>
 
     <t>
       This section is based on the behavior of existing implementations.
       Note that the behaviors described are each demonstrated by a
       combination of an NFSv4 server implementation proper and a
-      server-side physical filesystem. It is common for servers
-      and physical filesystems to be configurable as to the behavior shown.
+      server-side physical file system. It is common for servers
+      and physical file systems to be configurable as to the behavior shown.
       In the discussion below, each configuration that shows different
       behavior is considered separately.
     </t>
@@ -300,7 +301,7 @@
       UTF-8 strings, a server MUST make the same choice (as to
       whether to normalize or not, the target form of normalization
       and whether to do normalization-insensitive string comparisons)
-      in the same way for all accesses to a particular filesystem.
+      in the same way for all accesses to a particular file system.
       Servers SHOULD NOT reject a file name because it does not
       conform to a particular normalization form as this may deny
       access to clients that use a different normalization form.
@@ -425,9 +426,9 @@
   <section anchor="ss:i18n:nonvalid" title="Servers that accept file component names that are not valid UTF-8 strings">
     <t>
       As stated previously, servers MAY accept, on all or on some
-      subset of the physical filesystems exported, component names
+      subset of the physical file systems exported, component names
       that are not valid UTF-8 strings.  A typical pattern is for
-      a server to use UTF-8-unaware physical filesystems that treat
+      a server to use UTF-8-unaware physical file systems that treat
       component names as uninterpreted strings of bytes, rather
       than having any awareness of the character set being used.
     </t>
