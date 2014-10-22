@@ -26,18 +26,20 @@
     </author>
 
     <author initials='D.' surname='Noveck'
-          fullname = 'David Noveck' role='editor'>
+            fullname = 'David Noveck'
+            role="editor">
+      <organization abbrev='Dell'>Dell</organization>
       <address>
         <postal>
-          <street>26 Locust Ave</street>
-          <city>Lexington</city>
-          <region>MA</region>
-          <code>02421</code>
+          <street>300 Innovative Way</street>
+          <city>Nashua</city>
+          <region>NH</region>
+          <code>03062</code>
           <country>US</country>
         </postal>
 
         <phone>+1 781 572 8038</phone>
-        <email>davenoveck@gmail.com</email>
+        <email>dave_noveck@dell.com</email>
       </address>
     </author>
 
