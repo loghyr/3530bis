@@ -187,7 +187,7 @@
         been removed, the server should return NFS4ERR_STALE to the client
         (as is the case for persistent filehandles).  In all other cases
         where the server determines that a volatile filehandle can no
-        longer be used, it should return an error of NFS4ERR_FHEXPIRED.
+        longer be used, it SHOULD return an error of NFS4ERR_FHEXPIRED.
       </t>
 
       <t>
@@ -238,7 +238,7 @@
         FH4_VOLATILE_ANY is set and FH4_NOEXPIRE_WITH_OPEN not set),
         should deny a RENAME or REMOVE that would affect an OPEN file
         of any of the components leading to the OPEN file.  In addition,
-        the server should deny all RENAME or REMOVE requests during the
+        the server SHOULD deny all RENAME or REMOVE requests during the
         grace period upon server restart.
       </t>
 
