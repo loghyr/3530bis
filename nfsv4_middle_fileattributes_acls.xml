@@ -1031,16 +1031,20 @@
           </t>
 
           <t>
-            Clients must be aware of situations in which an object's
-            ACL will define a certain access even though the server
-            will not enforce it. In general, but especially in these
-            situations, the client needs to do its part in the
-            enforcement of access as defined by the ACL. To do this,
-            the client MAY send the appropriate ACCESS operation
-            prior to servicing the request of the user or application
-            in order to determine whether the user or application
-            should be granted the access requested. For examples in
-            which the ACL may define accesses that the server doesn't
+	    Clients must be aware of situations in which an object's
+	    ACL will define a certain access even though the server
+	    will not have adequate information to enforce it.  For
+	    example, the server has no way of determining whether
+	    a particular OPEN reflects a user's open for read access,
+	    or is done as part of executing the file in question
+	    In such situations, the client needs to do its part in
+	    the enforcement of access as defined by the ACL.  To
+	    do this, the client will send the appropriate ACCESS
+	    operation (or use a cached previous determination) prior
+	    to servicing the request of the user or application in
+	    order to determine whether the user or application
+	    should be granted the access requested.  For examples in
+            which the ACL may define accesses that the server does not
             enforce see <xref target="serverinterp"/>.
           </t>
         </section>
