@@ -65,8 +65,9 @@
   <section anchor="document_incons"
            title="Definitions in the companion document NFS Version 4 Protocol are Authoritative">
     <t>
-      <xref target="RFCNFSv4XDR" />, NFS Version 4
-      Protocol, contains the definitions in XDR description language of
+      <xref target="RFCNFSv4XDR" />, "Network File System (NFS) Version 4
+      External Data Representation Standard (XDR) Description", contains
+      the definitions in XDR description language of
       the constructs used by the protocol.  Inside this document, several
       of the constructs are reproduced for purposes of explanation.  The
       reader is warned of the possibility of errors in the reproduced
@@ -513,17 +514,17 @@
       <list style='symbols'>
         <t>
           The XDR definition has been moved to a companion document
-          <xref target="RFCNFSv4XDR" />
+          <xref target="RFCNFSv4XDR" />.
         </t>
         <t>
-          Updates for the latest IETF intellectual property statements
+          The IETF intellectual property statements were updated to the latest version.
         </t>
         <t>
           There is a restructured and more complete explanation of
           multi-server namespace features.
         </t>
         <t>
-          Updating handling of domain names to reflect Internationalized Domain Names in Applications (IDNA) <xref target='RFC5891' />.
+          The handling of domain names were updated to reflect Internationalized Domain Names in Applications (IDNA) <xref target='RFC5891' />.
         </t>
         <t>
           The previously required LIPKEY and SPKM-3 security mechanisms
@@ -544,17 +545,15 @@
     </t>
   </section>
 
-  <section anchor="changes_since3010" title="Changes since RFC 3010">
+  <section anchor="changes_since3010" title="Changes between RFC 3010 and RFC3530">
     <t>
-      This definition of the NFSv4 protocol replaces or
-      obsoletes the definition present in <xref target="RFC3010" />.
-      While portions of the two documents have remained the same,
-      there have been substantive changes in others.  The changes made
-      between <xref target="RFC3010" /> and this document represent
-      implementation experience and further review of the protocol.
-      While some modifications were made for ease of implementation
-      or clarification, most updates represent errors or situations
-      where the <xref target="RFC3010" /> definition were untenable.
+      The definition of the NFSv4 protocol in <xref target="RFC3530" />
+      replaced and obsoleted the definition present in
+      <xref target="RFC3010" />  While portions of the two documents
+      remained the same, there were substantive changes in others.
+      The changes made between <xref target="RFC3010" /> and
+      <xref target="RFC3530" /> reflect implementation experience and
+      further review of the protocol.
     </t>
 
     <t>
