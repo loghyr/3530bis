@@ -31,9 +31,6 @@
      limits.
    </t>
    <t>
-     All assignments to the registry are made on a First Come First Served basis,
-     per section 4.1 of <xref target="RFC5226"/>.
-
      The policy for each assignment is Specification Required, 
      per section 4.1 of <xref target="RFC5226"/>.
    </t>
