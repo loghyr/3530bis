@@ -189,21 +189,58 @@
   </section>
   <section title="Classification of Attributes">
     <t>
-      Each of the REQUIRED and RECOMMENDED attributes can be classified in
-      one of three categories: per server (i.e., the value of the attribute
-      will be the same for all file objects that share the same server),
-      per file
-      system (i.e., the value of the attribute will be the same for some or
-      all file objects that share the same fsid attribute (Section 5.8.1.9)
-      and server owner), or per file system
-      object.  Note that it is possible that some per file system attributes
-      may vary within the file system.  Note that it is
-      possible that some per file system attributes may vary within the
-      file system, depending on the value of the "homogeneous"
-      (Section 5.8.2.16) attribute.  Note that the attributes
-      time_access_set and time_modify_set are not listed in this section
-      because they are write-only attributes corresponding to time_access
-      and time_modify, and are used in a special instance of SETATTR.
+      Each of attributes accessed using SETATTR and GETATTR (i.e.,
+      REQUIRED an RECOMMENDED attributes) can be can be classified
+      in one of three categories:
+
+      <list style='numbers'>
+        <t>
+          per server attributes for which  the value of the attribute
+          will be the same for all file objects that share the same
+          server.
+        </t>
+
+        <t>
+          per file system attributes for whch the value of the attribute
+          will be the same for some or all file objects that share the
+          same server and  fsid attribute (<xref target='attrdef_fsid' />).
+          See below for details regarding when such sharing is in effect.
+        </t>
+
+        <t>
+          per file system object attributes
+        </t>
+      </list>
+    </t>
+
+    <t>
+      The handling of per file system attributes depends on the
+      particular attribute and the setting of the homogeneous
+      (<xref target='attrdef_homogeneous' />) attribute. The following rules apply:
+
+      <list style='numbers'>
+        <t>
+          The values of the attribute supported_attrs, fsid, homgeneous,
+          link_support, and symlink_support are always common to all
+          object within given file system.
+        </t>
+
+        <t>
+          For other attributes, different values may be returned for
+          different file system objects if the attribute homogeneous
+          is supported within the file system in question and has
+          the value false.
+        </t>
+      </list>
+    </t>
+
+    <t>
+      The classification of attributes is as follows.  Note that
+      the attributes time_access_set and time_modify_set are not
+      listed in  this section because they are write-only attributes
+      corresponding to time_access and time_modify, and are used
+      in a special instance of SETATTR.
+
       <list style='symbols'>
         <t>
           The per-server attribute is:
