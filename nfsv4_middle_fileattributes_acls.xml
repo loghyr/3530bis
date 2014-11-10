@@ -137,7 +137,7 @@
           choose to silently allow read attribute permissions even
           though an ACL does not explicitly allow those permissions.
           (An ACL that explicitly denies permission to read attributes
-          should still be rejected.)
+          should still result in a denial.)
         </t>
         <t>
           The situation is complicated by the fact that a server may
@@ -150,10 +150,12 @@
           a server to accept an ACL even if not all of its modules are
           able to support it.
         </t>
+
         <t>
-          The guiding principle with regard to NFSv4 access is
-          that the server must not accept ACLs that appear to
-          make access to the file more restrictive than it really is.
+	  The guiding principle with regard to NFSv4 access is that
+	  the server must not accept ACLs that give an appearance
+	  of more restricted access to a file than what is actually
+	  enforced.
         </t>
 
         <section title="ACE Type">
@@ -266,7 +268,7 @@
           <vspace blankLines='1' />
           Servers SHOULD allow a user the ability to read the data
           of the file when only the ACE4_EXECUTE access mask bit is
-          allowed.
+          set.
         </t>
       </list>
     </t>
@@ -424,7 +426,7 @@
           Servers SHOULD allow a
           user the ability to read the data of the file
           when only the ACE4_EXECUTE access mask bit is
-          allowed.  This is because there is no way to
+          set.  This is because there is no way to
           execute a file without reading the contents.
           Though a server may treat ACE4_EXECUTE and
           ACE4_READ_DATA bits identically when deciding to
@@ -690,7 +692,7 @@
               is permitted on the target, or ACE4_DELETE_CHILD is
               permitted on the parent.  (Note that this is
               true even if the parent or target explicitly
-              denies one of these permissions.)
+              denies the other of these permissions.)
             </t>
 
             <t>

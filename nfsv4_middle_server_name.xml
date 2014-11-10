@@ -6,7 +6,7 @@
 
     <t>
       On a UNIX server the name space describes all the files reachable by
-      pathnames under the root directory or "/".  On a Windows NT server
+      pathnames under the root directory or "/".  On a Windows server
       the name space constitutes all the files on disks named by mapped
       disk letters.  NFS server administrators rarely make the entire
       server's file system name space available to NFS clients.  More often
