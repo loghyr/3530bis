@@ -67,6 +67,12 @@
     </section>
 
     <section title="File Attributes Discussion">
+      <t>
+        Support for each of the ACL attributes is RECOMMENED and not
+        REQUIRED, since file systems accessed using NFSV4 might not
+        support ACL's.
+      </t>
+
       <section anchor="attrdef_acl"
          title="Attribute 12: acl">
         <t>
@@ -220,10 +226,6 @@
             receives a request to set an ACE that it can store but
             cannot enforce, the server SHOULD reject the request with
             NFS4ERR_ATTRNOTSUPP.
-          </t>
-          <t>
-            Support for any of the ACL attributes is
-            optional (albeit, RECOMMENDED).
           </t>
         </section>
         <section anchor="acemask" title="ACE Access Mask">
