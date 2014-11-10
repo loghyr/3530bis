@@ -136,7 +136,7 @@
       </t>
 
       <t>
-        The first field, verifier is a client incarnation verifier that is
+        The first field, verifier, is a client incarnation verifier that is
         used to detect client reboots.  Only if the verifier is different
         from that which the server has previously recorded for the client
         (as identified by the second field of the structure, id) does the
@@ -144,7 +144,7 @@
       </t>
 
       <t>
-        The second field, id is a variable length string that uniquely
+        The second field, id, is a variable length string that uniquely
         defines the client.
       </t>
 
@@ -402,10 +402,10 @@
             </t>
             <t>
               Stateids may represent file delegations, which are
-              recallable guarantees by the server to the client,
+              recallable guarantees by the server to the client
               that other clients will not reference, or will not
-              modify a particular file, until the delegation
-              is returned.
+              modify, a particular file until the delegation is
+              returned.
               <vspace blankLines="1" />
               A stateid represents a single delegation held by
               a client for a particular filehandle.
