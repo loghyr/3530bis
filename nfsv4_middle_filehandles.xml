@@ -119,7 +119,7 @@
         by doing a byte-by-byte comparison.  However, the client MUST
 	NOT otherwise interpret the contents of filehandles.  If
 	two filehandles from the same server are equal, they MUST
-	refer to the same file.  However, it is not REQUIRED that
+	refer to the same file.  However, it is not required that
 	two different filehandles refer to different file system
 	objects. Servers SHOULD try to maintain a one-to-one
 	correspondence between filehandles and file system objects

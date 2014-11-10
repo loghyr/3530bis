@@ -69,7 +69,7 @@
     <section title="File Attributes Discussion">
       <t>
         Support for each of the ACL attributes is RECOMMENED and not
-        REQUIRED, since file systems accessed using NFSV4 might not
+        required, since file systems accessed using NFSV4 might not
         support ACL's.
       </t>
 
