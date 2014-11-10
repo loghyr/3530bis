@@ -261,7 +261,7 @@
     <section title="One Method of Constructing a Volatile Filehandle">
 
       <t>
-        A volatile filehandle, while opaque to the client could contain:
+        A volatile filehandle, while opaque to the client, could contain:
 
         <figure>
           <artwork>

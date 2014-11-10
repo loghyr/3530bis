@@ -78,9 +78,10 @@
       store and return these attributes, and the client MUST be able to
       function with an attribute set limited to these attributes.  With just
       the REQUIRED attributes some client functionality can be impaired or
-      limited in some ways.  A client can ask for any of these attributes to
-      be returned by setting a bit in the GETATTR request, and the server
-      MUST return their value.
+      limited in some ways.  A client can ask for any of these
+      attributes to be returned by setting a bit in the GETATTR
+      request. For each such bit set, the server MUST return the
+      corresponding attribute value.
     </t>
   </section>
   <section anchor="recommended_attributes_intro" title="RECOMMENDED Attributes">
@@ -273,7 +274,7 @@
         target="RFCNFSv4XDR"/>, the latter is
         authoritative, but in such an event, it should be resolved with Errata to this
         document and/or <xref target="RFCNFSv4XDR"/>.
-        See <xref target="ISEG_errata"/> for the Errata process.</t>
+        See <xref target="IESG_errata"/> for the Errata process.</t>
      <t>Data Type: The XDR data type of the attribute.</t>
      <t>
         Acc: Access allowed to the attribute. R means
