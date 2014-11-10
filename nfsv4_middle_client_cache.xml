@@ -523,10 +523,10 @@
             when the client's OPEN operation includes DENY=WRITE or BOTH
             thus terminating a period in which other clients may have had
             the opportunity to open the file with WRITE access.  Clients may
-            choose to do the revalidation more often (i.e., at OPENs specifying
+            choose to do the revalidation more often (such as an OPENs specifying
             DENY=NONE) to parallel the NFSv3 protocol's practice for
             the benefit of users assuming this degree of cache revalidation.
-
+            <vspace blankLines='1' />
             Since the change attribute is updated for data and metadata
             modifications, some client implementers may be tempted to use the
             time_modify attribute and not the change attribute to validate cached data, so

@@ -56,7 +56,7 @@
         </t>
 
         <t>
-          Behavior implemented by some not all existing clients or servers,
+          Behavior implemented by some, but not all existing clients or servers,
           is described using "MAY", indicating that new implementations have
           a choice as to whether they will behave in that way.  Thus, new
           implementations will have the same flexibility that existing ones
@@ -345,13 +345,14 @@
     </t>
 
     <t>
-      The string sent SHOULD be in the form of a U-label although it MAY be
-      in the form of one or more A-labels or a UTF-8 domain name that
-      is not a properly formatted U-label.  The
-      receiver needs to be able to accept domain and server names in any of
-      the formats allowed.  The server MUST reject, using the error
-      NFS4ERR_INVAL, a string which is not valid UTF-8 or which begins with
-      "xn--" and violates the rules for a valid A-label.
+      The string sent SHOULD be in the form of a U-label.  If that
+      is impractical, it can instead be in the form of one or more
+      A-labels or a UTF-8 domain name that is not a properly formatted
+      U-label.  The receiver needs to be able to accept domain and
+      server names in any of the formats allowed.  The server MUST
+      reject, using the error NFS4ERR_INVAL, a string which is not
+      valid UTF-8 or which begins with "xn--" and violates the rules
+      for a valid A-label.
     </t>
 
     <t>
@@ -380,7 +381,7 @@
         </t>
       </list>
 
-      A server SHOULD use the first method, but MAY use the second method.
+      A server SHOULD use the first method.
     </t>
 
     <t>
