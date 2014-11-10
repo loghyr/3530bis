@@ -653,7 +653,7 @@
 
       <t>
         The CREATE operation creates a non-regular file object in
-        a directory with a given name.  The OPEN operation MUST be
+        a directory with a given name.  The OPEN operation is
         used to create a regular file.
       </t>
 
