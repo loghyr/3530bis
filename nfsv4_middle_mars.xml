@@ -234,17 +234,21 @@
       paths to the same data.
     </t>
     <t>
-      When a file system is present and becomes absent, clients can be
-      given the opportunity to have continued access to their data,
-      at an alternative location.  In this case, a continued attempt
-      to use the data in the now-absent file system will result
-      in an NFS4ERR_MOVED error and, at that point, the successor
-      locations (typically only one although multiple choices are possible)
-      can be fetched and used to continue access.  Transfer of the
+      When a file system is present and subsequently becomes absent,
+      clients can be given the opportunity to have continued access
+      to their data, at an alternative location. Transfer of the
       file system contents to the new location is referred to as
-      "migration", but it should be kept in mind that there are cases
-      in which this term can be used, like "replication", when there
-      is no actual data migration per se.
+      "migration".  See <xref target='migration' /> for details.
+    </t>
+    <t>
+      Alternative  locations may be be physical replicas of the
+      file system data or alternative communication paths to the
+      same server or, in the case of various foms of server clustering,
+      another server providing access to the same physical file
+      system.  The client's responsibilities in dealing with this
+      transition depend on the specific nature of the new access
+      path as well as how and whether data was in fact migrated.
+      These issues will be discussed in detail below.
     </t>
     <t>
       Where a file system was not previously present, specification
@@ -280,18 +284,6 @@
         and target file system.
       </t>
       <t>
-        The alternative locations may be physical replicas of the
-        (typically read-only) file system data, or they may
-        reflect alternative paths to the same server or provide
-        for the use of various forms of server
-        clustering in which multiple servers provide alternative
-        ways of accessing the same physical file system. How these
-	different modes of file system transition are represented
-	within the fs_locations attribute and how the client deals
-	with file system transition issues will be discussed in
-	detail below.
-      </t>
-      <t>
         Multiple server addresses, whether they are derived from
         a single entry with a DNS name representing a set of IP
 	addresses or from multiple entries each with its own
@@ -318,16 +310,6 @@
         choice left to the server implementer.  The NFSv4 protocol
         specifies the method used to communicate the migration
         event between client and server.
-      </t>
-      <t>
-        The new location may be an alternative
-	      communication path to the same server or, in the case of
-        various forms of server clustering, another server providing
-	      access to the same physical file system. The client's
-	      responsibilities in dealing with this transition depend on
-	      the specific nature of the new access path as well as how and
-	      whether data was in fact migrated.  These issues will be
-	      discussed in detail below.
       </t>
       <t>
         When an alternative location is designated as the target for
@@ -1062,7 +1044,7 @@
       <list style='symbols'>
        <t>
          All listed
-         file system instances should be considered as of the
+         file system instances should be considered as being of the
          same handle class if and only if the
          current fh_expire_type attribute does not include the
          FH4_VOL_MIGRATION
@@ -1072,7 +1054,7 @@
          attribute on the referring (absent) file system.
        </t>
        <t>
-         All listed file system instances should be considered as of the
+         All listed file system instances should be considered as being of the
          same fileid class if and only if the
          fh_expire_type attribute indicates persistent filehandles and
          does not include the FH4_VOL_MIGRATION
@@ -1083,12 +1065,12 @@
        </t>
        <t>
          All file system instances
-         servers should be considered as of different
+         should be considered as being of different
          change classes.
        </t>
        <t>
          All file system instances
-         servers should be considered as of different
+         servers should be considered as being of different
          readdir classes.
        </t>
       </list>
