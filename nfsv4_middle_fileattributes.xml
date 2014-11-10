@@ -706,6 +706,10 @@
               The phrase "is a regular file" means that the object's
               type attribute is NF4REG or NF4NAMEDATTR.
             </t>
+            <t>
+              The phrase "is a symbolic link" means that the object's
+              type attribute is NF4LNK.
+            </t>
           </list>
         </t>
 
