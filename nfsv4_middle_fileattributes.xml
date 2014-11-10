@@ -703,7 +703,7 @@
               type attribute is NF4BLK, NF4CHR, NF4SOCK, or NF4FIFO. 
             </t>
             <t>
-              The phrase "is an regular file" means that the object's
+              The phrase "is a regular file" means that the object's
               type attribute is NF4REG or NF4NAMEDATTR.
             </t>
           </list>
@@ -827,7 +827,8 @@
              title="Attribute 16: case_insensitive">
       <t>
         TRUE, if file name comparisons on this file system are case
-        insensitive.
+        insensitive.  This refers only to comparisons, and not to
+        the case in which file names are stored.
       </t>
     </section>
 
@@ -835,6 +836,10 @@
              title="Attribute 17: case_preserving">
       <t>
         TRUE, if file name case on this file system is preserved.
+        This refers only to how file names are stored, and not to
+        how they are compared.  File names stored in mixed case
+        might be compared using either case-insensitive or
+        case-sensitive comparisons.
       </t>
     </section>
 
@@ -952,7 +957,7 @@
     <section toc="exclude" anchor="attrdef_mimetype"
              title="Attribute 32: mimetype">
       <t>
-        MIME body type/subtype of this object.
+        MIME media type/subtype of this object.
       </t>
     </section>
 
@@ -1105,9 +1110,9 @@
              title="Attribute 41: rawdev">
       <t>
         Raw device number of file of type NF4BLK or NF4CHR.  The device
-        number is split into major and minor numbers.  If the file's type
-        attribute is not NF4BLK or NF4CHR, the value returned SHOULD NOT be
-        considered useful.
+        number is split into major and minor numbers.   If the file's type
+        attribute is not NF4BLK or NF4CHR, this attribute SHOULD NOT be
+        returned, and any value returned SHOULD NOT be considered useful.
       </t>
     </section>
 
@@ -1414,8 +1419,8 @@
       locale and context-dependent case folding for specific situations.
       An example of locale and context-dependent case folding is that
       LATIN CAPITAL LETTER I ("I", U+0049) is default case folded to
-      LATIN SMALL LETTER I ("i", U+0069); however, Turkish and several
-      other languages) treat an "I" character with a dot as a different
+      LATIN SMALL LETTER I ("i", U+0069); however, several
+      languages (e.g. Turkish) treat an "I" character with a dot as a different
       letter than an "I" character without a dot, therefore in such
       languages, unless an I is before a dot_above, the "I" (U+0049)
       character should be case folded to a different character,
