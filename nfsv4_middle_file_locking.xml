@@ -229,7 +229,8 @@
               </t>
 
               <t>
-                A MAC address.
+                A MAC address (for privacy reasons, it is best to perform
+                some one way function on the MAC address).
               </t>
 
               <t>
