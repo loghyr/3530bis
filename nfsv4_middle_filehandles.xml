@@ -117,17 +117,22 @@
         opaque.  The client stores filehandles for use in a later request and
         can compare two filehandles from the same server for equality
         by doing a byte-by-byte comparison.  However, the client MUST
-        NOT otherwise interpret the contents of filehandles.  If two
-        filehandles from the same server are equal, they MUST refer to
-        the same file system object.  Servers SHOULD try to maintain a one-to-one
-        correspondence between filehandles and file system objects but this is not
-        required.  Clients MUST use filehandle comparisons only to improve
-        performance, not for correct behavior.  All clients need to be
-        prepared for situations in which it cannot be determined whether
-        two filehandles denote the same object and in such cases, avoid
-        making invalid assumptions which might cause incorrect behavior.
-        Further discussion of filehandle and attribute comparison in the
-        context of data caching is presented in <xref target="ss:cc:dcfi" />.
+	NOT otherwise interpret the contents of filehandles.  If
+	two filehandles from the same server are equal, they MUST
+	refer to the same file.  However, it is not REQUIRED that
+	two different filehandles refer to different file system
+	objects. Servers SHOULD try to maintain a one-to-one
+	correspondence between filehandles and file system objects
+	but there may be situations in which the mapping is not
+	one-to-one.  Clients MUST use filehandle comparisons only
+	to improve performance, not for correct behavior.  All
+	clients need to be prepared for situations in which it
+	cannot be determined whether two different filehandles
+	denote the same object and in such cases, avoid assuming
+	that objects denoted are different, as this might cause
+	incorrect behavior.  Further discussion of filehandle and
+	attribute comparison in the context of data caching is
+	presented in <xref target="ss:cc:dcfi" />.
       </t>
 
       <t>
