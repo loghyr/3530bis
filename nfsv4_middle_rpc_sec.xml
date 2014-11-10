@@ -139,7 +139,7 @@
         Each mandated mechanism specifies a minimum set of cryptographic
         algorithms for implementing integrity and privacy.  NFSv4 clients
         and servers MUST be implemented on operating environments that comply
-        with the REQUIRED cryptographic algorithms of each REQUIRED
+        with the required cryptographic algorithms of each required
         mechanism.
       </t>
 
@@ -181,13 +181,13 @@
 
         <t>
           At the time this document was specified, the Advanced Encryption Standard
-          (AES) with HMAC-SHA1 was a REQUIRED algorithm set for Kerberos V5.
+          (AES) with HMAC-SHA1 was a required algorithm set for Kerberos V5.
           In contrast, when NFSv4.0 was first specified in
           <xref target="RFC3530" />, weaker algorithm sets were
           REQUIRED for Kerberos V5, and were REQUIRED in the NFSv4.0
           specification, because the Kerberos V5 specification at the time did
           not specify stronger algorithms.  The NFSv4 specification does not
-          specify REQUIRED algorithms for Kerberos V5, and instead, the
+          specify required algorithms for Kerberos V5, and instead, the
           implementer is expected to track the evolution of the Kerberos V5
           standard if and when stronger algorithms are specified.
         </t>
