@@ -31,8 +31,8 @@
      limits.
    </t>
    <t>
-     The policy for each assignment is Specification Required, 
-     per section 4.1 of <xref target="RFC5226"/>.
+     The registry is to be maintained using  the Specification
+     Required policy as defined in Section 4.1 of <xref target="RFC5226"/>.
    </t>
    <t>
      Under the NFSv4 specification, the name of a named
