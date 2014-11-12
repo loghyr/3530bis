@@ -81,4 +81,13 @@
     [RFC Editor: Please note that there is also a reference
     entry that needs to be modified for the companion document.]
   </t>
+
+  <t>
+    [RFC Editor: prior to publishing this document as an RFC, please
+    have every top level subsection of both <xref target='sec:operations' />
+    and <xref target='sec:callback' /> that has a title of
+    "Procedure X:" or "Operation Y:" start at the top of a new
+    page.]
+  </t>
+
 </section>

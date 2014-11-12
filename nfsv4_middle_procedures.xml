@@ -2,6 +2,12 @@
 <!-- Copyright (C) The Internet Society (2010-2013) -->
 
 <section anchor="sec:operations" title="NFSv4 Procedures">
+  <t>
+    [RFC Editor: prior to publishing this document as an RFC,
+    please have every Section that has a title of "Procedure X:"
+    or "Operation Y:" start at the top of a new page.]
+  </t>
+
   <section anchor="OP_NULL" title="Procedure 0: NULL - No Operation">
     <section toc="exclude" anchor="OP_NULL_SYNOPSIS" title="SYNOPSIS">
 

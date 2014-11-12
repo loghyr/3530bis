@@ -10,6 +10,12 @@
     be precisely the opposite.
   </t>
 
+  <t>
+    [RFC Editor: prior to publishing this document as an RFC,
+    please have every Section that has a title of "Procedure X:"
+    or "Operation Y:" start at the top of a new page.]
+  </t>
+
   <section anchor="OP_CB_NULL" title="Procedure 0: CB_NULL - No Operation">
 
     <section toc="exclude" anchor="OP_CB_NULL_SYNOPSIS" title="SYNOPSIS">
