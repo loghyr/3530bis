@@ -451,6 +451,21 @@
           stated otherwise.
         </t>
 
+        <t hangText="Lock-Owner:">
+          Each byte-range lock is associated with a specific lock-owner
+          and an open-owner.  The lock-owner consists of a
+          Client ID and an opaque owner string.
+          The client presents this to the server to establish
+          the ownership of the byte-range lock as needed.
+        </t>
+
+        <t hangText="Open-Owner:">
+          Each open file is associated with a specific open-owner,
+          which consists of a Client ID and an opaque owner string.
+          The client presents this to the server to establish
+          the ownership of the open as needed.
+        </t>
+
         <t hangText="Server:">
           The "Server" is the entity responsible for coordinating
           client access to a set of file systems.

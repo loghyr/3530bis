@@ -1605,6 +1605,13 @@
         directory, the error NFS4ERR_NOTDIR is returned.
       </t>
 
+      <t>
+        If the current filehandle is a named attribute directory that is
+        associated with a file system object via OPENATTR (i.e., not a sub-
+        directory of a named attribute directory), LOOKUPP SHOULD return the
+        filehandle of the associated file system object.
+      </t>
+
     </section>
   </section>
   <section anchor="OP_NVERIFY" title="Operation 17: NVERIFY - Verify Difference in Attributes">
@@ -3076,7 +3083,8 @@
 
       <t>
         If the oldname refers to a named attribute and the saved and
-        current filehandles refer to different file system objects,
+        current filehandles refer to the named attribute directories
+        of different file system objects,
         the server will return NFS4ERR_XDEV just as if the saved
         and current filehandles represented directories on different
         file systems.
