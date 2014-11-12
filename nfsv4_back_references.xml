@@ -98,21 +98,6 @@
       <format type='XML' octets='50069' target='http://xml.resource.org/public/rfc/xml/rfc2203.xml' />
     </reference>
 
-    <reference anchor='RFC2279'>
-
-      <front>
-	<title abbrev='UTF-8'>
-	UTF-8, a transformation format of ISO 10646</title>
-	<author initials='F' surname='Yergeau' 
-		fullname='Francois Yergeau'>
-	  <organization>Alis Technologies</organization>
-	</author>
-	<date year='1998' month='January' />
-  </front>
-      <seriesInfo name='RFC' value='2279' />
-      <format type='HTML'
-	      target='http://xml.resource.org/public/rfc/html/rfc2279.html' />
-    </reference>
     <reference anchor='RFC2743'>
       <front>
 	<title abbrev='GSS-API'>Generic Security Service Application
@@ -152,6 +137,20 @@
       <format type='TXT' octets='50937' target='ftp://ftp.isi.edu/in-notes/rfc5403.txt' />
     </reference>
 
+<reference anchor='RFC3629'>
+<front>
+<title>UTF-8, a transformation format of ISO 10646</title>
+<author initials='F.' surname='Yergeau' fullname='F. Yergeau'>
+<organization /></author>
+<date year='2003' month='November' />
+<abstract>
+<t>ISO/IEC 10646-1 defines a large character set called the Universal Character Set (UCS) which encompasses most of the world's writing systems.  The originally proposed encodings of the UCS, however, were not compatible with many current applications and protocols, and this has led to the development of UTF-8, the object of this memo.  UTF-8 has the characteristic of preserving the full US-ASCII range, providing compatibility with file systems, parsers and other software that rely on US-ASCII values but are transparent to other values.  This memo obsoletes and replaces RFC 2279.</t></abstract></front>
+
+<seriesInfo name='STD' value='63' />
+<seriesInfo name='RFC' value='3629' />
+<format type='TXT' octets='33856' target='http://www.rfc-editor.org/rfc/rfc3629.txt' />
+</reference>
+
     <reference anchor='RFC5531'>
       <front>
 	<title abbrev='Remote Procedure Call Protocol Version 2'>RPC:
@@ -165,6 +164,20 @@
       <seriesInfo name='RFC' value='5531' />
       <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc5531.txt' />
     </reference>
+
+   <reference anchor='RFC5226'>
+     <front>
+       <title>Guidelines for Writing an IANA Considerations Section in RFCs</title>
+       <author initials='T.' surname='Narten' fullname='T. Narten'>
+       <organization /></author>
+       <author initials='H.' surname='Alvestrand' fullname='H. Alvestrand'>
+       <organization /></author>
+       <date year='2008' month='May' />
+     </front>
+     <seriesInfo name='BCP' value='26' />
+     <seriesInfo name='RFC' value='5226' />
+     <format type='TXT' octets='66160' target='ftp://ftp.isi.edu/in-notes/rfc5226.txt' />
+   </reference>
 
     <reference anchor='RFC5665'>
       <front>
@@ -694,20 +707,6 @@ document are to be interpreted as described in RFC
 	      target="ftp://ftp.isi.edu/in-notes/rfc3530.txt"/>
     </reference>
 
-<reference anchor='RFC3629'>
-
-<front>
-<title>UTF-8, a transformation format of ISO 10646</title>
-<author initials='F.' surname='Yergeau' fullname='F. Yergeau'>
-<organization /></author>
-<date year='2003' month='November' />
-<abstract>
-<t>ISO/IEC 10646-1 defines a large character set called the Universal Character Set (UCS) which encompasses most of the world's writing systems.  The originally proposed encodings of the UCS, however, were not compatible with many current applications and protocols, and this has led to the development of UTF-8, the object of this memo.  UTF-8 has the characteristic of preserving the full US-ASCII range, providing compatibility with file systems, parsers and other software that rely on US-ASCII values but are transparent to other values.  This memo obsoletes and replaces RFC 2279.</t></abstract></front>
-
-<seriesInfo name='STD' value='63' />
-<seriesInfo name='RFC' value='3629' />
-<format type='TXT' octets='33856' target='http://www.rfc-editor.org/rfc/rfc3629.txt' />
-</reference>
     <reference anchor='RFC4121'>
       <front>
 	<title>The Kerberos Version 5 Generic Security Service
@@ -739,23 +738,6 @@ document are to be interpreted as described in RFC
     <format type="TXT"
       target="ftp://ftp.isi.edu/in-notes/rfc4506.txt"/>
   </reference>
-
-   <reference anchor='RFC5226'>
-
-   <front>
-   <title>Guidelines for Writing an IANA Considerations Section in RFCs</title>
-   <author initials='T.' surname='Narten' fullname='T. Narten'>
-   <organization /></author>
-   <author initials='H.' surname='Alvestrand' fullname='H. Alvestrand'>
-   <organization /></author>
-   <date year='2008' month='May' />
-   <abstract>
-   <t>Many protocols make use of identifiers consisting of constants and other well-known values. Even after a protocol has been defined and deployment has begun, new values may need to be assigned (e.g., for a new option type in DHCP, or a new encryption or authentication transform for IPsec). To ensure that such quantities have consistent values and interpretations across all implementations, their assignment must be administered by a central authority. For IETF protocols, that role is provided by the Internet Assigned Numbers Authority (IANA).&lt;/t>&lt;t> In order for IANA to manage a given namespace prudently, it needs guidelines describing the conditions under which new values can be assigned or when modifications to existing values can be made. If IANA is expected to play a role in the management of a namespace, IANA must be given clear and concise instructions describing that role. This document discusses issues that should be considered in formulating a policy for assigning values to a namespace and provides guidelines for authors on the specific text that must be included in documents that place demands on IANA.&lt;/t>&lt;t> This document obsoletes RFC 2434. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract></front>
-
-   <seriesInfo name='BCP' value='26' />
-   <seriesInfo name='RFC' value='5226' />
-   <format type='TXT' octets='66160' target='ftp://ftp.isi.edu/in-notes/rfc5226.txt' />
-   </reference>
 
     <reference anchor='RFC5661'>
       <front>
@@ -849,7 +831,7 @@ document are to be interpreted as described in RFC
 <format type='TXT' octets='172710' target='ftp://ftp.isi.edu/in-notes/rfc793.txt' />
 </reference>
 
-<reference anchor='IESG_errata'>
+<reference anchor='IESG_ERRATA'>
 <front>
 <title>IESG Processing of RFC Errata for the IETF Stream</title>
 	<author>
@@ -1026,6 +1008,17 @@ document are to be interpreted as described in RFC
       </front>
       <format type='HTML' target='http://wt.xpilot.org/publications/posix.1e/download.html' />
     </reference>
+
+<reference anchor="MS-SMB">
+        <front>
+                <title>Server Message Block (SMB) Protocol Specification</title>
+                <author initials="" surname="Microsoft Corporation">
+                        <organization />
+                </author>
+                <date month="November" year="2009" />
+        </front>
+        <seriesInfo name="MS-SMB" value="17.0"/>
+</reference>
 
 <reference anchor='RFC6365'>
 

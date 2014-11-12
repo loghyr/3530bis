@@ -421,7 +421,7 @@
         locks" in which locks are not freed in the absence of a conflicting
         lock request.  Whereas, for locks and share reservations, freeing of
         locks will occur immediately upon the appearance of a conflicting
-        request, for delegations, the server may institute period during which
+        request, for delegations, the server MAY institute period during which
         conflicting requests are held off.  Eventually the occurrence of a
         conflicting request from another client will cause revocation of the
         delegation.
@@ -531,7 +531,7 @@
             modifications, some client implementers may be tempted to use the
             time_modify attribute and not the change attribute to validate cached data, so
             that metadata changes do not spuriously invalidate clean data.
-            The implementer is cautioned in this approach.  The change
+            The implementer is cautioned against this approach.  The change
             attribute is guaranteed to change for each update to the file,
             whereas time_modify is guaranteed to change only at the granularity
             of the time_delta attribute.  Use by the client's data cache
@@ -1171,7 +1171,7 @@
       </t>
       <t>
         This methodology resolves issues of clock differences between client
-        and server and other scenarios where the use of CB_GETATTR break down.
+        and server and other scenarios where the use of CB_GETATTR breaks down.
       </t>
       <t>
         It should be noted that the server is under no obligation to use
@@ -1455,7 +1455,7 @@
     </t>
 
     <t>
-      Notification to a lock owner will in many cases consist of simply
+      Notification to a lock-owner will in many cases consist of simply
       returning an error on the next and all subsequent READs/WRITEs to the
       open file or on the close.  Where the methods available to a client
       make such notification impossible because errors for certain
@@ -1646,7 +1646,7 @@
       and change) will be updated.  However, in many operating environments,
       when page faults are not required these attributes will not be updated
       on reads or updates to the file via memory access (regardless of whether
-      the file is a local file or is being access remotely).  A client or
+      the file is a local file or is being accessed remotely).  A client or
       server MAY fail to update attributes of a file that is being accessed
       via memory mapped I/O.  This has several implications:
 

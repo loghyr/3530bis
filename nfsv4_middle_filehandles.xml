@@ -191,7 +191,7 @@
       </t>
 
       <t>
-        The mandatory attribute "fh_expire_type" is used by the client
+        The REQUIRED attribute "fh_expire_type" is used by the client
         to determine what type of filehandle the server is providing for
         a particular file system.  This attribute is a bitmask with the
         following values:

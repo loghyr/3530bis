@@ -419,7 +419,7 @@
         file is determined by the access permissions on the directory
         in which the file resides, instead of being determined by the
         permissions of the file itself.  Therefore, the mask returned
-        enumerating which access rights can be determined will have
+        enumerating which access rights can be supported will have
         the ACCESS4_DELETE value set to 0.  This indicates to the
         client that the server was unable to check that particular
         access right.  The ACCESS4_DELETE bit in the access mask
@@ -1662,7 +1662,7 @@
       </figure>
 
       <t>
-        In the case that a recommended attribute is specified in
+        In the case that a RECOMMENDED attribute is specified in
         the NVERIFY operation and the server does not support
         that attribute for the file system object, the error
         NFS4ERR_ATTRNOTSUPP is returned to the client.
@@ -1937,7 +1937,7 @@
       <t>
         If the underlying file system at the server is only accessible
         in a read-only mode and the OPEN request has specified
-        ACCESS_WRITE or ACCESS_BOTH, the server will return
+        OPEN4_SHARE_ACCESSS_WRITE or OPEN4_SHARE_ACCESS_BOTH, the server will return
         NFS4ERR_ROFS to indicate a read-only file system.
       </t>
 
@@ -2043,15 +2043,15 @@
       </t>
 
       <t>
-        For SHARE reservations, the client must specify a value
-        for share_access that is one of READ, WRITE, or BOTH.
-        For share_deny, the client must specify one of NONE, READ,
-        WRITE, or BOTH.  If the client fails to do this, the server
+        For SHARE reservations (see <xref target='ss:fl:share_res' />), the client must specify a value
+        for share_access that is one of OPEN4_SHARE_ACCESS_READ, OPEN4_SHARE_ACCESS_WRITE, or OPEN4_SHARE_ACCESS_BOTH.
+        For share_deny, the client must specify one of OPEN4_SHARE_DENY_NONE, OPEN4_SHARE_DENY_READ,
+        OPEN4_SHARE_DENY_WRITE, or OPEN4_SHARE_DENY_BOTH.  If the client fails to do this, the server
         must return NFS4ERR_INVAL.
       </t>
 
       <t>
-        Based on the share_access value (READ, WRITE, or BOTH)
+        Based on the share_access value (OPEN4_SHARE_ACCESS_READ, OPEN4_SHARE_ACCESS_WRITE, or OPEN4_SHARE_ACCESS_BOTH)
         the client should check that the requester has the proper
         access rights to perform the specified operation.  This would
         generally be the results of applying the ACL access rules
@@ -2423,12 +2423,12 @@
       </t>
 
       <t>
-        The public filehandle represents the concepts embodied in
+        The public filehandle concept was introduced in
         <xref target="RFC2054" />, <xref target="RFC2055" />, <xref
         target="RFC2224" />.  The intent for NFSv4 is that
         the public filehandle (represented by the PUTPUBFH operation)
-        be used as a method of providing WebNFS server compatibility
-        with NFSv2 and NFSv3.
+        be used as a method of providing compatibility with the WebNFS server
+        of NFSv2 and NFSv3.
       </t>
 
       <t>
@@ -2474,7 +2474,7 @@
 
       <t>
         There is a form of security negotiation as described
-        in <xref target="RFC2755" /> that uses the public filehandle a method of
+        in <xref target="RFC2755" /> that uses the public filehandle as a method of
         employing Simple and Protected GSSAPI Negotiation Mechanism (SNEGO)
         <xref target="RFC4178" />.  This method is not available with NFSv4
 				as filehandles are not overloaded with special meaning and
@@ -3185,7 +3185,7 @@
           <t>
             The client uses the same principal, RPC security
             flavor -- and if the flavor was RPCSEC_GSS -- the same mechanism and
-            service that was used when the client id was established
+            service that was used when the client ID was established
             via SETCLIENTID_CONFIRM.
           </t>
 
@@ -3753,7 +3753,7 @@
             nor does it modify any recorded callback and callback_ident
             information for client { x }.
           <vspace blankLines='1' />
-            For any DRC miss, the server takes the client id string
+            For any DRC miss, the server takes the client ID string
             x, and searches for client records for x that the server
             may have recorded from previous SETCLIENTID calls. For
             any confirmed record with the same id string x, if the
@@ -4127,7 +4127,7 @@
       </t>
 
       <t>
-        In the case that a recommended attribute is specified in the
+        In the case that a RECOMMENDED attribute is specified in the
         VERIFY operation and the server does not support that attribute
         for the file system object, the error NFS4ERR_ATTRNOTSUPP is
         returned to the client.

@@ -145,8 +145,8 @@
           enforcement for NFSv4.0 access may be different from,
           but not weaker than, the enforcement for local access, and
           both may be different from the enforcement for access
-          through other protocols such as Server Message Block (SMB).
-          So it may be useful for
+          through other protocols such as Server Message Block (SMB)
+          <xref target='MS-SMB' />.  So it may be useful for
           a server to accept an ACL even if not all of its modules are
           able to support it.
         </t>

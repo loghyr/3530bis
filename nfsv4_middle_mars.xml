@@ -6,7 +6,7 @@
     beyond the boundaries of a single server.  It is RECOMMENDED
     that clients and servers support construction of such
     multi-server namespaces.  Use of such multi-server namespaces
-    is OPTIONAL, however, and for many purposes,
+    is optional, however, and for many purposes,
     single-server namespaces are perfectly acceptable.  Use of
     multi-server namespaces can provide many advantages, however, by
     separating a file system's logical position in a namespace from
@@ -448,16 +448,16 @@
       detect changes in location information.
     </t>
     <t>
-      A potential problem exists if a client were to allow an open owner to
+      A potential problem exists if a client were to allow an open-owner to
       have state on multiple file systems on server, in that it is unclear
-      how the sequence numbers associated with open owners are to be dealt
+      how the sequence numbers associated with open-owners are to be dealt
       with, in the event of transparent state migration.  A client can avoid
-      such a situation, if it ensures that any use of an open owner is
+      such a situation, if it ensures that any use of an open-owner is
       confined to a single file system.
     </t>
 
     <t>
-      A server MAY decline to migrate state associated with open owners that
+      A server MAY decline to migrate state associated with open-owners that
       span multiple file systems.  In cases in which the server chooses not
       to migrate such state, the server MUST return NFS4ERR_BAD_STATEID
       when the client uses those stateids on the new server.
@@ -931,16 +931,10 @@
   </section>
   <section anchor="fs_locations" title="The Attribute fs_locations">
     <t>
-      The fs_locations attribute is structured in the following way:
-    </t>
-<t>
-    <?rfc include='autogen/type_fs_location4.xml'?>
-</t>
-<t>
-    <?rfc include='autogen/type_fs_locations4.xml'?>
-</t>
-    <t>
-      The fs_location4 data type is used to represent the location of a
+      The fs_locations attribute is defined by both fs_location4
+      (<xref target='fs_location4' />) and fs_locations4
+      (<xref target='fs_locations4' />).
+      It is used to represent the location of a
       file system by providing a server name and the path to the root
       of the file system within that server's namespace.
       When a set of servers have corresponding file systems at the
@@ -1031,80 +1025,5 @@
      fs_locations attribute applies. Otherwise, the
      client cannot determine the new path to use on the new server.
    </t>
-    <section anchor="fs_locations_trans" title="Inferring Transition Modes">
-     <t>
-       When fs_locations is used, information about the
-       specific locations should be assumed based on the following rules.
-     </t>
-     <t>
-       The following rules are general and apply irrespective of the
-       context.
-     </t>
-     <t>
-      <list style='symbols'>
-       <t>
-         All listed
-         file system instances should be considered as being of the
-         same handle class if and only if the
-         current fh_expire_type attribute does not include the
-         FH4_VOL_MIGRATION
-         bit.  Note that in the case of referral, filehandle issues do
-         not apply since there can be no filehandles known within the
-         current file system nor is there any access to the fh_expire_type
-         attribute on the referring (absent) file system.
-       </t>
-       <t>
-         All listed file system instances should be considered as being of the
-         same fileid class if and only if the
-         fh_expire_type attribute indicates persistent filehandles and
-         does not include the FH4_VOL_MIGRATION
-         bit.  Note that in the case of referral, fileid issues do
-         not apply since there can be no fileids known within the
-         referring (absent) file system nor is there any access to
-         the fh_expire_type attribute.
-       </t>
-       <t>
-         All file system instances
-         should be considered as being of different
-         change classes.
-       </t>
-       <t>
-         All file system instances
-         servers should be considered as being of different
-         readdir classes.
-       </t>
-      </list>
-     </t>
-     <t>
-       For other class assignments, handling of file system
-       transitions depends on the reasons for the transition:
-     </t>
-     <t>
-      <list style='symbols'>
-       <t>
-	 When the transition is due to migration, that is, the client was
-	 directed to a new file system after receiving an NFS4ERR_MOVED error,
-         the target should be treated as being of the same
-         write-verifier class as the source.
-       </t>
-       <t>
-         When the transition is due to failover to another replica,
-         that is, the client selected another replica without
-         receiving and NFS4ERR_MOVED error, the target should be
-         treated as being of a different write-verifier class from the source.
-       </t>
-      </list>
-     </t>
-     <t>
-       The specific choices reflect typical implementation patterns for
-       failover and controlled migration, respectively.
-     </t>
-      <t>
-       See <xref target="sec:security" /> for a
-       discussion on the recommendations for the security
-       flavor to be used by any GETATTR operation that
-       requests the "fs_locations" attribute.
-     </t>
-    </section>
   </section>
 </section>

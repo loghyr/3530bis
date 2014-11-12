@@ -6,7 +6,8 @@
      The syntax and semantics to describe the data types of the NFS
      version 4 protocol are defined in the XDR <xref target="RFC4506" /> and RPC
      <xref target="RFC5531" /> documents.  The next sections build upon the XDR data
-     types to define types and structures specific to this protocol.
+     types to define types and structures specific to this protocol. As
+     a reminder, the size constants and definitive definitions can be found in <xref target="RFCNFSv4XDR" />.
    </t>
 
   <section anchor="basic_types" title="Basic Data Types">
@@ -78,7 +79,7 @@
       <?rfc include='autogen/type_fsid4.xml'?>
       <t>
         This type is the file system identifier that is used as a
-        mandatory attribute.
+        REQUIRED attribute.
       </t>
     </section>
 
@@ -90,7 +91,7 @@
       <?rfc include='autogen/type_fs_locations4.xml'?>
       <t>
         The fs_location4 and fs_locations4 data types are used for the
-        fs_locations recommended attribute which is used for migration
+        fs_locations RECOMMENDED attribute which is used for migration
         and replication support.
       </t>
     </section>
@@ -136,14 +137,14 @@
     <section toc="exclude" anchor="clientaddr4" title="clientaddr4">
       <?rfc include='autogen/type_clientaddr4.xml'?>
       <t>
-        The clientaddr4 structure is used as part of the SETCLIENTID
-        operation to either specify the address of the client that is
-        using a client ID or as part of the callback registration.
-        The r_netid and r_addr fields respectively contain a
-        netid and uaddr.  The netid and uaddr concepts are defined in <xref target="RFC5665" />.
-        The netid and uaddr formats for TCP over IPv4 and TCP over IPv6 are
-        defined in <xref target="RFC5665" />, specifically Tables 2 and 3 and Sections 5.2.3.3 and
-        5.2.3.4.
+	The clientaddr4 structure is used as part of the SETCLIENTID
+	operation to either specify the address of the client that
+	is using a client ID or as part of the callback registration.
+	The r_netid and r_addr fields respectively contain a network
+	id and universal address.  The network id and universal
+	address concepts together with formats for TCP over IPv4
+	and TCP over IPv6 are defined in <xref target="RFC5665" />,
+	specifically Tables 2 and 3 and Sections 5.2.3.3 and 5.2.3.4.
       </t>
     </section>
 

@@ -311,7 +311,7 @@
         target="RFCNFSv4XDR"/>, the latter is
         authoritative, but in such an event, it should be resolved with Errata to this
         document and/or <xref target="RFCNFSv4XDR"/>.
-        See <xref target="IESG_errata"/> for the Errata process.</t>
+        See <xref target="IESG_ERRATA"/> for the Errata process.</t>
      <t>Data Type: The XDR data type of the attribute.</t>
      <t>
         Acc: Access allowed to the attribute. R means
@@ -929,7 +929,7 @@
     <section toc="exclude" anchor="attrdef_maxlink"
              title="Attribute 28: maxlink">
       <t>
-        Maximum number of links for this object.
+        Maximum number of hard links for this object.
       </t>
     </section>
 
@@ -1438,6 +1438,11 @@
       the latest version of Unicode when this RFC was published.
       Implementations SHOULD always use the latest version of Unicode
       (http://www.unicode.org/versions/latest/).
+    </t>
+
+    <t>
+      [RFC Editor: please check thay 6.3.0 is the latest version
+      before publication of this document as an RFC.]
     </t>
   </section>
 </section>

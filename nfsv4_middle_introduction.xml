@@ -307,7 +307,8 @@
       <t>
         The NFSv4 protocol introduces OPEN and CLOSE
         operations.  The OPEN operation provides a single point where
-        file lookup, creation, and share semantics can be combined.
+        file lookup, creation, and share semantics (see
+        <xref target='ss:fl:share_res' />) can be combined.
         The CLOSE operation also provides for the release of state
         accumulated by OPEN.
       </t>
@@ -439,7 +440,7 @@
           lock has been granted after the lease interval.
         <vspace blankLines='1' />
           All leases granted by a server have the same fixed
-          interval.  Note that the fixed interval was chosen to
+          duration.  Note that the fixed interval duration was chosen to
           alleviate the expense a server would have in maintaining
           state about variable length leases across server failures.
         </t>

@@ -204,7 +204,7 @@
       Strings that potentially contain characters outside the ASCII range
       <xref target='RFC20' /> are generally represented in NFSv4 using
       the UTF-8 encoding <xref target='RFC3629' /> of Unicode
-      <xref target='UNICODE' />.  See <xref target='RFC2279' /> for
+      <xref target='UNICODE' />.  See <xref target='RFC3629' /> for
       precise encoding and decoding rules.
     </t>
 
@@ -226,8 +226,8 @@
 	        other forms of name encoding. Also, normalization-related
 	        processing (see <xref target='ss:i18n:norms' />) of a string
           not encoded in UTF-8 could result in inappropriate name
-          modification or aliasing.  In cases in which one has a non-UT8-
-          name that accidentally conforms to UTF-8 rules, substitution of
+          modification or aliasing.  In cases in which one has a non-UT8
+          encoded name that accidentally conforms to UTF-8 rules, substitution of
           canonically equivalent strings can change the non-UTF-8 encoded
           name drastically.
           <vspace blankLines='1' />
@@ -295,7 +295,7 @@
       to a particular normalization form before using the resulting
       string when looking up or creating a file.  Servers MAY also
       perform normalization-insensitive string comparisons without
-      modifying name to match a particular normalization form.
+      modifying the names to match a particular normalization form.
       Except in cases in which component names are excluded from
       normalization-related handling because they are not valid
       UTF-8 strings, a server MUST make the same choice (as to
@@ -345,9 +345,10 @@
     </t>
 
     <t>
-      The string sent SHOULD be in the form of a U-label.  If that
+      The string sent SHOULD be in the form of a U-label
+      (see <xref target='RFC5890' />). If that
       is impractical, it can instead be in the form of one or more
-      A-labels or a UTF-8 domain name that is not a properly formatted
+      A-labels (see <xref target='RFC5890' />) or a UTF-8 domain name that is not a properly formatted
       U-label.  The receiver needs to be able to accept domain and
       server names in any of the formats allowed.  The server MUST
       reject, using the error NFS4ERR_INVAL, a string which is not
@@ -361,7 +362,7 @@
 
       <list style='numbers'>
         <t>
-          The server treats the domain string as a U-label (see <xref target='RFC5890' />
+          The server treats the domain string as a U-label
           This happens if the domain string is an A-label (or is a UTF-8-
           encoded string which is not a U-label) and the server converts the
           domain string to the corresponding U-label, using the functions

@@ -259,9 +259,10 @@
       </t>
 
       <t>
-        Note that SETCLIENTID and SETCLIENTID_CONFIRM has a secondary
-        purpose of establishing the information the server needs to make
-        callbacks to the client for purpose of supporting delegations.
+        Note that SETCLIENTID (<xref target='OP_SETCLIENTID' />)
+        and SETCLIENTID_CONFIRM (<xref target='OP_SETCLIENTID_CONFIRM' />)
+        has a secondary purpose of establishing the information the server needs to make
+        callbacks to the client for the purpose of supporting delegations.
         It is permitted to change this information via SETCLIENTID and
         SETCLIENTID_CONFIRM within the same incarnation of the client
         without removing the client's leased state.
@@ -378,7 +379,7 @@
           With the exception of special stateids (see <xref target="ss:fl:special" />),
           each stateid represents locking objects of one of a set of types defined
           by the NFSv4 protocol.  Note that in all these cases, where
-          we speak of guarantee, it is understood there are
+          we speak of a guarantee, it is understood there are
           situations such as a client restart, or lock revocation,
           that allow the guarantee to be voided.
           <list style='symbols'>
@@ -1070,13 +1071,13 @@
       <t>
         In any event, the server is able to safely release state-owner
         state (in the sense that retransmitted requests will not be erroneously
-        acted upon) when the state-owner no currently  being utilized by
+        acted upon) when the state-owner is not currently being utilized by
         the client (i.e., there are no open files associated with an
         open-owner and no lock stateids associated with a lock-owner).
         The server may choose
         to hold the state-owner state in order to simplify the recovery
         path, in the case in which retransmissions of currently active
-        requests are received.  However, the period it chooses to hold this
+        requests are received.  However, the period for which it chooses to hold this
         state is implementation specific.
       </t>
       <t>
@@ -1101,7 +1102,7 @@
         corresponding OPEN.  This sequence establishes the use of a
         open-owner and associated sequence number.  Since the OPEN_CONFIRM
         sequence connects a new open-owner on the server with an existing
-        open-owner on a client, the sequence number may have any value.
+        open-owner on a client, the sequence number may have any valid (i.e., non-zero) value.
         The OPEN_CONFIRM step assures the server that the value received
         is the correct one.  (see <xref target="OP_OPEN_CONFIRM" />
         for further details.)
@@ -1158,7 +1159,7 @@
         resulting in deletion of lease state (and returning NFS4ERR_EXPIRED).
         A server which supports delegations can be sure that no open-owners
         for that client have been recycled since client initialization or
-        deletion of lease state and thus can ensure that confirmation will
+        deletion of lease state and thus can be confident that confirmation will
         not be required.
       </t>
     </section>
@@ -1166,13 +1167,13 @@
   <section title="Lock Ranges">
 
     <t>
-      The protocol allows a lock owner to request a lock with a byte
+      The protocol allows a lock-owner to request a lock with a byte
       range and then either upgrade or unlock a sub-range of the
       initial lock.  It is expected that this will be an uncommon type
       of request.  In any case, servers or server file systems may not be
       able to support sub-range lock semantics.  In the event that a
       server receives a locking request that represents a sub-range of
-      current locking state for the lock owner, the server is allowed
+      current locking state for the lock-owner, the server is allowed
       to return the error NFS4ERR_LOCK_RANGE to signify that it does
       not support sub-range lock operations.  Therefore, the client
       should be prepared to receive this error and, if appropriate,
@@ -1352,7 +1353,7 @@
         SETCLIENTID operation.  The client then confirms the use of the
         client ID with SETCLIENTID_CONFIRM.  The client ID in combination
         with an opaque owner field is then used by the client to identify
-        the open owner for OPEN.  This chain of associations is then used
+        the open-owner for OPEN.  This chain of associations is then used
         to identify all locks for a particular client.
       </t>
 
@@ -1518,7 +1519,7 @@
             </t>
 
             <t>
-              In the case of lock or IO request which conflicts with a delegation
+              In the case of lock or I/O request which conflicts with a delegation
               which is being held as courtesy lock, the server MAY delay resolution
               of request but MUST NOT reject the request and MUST free the delegation
               and grant the new request eventually.
@@ -1526,9 +1527,9 @@
 
             <t>
               In the case of a requests for a delegation which conflicts with a
-              delegation which is being held as courtesy lock, the server MAY
+              delegation which is being held as a courtesy lock, the server MAY
               grant the new request or not as it chooses, but if it grants the
-              conflicting request, the delegation haled as courtesy lock MUST be
+              conflicting request, the delegation held as a courtesy lock MUST be
               freed.
             </t>
           </list>
@@ -2513,7 +2514,7 @@
       </t>
 
     </section>
-    <section title="Migration and the Lease_time Attribute">
+    <section title="Migration and the lease_time Attribute">
 
       <t>
         In order that the client may appropriately manage its leases

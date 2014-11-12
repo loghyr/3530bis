@@ -860,7 +860,7 @@
              anchor="err_LOCK_RANGE">
       <t>
         A lock request is operating on a range that overlaps in part a
-        currently held lock for the current lock owner and does not
+        currently held lock for the current lock-owner and does not
         precisely match a single such lock where the server
         does not support this type of request, and thus does not
         implement POSIX locking semantics <xref target="fcntl" />. See
@@ -937,7 +937,7 @@
     <section title="NFS4ERR_CLID_INUSE (Error Code 10017)"
              anchor="err_CLID_INUSE">
       <t>
-        The SETCLIENTID operation has found that a client id is
+        The SETCLIENTID operation has found that a clientid is
         already in use by another client.
       </t>
     </section>
