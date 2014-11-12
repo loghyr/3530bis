@@ -190,7 +190,7 @@
   <section title="Classification of Attributes">
     <t>
       Each of attributes accessed using SETATTR and GETATTR (i.e.,
-      REQUIRED an RECOMMENDED attributes) can be can be classified
+      REQUIRED an RECOMMENDED attributes) can be classified
       in one of three categories:
 
       <list style='numbers'>

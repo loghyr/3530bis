@@ -565,7 +565,7 @@
     <t>
       The definition of the NFSv4 protocol in <xref target="RFC3530" />
       replaced and obsoleted the definition present in
-      <xref target="RFC3010" />  While portions of the two documents
+      <xref target="RFC3010" />.  While portions of the two documents
       remained the same, there were substantive changes in others.
       The changes made between <xref target="RFC3010" /> and
       <xref target="RFC3530" /> reflect implementation experience and

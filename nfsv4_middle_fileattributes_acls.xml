@@ -1038,7 +1038,7 @@
 	    will not have adequate information to enforce it.  For
 	    example, the server has no way of determining whether
 	    a particular OPEN reflects a user's open for read access,
-	    or is done as part of executing the file in question
+	    or is done as part of executing the file in question.
 	    In such situations, the client needs to do its part in
 	    the enforcement of access as defined by the ACL.  To
 	    do this, the client will send the appropriate ACCESS
