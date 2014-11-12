@@ -327,6 +327,7 @@
     </t>
 
     <texttable anchor="req_attr_table">
+      <preamble>REQUIRED attributes</preamble>
       <ttcol align='left' >Name</ttcol>
       <ttcol align='left' >Id</ttcol>
       <ttcol align='left' >Data Type</ttcol>
@@ -348,7 +349,7 @@
         <xref target="attrdef_fh_expire_type"  />
       </c>
 
-      <c>change</c><c>3</c><c>uint64_t</c><c>R</c>
+      <c>change</c><c>3</c><c>changeid4</c><c>R</c>
       <c>
         <xref target="attrdef_change"  />
       </c>
@@ -411,6 +412,7 @@
 
     </t>
     <texttable anchor="rec_attr_tbl">
+      <preamble>RECOMMENDED attributes</preamble>
       <ttcol align='left' >Name</ttcol>
       <ttcol align='left' >Id</ttcol>
       <ttcol align='left' >Data Type</ttcol>
@@ -472,7 +474,7 @@
         <xref target="attrdef_files_total" />
       </c>
 
-      <c>fs_locations</c><c>24</c><c>fs_locations</c><c>R</c>
+      <c>fs_locations</c><c>24</c><c>fs_locations4</c><c>R</c>
       <c>
         <xref target="attrdef_fs_locations" />
       </c>
@@ -538,13 +540,13 @@
       </c>
 
       <c>owner</c>
-      <c>36</c><c>utf8&lt;></c><c>R W</c>
+      <c>36</c><c>utf8str_mixed</c><c>R W</c>
       <c>
         <xref target="attrdef_owner" />
       </c>
 
       <c>owner_group</c>
-      <c>37</c><c>utf8&lt;></c><c>R W</c>
+      <c>37</c><c>utf8str_mixed</c><c>R W</c>
       <c>
         <xref target="attrdef_owner_group" />
       </c>

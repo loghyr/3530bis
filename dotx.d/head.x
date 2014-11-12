@@ -252,7 +252,7 @@ typedef	bool			fattr4_symlink_support;
 typedef bool			fattr4_named_attr;
 typedef fsid4			fattr4_fsid;
 typedef	bool			fattr4_unique_handles;
-typedef uint32_t		fattr4_lease_time;
+typedef nfs_lease4		fattr4_lease_time;
 typedef	nfsstat4		fattr4_rdattr_error;
 
 typedef nfsace4			fattr4_acl<>;

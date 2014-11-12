@@ -29,13 +29,13 @@
       <c>13</c>
       <c><xref target="err_ACCESS" /></c>
 
-      <c>NFS4ERR_ATTRNOTSUPP</c>
-      <c>10032</c>
-      <c><xref target="err_ATTRNOTSUPP" /></c>
-
       <c>NFS4ERR_ADMIN_REVOKED</c>
       <c>10047</c>
       <c><xref target="err_ADMIN_REVOKED" /></c>
+
+      <c>NFS4ERR_ATTRNOTSUPP</c>
+      <c>10032</c>
+      <c><xref target="err_ATTRNOTSUPP" /></c>
 
       <c>NFS4ERR_BADCHAR</c>
       <c>10040</c>
@@ -76,6 +76,10 @@
       <c>NFS4ERR_BAD_STATEID</c>
       <c>10025</c>
       <c><xref target="err_BAD_STATEID" /></c>
+
+      <c>NFS4ERR_CB_PATH_DOWN</c>
+      <c>10048</c>
+      <c><xref target="err_CB_PATH_DOWN" /></c>
 
       <c>NFS4ERR_CLID_INUSE</c>
       <c>10017</c>
@@ -248,6 +252,10 @@
       <c>NFS4ERR_SERVERFAULT</c>
       <c>10006</c>
       <c><xref target="err_SERVERFAULT" /></c>
+
+      <c>NFS4ERR_SHARE_DENIED</c>
+      <c>10015</c>
+      <c><xref target="err_SHARE_DENIED" /></c>
 
       <c>NFS4ERR_STALE</c>
       <c>70</c>
@@ -878,6 +886,14 @@
         opened only for read).
       </t>
     </section>
+
+    <section title="NFS4ERR_SHARE_DENIED (Error Code 10015)"
+             anchor="err_SHARE_DENIED">
+      <t>
+        An attempt to OPEN a file with a share reservation has failed because
+        of a share conflict.
+      </t>
+    </section>
   </section>
 
   <section title="Reclaim Errors" anchor="errors_reclaim">
@@ -988,6 +1004,14 @@
     </section>
   </section>
 
+  <section title="Miscellaneous Errors" anchor="errors_misc">
+    <section title="NFS4ERR_CB_PATH_DOWN (Error Code 10048)"
+             anchor="err_CB_PATH_DOWN">
+      <t>
+        There is a problem contacting the client via the callback path.
+      </t>
+    </section>
+  </section>
 </section>
 
 <!-- When adding new errors above, add them to the next section under -->

@@ -51,6 +51,7 @@ while (my $inline = <>) {
 
 printf("<section title=\"Errors and the operations that use them\">\n");
 printf("  <texttable anchor=\'error_op_returns\'>\n");
+printf("    <preamble>Errors and the operations that use them</preamble>\n");
 printf("    <ttcol align=\'left\'>Error</ttcol>\n");
 printf("    <ttcol align=\'left\'>Operations</ttcol>\n");
 printf("\n");
