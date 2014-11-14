@@ -2106,9 +2106,10 @@
       locks after the lease period has expired for a client.  When it
       is possible that the lease period has expired, the client must
       validate each lock currently held to ensure that a conflicting
-      lock has not been granted.  The client may accomplish this task
-      by issuing an I/O request, either a pending I/O or a zero-length
-      read, specifying the stateid associated with the lock in question.
+      lock has not been granted.  The client may accomplish this task by
+      issuing an I/O request; if there is no relevant I/O pending,
+      a zero-length read specifying the stateid associated with the lock
+      in question can be synthesised to trigger the renewal.
       If the response to the request is success, the client has validated
       all of the locks governed by that stateid and re-established the
       appropriate state between itself and the server.

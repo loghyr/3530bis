@@ -1101,18 +1101,38 @@
       </t>
 
       <t>
-        The statement "file and the target directory must reside
-        within the same file system on the server" means that the fsid
-        fields in the attributes for the objects are the same. If they
-        reside on different file systems, the error, NFS4ERR_XDEV,
-        is returned.  On some servers, the filenames, "." and "..",
-        are illegal as newname.
+        The statement "file and the target directory must reside within the
+        same file system on the server" means that the fsid fields in the
+        attributes for the objects are the same.  If they reside on different
+        file systems, the error NFS4ERR_XDEV is returned.  This error may be
+        returned by some servers when there is an internal partitioning of a
+        file system that the LINK operation would violate.
       </t>
 
       <t>
-        In the case that newname is already linked to the file
-        represented by the saved filehandle, the server will return
-        NFS4ERR_EXIST.
+        On some servers, "." and ".." are illegal values for newname and the
+        error NFS4ERR_BADNAME will be returned if they are specified.
+      </t>
+
+      <t>
+        When the current filehandle designates a named attribute directory
+        and the object to be linked (the saved filehandle) is not a named
+        attribute for the same object, the error NFS4ERR_XDEV MUST be
+        returned.  When the saved filehandle designates a named attribute and
+        the current filehandle is not the appropriate named attribute
+        directory, the error NFS4ERR_XDEV MUST also be returned.
+      </t>
+
+      <t>
+        When the current filehandle designates a named attribute directory
+        and the object to be linked (the saved filehandle) is a named
+        attribute within that directory, the server may return the error
+        NFS4ERR_NOTSUPP.
+      </t>
+
+      <t>
+        In the case that newname is already linked to the file represented by
+        the saved filehandle, the server will return NFS4ERR_EXIST.
       </t>
 
       <t>
@@ -2077,7 +2097,7 @@
 
       <t>
         If the component provided to OPEN resolves to something
-        other than a regular file, an error will be returned to the
+        other than a regular file (or a named attribute), an error will be returned to the
         client.  If it is a directory, NFS4ERR_ISDIR is returned;
         otherwise, NFS4ERR_SYMLINK is returned.  Note that
         NFS4ERR_SYMLINK is returned for both symlinks and for special

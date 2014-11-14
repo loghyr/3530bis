@@ -183,46 +183,63 @@
   <section title="Security Policy and Name Space Presentation">
 
     <t>
-      The application of the server's security policy needs to be carefully
-      considered by the implementer.  One may choose to limit the
-      viewability of portions of the pseudo file system based on the
-      server's perception of the client's ability to authenticate
-      itself properly.  However, with the support of multiple security
-      mechanisms and the ability to negotiate the appropriate use of these
-      mechanisms, the server is unable to properly determine if a client
-      will be able to authenticate itself.  If, based on its policies,
-      the server chooses to limit the contents of the pseudo file system,
-      the server may effectively hide file systems from a client that may
-      otherwise have legitimate access.
+      Because NFSv4 clients possess the ability to change the security
+      mechanisms used, after determining what is allowed, by using SECINFO
+the server SHOULD NOT present a different view of
+      the namespace based on the security mechanism being used by a client.
+      Instead, it should present a consistent view and return
+      NFS4ERR_WRONGSEC if an attempt is made to access data with an
+      inappropriate security mechanism.
     </t>
 
     <t>
-      As suggested practice, the server should apply the security policy of
-      a shared resource in the server's namespace to the components of
-      the resource's ancestors.  For example:
-
-      <figure>
-        <artwork>
-  /
-  /a/b
-  /a/b/c
-        </artwork>
-      </figure>
+      If security considerations make it necessary to hide the existence of
+      a particular file system, as opposed to all of the data within it,
+      the server can apply the security policy of a shared resource in the
+      server's namespace to components of the resource's ancestors.  For
+      example:
     </t>
 
+    <figure>
+      <artwork>
+    /                       (place holder/not exported)
+    /a/b                    (file system 1)
+    /a/b/MySecretProject    (file system 2)
+      </artwork>
+    </figure>
+
     <t>
-      The /a/b/c directory is a real file system and is the shared resource.
-      The security policy for /a/b/c is Kerberos with integrity.  The server
-      should apply the same security policy to /, /a, and /a/b.  This allows
-      for the extension of the protection of the server's namespace to
-      the ancestors of the real shared resource.
+      The /a/b/MySecretProject directory is a real file system and is the
+      shared resource.  Suppose the security policy for /a/b/
+      MySecretProject is Kerberos with integrity and it is desired to limit
+      knowledge of the existence of this file system.  In this case, the
+      server should apply the same security policy to /a/b.  This allows
+      for knowledge of the existence of a file system to be secured when
+      desirable.
     </t>
 
     <t>
       For the case of the use of multiple, disjoint security mechanisms in
-      the server's resources, the security for a particular object in the
-      server's namespace should be the union of all security mechanisms
-      of all direct descendants.
+      the server's resources, applying that sort of policy would result in
+      the higher-level file system not being accessible using any security
+      flavor.  Therefore, that sort of configuration is not compatible with
+      hiding the existence (as opposed to the contents) from clients using
+      multiple disjoint sets of security flavors.
+    </t>
+
+    <t>
+      In other circumstances, a desirable policy is for the security of a
+      particular object in the server's namespace to include the union of
+      all security mechanisms of all direct descendants.  A common and
+      convenient practice, unless strong security requirements dictate
+      otherwise, is to make the entire pseudo file system accessible by
+      all of the valid security mechanisms.
+    </t>
+
+    <t>
+      Where there is concern about the security of data on the network,
+      clients should use strong security mechanisms to access the pseudo
+      file system in order to prevent man-in-the-middle attacks.
     </t>
   </section>
 </section>
