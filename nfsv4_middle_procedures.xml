@@ -158,30 +158,16 @@
       </t>
 
       <t>
-        Note that operations, 0 (zero) and 1 (one) are not defined
-        for the COMPOUND procedure.  Operation 2 is not defined but
-        reserved for future definition and use with minor versioning.
-        If the server receives a operation array that contains
-        operation 2 and the minorversion field has a value of 0
-        (zero), an error of NFS4ERR_OP_ILLEGAL, as described in the
-        next paragraph, is returned to the client.  If an operation
-        array contains an operation 2 and the minorversion field is
-        non-zero and the server does not support the minor version,
-        the server returns an error of NFS4ERR_MINOR_VERS_MISMATCH.
-        Therefore, the NFS4ERR_MINOR_VERS_MISMATCH error takes
-        precedence over all other errors.
-      </t>
-
-      <t>
-        It is possible that the server receives a request that
-        contains an operation that is less than the first legal
-        operation (OP_ACCESS) or greater than the last legal operation
-        (OP_RELEASE_LOCKOWNER).
-        In this case, the server's response will encode the opcode
-        OP_ILLEGAL rather than the illegal opcode of the request. The
-        status field in the ILLEGAL return results will set to
-        NFS4ERR_OP_ILLEGAL.  The COMPOUND procedure's return results
-        will also be NFS4ERR_OP_ILLEGAL.
+	Note that operations, 0 (zero), 1 (one), and 2 (two) are
+	not defined for the COMPOUND procedure.  It is possible
+	that the server receives a request that contains an operation
+	that is less than the first legal operation (OP_ACCESS) or
+	greater than the last legal operation (OP_RELEASE_LOCKOWNER).
+	In this case, the server's response will encode the opcode
+	OP_ILLEGAL rather than the illegal opcode of the request.
+	The status field in the ILLEGAL return results will set to
+	NFS4ERR_OP_ILLEGAL.  The COMPOUND procedure's return results
+	will also be NFS4ERR_OP_ILLEGAL.
       </t>
 
       <t>
