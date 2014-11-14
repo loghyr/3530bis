@@ -2,7 +2,6 @@
 <!-- Copyright (C) The Internet Society (2010-2014) -->
 
 <section anchor="sec:lock_share" title="File Locking and Share Reservations">
-
   <t>
     Integrating locking into the NFS protocol necessarily causes it
     to be stateful.  With the inclusion of share reservations the
@@ -294,8 +293,10 @@
       </t>
 
       <t>
-        See the detailed descriptions of SETCLIENTID and
-        SETCLIENTID_CONFIRM for a complete specification of the operations.
+        See the detailed descriptions of SETCLIENTID
+        (<xref target='OP_SETCLIENTID_DESCRIPTION' />) and
+        SETCLIENTID_CONFIRM (<xref target='OP_SETCLIENTID_CONFIRM_DESCRIPTION' />)
+        for a complete specification of the operations.
       </t>
 
     </section>
@@ -342,6 +343,53 @@
       </t>
     </section>
 
+    <section anchor="ss:fl:seqids" title="Use of Seqids">
+      <t>
+        In several contexts, 32-bit sequence values, called "seqids" are
+        used as part of managing locking state.  Such values are used:
+        <list style="symbols">
+           <t>
+             To provide an ordering of locking-related operations associated
+             with a particular lock-owner or open-owner.  See
+             <xref target="ss:fl:seqlock"/> for a detailed explanation.
+           </t>
+           <t>
+             To define an ordered set of instances of a set of locks
+             sharing a particular set of ownership characterics.  See
+             <xref target="ss:fl:ss"/> for a detailed explanation.
+           </t>
+        </list>
+      </t>
+      <t>
+        Successive seqid values for the same object are normally arrived
+        at by incrementing the cuurent value by one. This pattern continues
+        until the seqid is incremented past NFS4_UINT32_MAX, in which case
+        one (rather than zero) is to be the next seqid value.
+      </t>
+      <t>
+        When two seqid values are to be compared to determine whch of the
+        two is later, the possibility of wraparound needs to be considered.
+        In many cases, the values are such that simple numeric comparisons
+        can be used.  For example, if the seqid values to be compared are
+        both less than one million, the higher value can be consideed
+        the later.  On the other hand, if one of the values is at or near
+        NFS_UINT32_MAX and the other is less than one million, then
+        implemetations can raesonably decide that the lower value has
+        had one more wraparound and is thus, while numerically lower,
+        actually later.
+      </t>
+      <t>
+        Implementation can compare seqids in the presence of potential
+        wraparoundby adopting the reasonable assumption that the chain of
+        increments from one to the other is shorter than 2**31.  So, if the
+        difference between the two seqids is less than 2**31, then the
+        lower seqid is to be treated as earlier.  If, however, the
+        difference between the two seqids is gretater than or equal to
+        2**31, then it can be assumed that the lower seqid has encountered
+        one more wraparound an can be treated as later.
+
+      </t>
+    </section>
     <section anchor="ss:fl:stateids" title="Stateid Definition">
 
       <t>
@@ -422,8 +470,8 @@
           value.  Except in the case of special stateids (see <xref target="ss:fl:special" />), a
           particular value of the "other" field denotes a set of locks of the
           same type (for example, byte-range locks, opens, or delegations),
-          for a specific file or directory, and sharing the same
-          ownership characteristics.  The seqid designates a specific instance
+          for a specific file or directory, and sharing the same ownership
+          characteristics.  The seqid designates a specific instance
           of such a set of locks, and is incremented to indicate changes in
           such a set of locks, either by the addition or deletion of locks from
           the set, a change in the byte-range they apply to, or an upgrade or
@@ -431,27 +479,25 @@
         </t>
 
         <t>
-          When such a set of locks is first created, the server SHOULD return
+          When such a set of locks is first created, the server returns
           a stateid with seqid value of one.  On subsequent operations that
-          modify the set of locks, the server is required to increment the
+          modify the set of locks, the server is required to advance the
           "seqid" field by one whenever it returns a stateid for the same
-          state-owner/file/type combination and there is some change in the set
+          state-owner/file/type combination and the operation is one that
+          might make some change in the set
           of locks actually designated.  In this case, the server will return a
           stateid with an "other" field the same as previously used for that
           state-owner/file/type combination, with an incremented "seqid" field.
-          This pattern continues until the seqid is incremented past
-          NFS4_UINT32_MAX, and one (not zero) SHOULD be the next seqid value.
-          The purpose of the incrementing of the seqid is to allow the server
-          to communicate to the client the order in which operations that
-          modified locking state associated with a stateid have been processed.
         </t>
 
         <t>
-          In making comparisons between seqids, both by the client in
-          determining the order of operations and by the server in determining
-          whether the NFS4ERR_OLD_STATEID is to be returned, the possibility of
-          the seqid being swapped around past the NFS4_UINT32_MAX value needs
-          to be taken into account.
+          Seqids will be compared, by both the client and the server.
+          The client uses such comparisons to
+          determine the order of operations while the server
+          uses them to determine
+          whether the NFS4ERR_OLD_STATEID error is to be reurned.
+          In all cases, the possibility of seqid wrarround needs to be
+          taken into account, as discussed in <xref target="ss:fl:seqids"/>
         </t>
       </section>
 
@@ -615,7 +661,10 @@
           following procedure could be used to
           validate an incoming stateid and return an appropriate error,
           when necessary, assuming that the "other" field would be divided
-          into a table index and an entry generation.
+          into a table index and an entry generation.  Note that the
+          terms "earlier" and "later" used in connection with seqid
+          comparison are to be understood as explained in
+          <xref target="ss:fl:seqids"/>.
           <list style='symbols'>
             <t>
               If the table index field is outside the range of the
@@ -647,13 +696,13 @@
               NFS4ERR_BAD_STATEID.
             </t>
             <t>
-              If the "seqid" field is not zero, and it is greater
-              than the current sequence value corresponding the
+              If the "seqid" field is not zero, and it is later
+              than the current sequence value corresponding to the
               current "other" field, return NFS4ERR_BAD_STATEID.
             </t>
             <t>
-              If the "seqid" field is less than
-              the current sequence value corresponding the
+              If the "seqid" field is earlier than
+              the current sequence value corresponding to the
               current "other" field, return NFS4ERR_OLD_STATEID.
             </t>
             <t>
@@ -795,8 +844,9 @@
         returned by the server) must be used to indicate what locks,
         including both byte-range locks and share reservations, are held by
         the state-owner.  If no state is established by the client, either
-        byte-range lock or share reservation, a stateid of all bits 0 is used.
-        Regardless whether a stateid of all bits 0, or a stateid returned
+        byte-range lock or share reservation, the anonymous stateid consiting
+        of all bits 0 is used.
+        Regardless whether an anonymous stateid or a stateid returned
         by the server is used, if there is a conflicting share reservation
         or mandatory byte-range lock held on the file, the server MUST refuse
         to service the READ or WRITE operation.
@@ -894,8 +944,8 @@
         A stateid of all bits 1 (one) MAY allow READ operations to bypass
         locking checks at the server.  However, WRITE operations with
         a stateid with bits all 1 (one) MUST NOT bypass locking checks
-        and are treated exactly the same as if a stateid of all bits 0
-        were used.
+        and are treated exactly the same as if an anonymous stateid
+        (all bits 0) were used.
       </t>
 
       <t>
@@ -910,7 +960,7 @@
       </t>
 
     </section>
-    <section title="Sequencing of Lock Requests">
+    <section anchor="ss:fl:seqlock" title="Sequencing of Lock Requests">
 
       <t>
         Locking is different than most NFS operations as it requires
@@ -924,7 +974,9 @@
         have different sequences.  The server maintains the last sequence
         number (L) received and the response that was returned.  The server
         SHOULD assign a seqid value of one for the first request issued for any
-        given state-owner.
+        given state-owner.  Subseuent values are arrived ay by incrementing
+        the seqid value, subject to wraparound as described in
+        <xref target="ss:fl:seqids" />.
       </t>
 
       <t>
@@ -933,26 +985,20 @@
       </t>
 
       <t>
-        If a request (r) with a previous sequence number (r &lt;
-        L) is received, it is rejected with the return of error
-        NFS4ERR_BAD_SEQID.  Given a properly-functioning client, the
+        When a request is received, its sequence number (r)
+        is compared to that of the last one received (L).
+        Only if it has the correct next sequence,
+        normally L + 1, is the request processed beyond the point of
+        seqid checking.  Given a properly-functioning client, the
         response to (r) must have been received before the last request (L)
         was sent.  If a duplicate of last request (r == L) is received,
-        the stored response is returned.  If a request beyond the next
-        sequence (r == L + 2) is received, it is rejected with the return
+        the stored response is returned.  If the sequence value received
+        is any other value,it is rejected with the return
         of error NFS4ERR_BAD_SEQID.  Sequence history is reinitialized
         whenever the SETCLIENTID/SETCLIENTID_CONFIRM sequence changes
         the client verifier.
-      </t>
 
-      <t>
-        Since the sequence number is represented with an unsigned 32-bit
-        integer, the arithmetic involved with the sequence number is
-        mod 2^32.  Note that when the seqid wraps, it SHOULD bypass
-        zero and use one as the next seqid value. For an example of
-        modulo arithmetic involving sequence numbers see <xref target="RFC0793" />.
       </t>
-
       <t>
         It is critical the server maintain the last response sent to the
         client to provide a more reliable cache of duplicate non-idempotent
@@ -964,7 +1010,7 @@
       </t>
 
       <t>
-        The client MUST monotonically increment the sequence number for
+        The client MUST advance  the sequence number for
         the CLOSE, LOCK, LOCKU, OPEN, OPEN_CONFIRM, and OPEN_DOWNGRADE
         operations.  This is true even in the event that the previous
         operation that used the sequence number received an error.
@@ -2106,10 +2152,10 @@
       locks after the lease period has expired for a client.  When it
       is possible that the lease period has expired, the client must
       validate each lock currently held to ensure that a conflicting
-      lock has not been granted.  The client may accomplish this task by
-      issuing an I/O request; if there is no relevant I/O pending,
-      a zero-length read specifying the stateid associated with the lock
-      in question can be synthesised to trigger the renewal.
+      lock has not been granted.  The client may accomplish this task
+      by issuing an I/O request, either a previously pending I/O or
+      a zero-length
+      read, specifying the stateid associated with the lock in question.
       If the response to the request is success, the client has validated
       all of the locks governed by that stateid and re-established the
       appropriate state between itself and the server.
@@ -2297,7 +2343,7 @@
       requests by other clients are handled properly. The stateid
       returned has the same "other" field as that passed to the server.
       The "seqid" value in the returned stateid MUST be incremented,
-      even in situations in which there is no change to the access and
+      even in situations in which there has been no change to the access and
       deny bits for the file.
     </t>
 
