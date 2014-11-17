@@ -265,7 +265,7 @@
 
       <t>
         Note that the requirement stated above is not meant to imply that
-        when the client is no longer obliged, as required above, to retain
+        when the server is no longer obliged, as required above, to retain
         delegation information, that it should necessarily dispose of it.
         Some specific cases are:
       </t>
@@ -939,10 +939,9 @@
         For the purposes of open delegation, READs and WRITEs done without an
         OPEN are treated as the functional equivalents of a corresponding
         type of OPEN.  This refers to the READs and WRITEs that use the
-        special stateids consisting of all zero bits or all one bits.
-        Therefore, READs or WRITEs with a special stateid done by another
+        anonymous stateid.  Therefore, READs or WRITEs with an anonymous stateid done by another
         client will force the server to recall a OPEN_DELEGATE_WRITE delegation.
-        A WRITE with a special stateid done by another client will force a
+        A WRITE with an anonymous stateid done by another client will force a
         recall of OPEN_DELEGATE_READ delegations.
       </t>
 

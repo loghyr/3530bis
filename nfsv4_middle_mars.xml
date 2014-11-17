@@ -397,11 +397,10 @@
       the fs_locations attribute.
     </t>
     <t>
-      If a single location entry designates multiple server IP
-      addresses, the client cannot assume that these addresses
-      are multiple paths to the same server.  In most cases, they
-      will be, but the client MUST verify that before acting on
-      that assumption.  When two server addresses are designated
+      If a single location entry designates multiple server IP addresses,
+      the client should choose a single one to use and not assume the
+      existence of a trunking relation among the various ip addresses. 
+      When two server addresses are designated
       by a single location entry and they correspond to different
       servers, this normally indicates some sort of misconfiguration,
       and so the client should avoid using such location entries

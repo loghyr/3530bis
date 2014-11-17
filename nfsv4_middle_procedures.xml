@@ -252,8 +252,14 @@
       </t>
 
       <t>
-        The client SHOULD NOT construct a COMPOUND which mixes operations
-        for different client IDs.
+	A single compound should not contain multiple operations
+	that have different values for the clientid field used in
+	OPEN, LOCK, RENEW.  This can cause confusion in cases in
+	which operation that do not contain clientids have potential
+	interactions with operations that do.  When only a single
+	clientid has been used, it is clear what client is being
+	referenced.  For a particular example involving the interaction
+	of OPEN and GETATTR, see <xref target='OP_OPEN_IMPLEMENTATION' />.
       </t>
 
     </section>
@@ -2099,17 +2105,20 @@
       </t>
 
       <t>
-        If a COMPOUND contains an OPEN which establishes a
-        OPEN_DELEGATE_WRITE delegation, then a subsequent
-        GETATTR inside that COMPOUND SHOULD NOT result in a
-        CB_GETATTR to the client. The server SHOULD understand
-        the GETATTR to be for the same client ID and avoid
-        querying the client, which will not be able to respond.
-        This sequence of OPEN, GETATTR SHOULD be understood
-        as an atomic retrieval of the initial size and
-        change attribute. Further, the client SHOULD
-        NOT construct a COMPOUND which mixes operations
-        for different client IDs.
+
+	If a COMPOUND contains an OPEN which establishes an
+	OPEN_DELEGATE_WRITE delegation, then normally subsequent
+	GETATTRs result in a CB_GETATTR being sent to the client
+	holding the delegation. However, in  the case in which the
+	OPEN and GETATTR are part of the same COMPOUND, the server
+	SHOULD understand that the operations are tfor the same
+	client ID and avoid querying the client, which will not be
+	able to respond.  This sequence of OPEN, GETATTR SHOULD be
+	understood as retrieving of the i size and change attribute
+	at the time of OPEN,  Further, as explained in
+        <xref target='OP_COMPOUND_IMPLEMENTATION' />, the client should
+	not construct a COMPOUND which mixes operations for different
+	client IDs.
       </t>
 
     </section>
