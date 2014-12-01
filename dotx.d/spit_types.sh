@@ -27,6 +27,8 @@ typedef :uint64_t:nfs_cookie4:Opaque cookie value for READDIR.
 typedef :opaque:nfs_fh4<NFS4_FHSIZE>:Filehandle definition.
 :enum:nfs_ftype4:Various defined file types.
 :enum:nfsstat4:Return value for operations.
+typedef :uint32_t:nfs_lease4:Duration of a lease in seconds.
+typedef :uint32_t:qop4:Quality of protection designation in SECINFO.
 typedef :uint64_t:offset4:Various offset designations (READ, WRITE, LOCK, COMMIT).
 typedef :uint32_t:qop4:Quality of protection designation in SECINFO.
 typedef :opaque:sec_oid4<>:Security Object Identifier. The sec_oid4 data type is not really opaque. Instead it contains an ASN.1 OBJECT IDENTIFIER as used by GSS-API in the mech_type argument to GSS_Init_sec_context. See <xref target="RFC2743" /> for details.
