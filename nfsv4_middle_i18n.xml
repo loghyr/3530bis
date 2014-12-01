@@ -226,7 +226,7 @@
 	        other forms of name encoding. Also, normalization-related
 	        processing (see <xref target='ss:i18n:norms' />) of a string
           not encoded in UTF-8 could result in inappropriate name
-          modification or aliasing.  In cases in which one has a non-UT8
+          modification or aliasing.  In cases in which one has a non-UTF8
           encoded name that accidentally conforms to UTF-8 rules, substitution of
           canonically equivalent strings can change the non-UTF-8 encoded
           name drastically.
