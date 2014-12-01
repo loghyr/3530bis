@@ -987,10 +987,9 @@
         of the application may have logged off the client and unexpired
         authentication credentials may not be present.  In this case, the
         client may need to take special care to ensure that local unexpired
-        credentials will in fact be available.  This may be accomplished
+        credentials will in fact be available.  One way that this may be accomplished
         by tracking the expiration time of credentials and flushing data
-        well in advance of their expiration or by making private copies of
-        credentials to assure their availability when needed.
+        well in advance of their expiration.
       </t>
 
     </section>
