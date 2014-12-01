@@ -229,7 +229,7 @@
 
     <section title="SECINFO">
       <t>
-        The new SECINFO operation will allow the client to determine,
+        The SECINFO operation will allow the client to determine,
         on a per filehandle basis, what security triple (see
 	<xref target='RFC2743' />) is to be used for server access.
 	In general, the client will not have to use the SECINFO
