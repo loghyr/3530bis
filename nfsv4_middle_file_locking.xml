@@ -157,7 +157,7 @@
             present the same string.  The consequences of two clients
             presenting the same string range from one client getting
             an error to one client having its leased state abruptly and
-            unexpectedly canceled.
+            unexpectedly cancelled.
           </t>
 
           <t>
@@ -355,7 +355,7 @@
            </t>
            <t>
              To define an ordered set of instances of a set of locks
-             sharing a particular set of ownership characterics.  See
+             sharing a particular set of ownership characteristics.  See
              <xref target="ss:fl:ss"/> for a detailed explanation.
            </t>
         </list>
@@ -367,14 +367,14 @@
         one (rather than zero) is to be the next seqid value.
       </t>
       <t>
-        When two seqid values are to be compared to determine whch of the
+        When two seqid values are to be compared to determine which of the
         two is later, the possibility of wraparound needs to be considered.
         In many cases, the values are such that simple numeric comparisons
         can be used.  For example, if the seqid values to be compared are
-        both less than one million, the higher value can be consideed
+        both less than one million, the higher value can be considered
         the later.  On the other hand, if one of the values is at or near
         NFS_UINT32_MAX and the other is less than one million, then
-        implemetations can reasonably decide that the lower value has
+        implementations can reasonably decide that the lower value has
         had one more wraparound and is thus, while numerically lower,
         actually later.
       </t>
@@ -495,8 +495,8 @@
           The client uses such comparisons to
           determine the order of operations while the server
           uses them to determine
-          whether the NFS4ERR_OLD_STATEID error is to be reurned.
-          In all cases, the possibility of seqid wrarround needs to be
+          whether the NFS4ERR_OLD_STATEID error is to be returned.
+          In all cases, the possibility of seqid wraparound needs to be
           taken into account, as discussed in <xref target="ss:fl:seqids"/>
         </t>
       </section>
@@ -974,7 +974,7 @@
         have different sequences.  The server maintains the last sequence
         number (L) received and the response that was returned.  The server
         SHOULD assign a seqid value of one for the first request issued for any
-        given state-owner.  Subsequent values are arrived ay by incrementing
+        given state-owner.  Subsequent values are arrived at by incrementing
         the seqid value, subject to wraparound as described in
         <xref target="ss:fl:seqids" />.
       </t>

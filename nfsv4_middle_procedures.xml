@@ -2111,7 +2111,7 @@
 	GETATTRs result in a CB_GETATTR being sent to the client
 	holding the delegation. However, in  the case in which the
 	OPEN and GETATTR are part of the same COMPOUND, the server
-	SHOULD understand that the operations are tfor the same
+	SHOULD understand that the operations are for the same
 	client ID and avoid querying the client, which will not be
 	able to respond.  This sequence of OPEN, GETATTR SHOULD be
 	understood as retrieving of the i size and change attribute

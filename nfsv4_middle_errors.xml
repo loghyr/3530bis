@@ -674,7 +674,7 @@
 
           <t>
             Designates locking state that was freed after lease expiration but
-            without any lease cancelation, as may happen in the handling of
+            without any lease cancellation, as may happen in the handling of
             "courtesy locks".
           </t>
         </list>

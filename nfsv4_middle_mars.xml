@@ -243,7 +243,7 @@
     <t>
       Alternative  locations may be be physical replicas of the
       file system data or alternative communication paths to the
-      same server or, in the case of various foms of server clustering,
+      same server or, in the case of various forms of server clustering,
       another server providing access to the same physical file
       system.  The client's responsibilities in dealing with this
       transition depend on the specific nature of the new access

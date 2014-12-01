@@ -80,7 +80,7 @@
     <t>
       In the NFSv2 and NFSv3 protocols, there was one type of
       filehandle with a single set of semantics, of which the primary
-      one was that it was peristent across a server reboot.  As such, this type of filehandle
+      one was that it was persistent across a server reboot.  As such, this type of filehandle
       is termed "persistent" in NFS Version 4.  The semantics of a
       persistent filehandle remain the same as before.  A new type of
       filehandle introduced in NFS Version 4 is the "volatile"

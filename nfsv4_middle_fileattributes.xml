@@ -201,7 +201,7 @@
         </t>
 
         <t>
-          per file system attributes for whch the value of the attribute
+          per file system attributes for which the value of the attribute
           will be the same for some or all file objects that share the
           same server and  fsid attribute (<xref target='attrdef_fsid' />).
           See below for details regarding when such sharing is in effect.
@@ -220,7 +220,7 @@
 
       <list style='numbers'>
         <t>
-          The values of the attribute supported_attrs, fsid, homgeneous,
+          The values of the attribute supported_attrs, fsid, homogeneous,
           link_support, and symlink_support are always common to all
           object within given file system.
         </t>
@@ -1443,7 +1443,7 @@
     </t>
 
     <t>
-      [RFC Editor: please check thay 6.3.0 is the latest version
+      [RFC Editor: please check that 6.3.0 is the latest version
       before publication of this document as an RFC.]
     </t>
   </section>
