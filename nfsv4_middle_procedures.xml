@@ -255,7 +255,7 @@
 	A single compound should not contain multiple operations
 	that have different values for the clientid field used in
 	OPEN, LOCK, RENEW.  This can cause confusion in cases in
-	which operation that do not contain clientids have potential
+	which operations that do not contain clientids have potential
 	interactions with operations that do.  When only a single
 	clientid has been used, it is clear what client is being
 	referenced.  For a particular example involving the interaction
@@ -1118,7 +1118,7 @@
       <t>
         When the current filehandle designates a named attribute directory
         and the object to be linked (the saved filehandle) is a named
-        attribute within that directory, the server may return the error
+        attribute within that directory, the server MAY return the error
         NFS4ERR_NOTSUPP.
       </t>
 
@@ -2114,7 +2114,7 @@
 	SHOULD understand that the operations are for the same
 	client ID and avoid querying the client, which will not be
 	able to respond.  This sequence of OPEN, GETATTR SHOULD be
-	understood as retrieving of the i size and change attribute
+	understood as retrieving of the size and change attributes
 	at the time of OPEN,  Further, as explained in
         <xref target='OP_COMPOUND_IMPLEMENTATION' />, the client should
 	not construct a COMPOUND which mixes operations for different
