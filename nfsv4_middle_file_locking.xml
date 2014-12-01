@@ -362,7 +362,7 @@
       </t>
       <t>
         Successive seqid values for the same object are normally arrived
-        at by incrementing the cuurent value by one. This pattern continues
+        at by incrementing the current value by one. This pattern continues
         until the seqid is incremented past NFS4_UINT32_MAX, in which case
         one (rather than zero) is to be the next seqid value.
       </t>
@@ -374,17 +374,17 @@
         both less than one million, the higher value can be consideed
         the later.  On the other hand, if one of the values is at or near
         NFS_UINT32_MAX and the other is less than one million, then
-        implemetations can raesonably decide that the lower value has
+        implemetations can reasonably decide that the lower value has
         had one more wraparound and is thus, while numerically lower,
         actually later.
       </t>
       <t>
         Implementation can compare seqids in the presence of potential
-        wraparoundby adopting the reasonable assumption that the chain of
+        wraparound by adopting the reasonable assumption that the chain of
         increments from one to the other is shorter than 2**31.  So, if the
         difference between the two seqids is less than 2**31, then the
         lower seqid is to be treated as earlier.  If, however, the
-        difference between the two seqids is gretater than or equal to
+        difference between the two seqids is greater than or equal to
         2**31, then it can be assumed that the lower seqid has encountered
         one more wraparound an can be treated as later.
 
@@ -844,7 +844,7 @@
         returned by the server) must be used to indicate what locks,
         including both byte-range locks and share reservations, are held by
         the state-owner.  If no state is established by the client, either
-        byte-range lock or share reservation, the anonymous stateid consiting
+        byte-range lock or share reservation, the anonymous stateid consisting
         of all bits 0 is used.
         Regardless whether an anonymous stateid or a stateid returned
         by the server is used, if there is a conflicting share reservation
@@ -974,7 +974,7 @@
         have different sequences.  The server maintains the last sequence
         number (L) received and the response that was returned.  The server
         SHOULD assign a seqid value of one for the first request issued for any
-        given state-owner.  Subseuent values are arrived ay by incrementing
+        given state-owner.  Subsequent values are arrived ay by incrementing
         the seqid value, subject to wraparound as described in
         <xref target="ss:fl:seqids" />.
       </t>
