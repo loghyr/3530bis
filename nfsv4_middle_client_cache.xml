@@ -523,7 +523,7 @@
             when the client's OPEN operation includes DENY=WRITE or BOTH
             thus terminating a period in which other clients may have had
             the opportunity to open the file with WRITE access.  Clients may
-            choose to do the revalidation more often (such as an OPENs specifying
+            choose to do the revalidation more often (such as at OPENs specifying
             DENY=NONE) to parallel the NFSv3 protocol's practice for
             the benefit of users assuming this degree of cache revalidation.
             <vspace blankLines='1' />
