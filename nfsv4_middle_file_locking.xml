@@ -2214,7 +2214,7 @@
       To provide correct share semantics, a client MUST use the OPEN
       operation to obtain the initial filehandle and indicate the
       desired access and what access, if any, to deny.  Even if the
-      client intends to use a stateid of all 0's or all 1's, it must
+      client intends to use an anonymous or read-bypass  stateid, it must
       still obtain the filehandle for the regular file with the OPEN
       operation so the appropriate share semantics can be applied.
       Clients that do not have a deny mode built into their programming

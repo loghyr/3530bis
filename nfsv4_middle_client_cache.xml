@@ -936,13 +936,17 @@
       </t>
 
       <t>
-        For the purposes of open delegation, READs and WRITEs done without an
-        OPEN are treated as the functional equivalents of a corresponding
-        type of OPEN.  This refers to the READs and WRITEs that use the
-        anonymous stateid.  Therefore, READs or WRITEs with an anonymous stateid done by another
-        client will force the server to recall a OPEN_DELEGATE_WRITE delegation.
-        A WRITE with an anonymous stateid done by another client will force a
-        recall of OPEN_DELEGATE_READ delegations.
+	For the purposes of open delegation, READs and WRITEs done
+	without an OPEN (anonymous and read-bypass stateids) are
+	treated as the functional equivalents of a corresponding
+	type of OPEN.  READs and WRITEs done with an anonymous
+	stateid done by another client will force the server to
+	recall a OPEN_DELEGATE_WRITE delegation.  A WRITE with an
+	anonymous stateid done by another client will force a recall
+	of OPEN_DELEGATE_READ delegations.  Handling of read-bypass
+	stateid's is identical except that a READ done with a
+	read-bypass stateids will not force a recall of an
+	OPEN_DELEGATE_READ delegation.
       </t>
 
       <t>
