@@ -1950,7 +1950,7 @@
         OPEN held by the same owner. In this case, the stateid returned
         as an "other" field that matches that of the previous open
         while the "seqid" field is incremented to reflect the
-        change status due to the new open.
+        change status due to the new open (<xref target='ss:fl:stateids' />).
       </t>
 
       <t>
@@ -2211,7 +2211,7 @@
         argument for this operation along with the next sequence id for
         the open-owner.  The sequence id passed to the OPEN_CONFIRM
         must be 1 (one) greater than the seqid passed to the OPEN
-        operation.
+        operation (<xref target='ss:fl:stateids' />).
         If the server receives an unexpected sequence id with respect
         to the original open, then the server assumes that the client
         will not confirm the original OPEN and all state associated

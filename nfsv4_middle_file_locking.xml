@@ -2304,6 +2304,7 @@
 
     </section>
   </section>
+
   <section title="Open Upgrade and Downgrade">
 
     <t>
@@ -2342,7 +2343,7 @@
       should use it to update the server so that share reservation
       requests by other clients are handled properly. The stateid
       returned has the same "other" field as that passed to the server.
-      The "seqid" value in the returned stateid MUST be incremented,
+      The "seqid" value in the returned stateid MUST be incremented (<xref target='ss:fl:stateids' />),
       even in situations in which there has been no change to the access and
       deny bits for the file.
     </t>
