@@ -939,7 +939,7 @@
       same path within their namespaces, an array of server names may
       be provided.  An entry in the server array is a UTF-8 string
       and represents one of a traditional DNS host name, IPv4 address,
-      IPv6 address, or an zero-length string.
+      IPv6 address, or a zero-length string.
       A zero-length string SHOULD be used to indicate the current address
       being used for the RPC call. It is not
       a requirement that all servers that share the same rootpath
