@@ -1,7 +1,7 @@
 <!-- Copyright (C) The IETF Trust (2009-2014) -->
 <!-- Copyright (C) The Internet Society (2010-2014) -->
 <section anchor="sec:rpc_flavors" title="RPC and Security Flavor">
-   
+
   <t>
     The NFSv4 protocol is a RPC
     application that uses RPC version 2 and the XDR
@@ -27,7 +27,7 @@
     <t>
       Where an NFSv4 implementation supports operation over the IP network
       protocol, the supported transport layer between NFS and IP MUST be an IETF
-      standardized transport protocol that is specified to avoid network 
+      standardized transport protocol that is specified to avoid network
       congestion; such  transports include TCP and Stream Control Transmission
       Protocol (SCTP).  To enhance the possibilities for
       interoperability, an NFSv4 implementation MUST support
@@ -145,30 +145,36 @@
 
       <section anchor="krb5:sectrip" title="Kerberos V5 as a Security Triple">
         <t>
-          The Kerberos V5 GSS-API mechanism as described in <xref target="RFC4121" /> MUST be
-          implemented with the RPCSEC_GSS services as specified in the
-          following table:
+	  The Kerberos V5 GSS-API mechanism as described in
+	  <xref target="RFC4121" /> MUST be implemented with the
+	  RPCSEC_GSS services as specified in
+          <xref target='pseudo_flavor' />. Both client and server
+          MUST support each of the pseudo flavors. 
         </t>
 
-        <t>
-          <figure>
-            <artwork>
-   column descriptions:
-   1 == number of pseudo flavor
-   2 == name of pseudo flavor
-   3 == mechanism's OID
-   4 == RPCSEC_GSS service
-   5 == NFSv4 clients MUST support
-   6 == NFSv4 servers MUST support
+        <texttable anchor='pseudo_flavor'>
+          <preamble>Mapping pseudo flavor to service</preamble>
+          <ttcol>Number</ttcol>
+          <ttcol>Name</ttcol>
+          <ttcol>Mechanism's OID</ttcol>
+          <ttcol>RPCSEC_GSS service</ttcol>
 
-   1      2        3                    4                     5   6
-   ------------------------------------------------------------------
-   390003 krb5     1.2.840.113554.1.2.2 rpc_gss_svc_none      yes yes
-   390004 krb5i    1.2.840.113554.1.2.2 rpc_gss_svc_integrity yes yes
-   390005 krb5p    1.2.840.113554.1.2.2 rpc_gss_svc_privacy    no yes
-            </artwork>
-          </figure>
-        </t>
+          <c>390003</c>
+          <c>krb5</c>
+          <c>1.2.840.113554.1.2.2</c>
+          <c>rpc_gss_svc_none</c>
+
+          <c>390004</c>
+          <c>krb5i</c>
+          <c>1.2.840.113554.1.2.2</c>
+          <c>rpc_gss_svc_integrity</c>
+
+          <c>390005</c>
+          <c>krb5p</c>
+          <c>1.2.840.113554.1.2.2</c>
+          <c>rpc_gss_svc_privacy</c>
+
+        </texttable>
 
         <t>
           Note that the pseudo flavor is presented here as a mapping aid to the
@@ -252,7 +258,7 @@
         client that the security triple currently being used is not appropriate
         for access to the server's file system resources.  The client is then
         responsible for determining what security triples are available at the
-        server and choose one which is appropriate for the client.  See 
+        server and choose one which is appropriate for the client.  See
         <xref target="OP_SECINFO" /> for further discussion of how
         the client will respond to the NFS4ERR_WRONGSEC error and use SECINFO.
       </t>
@@ -276,7 +282,7 @@
         so the callback from the server simply uses the AUTH_SYS credential
         that the user used when he set up the delegation.
       </t>
- 
+
       <t>
         For AUTH_DH, one commonly used convention is that the server uses
         the credential corresponding to this AUTH_DH principal:
