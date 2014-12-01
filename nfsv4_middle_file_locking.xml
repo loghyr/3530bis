@@ -260,7 +260,7 @@
       <t>
         Note that SETCLIENTID (<xref target='OP_SETCLIENTID' />)
         and SETCLIENTID_CONFIRM (<xref target='OP_SETCLIENTID_CONFIRM' />)
-        has a secondary purpose of establishing the information the server needs to make
+        have a secondary purpose of establishing the information the server needs to make
         callbacks to the client for the purpose of supporting delegations.
         It is permitted to change this information via SETCLIENTID and
         SETCLIENTID_CONFIRM within the same incarnation of the client
