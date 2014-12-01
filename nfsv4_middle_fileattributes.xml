@@ -1380,14 +1380,14 @@
     </t>
     <t>
       A server SHOULD reject such a numeric value if the security
-      mechanism is kerberized. I.e., in such a scenario, the client
+      mechanism is using Kerberos. I.e., in such a scenario, the client
       will already need to form "user@domain" strings. For any
       other security mechanism, the server SHOULD accept such
       numeric values. As an implementation note, the server could
       make such an acceptance be configurable. If the server does
       not support numeric values or if it is configured off, then
       it MUST return an NFS4ERR_BADOWNER error. If the security
-      mechanism is kerberized and the client attempts to use the
+      mechanism is using Kerberos and the client attempts to use the
       special form, then the server SHOULD return an NFS4ERR_BADOWNER
       error when there is a valid translation for the user or owner
       designated in this way.  In that case, the client must use
