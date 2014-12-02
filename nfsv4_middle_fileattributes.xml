@@ -222,7 +222,7 @@
         <t>
           The values of the attribute supported_attrs, fsid, homogeneous,
           link_support, and symlink_support are always common to all
-          object within given file system.
+          object within the given file system.
         </t>
 
         <t>
