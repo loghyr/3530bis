@@ -379,17 +379,17 @@
         actually later.
       </t>
       <t>
-        Implementation can compare seqids in the presence of potential
+        Implementations can compare seqids in the presence of potential
         wraparound by adopting the reasonable assumption that the chain of
         increments from one to the other is shorter than 2**31.  So, if the
         difference between the two seqids is less than 2**31, then the
         lower seqid is to be treated as earlier.  If, however, the
         difference between the two seqids is greater than or equal to
         2**31, then it can be assumed that the lower seqid has encountered
-        one more wraparound an can be treated as later.
-
+        one more wraparound and can be treated as later.
       </t>
     </section>
+
     <section anchor="ss:fl:stateids" title="Stateid Definition">
 
       <t>
