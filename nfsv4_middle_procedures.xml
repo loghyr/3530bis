@@ -2766,14 +2766,17 @@
       </t>
 
       <t>
-        The cookie value is only meaningful to the server and is
-        used as a "bookmark" for the directory entry.  As mentioned,
-        this cookie is used by the client for subsequent READDIR
-        operations so that it may continue reading a directory.
-        The cookie is similar in concept to a READ offset but should
-        not be interpreted as such by the client.  Ideally, the cookie
-        value should not change if the directory is modified since
-        the client may be caching these values.
+	The cookie value is only meaningful to the server and is
+	used as a "bookmark" for the directory entry.  As mentioned,
+	this cookie is used by the client for subsequent READDIR
+	operations so that it may continue reading a directory.
+	The cookie is similar in concept to a READ offset but should
+	not be interpreted as such by the client.  The server SHOULD
+	try to accept cookie values issued with READDIR responses
+	even if the directory has been modified between the READDIR
+	calls but MAY return NFS4ERR_NOT_VALID if this is not
+	possible as might be the case if the server has rebooted
+	in the interim.
       </t>
 
       <t>
