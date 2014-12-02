@@ -2629,11 +2629,11 @@
       </t>
 
       <t>
-        For a READ with a stateid value of all bits 0, the server
-        MAY allow the READ to be serviced subject to mandatory file
-        locks or the current share deny modes for the file.  For a
-        READ with a stateid value of all bits 1, the server MAY allow
-        READ operations to bypass locking checks at the server.
+	For a READ using the special anonymous stateid, the server
+	MAY allow the READ to be serviced subject to mandatory file
+	locks or the current share deny modes for the file.  For a
+	READ using the special READ bypass stateid, the server MAY
+	allow READ operations to bypass locking checks at the server.
       </t>
 
       <t>
@@ -3548,8 +3548,8 @@
         conflicts with byte-range locks, for those cases in which a
         server is implementing mandatory byte-range locking behavior.
         A valid stateid SHOULD always be specified.  When the file
-        size attribute is not set, the special stateid consisting of
-        all bits zero MAY be passed.
+        size attribute is not set, the special anonymous stateid
+        MAY be passed.
       </t>
 
       <t>
@@ -4281,13 +4281,13 @@
       </t>
 
       <t>
-        For a WRITE with a stateid value of all bits 0, the server
-        MAY allow the WRITE to be serviced subject to mandatory file
-        locks or the current share deny modes for the file.  For a
-        WRITE with a stateid value of all bits 1, the server MUST
-        NOT allow the WRITE operation to bypass locking checks at
-        the server and are treated exactly the same as if a stateid
-        of all bits 0 were used.
+	For a WRITE using the special anonymous stateid, the server
+	MAY allow the WRITE to be serviced subject to mandatory
+	file locks or the current share deny modes for the file.
+	For a WRITE using the special READ bypass stateid, the
+	server MUST NOT allow the WRITE operation to bypass locking
+	checks at the server and is treated exactly the same as
+	if the anonymous stateid were used.
       </t>
 
       <t>

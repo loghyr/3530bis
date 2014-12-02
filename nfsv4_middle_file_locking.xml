@@ -514,8 +514,8 @@
           The following combinations of "other" and "seqid" are defined
           in NFSv4:
 
-          <list style='symbols'>
-            <t>
+          <list style='hanging'>
+            <t hangText="Anonymous Stateid:">
               When "other" and "seqid" are both zero, the
               stateid is treated as a special anonymous
               stateid, which can be used in READ, WRITE,
@@ -527,7 +527,7 @@
               to the request.
             </t>
 
-            <t>
+            <t hangText="READ Bypass Stateid:">
               When "other" and "seqid" are both all ones,
               the stateid is a special READ bypass stateid.
               When this value is used in WRITE or SETATTR,
@@ -834,7 +834,7 @@
         one of these operations must be one that represents an OPEN (e.g.,
         via the open-owner), a set of byte-range locks, or a
         delegation, or it may be a special stateid representing anonymous
-        access or the special bypass stateid.
+        access or the READ bypass stateid.
       </t>
 
       <t>
@@ -844,8 +844,7 @@
         returned by the server) must be used to indicate what locks,
         including both byte-range locks and share reservations, are held by
         the state-owner.  If no state is established by the client, either
-        byte-range lock or share reservation, the anonymous stateid consisting
-        of all bits 0 is used.
+        byte-range lock or share reservation, the anonymous stateid is used.
         Regardless whether an anonymous stateid or a stateid returned
         by the server is used, if there is a conflicting share reservation
         or mandatory byte-range lock held on the file, the server MUST refuse
@@ -941,11 +940,11 @@
       </t>
 
       <t>
-        A stateid of all bits 1 (one) MAY allow READ operations to bypass
-        locking checks at the server.  However, WRITE operations with
-        a stateid with bits all 1 (one) MUST NOT bypass locking checks
-        and are treated exactly the same as if an anonymous stateid
-        (all bits 0) were used.
+	A READ bypass stateid MAY allow READ operations to bypass
+	locking checks at the server.  However, WRITE operations
+	with a READ bypass stateid  MUST NOT bypass locking checks
+	and are treated exactly the same as if an anonymous stateid
+	were used.
       </t>
 
       <t>
@@ -1332,7 +1331,7 @@
       OPEN_DOWNGRADE, READ, SETATTR, or WRITE) informs the server to renew
       all of the leases for that client (i.e., all those sharing a given
       client ID).  In the latter case, the stateid must not be one of the
-      special stateids consisting of all bits 0 or all bits 1.
+      special stateids (anonymous stateid or READ bypass stateid).
     </t>
 
     <t>
@@ -2214,7 +2213,8 @@
       To provide correct share semantics, a client MUST use the OPEN
       operation to obtain the initial filehandle and indicate the
       desired access and what access, if any, to deny.  Even if the
-      client intends to use an anonymous or read-bypass  stateid, it must
+      client intends to use one of the special stateids
+      (anonymous stateid or READ bypass stateid), it must
       still obtain the filehandle for the regular file with the OPEN
       operation so the appropriate share semantics can be applied.
       Clients that do not have a deny mode built into their programming
@@ -2244,7 +2244,7 @@
       will assume the client has the least access. For example, if
       one client opened a file with OPEN4_SHARE_DENY_BOTH and another
       client accesses the file via a filehandle obtained through LOOKUP,
-      the second client could only read the file using the special read
+      the second client could only read the file using the special READ
       bypass stateid.  The second client could not WRITE the file at all
       because it would not have a valid stateid from OPEN and the special
       anonymous stateid would not be allowed access.

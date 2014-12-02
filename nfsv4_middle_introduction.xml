@@ -395,6 +395,9 @@
       an appropriate context for the reader.
 
       <list style='hanging'>
+        <t hangText="Anonymous Stateid:">
+          Special locking object defined in <xref target="ss:fl:special" />.
+        </t>
         <t hangText="Absent File System:">
           A file system is "absent" when a namespace component does not have a 
           backing file system.
@@ -464,6 +467,10 @@
           which consists of a Client ID and an opaque owner string.
           The client presents this to the server to establish
           the ownership of the open as needed.
+        </t>
+
+        <t hangText="READ Bypass Stateid:">
+          Special locking object defined in <xref target="ss:fl:special" />.
         </t>
 
         <t hangText="Server:">
