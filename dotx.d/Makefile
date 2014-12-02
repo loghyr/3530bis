@@ -138,7 +138,8 @@ hand_edit_warning.x: Makefile ../Makefile head.x $(FORE_OPS) fore_prog.x $(BACK_
 	( \
 		echo "/*" ; \
 		echo " * This file was machine generated for" ; \
-                echo " *  draft-ietf-nfsv4-rfc3530bis-$(VERS)" ; \
+                echo " *  [RFCNFSv4]" ; \
+                echo " *  [RFC Editor: please update the citation on the line above]" ; \
 		echo " * Last updated `date`" ; \
 		echo " */" ; \
 	)  > hand_edit_warning.x
