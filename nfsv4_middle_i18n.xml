@@ -174,11 +174,8 @@
 	        representation-independent lookups.  These are best
 	        described as "UTF-8-unaware servers" since they treat
 	        file component names as uninterpreted strings of bytes
-	        and have no knowledge of the characters represented. Such
-	        servers ignore normalization-related issues and there is
-	        no way for them to implement either normalization or
-	        representation-independent lookups.  See <xref target='ss:i18n:utf8_err' /> for
-	        details.
+	        and have no knowledge of the characters represented.
+	        See <xref target='ss:i18n:utf8_err' /> for details.
         </t>
 
         <t>
@@ -285,7 +282,7 @@
       Therefore, the server and client can expect that they may receive
       unnormalized characters within protocol requests and responses.  If
       the operating environment requires normalization, then the
-      implementation must normalize the various UTF-8 encoded strings
+      implementation will need to normalize the various UTF-8 encoded strings
       within the protocol before presenting the information to an
       application (at the client) or local file system (at the server).
     </t>
