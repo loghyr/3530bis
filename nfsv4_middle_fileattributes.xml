@@ -1320,40 +1320,21 @@
     <t>
       As an implementation guide, both clients and servers may
       provide a means to configure the "dns_domain" portion of the
-      owner string. For example, the DNS domain name might be
+      owner string. For example, the DNS domain name of
+      the host running the NFS server might be
       "lab.example.org", but the user names are defined in
       "example.org". In the absence of such a configuration,
       or as a default, the current DNS domain name of the server
       should be the value used for the "dns_domain".
     </t>
     <t>
-      As mentioned above, it is desirable that a server when
-      accepting a string of the form "user@domain" or "group@domain"
-      in an attribute, return this same string when that 
-      corresponding attribute is fetched.  Internationalization 
-      issues (for a general discussion of which see 
-      <xref target="sec:i18n" />) may make this impossible and the
-      client needs to take note of the following situations:
-
-      <list style='symbols'>
-        <t>
-          The string representing the domain may be converted to
-          an equivalent U-label (see <xref target='RFC5890' />), if presented using a
-          form other than 
-          a U-label.  See <xref target="ss:i18n:types" /> for details.
-        </t>
-        <t>
-          The user or group may be returned or used for verification in a
-          different form, as a result of Unicode normalization at the server.
-          The result SHOULD be a canonically
-          equivalent Unicode string <xref target='UNICODE' />.
-          Other sorts of string modification, including
-          case mapping or folding, SHOULD NOT be
-          done as such modifications may cause the
-          server to merge identities that are separate
-          at the client.
-        </t>
-      </list>
+      As mentioned above, it is desirable that a server when accepting
+      a string of the form "user@domain" or "group@domain" in an
+      attribute, return this same string when that corresponding
+      attribute is fetched.  Internationalization issues make this
+      impossible under certain circumstances and the client needs
+      to take note of these. See <xref target="sec:i18n" /> for a
+      detailed discussion of these issues.
     </t>
     <t>
       In the case where there is no translation available to the
