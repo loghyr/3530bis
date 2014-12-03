@@ -747,9 +747,9 @@
             </t>
 
             <t>
-              If there is no byte-range lock stateid, then the OPEN stateid for
-              the current open-owner, and that OPEN stateid for the open
-              file in question SHOULD be used.
+              If there is no byte-range lock stateid, thenrthe OPEN stateid for
+              the current open-owner, i.e., the OPEN stateid for the open
+              file in question, SHOULD be used.
             </t>
 
             <t>
