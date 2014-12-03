@@ -992,12 +992,12 @@
         response to (r) must have been received before the last request (L)
         was sent.  If a duplicate of last request (r == L) is received,
         the stored response is returned.  If the sequence value received
-        is any other value,it is rejected with the return
+        is any other value, it is rejected with the return
         of error NFS4ERR_BAD_SEQID.  Sequence history is reinitialized
         whenever the SETCLIENTID/SETCLIENTID_CONFIRM sequence changes
         the client verifier.
-
       </t>
+
       <t>
         It is critical the server maintain the last response sent to the
         client to provide a more reliable cache of duplicate non-idempotent
