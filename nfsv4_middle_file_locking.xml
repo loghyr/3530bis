@@ -2137,7 +2137,7 @@
       receive an error of NFS4ERR_ADMIN_REVOKED.  In this instance the
       client may assume that only the state-owner's locks have been lost.
       The client notifies the lock holder appropriately.  The client
-      MUST NOT assume the lease period has been renewed as a result of
+      can not assume the lease period has been renewed as a result of
       a failed operation.
     </t>
 

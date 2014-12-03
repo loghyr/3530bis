@@ -3529,7 +3529,7 @@
         requirement for data integrity or privacy.
         In choosing to use an unlisted flavor, the client SHOULD always
         be prepared to handle a failure by falling back to using AUTH_NONE
-        or another listed flavor. It MUST NOT assume that identity mapping
+        or another listed flavor. It can not assume that identity mapping
         is supported, and should be prepared for the fact that its identity
         is squashed.
       </t>
