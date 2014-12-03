@@ -62,7 +62,7 @@
       The name NFS4ERR_MOVED reflects an earlier,
       more limited conception of its function, but this error will be
       returned whenever the referenced file system is absent, whether it
-      has moved or not.
+      has moved or simply never existed.
     </t>
     <t>
       Except in the case of GETATTR-type operations (to be discussed
