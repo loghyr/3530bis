@@ -504,7 +504,7 @@
       <section anchor="ss:fl:special" title="Special Stateids">
         <t>
           Stateid values whose "other" field is either all zeros or all
-          ones are reserved.  They may not be assigned by the server but
+          ones are reserved.  They MUST NOT be assigned by the server but
           have special meanings defined by the protocol.  The particular
           meaning depends on whether the "other" field is all zeros or
           all ones and the specific value of the "seqid" field.
