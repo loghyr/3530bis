@@ -4,3 +4,6 @@ tmp.*
 draft*.xml
 draft*.html
 *.m4
+xxx
+*patch
+*.swp
