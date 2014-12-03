@@ -171,7 +171,7 @@
       server is able to determine that the client is diligently flushing
       state to the server as a result of the recall, the server MAY extend
       the usual time allowed for a recall.  However, the time allowed for
-      recall completion SHOULD NOT be unbounded.
+      recall completion should not be unbounded.
     </t>
 
     <t>
