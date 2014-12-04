@@ -1717,7 +1717,7 @@
       <?rfc include='autogen/open_res.xml'?>
 
     </section>
-    <section toc="exclude" anchor="OP_OPEN_WARNING" title="Warning to Client Implementors">
+    <section toc="exclude" anchor="OP_OPEN_WARNING" title="Warning to Client Implementers">
 
       <t>
         OPEN resembles LOOKUP in that it generates a filehandle for the
