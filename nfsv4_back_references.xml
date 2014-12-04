@@ -137,6 +137,21 @@
       <format type='TXT' octets='50937' target='ftp://ftp.isi.edu/in-notes/rfc5403.txt' />
     </reference>
 
+
+<reference anchor='RFC3492'>
+
+<front>
+<title>Punycode: A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)</title>
+<author initials='A.' surname='Costello' fullname='A. Costello'>
+<organization /></author>
+<date year='2003' month='March' />
+</front>
+
+<seriesInfo name='RFC' value='3492' />
+<format type='TXT' octets='67439' target='http://www.rfc-editor.org/rfc/rfc3492.txt' />
+</reference>
+
+
 <reference anchor='RFC3629'>
 <front>
 <title>UTF-8, a transformation format of ISO 10646</title>
