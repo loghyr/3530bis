@@ -128,8 +128,6 @@ include(type_nfstime4.x)
 include(type_time_how4.x)
 include(type_settime4.x)
 
-typedef uint32_t nfs_lease4;
-
 /*
  * File attribute definitions
  */
