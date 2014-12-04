@@ -362,23 +362,33 @@
 
       <list style='numbers'>
         <t>
-          The server treats the domain string as a U-label
-          This happens if the domain string is an A-label (or is a UTF-8-
-          encoded string which is not a U-label) and the server converts the
-          domain string to the corresponding U-label, using the functions
-          ToUnicode(domain) or ToUnicode(ToASCII(domain)).  As a result, the
-          domain string returned within a userid on a GETATTR may not match
-          that sent when the userid is set using SETATTR, although when this
-          happens, the domain will be in the form of an U-label.
+	  The server treats the domain string as a series of U-labels.
+	  In cases where the domain string is a series of A-labels
+	  or NR-LDH labels, it converts them to U-labels using the
+	  Punycode algorithm <xref target='RFC3492' />. In cases
+	  where the domain string is series of other sorts of LDH
+	  labels, the server can use the ToUnicode function defined
+	  in <xref target='RFC3490' /> to convert the string to a
+	  series of labels that generally conform to the U-label
+	  syntax. In cases where the domain string is a UTF-8 string
+	  that contains non-U-labels, the server can attempt to use
+	  to ToASCII function defined in <xref target='RFC3490' />
+	  and then the ToUnicode function on the string to convert
+	  it to a series of labels that generally conform to the
+	  U-label syntax. As a result, the domain string returned
+	  within a userid on a GETATTR may not match that sent when
+	  the userid is set using SETATTR, although when this
+	  happens, the domain will be in the form that generally
+	  conform to the U-label syntax.
         </t>
 
         <t>
-          The server does not attempt to treat the domain string as a
-          U-label; specifically, it does not map a domain string which is not
-          a U-label into a U-label using the ToUnicode function as described
-          above.  As a result, the domain string returned on a GETATTR of the
-          userid MUST be the same as that used when setting the userid by the
-          SETATTR.
+	  The server does not attempt to treat the domain string
+	  as a series of U-labels; specifically, it does not map a
+	  domain string which is not a U-label into a U-label using
+	  the methods described above. As a result, the domain
+	  string returned on a GETATTR of the userid MUST be the
+	  same as that used when setting the userid by the SETATTR.
         </t>
       </list>
 
