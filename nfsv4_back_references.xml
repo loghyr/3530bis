@@ -274,20 +274,6 @@ IANA Considerations for RPC Net Identifiers and Universal Address Formats.
       <format type='TXT' target='ftp://ftp.isi.edu/in-notes/rfc6649.txt' />
     </reference>
 
-    <reference anchor='RFC6943'>
-
-    <front>
-    <title>Issues in Identifier Comparison for Security Purposes</title>
-    <author initials='D.' surname='Thaler' fullname='D. Thaler'>
-    <organization /></author>
-    <date year='2013' month='May' />
-    <abstract>
-    <t>Identifiers such as hostnames, URIs, IP addresses, and email addresses are often used in security contexts to identify security principals and resources.  In such contexts, an identifier presented via some protocol is often compared using some policy to make security decisions such as whether the security principal may access the resource, what level of authentication or encryption is required, etc.  If the parties involved in a security decision use different algorithms to compare identifiers, then failure scenarios ranging from denial of service to elevation of privilege can result.  This document provides a discussion of these issues that designers should consider when defining identifiers and protocols, and when constructing architectures that use multiple protocols.</t></abstract></front>
-
-    <seriesInfo name='RFC' value='6943' />
-    <format type='TXT' octets='62676' target='http://www.rfc-editor.org/rfc/rfc6943.txt' />
-    </reference>
-
     <reference anchor='RFCNFSv4XDR'>
       <front>
         <title>NFSv4 Version 0 XDR Description</title>
@@ -788,6 +774,20 @@ document are to be interpreted as described in RFC
       <seriesInfo name="RFC" value="5661"/>
       <format type="TXT" octets="600988" 
 	      target="ftp://ftp.isi.edu/in-notes/rfc5661.txt"/>
+    </reference>
+
+    <reference anchor='RFC6943'>
+
+    <front>
+    <title>Issues in Identifier Comparison for Security Purposes</title>
+    <author initials='D.' surname='Thaler' fullname='D. Thaler'>
+    <organization /></author>
+    <date year='2013' month='May' />
+    <abstract>
+    <t>Identifiers such as hostnames, URIs, IP addresses, and email addresses are often used in security contexts to identify security principals and resources.  In such contexts, an identifier presented via some protocol is often compared using some policy to make security decisions such as whether the security principal may access the resource, what level of authentication or encryption is required, etc.  If the parties involved in a security decision use different algorithms to compare identifiers, then failure scenarios ranging from denial of service to elevation of privilege can result.  This document provides a discussion of these issues that designers should consider when defining identifiers and protocols, and when constructing architectures that use multiple protocols.</t></abstract></front>
+
+    <seriesInfo name='RFC' value='6943' />
+    <format type='TXT' octets='62676' target='http://www.rfc-editor.org/rfc/rfc6943.txt' />
     </reference>
 
     <reference anchor="Floyd">
