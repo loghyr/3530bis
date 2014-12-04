@@ -157,7 +157,7 @@
             present the same string.  The consequences of two clients
             presenting the same string range from one client getting
             an error to one client having its leased state abruptly and
-            unexpectedly cancelled.
+            unexpectedly canceled.
           </t>
 
           <t>
@@ -1592,14 +1592,14 @@
 
       <section anchor="ss:fl:lc" title="Lease Cancellation">
         <t>
-          As a result of lease expiration, leases may be cancelled, either
+          As a result of lease expiration, leases may be canceled, either
           immediately upon expiration or subsequently, depending on the occurrence
           of a conflicting lock or extension of the period of partition beyond
           what the server will tolerate.
         </t>
 
         <t>
-          When a lease is cancelled, all locking state associated with it is
+          When a lease is canceled, all locking state associated with it is
           freed and use of any the associated stateids will result in
           NFS4ERR_EXPIRED being returned.  Similarly, use of the associated clientid
           will result in NFS4ERR_EXPIRED being returned.
