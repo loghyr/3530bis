@@ -430,7 +430,7 @@ EOF
 	type_nfs_cb_opnum4.x )
 
 cat << EOF > $i
-%
+
 enum nfs_cb_opnum4 {
 	OP_CB_GETATTR		= 3,
 	OP_CB_RECALL		= 4,
